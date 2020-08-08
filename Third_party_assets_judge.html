@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
+		<title>DoraFX 第三方素材说明·制作概况</title>
+		<link rel="stylesheet" href="css/third-party-assets-style.css">
+		<script type="text/javascript">
+			window.onload = function() {
+				try {
+					if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+						//alert('iPhone');
+						window.location.href = "Third_party_assets_mobile.html";
+					} else {
+						//alert('pc');
+						window.location.href = "Third_party_assets.html";
+					}
+				} catch (e) {}
+			}
+		</script>
+	</head>
+</html>
