@@ -537,7 +537,7 @@ h8 {
 	color: white;
 	max-width: 50rem;
 	margin-bottom: 0;
-	text-shadow: 0px 1px 10px #000000;
+	text-shadow: 0px 0.1px 4px #000000;
 	z-index: 10;
 	position: relative;
 }
@@ -550,7 +550,7 @@ h8 {
 	color: white;
 	max-width: 600px;
 	margin-bottom: 0;
-	text-shadow: 0px 1px 10px #000000;
+	text-shadow: 0px 0.1px 4px #000000;
 	z-index: 10;
 	position: relative;
 }
@@ -563,7 +563,7 @@ h8 {
 	color: white;
 	max-width: 600px;
 	margin-bottom: 0;
-	text-shadow: 0px 1px 5px #000000;
+	text-shadow: 0px 0.1px 4px #000000;
 	z-index: 10;
 	position: relative;
 }
@@ -1045,7 +1045,7 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 1px 10px #000000;
+		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h21
@@ -1056,7 +1056,7 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 1px 10px #000000;
+		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h22
@@ -1067,7 +1067,7 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 1px 5px #000000;
+		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page .swiper-container-horizontal>div.swiper-scrollbar {
