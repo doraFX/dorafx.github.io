@@ -1,0 +1,19 @@
+body{background-color: #EEEEEE;}
+img{min-width: 100%; min-height: 100%;}
+
+.zylMain{background-color: rgba(180,186,180,0.3); padding: 5px; text-align: center;}
+
+
+/* 隐藏浏览器滚动条 */
+::-webkit-scrollbar{width:0px; height: 0px;}/* 滚动条宽度 */
+::-webkit-scrollbar-track{background-color:#0084b5;}/* 滚动条背景色 */
+::-webkit-scrollbar-thumb{background-color:#0084b5;}/* 滚动条颜色 */
+::-webkit-scrollbar-thumb:hover {background-color:#C5C7CA}/* 滚动条hover颜色 */
+::-webkit-scrollbar-thumb:active {background-color:#C5C7CA}/* 滚动条active颜色 */
+
+/* IE/火狐滚动条样式 */
+
+html{
+	-ms-overflow-style:none;/* IE */
+	scrollbar-width: none;/* 火狐 */
+}

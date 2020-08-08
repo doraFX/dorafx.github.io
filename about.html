@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
+		<title>DoraFX 个人简介</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript">
+			window.onload = function() {
+				if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) { //如果检测到手机
+					//alert('iPhone');
+					document.getElementByid("barcode").style.fontSize = "36px";
+				} else { //如其他情况
+					//alert('pc');
+					document.getElementById("barcode").style.fontSize = "60px";
+				}
+			}
+		</script>
+	</head>
+
+	<body id="About_page">
+
+		<div class="social-networks_col">
+			<div class="logotype"><a href="index.html"><img src="img/DoraFX.png" alt="DoraFX"><a></div>
+			<nav class="social-networks">
+				<a href="https://twitter.com/home"><i class="fab fa-twitter"></i></a>
+				<a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.behance.net/dorafx"><i class="fab fa-behance-square"></i></a>
+				<a href="about.html"><i class="fas fa-user-circle"></i></a>
+			</nav>
+		</div>
+
+		<div class="header-title"><a href="index.html" class="company-name">DoraFX</a>
+			<h1>个人简介</h1>
+		</div>
+
+		<button class="menu-open_button" id="openNavbar"><span></span></button>
+
+		<main class="content_block">
+			<div class="swiper-container">
+				<!-- Additional required wrapper -->
+				<div class="swiper-wrapper">
+					<!-- Slides -->
+					<div class="swiper-slide slide--1">
+						<h6>我叫宋清鑫<br>一个热爱CG制作的青年<br>现居大连<br></h6>
+					</div>
+					<div class="swiper-slide statistic-photo_slide">
+						<img class="aboutimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io@v1.0test/img/about_me.jpg"
+						 alt="">
+						<div class="statistic_wrapper">
+							<div class="statistic_block">
+								<h5>英语</h5>
+								<h3>四级</h3>
+							</div>
+							<div class="statistic_block">
+								<h5>毕业于</h5>
+								<h3>大连八中</h3>
+							</div>
+							<div class="statistic_block">
+								<h5>曾就读于</h5>
+								<h3>江南大学</h3>
+							</div>
+							<div class="statistic_block">
+								<h5>2018高考</h5>
+								<h3>614分</h3>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide skills_slide">
+						<h3>我的创作技能</h3>
+						<div class="skill_block">
+							<h5>3D Modeling/ Animation/ Rendering</h5>
+							<div class="skillbar_wrapper">
+								<div class="skillbar skillbar__1"></div>
+							</div>
+						</div>
+						<div class="skill_block">
+							<h5>Compositing/ Toning</h5>
+							<div class="skillbar_wrapper">
+								<div class="skillbar skillbar__2"></div>
+							</div>
+						</div>
+						<div class="skill_block">
+							<h5>Creative Planing</h5>
+							<div class="skillbar_wrapper">
+								<div class="skillbar skillbar__3"></div>
+							</div>
+						</div>
+						<div class="skill_block">
+							<h5>Video editing</h5>
+							<div class="skillbar_wrapper">
+								<div class="skillbar skillbar__4"></div>
+							</div>
+						</div>
+						<div class="skill_block">
+							<h5>Photography</h5>
+							<div class="skillbar_wrapper">
+								<div class="skillbar skillbar__5"></div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide pricing_slide">
+						<h3>我的爱好</h3>
+						<div class="pricing_wrapper">
+							<div class="price_block">
+								<img class="aboutimg hobby-img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io@v1.0test/img/flight.jpg"
+								 alt="">
+								<div class="detail">
+									<h4>模拟飞行</h4>
+									<p>我对驾驶飞机有着浓厚的兴趣，曾经想成为一名民航飞行员，但是因为视力原因未能如愿。目前我使用的模拟飞行平台是Xplane 11，我最常飞的机型是737-800</p>
+								</div>
+							</div>
+							<div class="price_block">
+								<img class="aboutimg hobby-img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io@v1.0test/img/cinema.jpg"
+								 alt="">
+								<div class="detail">
+									<h4>看电影</h4>
+									<p>看电影是最能让我感到放松的一项娱乐，在长时间的渲染时间里，泡杯咖啡，欣赏一部电影，非常惬意。当然阅片量有限，很多电影还没有看过</p>
+								</div>
+							</div>
+							<!--
+					<div class="price_block">
+                        <img src="img/social_media.jpg" alt="">
+                        <div class="detail">
+                            <h4>随心所欲地混迹在论坛与社交平台</h4>
+                            <p>比如什么IT之家啊、**、T******等等[根据相关法律法规，相关内容不予显示]，我还喜欢收集**笑话呢！</p>
+                        </div>
+                    </div>
+					-->
+						</div>
+					</div>
+
+
+					<div class="swiper-slide subscribe_slide1" id="slide1">
+						<div class="subscribe_wrapper">
+							<!--<h7>----- The End -----</h7>-->
+							<p id="barcode">----- The End -----</p>
+						</div>
+					</div>
+
+				</div>
+				<!-- If we need scrollbar -->
+				<div class="swiper-scrollbar"></div>
+			</div>
+		</main>
+
+		<nav class="main-menu">
+			<button id="closeNavbar" class="menu-close_button">
+				<span></span><span></span>
+			</button>
+			<a href="index.html">主页</a>
+			<a href="about.html" class="active">个人简介</a>
+			<a href="portfolio.html">作品集</a>
+			<a href="contacts.html">联系方式</a>
+		</nav>
+
+		<!--Scripts-->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/swiper.min.js"></script>
+		<script src="js/main.js"></script>
+
+	</body>
+
+</html>

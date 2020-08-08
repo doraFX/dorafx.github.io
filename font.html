@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
+		<title>DoraFX Sans</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript">
+			window.onload = function() {
+				if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) { //如果检测到手机
+					//alert('iPhone');
+					window.location.href = "index.html";
+				} else { //如其他情况
+					//alert('pc');
+					
+				}
+			}
+		</script>
+	</head>
+
+	<body id="About_page">
+
+		<div class="social-networks_col">
+			<div class="logotype"><a href="index.html"><img src="img/DoraFX.png" alt="DoraFX"><a></div>
+			<nav class="social-networks">
+				<a href="https://twitter.com/home"><i class="fab fa-twitter"></i></a>
+				<a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.behance.net/dorafx"><i class="fab fa-behance-square"></i></a>
+				<a href="about.html"><i class="fas fa-user-circle"></i></a>
+			</nav>
+		</div>
+
+		<div class="header-title"><a href="index.html" class="company-name">DoraFX</a>
+			<h1>DoraFX Sans</h1>
+		</div>
+
+		<button class="menu-open_button" id="openNavbar"><span></span></button>
+
+		<main class="content_block">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide pricing_slide2" id="font-header">
+						<div class="pricing_wrapper">
+							<div class="price_block">
+								<img class="aboutimg hobby-img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/paragraph.webp" alt="">
+								<div class="detail1">
+									<p id="font-text"><br></button></p>
+									<h8 id="h8text">DoraFX Sans Font</h8>
+									<a href="fontexample.html"><button class="buttonstyle2">查看示例页面</button></a>
+									<p id="font-text"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="font-slide1" id="font-header">
+						<h3>使用方法</h3>
+						<div class="cssdescription">
+							<h4>在CSS中添加以下代码</h4>
+							<textarea class="textareabox" id="text1" placeholder="请复制到CSS中">@font-face{ font-family: DoraFX; src: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/font/DoraFX-Regular.ttf");}</textarea>
+							<button onclick="copyText1()" class="buttonstyle">复制</button>
+						</div>
+						<div class="cssdescription">
+							<h4>所指定的CSS规则</h4>
+							<textarea class="textareabox2" id="text2" placeholder="请复制到CSS中">font-family: "DoraFX" , sans-serif;</textarea>
+							<button onclick="copyText2()" class="buttonstyle">复制</button>
+						</div>
+					</div>
+				</div>
+				<!-- Additional required wrapper -->
+				<div class="swiper-wrapper">
+
+
+
+				</div>
+			</div>
+		</main>
+
+		<nav class="main-menu">
+			<button id="closeNavbar" class="menu-close_button">
+				<span></span><span></span>
+			</button>
+			<a href="index.html">主页</a>
+			<a href="about.html">个人简介</a>
+			<a href="portfolio.html">作品集</a>
+			<a href="contacts.html">联系方式</a>
+		</nav>
+
+		<!--Scripts-->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/swiper.min.js"></script>
+		<script src="js/main.js"></script>
+		<script type="text/javascript">
+			function copyText1() {
+				var text1 = document.getElementById("text1");
+				text1.select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+				alert("已复制");
+			}
+			function copyText2() {
+				var text2 = document.getElementById("text2");
+				text2.select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+				alert("已复制");
+			}
+		</script>
+
+	</body>
+
+</html>
