@@ -36,7 +36,6 @@
 }
 
 
-
 input[type=text],
 input[type=submit],
 textarea {
@@ -513,7 +512,7 @@ h8 {
 }
 
 #Home_page .glassholder-latest {
-	background: #00000060;
+	background: #00000050;
 	width: 600px;
 	height: auto;
 	/*position: absolute;*/
@@ -523,13 +522,50 @@ h8 {
 }
 
 #Home_page .glassholder-regular {
-	background: #00000060;
+	background: #00000050;
 	width: 800px;
 	height: auto;
 	/*position: absolute;*/
 	padding: 30px;
 	border-radius: 15px;
 	margin-left: 20px;
+}
+
+#Home_page .glassholder-latest-withbotton {
+	background: #00000050; 
+	width: 600px; height: auto; 
+	position: fixed; padding: 30px; 
+	border-radius: 15px; 
+	margin-left: 20px;
+	margin-top: -100px;
+}
+
+#Home_page .glassholder-latest-withbotton-left{
+	float: left;
+	width: 450px;
+	height: 100%;
+	border-right:2px solid #FFFFFF
+}
+
+#Home_page .glassholder-latest-withbotton-right{
+	float: right;
+	width: calc(100% - 450px);
+	height: 100%;
+	text-align: center;
+}
+
+#Home_page .button-home-latest{
+	position: absolute;
+	margin-left: -15px;
+	margin-top: -30px;
+	width: 60px;
+	height: 60px;
+	top: 50%;
+	border-radius: 50%;
+	border: none;
+	color: #000000;
+	background: #ffffff;
+	box-shadow: 0 0 4px #000000;
 }
 
 #Home_page h2 {
@@ -962,7 +998,7 @@ h8 {
 	}
 
 	body#Home_page .glassholder-latest {
-		background: #00000060;
+		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
@@ -972,13 +1008,48 @@ h8 {
 	}
 	
 	body#Home_page .glassholder-regular {
-		background: #00000060;
+		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton {
+		background: #00000050; 
+		width: 480px; 
+		height: auto; 
+		position: fixed; padding: 30px; 
+		border-radius: 15px; 
+		margin-left: -20px;
+		margin-top: -100px;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton-left{
+		float: left;
+		width: 360px;
+		height: 100%;
+		border-right:2px solid #FFFFFF;
+		padding: 0 0 0 5px;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton-right{
+		float: right;
+		width: 120px;
+		height: 100%;
+		text-align: center;
+	}
+	
+	body#Home_page .button-home-latest{
+		position: absolute;
+		margin-left: 14px;
+		margin-top: -30px;
+		width: 60px;
+		height: 60px;
+		top: 50%;
+		border-radius: 30px;
 	}
 }
 
@@ -1021,7 +1092,7 @@ h8 {
 	}
 
 	body#Home_page .glassholder-latest {
-		background: #00000060;
+		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
@@ -1031,13 +1102,49 @@ h8 {
 	}
 	
 	body#Home_page .glassholder-regular {
-		background: #00000060;
+		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton {
+		background: #00000050; 
+		width: auto; height: auto; 
+		position: fixed; padding: 30px; 
+		border-radius: 15px; 
+		margin-left: 0;
+		margin-top: -100px;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton-left{
+		float: left;
+		width: auto;
+		height: 100%;
+		border-bottom:2px solid #FFFFFF;
+		border-right: 0 #ffffff00;
+		padding: 0 0 15px 0;
+	}
+	
+	body#Home_page .glassholder-latest-withbotton-right{
+		float: unset;
+		margin-top: 155px;
+		width: auto;
+		height: 80px;
+		text-align: center;
+	}
+	
+	body#Home_page .button-home-latest{
+		position: relative;
+		margin-left: 0;
+		margin-top: 16px;
+		width: 60px;
+		height: 60px;
+		top: 0;
+		border-radius: 30px;
 	}
 
 	body#Home_page h2 {
