@@ -532,29 +532,31 @@ h8 {
 }
 
 #Home_page .glassholder-latest-withbotton {
-	background: #00000050; 
-	width: 600px; height: auto; 
-	position: fixed; padding: 30px; 
-	border-radius: 15px; 
+	background: #00000050;
+	width: 600px;
+	height: auto;
+	position: fixed;
+	padding: 30px;
+	border-radius: 15px;
 	margin-left: 20px;
 	margin-top: -100px;
 }
 
-#Home_page .glassholder-latest-withbotton-left{
+#Home_page .glassholder-latest-withbotton-left {
 	float: left;
 	width: 450px;
 	height: 100%;
-	border-right:2px solid #FFFFFF
+	border-right: 2px solid #FFFFFF
 }
 
-#Home_page .glassholder-latest-withbotton-right{
+#Home_page .glassholder-latest-withbotton-right {
 	float: right;
 	width: calc(100% - 450px);
 	height: 100%;
 	text-align: center;
 }
 
-#Home_page .button-home-latest{
+#Home_page .button-home-latest {
 	position: absolute;
 	margin-left: -15px;
 	margin-top: -30px;
@@ -564,7 +566,7 @@ h8 {
 	border-radius: 50%;
 	border: none;
 	color: #000000;
-	background: #ffffff;
+	background: #f0f0f0;
 	box-shadow: 0 0 4px #000000;
 }
 
@@ -1006,7 +1008,7 @@ h8 {
 		border-radius: 10px;
 		margin-left: 0px;
 	}
-	
+
 	body#Home_page .glassholder-regular {
 		background: #00000050;
 		width: auto;
@@ -1016,33 +1018,34 @@ h8 {
 		border-radius: 10px;
 		margin-left: 0px;
 	}
-	
+
 	body#Home_page .glassholder-latest-withbotton {
-		background: #00000050; 
-		width: 480px; 
-		height: auto; 
-		position: fixed; padding: 30px; 
-		border-radius: 15px; 
+		background: #00000050;
+		width: 480px;
+		height: auto;
+		position: fixed;
+		padding: 30px;
+		border-radius: 15px;
 		margin-left: -20px;
 		margin-top: -100px;
 	}
-	
-	body#Home_page .glassholder-latest-withbotton-left{
+
+	body#Home_page .glassholder-latest-withbotton-left {
 		float: left;
 		width: 360px;
 		height: 100%;
-		border-right:2px solid #FFFFFF;
+		border-right: 2px solid #ffffff;
 		padding: 0 0 0 5px;
 	}
-	
-	body#Home_page .glassholder-latest-withbotton-right{
+
+	body#Home_page .glassholder-latest-withbotton-right {
 		float: right;
 		width: 120px;
 		height: 100%;
 		text-align: center;
 	}
-	
-	body#Home_page .button-home-latest{
+
+	body#Home_page .button-home-latest {
 		position: absolute;
 		margin-left: 14px;
 		margin-top: -30px;
@@ -1100,7 +1103,7 @@ h8 {
 		border-radius: 10px;
 		margin-left: 0px;
 	}
-	
+
 	body#Home_page .glassholder-regular {
 		background: #00000050;
 		width: auto;
@@ -1110,34 +1113,36 @@ h8 {
 		border-radius: 10px;
 		margin-left: 0px;
 	}
-	
+
 	body#Home_page .glassholder-latest-withbotton {
-		background: #00000050; 
-		width: auto; height: auto; 
-		position: fixed; padding: 30px; 
-		border-radius: 15px; 
+		background: #00000050;
+		width: auto;
+		height: auto;
+		position: fixed;
+		padding: 30px;
+		border-radius: 15px;
 		margin-left: 0;
-		margin-top: -100px;
+		margin-top: -120px;
 	}
-	
-	body#Home_page .glassholder-latest-withbotton-left{
+
+	body#Home_page .glassholder-latest-withbotton-left {
 		float: left;
 		width: auto;
 		height: 100%;
-		border-bottom:2px solid #FFFFFF;
+		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
 		padding: 0 0 15px 0;
 	}
-	
-	body#Home_page .glassholder-latest-withbotton-right{
+
+	body#Home_page .glassholder-latest-withbotton-right {
 		float: unset;
 		margin-top: 155px;
 		width: auto;
 		height: 80px;
 		text-align: center;
 	}
-	
-	body#Home_page .button-home-latest{
+
+	body#Home_page .button-home-latest {
 		position: relative;
 		margin-left: 0;
 		margin-top: 16px;
@@ -1285,6 +1290,190 @@ h8 {
 		width: 100%;
 		max-width: 100%;
 		min-width: 100%;
+	}
+}
+
+/*更窄的页面*/
+
+@media (max-width: 366px) {
+	body#Home_page .glassholder-latest {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		/*position: absolute;*/
+		padding: 20px;
+		border-radius: 10px;
+		margin-left: 0px;
+	}
+
+	body#Home_page .glassholder-regular {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		/*position: absolute;*/
+		padding: 20px;
+		border-radius: 10px;
+		margin-left: 0px;
+	}
+
+	body#Home_page .glassholder-latest-withbotton {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		position: fixed;
+		padding: 30px;
+		border-radius: 15px;
+		margin-left: 0;
+		margin-top: -130px;
+	}
+
+	body#Home_page .glassholder-latest-withbotton-left {
+		float: left;
+		width: auto;
+		height: 100%;
+		border-bottom: 2px solid #FFFFFF;
+		border-right: 0 #ffffff00;
+		padding: 0 0 15px 0;
+	}
+
+	body#Home_page .glassholder-latest-withbotton-right {
+		float: unset;
+		margin-top: 174px;
+		width: auto;
+		height: 80px;
+		text-align: center;
+	}
+
+	body#Home_page .button-home-latest {
+		position: relative;
+		margin-left: 0;
+		margin-top: 16px;
+		width: 60px;
+		height: 60px;
+		top: 0;
+		border-radius: 30px;
+	}
+
+	body#Home_page h2 {
+		font-size: 36px;
+		color: white;
+		max-width: 50rem;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
+	}
+
+	body#Home_page h21
+
+	/*指代中文的h2*/
+		{
+		font-size: 40px;
+		color: white;
+		max-width: 600px;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
+	}
+
+	body#Home_page h22
+
+	/*指代解释h2*/
+		{
+		font-size: 16px;
+		color: white;
+		max-width: 600px;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
+	}
+}
+
+/*iphone SE这个奇葩机型*/
+
+@media (max-width: 346px) {
+	body#Home_page .glassholder-latest {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		/*position: absolute;*/
+		padding: 20px;
+		border-radius: 10px;
+		margin-left: 0px;
+	}
+
+	body#Home_page .glassholder-regular {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		/*position: absolute;*/
+		padding: 20px;
+		border-radius: 10px;
+		margin-left: 0px;
+	}
+
+	body#Home_page .glassholder-latest-withbotton {
+		background: #00000050;
+		width: auto;
+		height: auto;
+		position: fixed;
+		padding: 30px;
+		border-radius: 15px;
+		margin-left: 0;
+		margin-top: -150px;
+	}
+
+	body#Home_page .glassholder-latest-withbotton-left {
+		float: left;
+		width: auto;
+		height: 100%;
+		border-bottom: 2px solid #FFFFFF;
+		border-right: 0 #ffffff00;
+		padding: 0 0 15px 0;
+	}
+
+	body#Home_page .glassholder-latest-withbotton-right {
+		float: unset;
+		margin-top: 220px;
+		width: auto;
+		height: 80px;
+		text-align: center;
+	}
+
+	body#Home_page .button-home-latest {
+		position: relative;
+		margin-left: 0;
+		margin-top: 16px;
+		width: 60px;
+		height: 60px;
+		top: 0;
+		border-radius: 30px;
+	}
+
+	body#Home_page h2 {
+		font-size: 36px;
+		color: white;
+		max-width: 50rem;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
+	}
+
+	body#Home_page h21
+
+	/*指代中文的h2*/
+		{
+		font-size: 40px;
+		color: white;
+		max-width: 600px;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
+	}
+
+	body#Home_page h22
+
+	/*指代解释h2*/
+		{
+		font-size: 16px;
+		color: white;
+		max-width: 600px;
+		margin-bottom: 0;
+		text-shadow: 0px 0.1px 4px #000000;
 	}
 }
 
