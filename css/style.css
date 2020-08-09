@@ -983,6 +983,27 @@ h8 {
 	font-size: 12px;
 }
 
+
+
+
+
+
+
+.videooo {
+	position: absolute;
+	top: 50%;
+	margin: -270px 0 0 0;
+	width: auto;
+}
+
+
+
+
+
+
+
+
+
 /* iPad页面 */
 
 @media (max-width: 768px) {
@@ -1079,6 +1100,13 @@ h8 {
 /* 手机页面 */
 
 @media (max-width: 500px) {
+	
+	.videooo {
+		position: inherit;
+		top: 0;
+		margin: 0 0 0 0;
+		width: auto;
+	}
 
 	body#Home_page .header-title {
 		left: 20px;
@@ -1564,9 +1592,3 @@ h8 {
 	margin-left: 20px;
 }
 
-.videooo {
-	position: absolute;
-	top: 50%;
-	margin: -270px 0 0 0;
-	width: auto;
-}
