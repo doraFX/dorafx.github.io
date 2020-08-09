@@ -115,7 +115,7 @@ p {
 	color: #fcfdff;
 }
 
-h1{
+h1 {
 	font-size: 16px;
 }
 
@@ -150,7 +150,7 @@ h5 {
 	color: #fcfdff;
 }
 
-h6{
+h6 {
 	font-size: 46px;
 	line-height: 1.1;
 	font-weight: 400;
@@ -749,7 +749,23 @@ h6{
 	}
 }
 
+/*手机*/
+
 @media (max-width: 500px) {
+
+    #wave {
+    	position: absolute;
+    	display: none;
+    }
+
+	#iframe01 {
+		width: auto;
+	}
+
+	#gallery {
+		position: absolute;
+		display: none;
+	}
 
 	body#Home_page .header-title {
 		left: 20px;
@@ -993,3 +1009,8 @@ input[type=range]:focus::-webkit-slider-thumb {
 input[type=range]:focus::-moz-range-thumb {
 	background: rgba(255, 255, 255, 0.5);
 }
+
+
+
+#gallery {}
+

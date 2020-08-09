@@ -215,7 +215,7 @@ h8 {
 }
 
 #barcode {
-	font-size: 36px;
+	font-size: 60px;
 	font-family: "Libre Barcode 128 Text", cursive;
 }
 
@@ -1100,6 +1100,11 @@ h8 {
 /* 手机页面 */
 
 @media (max-width: 500px) {
+	
+	#barcode {
+		font-size: 36px;
+		font-family: "Libre Barcode 128 Text", cursive;
+	}
 	
 	.videooo {
 		position: inherit;

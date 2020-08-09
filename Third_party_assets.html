@@ -7,20 +7,6 @@
 		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
 		<title>DoraFX 第三方素材说明·制作概况</title>
 		<link rel="stylesheet" href="css/third-party-assets-style.css">
-		<script type="text/javascript">
-			window.onload = function() {
-				if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) { //如果检测到手机
-		            //alert('iPhone');
-					document.getElementById('gallery').style.display = 'none'; //display属性设置为隐藏
-					document.getElementById('waves').style.display = 'none'; //display属性设置为隐藏
-				} else { //如其他情况
-		            //alert('pc');
-					document.getElementById('gallery').style.display = 'block'; //display属性设置为显示
-					document.getElementById('waves').style.display = 'block'; //display属性设置为显示
-				}
-			}
-		</script>
-
 		<!--视频css-->
 		<link rel="stylesheet" href="css/ckin.css" />
 
@@ -58,10 +44,10 @@
 
 
 					<div class="swiper-slide" id="gallery">
-						<div class="description">
+						<div class="description" >
 							<img src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/num0.png" alt="">
 							<br>
-							<iframe src="3page/jquery-card-image-player/index.html" width="800" height="520" seamless></iframe>
+							<iframe src="3page/jquery-card-image-player/index.html" id="iframe01" width="800" height="520" seamless></iframe>
 							<!--
 						    <img src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io@v1.6/img/1smaller.jpg" alt="">
 							<br>
@@ -103,11 +89,11 @@
 						</div>
 					</div>
 					
-					<div class="swiper-slide">
+					<div class="swiper-slide" >
 						<div class="description">
 							<img src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/num3.png" alt="">
 							<p>注意画面最开始出现的元素：是一个非常非常长的音频波形图，这个波形图是通过Audition分段截图后导入Photoshop拼接的</p>
-							<iframe id="waves" src="3page/css3-visible-shadow/index.html" width="640" height="340" scrolling="no" seamless></iframe>
+							<iframe id="wave" src="3page/css3-visible-shadow/index.html" width="640" height="340" scrolling="no" seamless></iframe>
 						</div>
 					</div>
 
