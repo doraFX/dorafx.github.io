@@ -3,10 +3,10 @@
 /*@import "https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.0/css/all.css";*/
 @import "fontawesomeall5.13.0.css"
 @import "https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900";
-@import "https://fonts.googleapis.com/css?family=Arya:100,200,300,400,500,600,700,800,900";
 @import "https://fonts.googleapis.com/css?family=Arimo:100,200,300,400,500,600,700,800,900";
 @import "https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,200,300,400,500,600,700,800,900";
 @import "https://fonts.googleapis.com/css?family=Varela+Round";
+@import "https://fonts.googleapis.com/css?family=Heebo:100,200,300,400,500,600,700,800,900";
 
 
 
@@ -124,6 +124,7 @@ h2 {
 	line-height: 1.1;
 	font-weight: 800;
 	color: #fcfdff;
+	font-family: "Varela Round", sans-serif;
 }
 
 h3 {
@@ -752,6 +753,10 @@ h6 {
 /*手机*/
 
 @media (max-width: 500px) {
+	
+	body .header-title h1 {
+		color: #000000;
+	}
 
     #wave {
     	position: absolute;
@@ -891,6 +896,15 @@ h6 {
 		min-width: 100%;
 	}
 }
+
+
+@media (max-width: 390px) {
+	body .header-title h1 {
+		display: none;
+	}
+	
+}
+
 
 .txet-one {
 	padding: 1em;

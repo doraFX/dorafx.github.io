@@ -4,6 +4,8 @@
    MIT License
    git+https://github.com/hunzaboy/ckin.git
 */
+@import "https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900";
+
 @font-face {
   font-family: 'ckin';
   src: url("../font/ckin.eot?g02cfx");
