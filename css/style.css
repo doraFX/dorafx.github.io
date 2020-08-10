@@ -90,6 +90,15 @@ main.content_block.darkened {
 	margin: 20px;
 }
 
+.social-networks_col>.logotype img:hover {
+	width: 40px;
+	height: 40px;
+	margin: 20px;
+    filter: brightness(1.1);
+	border-radius: 50%;
+	transition: 0.1s;
+}
+
 .social-networks_col>.social-networks a {
 	display: block;
 	color: #6c757d;
@@ -1149,9 +1158,17 @@ h8 {
 
 @media (max-width: 500px) {
 	
+	h6 {
+		font-size: 44px;
+	}
+	
 	#barcode {
 		font-size: 36px;
 		font-family: "Libre Barcode 128 Text", cursive;
+	}
+	
+	body .about-page-text {
+		margin-top: 0;
 	}
 	
 	.videooo {
@@ -1389,6 +1406,11 @@ h8 {
 /*更窄的页面*/
 
 @media (max-width: 366px) {
+	
+	h6 {
+		font-size: 36px;
+	}
+	
 	body#Home_page .glassholder-latest {
 		background: #00000050;
 		width: auto;
@@ -1681,3 +1703,58 @@ h8 {
 	margin-left: 20px;
 }
 
+.about-page-text {
+	margin-top: 20px;
+}
+
+.msfs {
+	margin-top: 10px;
+	display: flex;
+	background: ##d3d3d3;
+	padding: 5px ;
+	border-radius: 35px;
+	box-shadow: 0.5px 0.5px 5px #0000004B;
+}
+
+.msfs:hover {
+	margin-top: 10px;
+	display: flex;
+	background: #cacaca;
+	padding: 5px ;
+	border-radius: 35px;
+	transition: 0.1s;
+}
+
+.msfs-text {
+	text-align: right;
+	vertical-align: auto;
+	margin: auto 0;
+	margin-right: 15px;
+	margin-left: 5px;
+	width: calc(100% - 60px);
+	color: #5d5d5d;
+}
+
+.msfs-button-right {
+	
+}
+
+.msfs-button {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	color: #5c90f0;
+	background-image: radial-gradient(#f9f9f9, #e1e1e1);
+	/*background: #f0f0f0;*/
+	box-shadow: 0.5px 0.5px 2.5px #0000004B;
+}
+
+.msfs-button:hover {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	color: #ffffff;
+	background: #3c75f0;
+	box-shadow: 0.5px 0.5px 2.5px #00000032;
+	transition: 0.2s;
+}

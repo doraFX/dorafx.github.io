@@ -754,6 +754,10 @@ h6 {
 
 @media (max-width: 500px) {
 	
+	body .description h6 {
+		font-size: 44px;
+	}
+	
 	body .header-title h1 {
 		color: #000000;
 	}
@@ -903,6 +907,16 @@ h6 {
 		display: none;
 	}
 	
+	body .minimal__title {
+		font-size: 20px;
+	}
+	
+}
+
+@media (max-width: 352px) {
+	body .description h6 {
+		font-size: 36px;
+	}
 }
 
 
