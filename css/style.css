@@ -1133,7 +1133,7 @@ h8 {
 	}
 }
 
-@media (max-height: 750px) {
+@media (min-width: 501px) and (max-width: 1026px) {
 
 	body:not(#Home_page) h2 {
 		font-size: 36px;
@@ -1145,11 +1145,66 @@ h8 {
 	}
 
 	h4 {
-		font-size: 20px;
+		font-size: 18px;
 	}
 
 	p {
-		font-size: 14px;
+		font-size: 13px;
+		line-height: 1.2;
+	}
+
+	body .msfs {
+		margin-top: 10px;
+		display: flex;
+		background: ##d3d3d3;
+		padding: 5px;
+		border-radius: 35px;
+		box-shadow: 0.5px 0.5px 5px #0000004B;
+	}
+	
+	body .msfs:hover {
+		margin-top: 10px;
+		display: flex;
+		background: #cacaca;
+		padding: 5px;
+		border-radius: 35px;
+		transition: 0.1s;
+	}
+	
+	body .msfs-text {
+		text-align: right;
+		vertical-align: auto;
+		margin: auto 0;
+		margin-right: 5px;
+		margin-left: 5px;
+		width: calc(100% - 40px);
+		color: #5d5d5d;
+	}
+	
+	body .msfs-text p {
+		font-size: 10px;
+	}
+	
+	body .msfs-button-right {}
+	
+	body .msfs-button {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		color: #5c90f0;
+		background-image: radial-gradient(#f9f9f9, #e1e1e1);
+		/*background: #f0f0f0;*/
+		box-shadow: 0.5px 0.5px 2.5px #0000004B;
+	}
+	
+	body .msfs-button:hover {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		color: #ffffff;
+		background: #3c75f0;
+		box-shadow: 0.5px 0.5px 2.5px #00000032;
+		transition: 0.2s;
 	}
 }
 
@@ -1483,6 +1538,60 @@ h8 {
 		border-radius: 4px;
 		transition: 0.1s;
 		font-size: 14px;
+	}
+
+	.msfs {
+		margin-top: 10px;
+		display: flex;
+		background: ##d3d3d3;
+		padding: 5px;
+		border-radius: 35px;
+		box-shadow: 0.5px 0.5px 5px #0000004B;
+	}
+
+	.msfs:hover {
+		margin-top: 10px;
+		display: flex;
+		background: #cacaca;
+		padding: 5px;
+		border-radius: 35px;
+		transition: 0.1s;
+	}
+
+	.msfs-text {
+		text-align: right;
+		vertical-align: auto;
+		margin: auto 0;
+		margin-right: 4px;
+		margin-left: 16px;
+		width: calc(100% - 60px);
+		color: #5d5d5d;
+	}
+	
+	.msfs-text p {
+		font-size: 15px;
+	}
+
+	.msfs-button-right {}
+
+	.msfs-button {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		color: #5c90f0;
+		background-image: radial-gradient(#f9f9f9, #e1e1e1);
+		/*background: #f0f0f0;*/
+		box-shadow: 0.5px 0.5px 2.5px #0000004B;
+	}
+
+	.msfs-button:hover {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		color: #ffffff;
+		background: #3c75f0;
+		box-shadow: 0.5px 0.5px 2.5px #00000032;
+		transition: 0.2s;
 	}
 }
 
