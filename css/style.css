@@ -1418,11 +1418,11 @@ h8 {
 		padding-top: 20px;
 		padding-bottom: 20px;
 	}
-	
+
 	body .begin-text p {
 		font-size: 16px;
 	}
-	
+
 	body .begin-button {
 		padding: 14px;
 		background-color: #282828;
@@ -1430,7 +1430,7 @@ h8 {
 		border-radius: 4px;
 		font-size: 14px;
 	}
-	
+
 	body .begin-button:hover {
 		padding: 14px;
 		background-color: #3c3c3c;
@@ -1439,7 +1439,7 @@ h8 {
 		transition: 0.1s;
 		font-size: 14px;
 	}
-	
+
 	body .end {
 		width: auto;
 		height: auto;
@@ -1450,7 +1450,7 @@ h8 {
 		border-radius: 6px;
 		text-align: center;
 	}
-	
+
 	body .end-text {
 		position: relative;
 		top: 50%;
@@ -1462,12 +1462,12 @@ h8 {
 	body .end-text p {
 		font-size: 14px;
 	}
-	
+
 	body .end-text h8 {
 		font-size: 12px;
 		color: #5f5f5f;
 	}
-	
+
 	body .end-button {
 		padding: 14px;
 		background-color: #282828;
@@ -1475,7 +1475,7 @@ h8 {
 		border-radius: 4px;
 		font-size: 14px;
 	}
-	
+
 	body .end-button:hover {
 		padding: 14px;
 		background-color: #3c3c3c;
