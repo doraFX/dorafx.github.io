@@ -1402,7 +1402,7 @@ h8 {
 
 	body .begin {
 		width: auto;
-		height: 120px;
+		height: auto;
 		padding-left: 0;
 		padding-right: 0;
 		margin-left: 0;
@@ -1415,10 +1415,74 @@ h8 {
 		position: relative;
 		top: 50%;
 		transform: translateY(-50%);
+		padding-top: 20px;
+		padding-bottom: 20px;
 	}
 	
 	body .begin-text p {
 		font-size: 16px;
+	}
+	
+	body .begin-button {
+		padding: 14px;
+		background-color: #282828;
+		color: #ffffff;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+	
+	body .begin-button:hover {
+		padding: 14px;
+		background-color: #3c3c3c;
+		color: #ffffff;
+		border-radius: 4px;
+		transition: 0.1s;
+		font-size: 14px;
+	}
+	
+	body .end {
+		width: auto;
+		height: auto;
+		padding-left: 0;
+		padding-right: 0;
+		margin-left: 0;
+		background-color: #ebebeb;
+		border-radius: 6px;
+		text-align: center;
+	}
+	
+	body .end-text {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	
+	body .end-text p {
+		font-size: 14px;
+	}
+	
+	body .end-text h8 {
+		font-size: 12px;
+		color: #5f5f5f;
+	}
+	
+	body .end-button {
+		padding: 14px;
+		background-color: #282828;
+		color: #ffffff;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+	
+	body .end-button:hover {
+		padding: 14px;
+		background-color: #3c3c3c;
+		color: #ffffff;
+		border-radius: 4px;
+		transition: 0.1s;
+		font-size: 14px;
 	}
 }
 
@@ -1783,6 +1847,7 @@ h8 {
 	margin-left: 20px;
 	background-color: #ebebeb;
 	border-radius: 6px;
+	text-align: center;
 }
 
 .begin-text {
@@ -1793,4 +1858,64 @@ h8 {
 
 .begin-text p {
 	font-size: 30px;
+}
+
+.begin-button {
+	padding: 20px;
+	background-color: #282828;
+	color: #ffffff;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+.begin-button:hover {
+	padding: 20px;
+	background-color: #3c3c3c;
+	color: #ffffff;
+	border-radius: 4px;
+	transition: 0.1s;
+	font-size: 16px;
+}
+
+.end {
+	width: auto;
+	height: calc(100vh - 200px);
+	padding-left: 120px;
+	padding-right: 120px;
+	margin-left: 20px;
+	background-color: #ebebeb;
+	border-radius: 6px;
+	text-align: center;
+}
+
+.end-text {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.end-button {
+	padding: 20px;
+	background-color: #282828;
+	color: #ffffff;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+.end-button:hover {
+	padding: 20px;
+	background-color: #3c3c3c;
+	color: #ffffff;
+	border-radius: 4px;
+	transition: 0.1s;
+	font-size: 16px;
+}
+
+.end-text p {
+	font-size: 16px;
+}
+
+.end-text h8 {
+	font-size: 14px;
+	color: #5f5f5f;
 }
