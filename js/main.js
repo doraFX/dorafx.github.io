@@ -46,7 +46,6 @@ $(document).ready(function () {
 
 
 
-    $('.image-links').magnificPopup({type: 'image'});
-	//原来是$('.image-link').magnificPopup({type: 'image'});
+    $('.image-link').magnificPopup({type: 'image'});
 	
 });
