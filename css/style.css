@@ -154,7 +154,6 @@ label {
 	font-size: 16px;
 	font-weight: 400;
 	font-family: "Montserrat", sans-serif;
-	text-decoration: none;
 }
 
 p {
@@ -600,7 +599,6 @@ h8 {
 	color: #000000;
 	background: #f0f0f0;
 	box-shadow: 0 0 4px #000000;
-	line-height: 3.8;
 }
 
 #Home_page .button-home-latest:hover {
@@ -1457,8 +1455,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
-		padding: 20.5px 23px;
+		top: 0;
 		border-radius: 50%
 	}
 
@@ -1468,8 +1465,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
-		padding: 20.5px 23px;
+		top: 0;
 		border-radius: 50% background: #ffffff;
 		transition: 0.25s;
 	}
@@ -1631,7 +1627,7 @@ h8 {
 		top: 50%;
 		transform: translateY(-50%);
 		padding-top: 20px;
-		padding-bottom: 40px;
+		padding-bottom: 20px;
 	}
 
 	body .begin-text p {
@@ -1670,7 +1666,7 @@ h8 {
 		position: relative;
 		top: 50%;
 		transform: translateY(-50%);
-		padding-top: 40px;
+		padding-top: 20px;
 		padding-bottom: 20px;
 	}
 
@@ -1817,7 +1813,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
+		top: 0;
 		border-radius: 50%
 	}
 
@@ -1827,7 +1823,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
+		top: 0;
 		border-radius: 50% background: #ffffff;
 		transition: 0.25s;
 	}
@@ -1920,7 +1916,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
+		top: 0;
 		border-radius: 50%
 	}
 
@@ -1930,7 +1926,7 @@ h8 {
 		margin-top: 16px;
 		width: 60px;
 		height: 60px;
-		top: 16px;
+		top: 0;
 		border-radius: 50% background: #ffffff;
 		transition: 0.25s;
 	}
