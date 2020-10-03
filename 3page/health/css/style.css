@@ -24,17 +24,3 @@
 	font-size: 30px;
 	line-height: 12px;
 }
-
-.button{
-	position: absolute;
-	text-align: center;
-	left: 50%;
-	transform: translateX(-50%);
-	bottom: 200px;
-}
-
-.anniu{
-	width: 100px;
-	height: 50px;
-	font-size: 40px;
-}
