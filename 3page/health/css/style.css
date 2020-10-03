@@ -15,13 +15,13 @@
 	text-align: center;
 	left: 50%;
 	transform: translateX(-50%);
-	top: 66px;
+	top: 64px;
 }
 
 .date p{
 	font-family: 'Roboto','Noto Sans SC', sans-serif;
 	font-weight: bolder;
-	font-size: 30px;
+	font-size: 32px;
 	line-height: 12px;
 }
 
