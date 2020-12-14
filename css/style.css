@@ -2184,3 +2184,9 @@ h8 {
 	font-size: 14px;
 	color: #5f5f5f;
 }
+
+.post_new{
+	position: absolute;
+	width: 50%;
+	height: 50%;
+}
