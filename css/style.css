@@ -55,6 +55,7 @@ textarea {
 body {
 	background-color: #141414;
 	overflow-x: hidden;
+	transition: background-color 2s;
 }
 
 main.content_block {
@@ -127,8 +128,9 @@ main.content_block.darkened {
 }
 
 .header-title .company-name {
-	height: 20px;
+	height: 22px;
 	color: #efefef;
+	line-height: 22px;
 	margin: 0;
 	margin-right: 15px;
 	padding: 0px 6px;
@@ -136,23 +138,29 @@ main.content_block.darkened {
 	background-color: #141414;
 	border-radius: 2px;
 	text-align: center;
-	transition: background-color 0.3s,color 0.3s;
+	border: 1px solid #000000;
+	box-shadow: 0 0 6px #ffffff20;
+	transition: background-color 0.3s,color 0.3s,box-shadow 0.3s;
 }
 
 .header-title .company-name:hover {
-	height: 20px;
-	color: #ffffff;
+	height: 22px;
+	color: #000000;
+	line-height: 22px;
 	margin: 0;
 	margin-right: 15px;
 	padding: 0px 6px;
 	text-decoration: none;
-	background-color: #000000;
+	background-color: #ffffff;
 	border-radius: 2px;
+	border: 1px solid #000000;
 	text-align: center;
+	box-shadow: 0 0 6px #00000020;
 }
 
 .header-title h1 {
 	font-size: 16px;
+	line-height: 24px;
 }
 
 *,
@@ -484,6 +492,7 @@ h8 {
 	max-height: 100%;
 	width: auto !important;
 	max-width: 100%;
+	z-index: 1000;
 }
 
 .swiper-container-horizontal>div.swiper-scrollbar {
@@ -706,8 +715,13 @@ h8 {
 	justify-content: space-evenly;
 	background: #efeff0;
 	padding-left: 30px;
-	z-index: -1;
+	z-index: 0;
 	border-radius: 6px;
+	transition: background 0.3s;
+}
+
+#About_page .statistic-photo_slide .statistic_wrapper:hover {
+	background: #dcdcdd;
 }
 
 #About_page .statistic-photo_slide .statistic_block {
@@ -759,7 +773,15 @@ h8 {
 
 #About_page .skills_slide .skillbar_wrapper>.skillbar {
 	height: 100%;
-	background-color: black;
+	background-color: #000000;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+	cursor: default;
+}
+
+#About_page .skills_slide .skillbar_wrapper>.skillbar:hover {
+	height: 100%;
+	background-color: #8c8c8c;
 	border-radius: 4px;
 }
 
@@ -789,10 +811,15 @@ h8 {
 }
 
 #About_page .pricing_slide {
-	background: #e3e4e875;
+	background: #f0f2f4;
 	padding: 30px 38px 30px 38px;
 	border-radius: 20px;
 	margin-right: 60px;
+	transition: background 0.5s;
+}
+
+#About_page .pricing_slide:hover {
+	background: #e0e2e3;
 }
 
 #About_page .pricing_slide .pricing_wrapper {
@@ -828,6 +855,7 @@ h8 {
 	z-index: 2;
 	background-color: #f7f7f9;
 	border-radius: 6px;
+	z-index: 1000;
 }
 
 #About_page .subscribe_slide {
@@ -839,11 +867,16 @@ h8 {
 }
 
 #About_page .subscribe_slide1 {
-	background: #e3e4e840;
+	background: #f0f2f4;
 	align-items: center;
 	justify-content: center;
 	border-radius: 14px;
 	margin-right: 60px;
+	transition: background 0.5s;
+}
+
+#About_page .subscribe_slide1:hover {
+	background: #e0e2e3;
 }
 
 #About_page .subscribe_slide .subscribe_wrapper h3 {
@@ -939,6 +972,13 @@ h8 {
 	padding: 20px;
 	border: 1px solid #e3e4e8;
 	border-radius: 6px;
+	transition: border 0.5s;
+}
+
+#Contacts_page .main-contacts_slide .contact_block:hover {
+	padding: 20px;
+	border: 1px solid #353536;
+	border-radius: 6px;
 }
 
 #Contacts_page .main-contacts_slide .contact_block:not(:last-child) {
@@ -974,6 +1014,11 @@ h8 {
 	justify-content: center;
 	margin-left: 82px;
 	border-radius: 6px;
+	transition: background 0.5s;
+}
+
+#Contacts_page .form_slide:hover {
+	background: #cdced1;
 }
 
 #Contacts_page .form_slide .contact-form_wrapper h3 {
@@ -1004,13 +1049,22 @@ h8 {
 }
 
 #Contacts_page .form_slide .contact-form_wrapper button {
-	height: 50px;
+	height: 52px;
 	margin-left: auto;
 	padding: 0 20px;
-	line-height: 50px;
+	line-height: 48px;
 	color: #fcfdff;
 	background-color: black;
 	cursor: pointer;
+	border: 2px solid  #000000;
+}
+
+#Contacts_page .form_slide .contact-form_wrapper button:hover {
+	margin-left: auto;
+	color: #000000;
+	background-color: #ffffff;
+	cursor: pointer;
+	border: 2px solid  #000000;
 }
 
 #Contacts_page .form_slide .contact-form_wrapper p {
@@ -1837,19 +1891,15 @@ h8 {
 		height: 60px;
 		border-radius: 50%;
 		color: #5c90f0;
-		background-image: radial-gradient(#f9f9f9, #e1e1e1);
-		/*background: #f0f0f0;*/
+		background: #f9f9f9;
 		box-shadow: 0.5px 0.5px 2.5px #0000004B;
+		transition: background 0.5s,color 0.5s,box-shadow 0.5s;
 	}
 
 	.msfs-button:hover {
-		width: 60px;
-		height: 60px;
-		border-radius: 50%;
 		color: #ffffff;
 		background: #3c75f0;
 		box-shadow: 0.5px 0.5px 2.5px #00000032;
-		transition: 0.2s;
 	}
 }
 
@@ -2208,15 +2258,11 @@ h8 {
 	padding: 5px;
 	border-radius: 35px;
 	box-shadow: 0.5px 0.5px 5px #0000004B;
+	transition: background 0.5s;
 }
 
 .msfs:hover {
-	margin-top: 10px;
-	display: flex;
 	background: #cacaca;
-	padding: 5px;
-	border-radius: 35px;
-	transition: 0.1s;
 }
 
 .msfs-text {
@@ -2239,16 +2285,13 @@ h8 {
 	background-image: radial-gradient(#f5f5f5, #ebebeb);
 	/*background: #f0f0f0;*/
 	box-shadow: 0.5px 0.5px 2.5px #0000004B;
+	transition: background 0.5s,color 0.5s,box-shadow 0.5s;
 }
 
 .msfs-button:hover {
-	width: 56px;
-	height: 56px;
-	border-radius: 50%;
 	color: #ffffff;
 	background: #3c75f0;
 	box-shadow: 0.5px 0.5px 2.5px #00000032;
-	transition: 0.2s;
 }
 
 
@@ -2279,6 +2322,7 @@ h8 {
 	color: #ffffff;
 	border-radius: 4px;
 	font-size: 16px;
+	cursor: pointer;
 }
 
 .begin-button:hover {
@@ -2313,6 +2357,7 @@ h8 {
 	color: #ffffff;
 	border-radius: 4px;
 	font-size: 16px;
+	cursor: pointer;
 }
 
 .end-button:hover {
