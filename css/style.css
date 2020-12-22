@@ -434,6 +434,11 @@ h8 {
 	color: black;
 	margin-bottom: 40px;
 	text-decoration: none;
+	transition: color 0.1s ease-in-out;
+}
+
+.main-menu a:hover {
+	color: #808080;
 }
 
 .main-menu a.active {
@@ -501,22 +506,28 @@ h8 {
 	bottom: 39px;
 	width: 200px;
 	height: 2px;
-	background-color: rgba(0, 0, 0, 0.7);
+	background-color: #dcdcdc;
+	box-shadow: 0 0 1px #dcdcdc;
+	transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out;
+}
+
+.swiper-container-horizontal>div.swiper-scrollbar:hover {
+	background-color: #dcdcdc;
+	box-shadow: 0 0 5px #dcdcdc;
 }
 
 .swiper-container-horizontal>div.swiper-scrollbar>.swiper-scrollbar-drag {
 	top: -1px;
 	height: 4px;
-	background-color: black;
+	background-color: #3a3a3a;
 	border-radius: 4px;
+	transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out;
+	box-shadow: 0 0 0 #ffffff;
 }
 
 .swiper-container-horizontal>div.swiper-scrollbar>.swiper-scrollbar-drag:hover {
-	top: -1px;
-	height: 4px;
-	background-color: #808080;
-	border-radius: 4px;
-	transition: 0.1s;
+	background-color: #ffffff;
+	box-shadow: 0 0 10px #ffffff;
 }
 
 #Home_page .swiper-slide {
