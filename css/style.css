@@ -571,6 +571,10 @@ h8 {
 	background-image: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_4.webp");
 }
 
+#Home_page .slide--diary>.background {
+	background-image: url("../img/dora-stamp.webp");
+}
+
 #Home_page .glassholder-latest {
 	background: #00000050;
 	width: 600px;
