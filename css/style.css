@@ -588,12 +588,6 @@ h8 {
 
 #Home_page .glassholder-latest:hover {
 	background: #00000069;
-	width: 600px;
-	height: auto;
-	/*position: absolute;*/
-	padding: 30px;
-	border-radius: 15px;
-	margin-left: 20px;
 }
 
 #Home_page .glassholder-regular {
