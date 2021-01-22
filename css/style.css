@@ -1382,21 +1382,14 @@ h8 {
 		color: #000000;
 		background: #f0f0f0;
 		box-shadow: 0 0 4px #000000;
+		transition: background 0.25s ease-in-out,color 0.25s ease-in-out,border 0.25s ease-in-out;
 	}
 	
 	#Home_page .button-home-latest:hover {
-		position: absolute;
-		margin-left: -15px;
-		margin-top: -30px;
-		width: 60px;
-		height: 60px;
-		top: 50%;
-		border-radius: 50%;
-		border: none;
-		color: #000000;
-		background: #ffffff;
-		box-shadow: 0 0 4px #000000;
-		transition: 0.25s;
+		color: #ffffff;
+		background: #f0f0f090;
+		border: 2px solid #f0f0f0;
+		cursor:pointer;
 	}
 	
 	#Home_page h2 {
@@ -1573,12 +1566,6 @@ h8 {
 	
 	#Home_page .glassholder-regular:hover {
 		background: #00000069;
-		width: auto;
-		height: auto;
-		/*position: absolute;*/
-		padding: 20px;
-		border-radius: 10px;
-		margin-left: 0px;
 	}
 
 	body#Home_page .glassholder-latest-withbotton {
