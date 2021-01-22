@@ -1249,18 +1249,15 @@ h8 {
 		width: 60px;
 		height: 60px;
 		top: 50%;
-		border-radius: 50%
+		border-radius: 50%;
+		transition: background 0.25s ease-in-out,color 0.25s ease-in-out,border 0.25s ease-in-out;
 	}
 
 	#Home_page .button-home-latest:hover {
-		position: absolute;
-		margin-left: 14px;
-		margin-top: -30px;
-		width: 60px;
-		height: 60px;
-		top: 50%;
-		border-radius: 50% background: #ffffff;
-		transition: 0.25s;
+		color: #ffffff;
+		background: #f0f0f090;
+		border: 2px solid #f0f0f0;
+		cursor:pointer;
 	}
 	
     #Home_page h2 {
