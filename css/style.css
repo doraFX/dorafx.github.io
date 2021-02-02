@@ -6,8 +6,9 @@
 @import "https://fonts.googleapis.com/css?family=Arimo:100,200,300,400,500,600,700,800,900";
 @import "https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,200,300,400,500,600,700,800,900";
 @import "https://fonts.googleapis.com/css?family=Varela+Round";
-@import "https://fonts.googleapis.com/css?family=Heebo:100,200,300,400,500,600,700,800,900";
+/*@import "https://fonts.googleapis.com/css?family=Heebo:100,200,300,400,500,600,700,800,900";*//*原来的H2字体*/
 @import "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900";
+@import "https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900";
 
 
 
@@ -186,7 +187,7 @@ h2 {
 	font-size: 48px;
 	line-height: 1.3;
 	font-weight: 500;
-	font-family: "Heebo", "Noto Sans SC", cursive;
+	font-family: "Poppins", "Noto Sans SC", cursive;
 }
 
 h21
@@ -203,7 +204,7 @@ h22
 /*指代解释h2*/
 	{
 	line-height: 1.1;
-	font-weight: 500;
+	font-weight: 400;
 	/*font-family: "Noto Sans SC", cursive;*/
 }
 
@@ -219,7 +220,7 @@ h4 {
 	font-size: 24px;
 	font-weight: 400;
 	margin-bottom: 10px;
-	font-family: "Arimo", sans-serif;
+	font-family: "Poppins", sans-serif;
 }
 
 h5 {
@@ -671,7 +672,7 @@ h8 {
 }
 
 #Home_page h2 {
-	font-size: 60px;
+	font-size: 54px;
 	color: white;
 	max-width: 50rem;
 	margin-bottom: 0;
