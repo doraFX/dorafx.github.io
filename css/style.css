@@ -661,13 +661,12 @@ h8 {
 	color: #000000;
 	background: #f0f0f0;
 	box-shadow: 0 0 4px #646464;
-	transition: background 0.25s ease-in-out,color 0.25s ease-in-out,border 0.25s ease-in-out;
+	transition: background 0.25s ease-in-out,color 0.25s ease-in-out;
 }
 
 #Home_page .button-home-latest:hover {
 	color: #ffffff;
-	background: #f0f0f090;
-	border: 2px solid #f0f0f0;
+	background: #f0f0f005;
 	cursor:pointer;
 }
 
@@ -1256,7 +1255,7 @@ h8 {
 
 	#Home_page .button-home-latest:hover {
 		color: #ffffff;
-		background: #f0f0f090;
+		background: #f0f0f005;
 		border: 2px solid #f0f0f0;
 		cursor:pointer;
 	}
@@ -1376,7 +1375,7 @@ h8 {
 		height: 60px;
 		top: 50%;
 		border-radius: 50%;
-		border: none;
+		border: 2px solid #f0f0f0;
 		color: #000000;
 		background: #f0f0f0;
 		box-shadow: 0 0 4px #000000;
@@ -1385,7 +1384,7 @@ h8 {
 	
 	#Home_page .button-home-latest:hover {
 		color: #ffffff;
-		background: #f0f0f090;
+		background: #f0f0f005;
 		border: 2px solid #f0f0f0;
 		cursor:pointer;
 	}
