@@ -44,6 +44,10 @@ textarea {
 	-webkit-appearance: none;
 }
 
+button{
+	outline-width: 0;
+}
+
 *,
 ::after,
 ::before {
@@ -662,6 +666,7 @@ h8 {
 	background: #f0f0f0;
 	box-shadow: 0 0 4px #646464;
 	transition: background 0.25s ease-in-out,color 0.25s ease-in-out;
+	outline-width: 0;
 }
 
 #Home_page .button-home-latest:hover {
