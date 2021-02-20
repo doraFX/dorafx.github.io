@@ -5,7 +5,7 @@
 		<title>健康码</title>
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
-		<script type="text/javascript" src="./js/QRcode2.js"></script>
+		<script type="text/javascript" src="./js/QRcode.js"></script>
 		<script type="text/javascript" src="./js/jquery.min.js"></script>
 		<script type="text/javascript" src="./js/jquery.qrcode.min.js"></script>
 		<meta name="viewport" content="user-scalable=no">
@@ -13,19 +13,19 @@
 	<body oncontextmenu="event.returnValue=false" onselectstart="event.returnValue=false">
 		<!--背景图-->
 		<div class="img">
-			<img width="100%" src="./img/2.2.png">
+			<img width="100%" src="./img/1.1.png">
 		</div>
 		<!--健康通行码 和 辽事通码-->
 		<div class="buttons">
-			<a href="index.html"><button type="button" id="button1" class="buttonstyle"></button></a>
-			<a href=""><button type="button" id="button2" class="buttonstyle"></button></a>
+			<a href=""><button type="button" id="button1" class="buttonstyle"></button></a>
+			<a href="health2.html"><button type="button" id="button2" class="buttonstyle"></button></a>
 		</div>
 		<!--返回按钮-->
 		<div class="backbutton">
 			<a href="welcome.html"><img class="backbuttonimg" src="./img/back.png"></a>
 		</div>
 		<!--右侧关闭按钮-->
-		<div class="closebutton">
+		<div class="closebutton" id="closebutton" href="lst-home.html">
 			<a href="healthcodehome.html"><img class="closebutton1" src="img/close.png"></a>
 		</div>
 		<!--姓名-->
@@ -34,13 +34,14 @@
 		</div>
 		<!--二维码-->
 		<div class="qrcode-block">
-			<button type="button" id="clickme" class="generate" onclick="generateMixed1(32)">按钮</button>
+			<button type="button" id="clickme" class="generate" onclick="generateMixed1(263)">按钮</button>
 			<input type="" name="" id="result" class="input" value="ABj+Acd7iG6O7GQbWHB2RGw9m8KO1iXqat+WNVS6S3MU8OpwXPNdWQkTnUkW6fFQSBSafmQETttqRvqeEXFngoUL2iauDqS2ah88MQfDK9jfI9TsdaS5Waa3OguIxJKIz8LCENL2qh9rRiXaMEzkLrCsze6ZK+oeV5tZk49UCQLtGE9aiNULbpsqNxxbdqY2jyyEL7d2bp+M81EAMkgMVuj1w9wi+iSS7VZf78ZLJdyqv6e45ZYrlPJLdgcSgSeYzB8iTIo5mWSp" />
-			<div id="qrcode1" class="qrcode1"></div>
-			<div class="logo-original">
-				<img class="logo-original-img" src="./img/logo_original.png" >
-			</div>
+			<div id="qrcode" class="qrcode"></div>
 			<button type="button" class="refresh" onclick="pagereload()"></button>
+		</div>
+		<!--查看本人健康通行信息详情-->
+		<div class="detail">
+			<a href="detail.html"><button class="detailbutton" type="button">查看本人健康通行信息详情</button></a>
 		</div>
 		<!--时间-->
 		<div class="background">
@@ -103,23 +104,28 @@
 		</script>
 		<!--二维码-->
 		<script type="text/javascript">
-			var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9','A', 'B', 'C', 'D', 'E', 'F', 'G'
+			var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+				'X', 'Y', 'Z',
+				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+				'x', 'y', 'z',
+				'+', '/'
 			];
-		
+
 			function generateMixed1(n) {
 				var res = "";
 				for (var i = 0; i < n; i++) {
-					var id = Math.ceil(Math.random() * 16);
+					var id = Math.ceil(Math.random() * 63);
 					res += chars[id];
 				}
-				res = '8F54A3CABC2923783F06G7F638A737800OF99B2CCD2235482R2D1SX2336652FC:5:' + res + ':5623A0058GTHE0005';
+				res = 'ABj+A' + res;
 				//alert(res);
 				document.getElementById('result').value = res;
-				var qrcode = new QRCode(document.getElementById("qrcode1"), {
-					width: 563,
-					height: 563
+				var qrcode = new QRCode(document.getElementById("qrcode"), {
+					width: 514,
+					height: 514
 				});
-		
+
 				function makeCode() {
 					var Text = document.getElementById("result");
 					if (!Text.value) {

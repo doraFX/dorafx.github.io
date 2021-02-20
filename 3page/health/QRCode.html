@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/QRcode.css" />
+		<script type="text/javascript" src="./js/QRcode.js"></script>
+		<script type="text/javascript" src="./js/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/jquery.qrcode.min.js"></script>
+	</head>
+	<body>
+		<button type="button" id="clickme" class="generate" onclick="generateMixed1(263)">按钮</button>
+		<input type="" name="" id="result" class="input" value="ABj+Acd7iG6O7GQbWHB2RGw9m8KO1iXqat+WNVS6S3MU8OpwXPNdWQkTnUkW6fFQSBSafmQETttqRvqeEXFngoUL2iauDqS2ah88MQfDK9jfI9TsdaS5Waa3OguIxJKIz8LCENL2qh9rRiXaMEzkLrCsze6ZK+oeV5tZk49UCQLtGE9aiNULbpsqNxxbdqY2jyyEL7d2bp+M81EAMkgMVuj1w9wi+iSS7VZf78ZLJdyqv6e45ZYrlPJLdgcSgSeYzB8iTIo5mWSp" />
+		<div id="qrcode" class="qrcode"></div>
+		<button type="button" class="refresh" onclick="pagereload()">刷新二维码</button>
+
+		<script type="text/javascript">
+			var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+				'X', 'Y', 'Z',
+				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+				'x', 'y', 'z',
+				'+', '/'
+			];
+
+			function generateMixed1(n) {
+				var res = "";
+				for (var i = 0; i < n; i++) {
+					var id = Math.ceil(Math.random() * 63);
+					res += chars[id];
+				}
+				res = 'ABj+A' + res;
+				//alert(res);
+				document.getElementById('result').value = res;
+				var qrcode = new QRCode(document.getElementById("qrcode"), {
+					width: 500,
+					height: 500
+				});
+
+				function makeCode() {
+					var Text = document.getElementById("result");
+					if (!Text.value) {
+						alert("Input a text");
+						Text.focus();
+						return;
+					}
+					qrcode.makeCode(Text.value);
+				}
+				makeCode();
+			}
+		</script>
+		<script type="text/javascript">
+			function pagereload() {
+				location.reload();
+			}
+		</script>
+		<script type="text/javascript">
+			var e = document.createEvent("MouseEvents");
+			e.initEvent("click", true, true);
+			document.getElementById("clickme").dispatchEvent(e);
+		</script>
+	</body>
+</html>

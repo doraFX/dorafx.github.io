@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<title></title>
+		<meta name="viewport" content="user-scalable=no">
+	</head>
+	<body oncontextmenu="event.returnValue=false" onselectstart="event.returnValue=false">
+		<!--背景图-->
+		<div class="img">
+			<img width="100%" src="./img/lst-home/background4.png">
+		</div>
+		<!--底部-->
+		<div class="bottom">
+			<img width="100%" src="./img/lst-home/buttom4.png">
+		</div>
+		<!--底部按钮-->
+		<div class="bottombuttons">
+			<a href="lsthome.html"><button class="fourinone" type="button"></button></a>
+			<a href="lsthome2.html"><button class="fourinone" type="button"></button></a>
+			<a href="lsthome3.html"><button class="fourinone" type="button"></button></a>
+			<a href="lsthome4.html"><button class="fourinone" type="button"></button></a>
+		</div>
+		<!--健康通行码-->
+		<div class="healthcodebutton4">
+			<a href="healthcodehome.html"><button type="button" class="healthcodebutton-button4"></button></a>
+		</div>
+		<!--用户名-->
+		<div class="user">
+			<input type="" name="" id="user" value="2102112000…" onchange="encrypt()" />
+		</div>
+		<script type="text/javascript">
+			function encrypt() {
+				var user = document.getElementById("user").value;
+				a = user.substr(0, 10) + '...';
+				document.getElementById("user").value = a;
+			}
+		</script>
+		<!--积分-->
+		<div class="point">
+			<input type="" name="" value="114514" />
+		</div>
+	</body>
+</html>
