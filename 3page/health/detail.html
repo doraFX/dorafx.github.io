@@ -18,10 +18,10 @@
 				<a href="index.html"><button class="back2home" type="button"></button></a>
 			</div>
 			<div class="text1">
-				<input type="" name="" id="text1" value="宋**" onchange="encrypt1()" />
+				<input type="" name="" id="text1" value="王**" onchange="encrypt1()" />
 			</div>
 			<div class="text2">
-				<input type="" name="" id="text2" value="2****************9" onchange="encrypt2()" />
+				<input type="" name="" id="text2" value="2****************0" onchange="encrypt2()" />
 			</div>
 		</div>
 		<!--右侧关闭按钮-->
@@ -40,6 +40,11 @@
 				var text = document.getElementById("text2").value;
 				a = text.substr(0, 1) + '****************' + text.substr(17, text.split('').length);
 				document.getElementById("text2").value = a;
+			}
+		</script>
+		<script type="text/javascript">
+			function delayURL(url, time) {
+				setTimeout("top.location.href = '" + url + "'", time);
 			}
 		</script>
 	</body>

@@ -1,0 +1,194 @@
+@font-face {
+	font-family: "FZLTHJW";
+	src: url("../font/FZLTHJW.TTF")
+}
+
+* {
+	outline:none;
+	font-family: "FZLTHJW", sans-serif;
+}
+
+::selection {
+	background: #2c2c2c00;
+}
+
+::-moz-selection {
+	background: #2c2c2c00;
+}
+
+::-webkit-selection {
+	background: #2c2c2c00;
+}
+
+h1 {
+	font-family: "FZLTHJW", sans-serif;
+	font-size: 50px;
+	font-weight: 900;
+	color: #2a2a2a;
+	margin-top: 50px;
+}
+
+h2 {
+	font-family: "FZLTHJW", sans-serif;
+	font-size: 38px;
+	font-weight: 400;
+	color: #2a2a2a;
+	margin-top: -10px;
+}
+
+p {
+	font-family: "FZLTHJW", sans-serif;
+	font-size: 40px;
+	font-weight: 400;
+	text-shadow: 1px 1px 1px #ececec;
+}
+
+body {
+	width: 100%;
+	height: 100vh;
+	text-align: center;
+	margin: 0;
+}
+
+.bar{
+	width: 100%;
+	height: 134px;
+	position: fixed;
+	background-color: #ffffff;
+}
+
+.bar-back{
+	position: absolute;
+	text-align: left;
+	top: calc((134px - 100px) / 2);
+}
+
+.bar-back-button{
+	background-image: url(../img/back1.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	width: 100px;
+	height: 100px;
+	border: none;
+}
+
+.bar-head{
+	position: absolute;
+	width: 100%;
+	height: 134px;
+	line-height: 144px;
+	font-size: 42px;
+	font-weight: 600;
+	color: #323232;
+	left: 110px;
+	text-align: left;
+}
+
+.block1 {
+	width: 100%;
+	height: 100vh;
+	vertical-align: middle;
+}
+
+.entry {
+	position: absolute;
+	height: auto;
+	width: 100%;
+}
+
+.button-wel {
+	background-color: #1678ff;
+	color: #ffffff;
+	width: 800px;
+	height: 136px;
+	border-radius: 4px;
+	font-size: 44px;
+	outline: none;
+	font-family: 'Noto Sans SC', sans-serif;
+	font-weight: 500;
+	border: none;
+	margin-top: 20px;
+	margin-bottom: 40px;
+	transition: background-color .3s ease-out;
+}
+
+.button-wel:active {
+	background-color: #136be6;
+	text-decoration: none;
+}
+
+.button-quit {
+	background-color: #07c160;
+	color: #ffffff;
+	width: 800px;
+	height: 136px;
+	border-radius: 4px;
+	font-size: 44px;
+	outline: none;
+	font-family: 'Noto Sans SC', sans-serif;
+	font-weight: 500;
+	border: none;
+	margin-top: 20px;
+	margin-bottom: 40px;
+	transition: background-color .3s ease-out;
+}
+
+.button-quit:active {
+	background-color: #06ae56;
+	text-decoration: none;
+}
+
+.buttons{
+	position: absolute;
+	margin-top: 60px;
+}
+
+.about {
+	color: #595959;
+	padding-top: 240px;
+	padding-bottom: 100px;
+	height: auto;
+	background-color: #ffffff;
+	/*background-image: url(../img/bg.png);*/
+	margin-bottom: 40px;
+	box-shadow: 0 6px 30px #f3f3f3;
+}
+
+.description{
+	height: auto;
+	width: auto;
+	margin-top: 80px;
+}
+
+.description-button{
+	border: none;
+	border-top: 1px solid #e5e5e5;
+	border-bottom: 1px solid #e5e5e5;
+	color: #2a2a2a;
+	width: 800px;
+	background-color: #ffffff;
+	height: 136px;
+	font-size: 40px;
+	text-align: left;
+	padding-left: 40px;
+	transition: background-color 0.1s ease-in-out;
+}
+
+.description-button:active{
+    background-color:#e5e5e5;
+}
+
+.description-button p1{
+	text-align: right;
+	float: right;
+	margin-right: 20px;
+	color: #c6c6c6;
+	transform: scaleX(0.65);
+}
+
+
+.applogo {
+	border-radius: 40px;
+	width: 240px;
+}

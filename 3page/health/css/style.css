@@ -6,7 +6,14 @@
 	src: url("../font/Soleil-Regular.ttf")
 }
 
-* {}
+@font-face {
+	font-family: "FZLTHJW";
+	src: url("../font/FZLTHJW.TTF")
+}
+
+* {
+	outline:none;
+}
 
 button {
 	border: none;
@@ -15,6 +22,10 @@ button {
 body {
 	margin: 0;
 	text-align: center;
+}
+
+a{
+	text-decoration: none;
 }
 
 @media (min-width: 240px) and (max-width: 980px) {
@@ -96,8 +107,15 @@ body {
 	}
 
 	.backbuttonimg {
+		background-image: url(../img/back.png);
+		background-position: center;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-color: #000000;
+		border-radius: 50%;
 		width: 65.333px;
 		height: 65.333px;
+		opacity: 27%;
 	}
 
 	.closebutton {
@@ -108,10 +126,16 @@ body {
 	}
 
 	.closebutton1 {
+		background-image: url(../img/close.png);
+		background-color: #000000;
 		border-radius: 50%;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 100%;
 		width: 119.777px;
 		height: 119.777px;
 		box-shadow: 5px 5px 15px #b5b5b5;
+		border: none;
 	}
 
 	.text {
@@ -328,14 +352,14 @@ body {
 		width: 20%;
 		height: 140px;
 		margin: 0 2.3%;
-
 	}
 
 	.healthcodebutton4 {
 		position: absolute;
 		top: 358px;
 		width: 200px;
-		padding: 0 39.79591837%;
+		padding-left: 39.79591837%;
+		z-index: 9999;
 	}
 
 	.healthcodebutton-button4 {
@@ -353,13 +377,13 @@ body {
 	}
 
 	.user input {
-		font-family: "Soleil", sans-serif;
+        font-family: "Soleil", sans-serif;
 		font-weight: Regular;
 		font-size: 48px;
 		line-height: 6px;
 		letter-spacing: 2.4px;
 		color: #ffffff;
-		width: 400px;
+		width: 600px;
 		border: none;
 		background: none;
 		outline-color: #ffffff;
@@ -380,5 +404,19 @@ body {
 		border: none;
 		background: none;
 		outline-color: #ffffff;
+	}
+	
+	.setting {
+		position: absolute;
+		top: 358px;
+		width: 200px;
+		padding-left: 74.5%;
+	}
+	
+	.setting-button {
+		background-color: #000000;
+		opacity: 0%;
+		height: 200px;
+		width: 200px;
 	}
 }

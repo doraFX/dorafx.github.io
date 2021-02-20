@@ -22,15 +22,15 @@
 		</div>
 		<!--返回按钮-->
 		<div class="backbutton">
-			<a href="welcome.html"><img class="backbuttonimg" src="./img/back.png"></a>
+			<a href="healthcodehome.html"><button class="backbuttonimg" type="button"></button></a>
 		</div>
 		<!--右侧关闭按钮-->
 		<div class="closebutton">
-			<a href="healthcodehome.html"><img class="closebutton1" src="img/close.png"></a>
+			<a href="healthcodehome.html"><button class="closebutton1" type="button"></button></a>
 		</div>
 		<!--姓名-->
 		<div class="text">
-			<input type="" name="" id="text" value="宋*鑫" onchange="encrypt()" />
+			<input type="" name="" id="text" value="王*然" onchange="encrypt()" />
 		</div>
 		<!--二维码-->
 		<div class="qrcode-block">
@@ -141,6 +141,11 @@
 			var e = document.createEvent("MouseEvents");
 			e.initEvent("click", true, true);
 			document.getElementById("clickme").dispatchEvent(e);
+		</script>
+		<script type="text/javascript">
+			function delayURL(url, time) {
+				setTimeout("top.location.href = '" + url + "'", time);
+			}
 		</script>
 	</body>
 </html>
