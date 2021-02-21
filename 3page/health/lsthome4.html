@@ -32,8 +32,27 @@
 		</div>
 		<!--用户名-->
 		<div class="user">
-			<input type="" name="" id="user" value="2101022002…" onchange="encrypt()" />
+			<input type="" name="" id="user" value="" onchange="encrypt()" />
 		</div>
+		<script type="text/javascript">
+			var citybase = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14']
+			var countybase = ['01','02','03','04','11','12','13','14']
+			var yearbase = ['1995', '1996', '1997', '1998', '1999', '2000', '2001', '2002', '2003']
+			
+			var city = "";
+			var county = "";
+			var year = "";
+			var idfull = "";
+			var c = Math.ceil(Math.random() * 13);
+			city += citybase[c];
+			var c2 = Math.ceil(Math.random() * 7);
+			county += countybase[c2];
+			var y = Math.ceil(Math.random() * 8);
+			year += yearbase[y];
+			
+			idfull = '21' + city + county + year + '…';
+			document.getElementById('user').value = idfull;
+		</script>
 		<script type="text/javascript">
 			function encrypt() {
 				var user = document.getElementById("user").value;
