@@ -511,9 +511,10 @@ h8 {
 	bottom: 39px;
 	width: 200px;
 	height: 2px;
-	background-color: #dcdcdc;
+	background-color: rgba(220,220,220,0.4);
 	box-shadow: 0 0 1px #dcdcdc;
 	transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out;
+	backdrop-filter: saturate(180%) blur(20px);
 }
 
 .swiper-container-horizontal>div.swiper-scrollbar:hover {
@@ -524,10 +525,11 @@ h8 {
 .swiper-container-horizontal>div.swiper-scrollbar>.swiper-scrollbar-drag {
 	top: -1px;
 	height: 4px;
-	background-color: #3a3a3a;
+	background-color: rgba(7, 7, 7, 0.4);
 	border-radius: 4px;
 	transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out;
 	box-shadow: 0 0 0 #ffffff;
+	backdrop-filter: saturate(180%) blur(20px);
 }
 
 .swiper-container-horizontal>div.swiper-scrollbar>.swiper-scrollbar-drag:hover {
@@ -581,62 +583,48 @@ h8 {
 }
 
 #Home_page .glassholder-latest {
-	background: #00000050;
-	width: 600px;
+	background-color: rgba(0,0,0,0.30);
+	width: 30vw;
 	height: auto;
-	/*position: absolute;*/
 	padding: 30px;
 	border-radius: 15px;
 	margin-left: 20px;
-	transition: background 0.5s;
+	transition: background-color 0.5s;
+	backdrop-filter: saturate(180%) blur(20px);
 }
 
 #Home_page .glassholder-latest:hover {
-	background: #00000069;
+	background-color: rgba(0,0,0,0.25);
 }
 
 #Home_page .glassholder-regular {
-	background: #00000050;
-	width: 800px;
+	backdrop-filter: blur(10px) saturate(180%);
+	background-color: rgba(0,0,0,0.30);
+	width: 50vw;
 	height: auto;
-	/*position: absolute;*/
 	padding: 30px;
 	border-radius: 15px;
 	margin-left: 20px;
-	transition: background 0.5s;
+	transition: background-color 0.5s;
 }
 
 #Home_page .glassholder-regular:hover {
-	background: #00000069;
-	width: 800px;
-	height: auto;
-	/*position: absolute;*/
-	padding: 30px;
-	border-radius: 15px;
-	margin-left: 20px;
+	background-color: rgba(0,0,0,0.25);
 }
 
 #Home_page .glassholder-latest-withbotton {
-	background: #00000050;
+	background-color: rgba(0,0,0,0.30);
+	backdrop-filter: saturate(180%) blur(20px);
 	width: 600px;
 	height: auto;
-	position: fixed;
 	padding: 30px;
 	border-radius: 15px;
 	margin-left: 20px;
-	margin-top: -100px;
-	transition: background 0.5s;
+	transition: background-color 0.5s;
 }
 
 #Home_page .glassholder-latest-withbotton:hover {
-	background: #00000069;
-	width: 600px;
-	height: auto;
-	position: fixed;
-	padding: 30px;
-	border-radius: 15px;
-	margin-left: 20px;
-	margin-top: -100px;
+    background-color: rgba(0,0,0,0.25);
 }
 
 #Home_page .glassholder-latest-withbotton-left {
@@ -870,14 +858,15 @@ h8 {
 	padding: 20px;
 	margin: 20px;
 	z-index: 2;
-	background-color: #f7f7f9;
 	border-radius: 6px;
 	z-index: 1000;
 	transition: background-color 0.3s;
+	backdrop-filter: saturate(180%) blur(20px);
+	background-color: rgba(255,255,255,0.6);
 }
 
 #About_page .pricing_slide .price_block .detail:hover {
-	background-color: #ededee;
+	background-color: rgba(255,255,255,0.5);
 }
 
 #About_page .subscribe_slide {
@@ -957,22 +946,23 @@ h8 {
 	left: 20px;
 	right: 20px;
 	padding: 20px;
-	background: linear-gradient(to top, #ffffff00, rgba(0, 0, 0, 0));
+	background: linear-gradient(to top, rgba(0,0,0,0.2), rgba(0, 0, 0, 0));
 	transform: translateY(100%);
 	transition: 0.2s;
 	border-radius: 6px;
+	backdrop-filter: saturate(180%) blur(20px);
 }
 
 #Portfolio_page .swiper-slide .description>h4 {
 	color: #fcfdff;
 	margin-bottom: 5px;
-	text-shadow: 0px 3px 12px #000000;
+	text-shadow: 0px 1px 2px #000000;
 }
 
 #Portfolio_page .swiper-slide .description>p {
 	color: #fcfdff;
 	font-weight: 500;
-	text-shadow: 0px 3px 12px #000000;
+	text-shadow: 0px 1px 2px #000000;
 }
 
 #Portfolio_page .swiper-slide:hover .description {
@@ -1179,57 +1169,33 @@ h8 {
 	}
 
 	#Home_page .glassholder-latest {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
 	}
 
 	#Home_page .glassholder-regular {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-regular:hover {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		/*position: absolute;*/
-		padding: 20px;
-		border-radius: 10px;
-		margin-left: 0px;
 	}
 
 	#Home_page .glassholder-latest-withbotton {
-		background: #00000050;
 		width: 480px;
 		height: auto;
-		position: fixed;
 		padding: 30px;
 		border-radius: 15px;
 		margin-left: -20px;
-		margin-top: -100px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-latest-withbotton:hover {
-		background: #00000069;
-		width: 480px;
-		height: auto;
-		position: fixed;
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: -20px;
-		margin-top: -100px;
 	}
 
 	#Home_page .glassholder-latest-withbotton-left {
@@ -1302,60 +1268,34 @@ h8 {
 	}
 }
 
-@media (min-width: 501px) and (max-width: 1026px) {
+@media (min-width: 768px) and (max-width: 1026px) {
 	
 	#Home_page .glassholder-latest {
-		background: #00000050;
 		width: 600px;
 		height: auto;
 		/*position: absolute;*/
 		padding: 30px;
 		border-radius: 15px;
-		margin-left: 20px;
 	}
 	
 	#Home_page .glassholder-regular {
-		background: #00000050;
 		width: 600px;
 		height: auto;
-		/*position: absolute;*/
 		padding: 30px;
 		border-radius: 15px;
-		margin-left: 20px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-regular:hover {
-		background: #00000069;
-		width: 600px;
-		height: auto;
-		/*position: absolute;*/
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: 20px;
 	}
 	
 	#Home_page .glassholder-latest-withbotton {
-		background: #00000050;
 		width: 600px;
 		height: auto;
-		position: fixed;
 		padding: 30px;
 		border-radius: 15px;
-		margin-left: 20px;
-		margin-top: -100px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-latest-withbotton:hover {
-		background: #00000069;
-		width: 600px;
-		height: auto;
-		position: fixed;
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: 20px;
-		margin-top: -100px;
 	}
 	
 	#Home_page .glassholder-latest-withbotton-left {
@@ -1546,7 +1486,6 @@ h8 {
 	}
 
 	body#Home_page .glassholder-latest {
-		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
@@ -1556,53 +1495,38 @@ h8 {
 	}
 
 	#Home_page .glassholder-regular {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-regular:hover {
-		background: #00000069;
 	}
 
-	body#Home_page .glassholder-latest-withbotton {
-		background: #00000050;
+	#Home_page .glassholder-latest-withbotton {
 		width: auto;
 		height: auto;
-		position: fixed;
 		padding: 30px;
 		border-radius: 15px;
 		margin-left: 0;
-		margin-top: -120px;
-		transition: background 0.5s;
 	}
 	
-	body#Home_page .glassholder-latest-withbotton:hover {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		position: fixed;
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: 0;
-		margin-top: -120px;
+	#Home_page .glassholder-latest-withbotton:hover {
+
 	}
 
-	body#Home_page .glassholder-latest-withbotton-left {
+	#Home_page .glassholder-latest-withbotton-left {
 		float: left;
 		width: auto;
-		height: 100%;
+		height: auto;
 		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
 		padding: 0 0 15px 0;
 	}
 
-	body#Home_page .glassholder-latest-withbotton-right {
+	#Home_page .glassholder-latest-withbotton-right {
 		float: unset;
 		margin-top: 155px;
 		width: auto;
@@ -1759,6 +1683,7 @@ h8 {
 
 	body#Contacts_page .contact-form_wrapper {
 		width: 100%;
+		padding-top: 20px;
 	}
 
 	body#Contacts_page .form_slide .contact-form_wrapper h3 {
@@ -1917,7 +1842,6 @@ h8 {
 	}
 
 	body#Home_page .glassholder-latest {
-		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
@@ -1927,53 +1851,31 @@ h8 {
 	}
 
 	#Home_page .glassholder-regular {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-regular:hover {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		/*position: absolute;*/
-		padding: 20px;
-		border-radius: 10px;
-		margin-left: 0px;
 	}
 
 	#Home_page .glassholder-latest-withbotton {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		position: fixed;
 		padding: 30px;
 		border-radius: 15px;
 		margin-left: 0;
-		margin-top: -130px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-latest-withbotton {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		position: fixed;
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: 0;
-		margin-top: -130px;
 	}
 
 	body#Home_page .glassholder-latest-withbotton-left {
 		float: left;
 		width: auto;
-		height: 100%;
+		height: auto;
 		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
 		padding: 0 0 15px 0;
@@ -2043,7 +1945,6 @@ h8 {
 
 @media (max-width: 346px) {
 	body#Home_page .glassholder-latest {
-		background: #00000050;
 		width: auto;
 		height: auto;
 		/*position: absolute;*/
@@ -2053,53 +1954,31 @@ h8 {
 	}
 
 	#Home_page .glassholder-regular {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
-		transition: background 0.5s;
 	}
 	
 	#Home_page .glassholder-regular:hover {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		/*position: absolute;*/
-		padding: 20px;
-		border-radius: 10px;
-		margin-left: 0px;
 	}
 
 	body#Home_page .glassholder-latest-withbotton {
-		background: #00000050;
 		width: auto;
 		height: auto;
-		position: fixed;
 		padding: 30px;
 		border-radius: 15px;
 		margin-left: 0;
-		margin-top: -150px;
-		transition: background 0.5s
 	}
 	
 	body#Home_page .glassholder-latest-withbotton:hover {
-		background: #00000069;
-		width: auto;
-		height: auto;
-		position: fixed;
-		padding: 30px;
-		border-radius: 15px;
-		margin-left: 0;
-		margin-top: -150px;
 	}
 
 	body#Home_page .glassholder-latest-withbotton-left {
 		float: left;
 		width: auto;
-		height: 100%;
+		height: auto;
 		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
 		padding: 0 0 15px 0;
@@ -2259,15 +2138,16 @@ h8 {
 .msfs {
 	margin-top: 10px;
 	display: flex;
-	background: ##d3d3d3;
+	z-index: 500;
+	background-color: rgba(231, 231, 231, 0.8);
 	padding: 5px;
 	border-radius: 35px;
 	box-shadow: 0.5px 0.5px 5px #0000004B;
-	transition: background 0.5s;
+	transition: background-color 0.5s;
 }
 
 .msfs:hover {
-	background: #cacaca;
+	background-color: rgba(211,211,211,0.7);
 }
 
 .msfs-text {
@@ -2297,6 +2177,7 @@ h8 {
 	color: #ffffff;
 	background: #3c75f0;
 	box-shadow: 0.5px 0.5px 2.5px #00000032;
+	cursor: pointer;
 }
 
 
