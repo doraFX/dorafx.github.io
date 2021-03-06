@@ -579,7 +579,7 @@ h8 {
 }
 
 #Home_page .slide--diary>.background {
-	background-image: url("../img/dora-stamp.webp");
+	background-image: url("../img/moods/badmood-water.webp");
 }
 
 #Home_page .glassholder-latest {
@@ -1488,7 +1488,6 @@ h8 {
 	body#Home_page .glassholder-latest {
 		width: auto;
 		height: auto;
-		/*position: absolute;*/
 		padding: 20px;
 		border-radius: 10px;
 		margin-left: 0px;
