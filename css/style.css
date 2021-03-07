@@ -668,9 +668,9 @@ h8 {
 	color: white;
 	max-width: 50rem;
 	margin-bottom: 0;
-	text-shadow: 0px 0.1px 4px #323232;
 	z-index: 10;
 	position: relative;
+	text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 #Home_page h21
@@ -681,9 +681,9 @@ h8 {
 	color: white;
 	max-width: 600px;
 	margin-bottom: 0;
-	text-shadow: 0px 0.1px 4px #323232;
 	z-index: 10;
 	position: relative;
+	text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 #Home_page h22
@@ -694,9 +694,9 @@ h8 {
 	color: white;
 	max-width: 600px;
 	margin-bottom: 0;
-	text-shadow: 0px 0.1px 4px #323232;
 	z-index: 10;
 	position: relative;
+	text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 #Home_page p {
@@ -1236,7 +1236,6 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1249,7 +1248,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1262,7 +1260,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1339,7 +1336,6 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1352,7 +1348,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1365,7 +1360,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 		z-index: 10;
 		position: relative;
 	}
@@ -1559,7 +1553,6 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h21
@@ -1570,7 +1563,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h22
@@ -1581,7 +1573,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page .swiper-container-horizontal>div.swiper-scrollbar {
@@ -1914,7 +1905,6 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h21
@@ -1925,7 +1915,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h22
@@ -1936,7 +1925,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 }
 
@@ -2017,7 +2005,6 @@ h8 {
 		color: white;
 		max-width: 50rem;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h21
@@ -2028,7 +2015,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 
 	body#Home_page h22
@@ -2039,7 +2025,6 @@ h8 {
 		color: white;
 		max-width: 600px;
 		margin-bottom: 0;
-		text-shadow: 0px 0.1px 4px #000000;
 	}
 }
 
@@ -2142,11 +2127,6 @@ h8 {
 	padding: 5px;
 	border-radius: 35px;
 	box-shadow: 0.5px 0.5px 5px #0000004B;
-	transition: background-color 0.5s;
-}
-
-.msfs:hover {
-	background-color: rgba(211,211,211,0.7);
 }
 
 .msfs-text {
@@ -2166,8 +2146,7 @@ h8 {
 	height: 56px;
 	border-radius: 50%;
 	color: #5c90f0;
-	background-image: radial-gradient(#f5f5f5, #ebebeb);
-	/*background: #f0f0f0;*/
+	background: #f5f5f5;
 	box-shadow: 0.5px 0.5px 2.5px #0000004B;
 	transition: background 0.5s,color 0.5s,box-shadow 0.5s;
 }
