@@ -18,7 +18,7 @@
 
 @font-face {
 	font-family: DoraFX;
-	src: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/font/DoraFX-Regular.ttf");
+	src: url("../font/DoraFX-Regular.ttf");
 }
 
 
@@ -527,7 +527,7 @@ h8 {
 	height: 4px;
 	background-color: rgba(7, 7, 7, 0.4);
 	border-radius: 4px;
-	transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out;
+	transition: background-color 0.2s,box-shadow 0.2s ;
 	box-shadow: 0 0 0 #ffffff;
 	backdrop-filter: saturate(180%) blur(20px);
 }
@@ -563,19 +563,19 @@ h8 {
 }
 
 #Home_page .slide--1>.background {
-	background-image: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_1.jpg");
+	background-image: url("../img/header_1.jpg");
 }
 
 #Home_page .slide--2>.background {
-	background-image: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_2.jpg");
+	background-image: url("../img/header_2.jpg");
 }
 
 #Home_page .slide--3>.background {
-	background-image: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_3.jpg");
+	background-image: url("../img/header_3.jpg");
 }
 
 #Home_page .slide--latest>.background {
-	background-image: url("https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_4.webp");
+	background-image: url("../img/header_4.webp");
 }
 
 #Home_page .slide--diary>.background {
