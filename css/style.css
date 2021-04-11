@@ -1512,7 +1512,7 @@ h8 {
 
 	#Home_page .glassholder-latest-withbotton-left {
 		float: left;
-		width: auto;
+		width: 100%;
 		height: auto;
 		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
@@ -1864,7 +1864,7 @@ h8 {
 
 	body#Home_page .glassholder-latest-withbotton-left {
 		float: left;
-		width: auto;
+		width: 100%;
 		height: auto;
 		border-bottom: 2px solid #FFFFFF;
 		border-right: 0 #ffffff00;
