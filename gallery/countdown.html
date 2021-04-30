@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript">
+			window.onload = function() {
+				//存放音乐列表，根据音乐文件路径，进行填写
+				var musicvalue = document.getElementById("musicvalue").innerHTML;
+				if (musicvalue == "ON") {
+					var musicList = ["./audio/2.mp3", "./audio/2.mp3", "./audio/1.mp3"]
+					playMusic(musicList);
+				}
+
+			}
+
+			function playMusic(musicList) {
+				var myAudio = new Audio();
+				myAudio.id = "myAudio";
+				//是否进行预加载
+				myAudio.preload = true;
+				//是否显示隐藏按钮
+				myAudio.controls = false;
+				myAudio.hidden = false;
+				//从音乐列表中，获取最后一个音乐（并删除）
+				var src = musicList.pop();
+				myAudio.src = src;
+				//将最后一个音乐添加到数组的开头，这样实现循环
+				//musicList.unshift(src);
+				//绑定音乐结束事件，当音乐播放完成后，将会触发playEndedHandler方法
+				myAudio.addEventListener("ended", playEndedHandler, false);
+				//播放当前音乐
+				myAudio.play();
+				document.getElementById("music").appendChild(myAudio);
+				//将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
+				myAudio.loop = false;
+
+				function playEndedHandler() {
+					src = musicList.pop();
+					myAudio.src = src;
+					musicList.unshift(src);
+					myAudio.play();
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="music"></div>
+
+
+
+
+
+
+		<div class="container-set-your-experience" id="ContainerSetYourExperience" style="display: block;">
+			<div class="top">
+				<div class="top-border"></div>
+				<div class="top-fill">
+					<div class="set-your-experience">WELCOME</div>
+				</div>
+				<div class="top-border"></div>
+			</div>
+
+
+			<div class="middle-container">
+				<div class="middle-container-page-larger" style="width: calc(100vw - 20px); height: calc(100% - 30px); padding: 10px 15px;">
+					<div class="page2-div">
+						<div class="page2-display-outer">
+							<div class="page2-display-inner-larger-sye">
+								<div class="larger-container1">
+									<div class="page2-header" id="page2-header-sye">
+										<svg id="arrow" viewBox="0 0 42 56" height="56">
+											<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+												points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+											<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+										</svg>
+										<div class="arrow"></div>
+										<h1></h1>
+									</div>
+									<div class="page2-border"></div>
+									<div class="page2-detail-info">
+										<div class="page2-detail-info-words" style="padding-left: 10px; padding-right: 10px;">
+											<h1>NOTES</h1>
+											<p style="text-align: center;">项目即将上线</p>
+										</div>
+									</div>
+									<div class="page2-border"></div>
+									<div class="page2-sure">
+										<div class="setting-bar">
+											<p>MUSIC</p>
+											<div class="setting-spacer"></div>
+											<div class="setting-part">
+												<div class="setting-button" onclick="javascript:MusicChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024"
+														width="20" height="20">
+														<path
+															d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+															p-id="4131"></path>
+													</svg>
+												</div>
+												<div id="musicvalue" class="value" style="width: 50px;">OFF</div>
+												<div class="setting-button" onclick="javascript:MusicChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024"
+														width="20" height="20" style="transform: scaleX(-1);">
+														<path
+															d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+															p-id="4131"></path>
+													</svg>
+												</div>
+											</div>
+										</div>
+										<button class="visit-button" id="VisitButton" type="button" onclick="javascript:visit();">VISIT</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="bottom">
+				<div class="bottom-border"></div>
+				<div class="bottom-fill">
+				</div>
+				<div class="bottom-border"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			(function(window, undefined) {
+				//loading
+				var ProgressBar = document.getElementById("ProgressBar"),
+					ContainerProgress = document.getElementById("ContainerProgress"),
+					ContainerSetYourExperience = document.getElementById("ContainerSetYourExperience"),
+					num = 0,
+					time = 0,
+					state = true;
+				//加载完成
+				function loadOk() {
+					if (state) {
+						state = false;
+						//bar.innerHTML = "100%";
+						ProgressBar.style.width = "100%";
+						setTimeout(function() {
+							ContainerProgress.style.display = "none";
+							ContainerSetYourExperience.style.display = "block";
+						}, 300);
+					}
+				}
+				var timer = setInterval(function() {
+					num = parseInt(num + Math.random() * 10, 10);
+
+					time++;
+					if (num > 90) {
+						num = 90;
+					} else {
+						//bar.innerHTML = num + "%";
+						ProgressBar.style.width = num + "%";
+					}
+					if (time > 10) {
+						clearInterval(timer);
+						loadOk();
+					}
+				}, 1000);
+			})(window);
+		</script>
+		<script type="text/javascript">
+			function MusicChange() {
+				var music = document.getElementById("musicvalue");
+				var a = music.innerHTML;
+				if (a == "ON") {
+					music.innerHTML = "OFF";
+					var myAudio = document.getElementById("myAudio");
+					myAudio.remove();
+				}
+				if (a == "OFF") {
+					music.innerHTML = "ON";
+					var musicList = ["./audio/2.mp3", "./audio/2.mp3", "./audio/1.mp3"]
+					playMusic(musicList);
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			window.addEventListener('load', function() {
+				var clientWidth = document.body.clientWidth;
+				document.getElementById("width").innerHTML = clientWidth;
+				if (clientWidth < 1300) {
+					document.getElementById("descriptionwidth").innerHTML = "，最低需要1300像素，请调宽您的浏览器宽度或显示器分辨率宽度";
+					document.getElementById("VisitButton").className = "visit-button-inactive";
+				}
+				window.addEventListener('resize', function() {
+					var clientWidth = document.body.clientWidth;
+					document.getElementById("width").innerHTML = clientWidth;
+					if (clientWidth < 1300) {
+						document.getElementById("descriptionwidth").innerHTML = "，最低需要1300像素，请调宽您的浏览器宽度或显示器分辨率宽度";
+						document.getElementById("ContainerSetYourExperience").style.display = "block";
+						document.getElementById("VisitButton").className = "visit-button-inactive";
+					    document.getElementById("main").style.display = "none";
+					}
+					if (clientWidth > 1300) {
+						document.getElementById("descriptionwidth").innerHTML = "";
+						document.getElementById("VisitButton").className = "visit-button";
+					}
+				})
+
+			})
+		</script>
+		<script type="text/javascript">
+
+		</script>
+	</body>
+</html>
