@@ -21,6 +21,7 @@
 
 ::-webkit-scrollbar {
 	width: 8px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -111,7 +112,7 @@ li {
 	width: 100vw;
 	max-width: 100vw;
 	height: 100vh;
-	background-image: url(../img/freeFlightReward.jpg);
+	background-image: url(../img/tutoA320_01_2.webp);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -122,7 +123,7 @@ li {
 	width: 100vw;
 	max-width: 100vw;
 	height: 100vh;
-	background-image: url(../img/onboarding.jpg);
+	background-image: url(../img/LOADING_FREEFLIGHT1080.webp);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -134,7 +135,7 @@ li {
 	width: 100vw;
 	max-width: 100vw;
 	height: 100vh;
-	background-image: url(../img/freeFlightReward.jpg);
+	background-image: url(../img/onboarding1080.webp);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
@@ -166,6 +167,30 @@ li {
 	align-items: center;
 }
 
+
+
+.setting-float {
+	position: absolute;
+	width: 310px;
+	height: 0;
+	transform: translate(calc(100vw - 440px - 50%), 74px);
+	z-index: 9999;
+	overflow-y: hidden;
+	transition: height 0.15s;
+}
+
+.setting-float-outer {
+	backdrop-filter: blur(20px);
+	height: 100%;
+}
+
+.setting-float-inner {
+	position: relative;
+	width: 300px;
+	height: 75px;
+	margin-left: 5px;
+	background-color: rgba(150, 150, 150, 0.2);
+}
 
 
 .home-button {
@@ -425,7 +450,7 @@ li {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	background-image: url(../img/1.jpg);
+	background-image: url(../img/avatar.webp);
 	border: #acd04e 2px solid;
 	text-align: right;
 	background-position: center;
@@ -568,15 +593,15 @@ li {
 }
 
 .page1-display-inner-up.page1 {
-	background-image: url(../img/1.jpg);
+	background-image: url(../img/1.webp);
 }
 
 .page1-display-inner-up.page2 {
-	background-image: url(../img/2.jpg);
+	background-image: url(../img/2.webp);
 }
 
 .page1-display-inner-up.page3 {
-	background-image: url(../img/3.jpg);
+	background-image: url(../img/3.webp);
 }
 
 .page1-display-inner-down {
@@ -751,6 +776,64 @@ li {
 	color: #ffffff;
 	background-color: rgba(150, 150, 150, 0.5);
 }
+
+
+.middle-container-page3 {
+	position: absolute;
+	width: calc(100vw - 360px);
+	height: calc(100% - 120px);
+	padding: 60px 180px;
+	transition: 0.5s;
+}
+
+.page3-div {
+	width: auto;
+	height: 100%;
+}
+
+.page3-display-outer {
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(20px);
+	transition: background-color 0.15s;
+}
+
+.page3-display-inner {
+	transform: translate(5px, 5px);
+	width: calc(100% - 10px);
+	height: calc(100% - 10px);
+	background-color: rgba(150, 150, 150, 0.5);
+	backdrop-filter: blur(20px);
+	transition: 0.15s;
+	overflow-x: hidden;
+}
+
+.page3-detail-info-words {
+	overflow-y: auto;
+	height: calc(100% - 35px);
+	position: relative;
+	font-family: "Roboto-Medium", sans-serif;
+	font-size: 18px;
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 35px;
+	line-height: 40px;
+	color: #ffffff;
+}
+
+.page3-detail-info-words h1 {
+	width: fit-content;
+	font-family: "Roboto-Black", sans-serif;
+	font-size: 40px;
+	font-weight: 900;
+	padding: 2px;
+	background-color: rgba(150, 150, 150, 0.4);
+	margin-bottom: 16px;
+}
+
+
+
+
 
 .search {
 	position: absolute;
@@ -1171,12 +1254,56 @@ li {
 
 
 
+.setting-bar2 {
+	top: 5px;
+	position: absolute;
+	width: 100%;
+	height: 40px;
+	background-color: rgba(150, 150, 150, 0.3);
+	align-items: center;
+	display: flex;
+	transition: background-color 0.15s, color 0.15s;
+	color: #ffffff;
+}
+
+.setting-bar2:hover {
+	background-color: #FFFFFF;
+	color: #00B4FF;
+}
+
+.value2 {
+	width: 140px;
+	text-align: center;
+	font-family: "Roboto-Bold", sans-serif;
+	font-size: 16px;
+}
+
+.setting-bar2 p{
+	font-family: "Roboto-Bold", sans-serif;
+	font-size: 16px;
+	padding-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
 .visit-button{
 	top: 5px;
 	position: absolute;
 	width: 100px;
 	text-align: center;
 	right: 10px;
+}
+
+.visit-button:active {
+	background-color: #33393E;
+	color: #FFFFFF;
 }
 
 .visit-button-inactive {

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<script type="text/javascript">
+			window.onload = function() {
+				//存放音乐列表，根据音乐文件路径，进行填写
+				var musicvalue = document.getElementById("musicvalue").innerHTML;
+				if (musicvalue == "ON") {
+					var musicList = ["./audio/2.mp3", "./audio/2.mp3", "./audio/1.mp3"]
+					playMusic(musicList);
+				}
+			}
+
+			function playMusic(musicList) {
+				var myAudio = new Audio();
+				myAudio.id = "myAudio";
+				//是否进行预加载
+				myAudio.preload = true;
+				//是否显示隐藏按钮
+				myAudio.controls = false;
+				myAudio.hidden = false;
+				//从音乐列表中，获取最后一个音乐（并删除）
+				var src = musicList.pop();
+				myAudio.src = src;
+				//将最后一个音乐添加到数组的开头，这样实现循环
+				//musicList.unshift(src);
+				//绑定音乐结束事件，当音乐播放完成后，将会触发playEndedHandler方法
+				myAudio.addEventListener("ended", playEndedHandler, false);
+				//播放当前音乐
+				myAudio.play();
+				document.getElementById("music").appendChild(myAudio);
+				//将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
+				myAudio.loop = false;
+
+				function playEndedHandler() {
+					src = musicList.pop();
+					myAudio.src = src;
+					musicList.unshift(src);
+					myAudio.play();
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container-progress" id="ContainerProgress">
+
+			<div class="progress-bottom">
+				<div class="progress-description" id="sentences"></div>
+				<div class="progress-bar-container">
+					<div class="progress-bar" id="ProgressBar"></div>
+				</div>
+
+			</div>
+
+		</div>
+		<div id="music"></div>
+
+
+
+
+
+
+		<div class="container-set-your-experience" id="ContainerSetYourExperience" style="display: none;">
+			<div class="top">
+				<div class="top-border"></div>
+				<div class="top-fill">
+					<div class="set-your-experience">WELCOME, SET YOUR EXPERIENCE</div>
+				</div>
+				<div class="top-border"></div>
+			</div>
+
+
+			<div class="middle-container">
+				<div class="middle-container-page-larger">
+					<div class="page2-div">
+						<div class="page2-display-outer">
+							<div class="page2-display-inner-larger-sye">
+								<div class="larger-container1">
+									<div class="page2-header" id="page2-header-sye">
+										<svg id="arrow" viewBox="0 0 42 56" height="56">
+											<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+												points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+											<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+										</svg>
+										<div class="arrow"></div>
+										<h1>GET READY TO YOUR VISIT</h1>
+									</div>
+									<div class="page2-border"></div>
+									<div class="page2-detail-info">
+										<div class="page2-detail-info-words">
+											<h1>ATTENTION</h1>
+											<p>您的当前浏览器宽度为<span id="width"></span>像素<span id="descriptionwidth"></span>
+											</p>
+											<p>本站推荐您使用 <a href="https://www.google.com/intl/zh-CN/chrome/">Google
+													Chrome</a> 浏览器浏览，以获得最佳体验</p>
+											<p>本站暂不（可能以后也不）适配移动端</p><br><br>
+											<h1>WORDS FROM THE DEVELOPER</h1>
+											<p>欢迎您的到来！</p>
+											<p>Welcome!</p>
+											<p><br>本站目前还在开发状态，但是我已经迫不及待想要把它分享给你们。这是一个全新的作品集展示项目。采用Microsoft Flight
+												Simulator的现代化UI设计。</p>
+											<p>The site is in construction now, but I am beyond excited to share it with
+												you. It is a brand new portfolio display project, using the modern UI
+												design of Microsoft Flight Simulator.</p>
+											<p><br>希望你们喜欢！</p>
+											<p>Hope you like it!</p>
+											<p><br>2021.5</p>
+										</div>
+									</div>
+									<div class="page2-border"></div>
+									<div class="page2-sure">
+										<div class="setting-bar">
+											<p>MUSIC</p>
+											<div class="setting-spacer"></div>
+											<div class="setting-part">
+												<div class="setting-button" onclick="javascript:MusicChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024"
+														width="20" height="20">
+														<path
+															d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+															p-id="4131"></path>
+													</svg>
+												</div>
+												<div id="musicvalue" class="value">OFF</div>
+												<div class="setting-button" onclick="javascript:MusicChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024"
+														width="20" height="20" style="transform: scaleX(-1);">
+														<path
+															d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+															p-id="4131"></path>
+													</svg>
+												</div>
+											</div>
+										</div>
+										<!--
+										<div class="setting-bar">
+											<p>SOUND</p>
+											<div class="setting-spacer"></div>
+											<div class="setting-part">
+												<div class="setting-button" onclick="javascript:SoundChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024" width="20" height="20">
+														<path d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z" p-id="4131"></path>
+													</svg>
+												</div>
+												<div id="soundvalue" class="value">ON</div>
+												<div class="setting-button" onclick="javascript:SoundChange();">
+													<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024" width="20" height="20" style="transform: scaleX(-1);">
+														<path d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z" p-id="4131"></path>
+													</svg>
+												</div>
+											</div>
+										</div>
+										-->
+										<button class="visit-button" id="VisitButton" type="button"
+											onclick="javascript:visit();">VISIT</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="bottom">
+				<div class="bottom-border"></div>
+				<div class="bottom-fill">
+				</div>
+				<div class="bottom-border"></div>
+			</div>
+		</div>
+
+
+
+
+		<div class="container" style="display: none;" id="main">
+			<div class="top">
+				<div class="top-border"></div>
+				<div class="top-fill">
+					<div onclick="javascript:page1click();" id="button1" class="home-button-active">
+						<svg t="1619013918650" style="margin-left: 12px;" class="icon" viewBox="0 0 1024 1024"
+							width="24">
+							<path
+								d="M886.976 387.904l-362.666667-256a21.354667 21.354667 0 0 0-24.618666 0l-362.666667 256A21.376 21.376 0 0 0 128 405.333333v469.333334a21.333333 21.333333 0 0 0 21.333333 21.333333h234.666667a21.333333 21.333333 0 0 0 21.333333-21.333333V618.666667h213.333334v256a21.333333 21.333333 0 0 0 21.333333 21.333333h234.666667a21.333333 21.333333 0 0 0 21.333333-21.333333V405.333333a21.376 21.376 0 0 0-9.024-17.429333z"
+								data-spm-anchor-id="a313x.7781069.0.i0" class="selected"></path>
+						</svg>
+						<div class="bar"></div>
+						<h1 style="margin-left: 30px;">WELCOME</h1>
+					</div>
+					<div onclick="javascript:page2click();" id="button2" class="top-button">
+						<h1>GALLERY</h1>
+						<div class="bar"></div>
+					</div>
+					<div onclick="javascript:page3click();" id="button3" class="top-button">
+						<h1>ABOUT</h1>
+						<div class="bar"></div>
+					</div>
+
+					<div class="spacer"></div>
+
+					<div class="right-con" onclick="javascript:settingbox();">
+						<svg id="settingLogo" viewBox="0 0 1024 1024" width="36" height="36">
+							<path d="M514 513.2m-98.4 0a98.4 98.4 0 1 0 196.8 0 98.4 98.4 0 1 0-196.8 0Z" p-id="2574">
+							</path>
+							<path
+								d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.9C115.2 733.1 294.1 912 514 912s398.9-178.9 398.9-398.8c-0.1-219.9-179-398.9-398.9-398.9z m247.5 452c-30.5 1.1-59.7 17.4-76.1 45.8-16.4 28.3-15.9 61.8-1.6 88.7-26.3 23.8-57.6 42.1-92.1 53.2-16.2-25.8-44.9-43-77.7-43-32.7 0-61.5 17.2-77.7 43-34.5-11.1-65.8-29.5-92.1-53.2 14.2-27 14.7-60.4-1.6-88.7-16.4-28.4-45.6-44.6-76.1-45.8-3.7-17.1-5.6-34.9-5.6-53.2 0-18.2 1.9-36 5.6-53.2 30.5-1.1 59.7-17.4 76.1-45.8 16.4-28.3 15.9-61.8 1.6-88.7 26.3-23.8 57.6-42.1 92.1-53.2 16.2 25.8 44.9 43 77.7 43 32.7 0 61.4-17.2 77.7-43 34.5 11.1 65.8 29.4 92.1 53.2-14.2 27-14.7 60.4 1.6 88.7 16.4 28.4 45.6 44.6 76.1 45.8 3.7 17.1 5.6 34.9 5.6 53.2 0 18.3-2 36.1-5.6 53.2z">
+							</path>
+						</svg>
+
+					</div>
+					<div class="right-con">
+						<div class="user-name">WELCOME! VISITOR</div>
+					</div>
+					<div class="right-con">
+						<div class="top-avatar"></div>
+					</div>
+				</div>
+				<div class="top-border"></div>
+			</div>
+			<div class="setting-float" id="SettingFloat">
+				<div class="setting-float-outer">
+					<div class="setting-float-inner">
+						<div class="setting-bar2">
+							<p>MUSIC</p>
+							<div class="setting-spacer"></div>
+							<div class="setting-part">
+								<div class="setting-button" onclick="javascript:MusicChange();">
+									<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024" width="20" height="20">
+										<path d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+											p-id="4131"></path>
+									</svg>
+								</div>
+								<div id="musicvalue2" class="value2">OFF</div>
+								<div class="setting-button" onclick="javascript:MusicChange();">
+									<svg t="1619618362984" class="icon" viewBox="0 0 1024 1024" width="20" height="20"
+										style="transform: scaleX(-1);">
+										<path d="M327.243601 511.997953 696.755376 846.561775 696.755376 177.439248Z"
+											p-id="4131"></path>
+									</svg>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="middle-container">
+				<div id="page1" class="middle-container-page">
+					<div class="page1-div" onclick="javascript:page2click();">
+						<div class="page1-display-outer">
+							<div class="page1-display-inner">
+								<div class="page1-display-inner-up page1"></div>
+								<div class="page1-display-inner-down">
+									<svg id="arrow" viewBox="0 0 42 56" height="56">
+										<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+											points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+										<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+									</svg>
+									<div class="arrow"></div>
+									<h1>SEE THE GALLERY</h1>
+									<h2>Have a view of the Latest CG work</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="page1-div" onclick="javascript:page3click();">
+						<div class="page1-display-outer">
+							<div class="page1-display-inner">
+								<div class="page1-display-inner-up page2"></div>
+								<div class="page1-display-inner-down">
+									<svg id="arrow" viewBox="0 0 42 56" height="56">
+										<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+											points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+										<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+									</svg>
+									<div class="arrow"></div>
+									<h1>ABOUT</h1>
+									<h2>Check the Information</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="page1-div">
+						<div class="page1-display-outer">
+							<div class="page1-display-inner">
+								<div class="page1-display-inner-up page3"></div>
+								<div class="page1-display-inner-down">
+									<svg id="arrow" viewBox="0 0 42 56" height="56">
+										<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+											points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+										<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+									</svg>
+									<div class="arrow"></div>
+									<h1>COMING SOON</h1>
+									<h2>It will be Updated Later</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="page2" class="middle-container-page-larger">
+					<div class="page2-div">
+						<div class="page2-display-outer">
+							<div class="page2-display-inner-larger">
+
+
+								<div class="larger-container1" id="lc1">
+									<div class="page2-header">
+										<svg id="arrow" viewBox="0 0 42 56" height="56">
+											<polygon style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+												points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+											<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+										</svg>
+										<div class="arrow"></div>
+										<h1>GALLERY</h1>
+										<div class="search" style="display: none;">
+											<input id="input" placeholder="KEYWORDS" />
+											<button onclick="javascript:keywordsearch();"
+												class="searchbutton">SEARCH</button>
+											<p id="result">10</p>
+											<p> RESULT(S) FOUND</p>
+										</div>
+									</div>
+									<div class="gallery-left">
+										<div class="option-active" id="galnav1" onclick="javascript:galnav1();">
+											<p>ALL</p>
+										</div>
+										<div class="option" id="galnav2" onclick="javascript:galnav2();">
+											<p>LATEST</p>
+										</div>
+									</div>
+									<div class="gallery-right" id="all" style="display: block;">
+										<ul>
+											<li class="gallery-li" onclick="javascript:pic1();">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/gallery/abike.webp" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon style="fill: none; stroke: #fff;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>A BIKE</h1>
+															<h2>与同学合作的项目，Bike模型由他提供，我渲染了一张电商风格的banner</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="gallery-li" onclick="javascript:pic2();">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/gallery/Start_menu0728.webp" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>Windows 10 start menu</h1>
+															<h2>Windows 10 开始菜单的三维演绎</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="gallery-li" onclick="javascript:pic3();">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/gallery/2larger.jpg" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>Third-Party-Assets Reel</h1>
+															<h2>第三方素材展示画面</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="gallery-li" onclick="javascript:pic4();">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/gallery/China%20Eastern%20Above%20the%20clouds.webp"
+															class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>AIRBUS A320</h1>
+															<h2>A320渲染图</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="gallery-li" onclick="javascript:pic5();">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/gallery/mushroom.webp" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>苔生蕈</h1>
+															<h2>Mushrooms grew on the moss</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="gallery-li">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/comingsoon.webp" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>Coming Soon</h1>
+															<h2>It will be Updated Later</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="gallery-right" id="latest" style="display: none;">
+										<ul>
+											<li class="gallery-li">
+												<div class="gallery-li-outer">
+													<div class="gallery-li-inner">
+														<img src="img/comingsoon.webp" class="gallery-img">
+														<div class="gallery-down">
+															<svg id="arrow" viewBox="0 0 42 56" height="56">
+																<polygon
+																	style="fill: none; stroke: #fff; stroke-miterlimit: 20;"
+																	points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+																<rect style="fill: #fff;" x="39" y="0" width="3.00"
+																	height="56" />
+															</svg>
+															<div class="arrow"></div>
+															<h1>Coming Soon</h1>
+															<h2>It will be Updated Later</h2>
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="larger-container2" id="lc2">
+									<div class="page2-header" onclick="javascript:picback();">
+										<svg id="arrow" viewBox="0 0 42 56" height="56" style="transform: scaleX(-1);">
+											<polygon style="fill: none; stroke: #fff;"
+												points="0.5 0 32.00 28.00 0.5 56 0.5 42.00 16.50 28.00 0.5 14.00 0.5 0" />
+											<rect style="fill: #fff;" x="39" y="0" width="3.00" height="56" />
+										</svg>
+										<div class="arrow" style="transform: scaleX(-1);"></div>
+										<h1>BACK</h1>
+									</div>
+									<img class="larger-pic" id="largerPic" src="">
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="page3" class="middle-container-page3">
+					<div class="page3-div">
+						<div class="page3-display-outer">
+							<div class="page3-display-inner">
+								<div class="page3-detail-info-words">
+									<h1>ATTENTION</h1>
+									<p>本站推荐您使用 <a href="https://www.google.com/intl/zh-CN/chrome/">Google
+											Chrome</a> 浏览器浏览，以获得最佳体验</p>
+									<p>本站暂不（可能以后也不）适配移动端</p><br><br>
+									<h1>WORDS FROM THE DEVELOPER</h1>
+									<p>欢迎您的到来！</p>
+									<p>Welcome!</p>
+									<p><br>本站目前还在开发状态，但是我已经迫不及待想要把它分享给你们。这是一个全新的作品集展示项目。采用Microsoft Flight
+										Simulator的现代化UI设计。</p>
+									<p>The site is in construction now, but I am beyond excited to share it with
+										you. It is a brand new portfolio display project, using the modern UI
+										design of Microsoft Flight Simulator.</p>
+									<p><br>希望你们喜欢！</p>
+									<p>Hope you like it!</p>
+									<p><br>2021.5</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="bottom">
+				<div class="bottom-border"></div>
+				<div class="bottom-fill">
+					<div onclick="javascript:closepage();" id="buttonquit" class="bottom-button">
+						<svg viewBox="0 0 1024 1024" width="30" height="30">
+							<path
+								d="M559.215304 512l261.164522-261.164522c13.04487-13.022609 13.04487-34.192696 0-47.215304-13.04487-13.04487-34.170435-13.04487-47.215304 0L512 464.784696 250.835478 203.620174c-13.04487-13.04487-34.170435-13.04487-47.215304 0-13.04487 13.022609-13.04487 34.192696 0 47.215304L464.784696 512 203.620174 773.142261c-13.04487 13.04487-13.04487 34.170435 0 47.215304 6.522435 6.522435 15.070609 9.772522 23.618783 9.772522s17.096348-3.250087 23.618783-9.772522L512 559.215304l261.164522 261.164522c6.522435 6.522435 15.070609 9.772522 23.618783 9.772522s17.096348-3.250087 23.618783-9.772522c13.04487-13.04487 13.04487-34.170435 0-47.215304L559.215304 512z"
+								p-id="2024"></path>
+						</svg>
+						<h1>QUIT THE PAGE</h1>
+					</div>
+				</div>
+				<div class="bottom-border"></div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			function page1click() {
+				document.getElementById("button1").className = "home-button-active";
+				document.getElementById("button2").className = "top-button";
+				document.getElementById("button3").className = "top-button";
+				document.getElementById("page1").style.left = "0";
+				document.getElementById("page2").style.left = "100vw";
+				document.getElementById("page3").style.left = "200vw";
+			}
+
+			function page2click() {
+				document.getElementById("button1").className = "home-button";
+				document.getElementById("button2").className = "top-button-active";
+				document.getElementById("button3").className = "top-button";
+				document.getElementById("page1").style.left = "-100vw";
+				document.getElementById("page2").style.left = "0";
+				document.getElementById("page3").style.left = "100vw";
+			}
+
+			function page3click() {
+				document.getElementById("button1").className = "home-button";
+				document.getElementById("button2").className = "top-button";
+				document.getElementById("button3").className = "top-button-active";
+				document.getElementById("page1").style.left = "-200vw";
+				document.getElementById("page2").style.left = "-100vw";
+				document.getElementById("page3").style.left = "0";
+			}
+
+			function galnav1() {
+				document.getElementById("galnav1").className = "option-active";
+				document.getElementById("galnav2").className = "option";
+				document.getElementById("all").style.display = "block";
+				document.getElementById("latest").style.display = "none";
+			}
+
+			function galnav2() {
+				document.getElementById("galnav1").className = "option";
+				document.getElementById("galnav2").className = "option-active";
+				document.getElementById("all").style.display = "none";
+				document.getElementById("latest").style.display = "block";
+			}
+
+			function pic() {
+				document.getElementById("lc1").style.left = "-100%";
+				document.getElementById("lc2").style.left = "0";
+			}
+
+			function picback() {
+				document.getElementById("lc1").style.left = "0";
+				document.getElementById("lc2").style.left = "100%";
+			}
+
+			function pic1() {
+				pic();
+				document.getElementById("largerPic").src = "img/gallery/abike.webp";
+			}
+
+			function pic2() {
+				pic();
+				document.getElementById("largerPic").src = "img/gallery/Start_menu0728.webp";
+			}
+
+			function pic3() {
+				pic();
+				document.getElementById("largerPic").src = "img/gallery/2larger.jpg";
+			}
+
+			function pic4() {
+				pic();
+				document.getElementById("largerPic").src = "img/gallery/China%20Eastern%20Above%20the%20clouds.webp";
+			}
+		</script>
+		<script type="text/javascript">
+			function visit() {
+				var clientWidth = document.body.clientWidth;
+				var VisitButton = document.getElementById("VisitButton");
+				console.log(clientWidth);
+				if (clientWidth > 1300) {
+					document.getElementById("ContainerSetYourExperience").style.display = "none";
+					document.getElementById("main").style.display = "block";
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			(function(window, undefined) {
+				//loading
+				var ProgressBar = document.getElementById("ProgressBar"),
+					ContainerProgress = document.getElementById("ContainerProgress"),
+					ContainerSetYourExperience = document.getElementById("ContainerSetYourExperience"),
+					num = 0,
+					time = 0,
+					state = true;
+				//加载完成
+				function loadOk() {
+					if (state) {
+						state = false;
+						//bar.innerHTML = "100%";
+						ProgressBar.style.width = "100%";
+						setTimeout(function() {
+							ContainerProgress.style.display = "none";
+							ContainerSetYourExperience.style.display = "block";
+						}, 300);
+					}
+				}
+				var timer = setInterval(function() {
+					num = parseInt(num + Math.random() * 10, 10);
+
+					time++;
+					if (num > 90) {
+						num = 90;
+					} else {
+						//bar.innerHTML = num + "%";
+						ProgressBar.style.width = num + "%";
+					}
+					if (time > 10) {
+						clearInterval(timer);
+						loadOk();
+					}
+				}, 1000);
+			})(window);
+		</script>
+		<script type="text/javascript">
+			function MusicChange() {
+				var music = document.getElementById("musicvalue");
+				var music2 = document.getElementById("musicvalue2");
+				var a = music.innerHTML;
+				if (a == "ON") {
+					music.innerHTML = "OFF";
+					music2.innerHTML = "OFF";
+					var myAudio = document.getElementById("myAudio");
+					myAudio.remove();
+				}
+				if (a == "OFF") {
+					music.innerHTML = "ON";
+					music2.innerHTML = "ON";
+					var musicList = ["./audio/2.mp3", "./audio/2.mp3", "./audio/1.mp3"]
+					playMusic(musicList);
+				}
+			}
+		</script>
+
+		<script type="text/javascript">
+			window.addEventListener('load', function() {
+				var clientWidth = document.body.clientWidth;
+				document.getElementById("width").innerHTML = clientWidth;
+				if (clientWidth < 1300) {
+					document.getElementById("descriptionwidth").innerHTML = "，最低需要1300像素，请调宽您的浏览器宽度或显示器分辨率宽度";
+					document.getElementById("VisitButton").className = "visit-button-inactive";
+				}
+				window.addEventListener('resize', function() {
+					var clientWidth = document.body.clientWidth;
+					document.getElementById("width").innerHTML = clientWidth;
+					if (clientWidth < 1300) {
+						document.getElementById("descriptionwidth").innerHTML =
+							"，最低需要1300像素，请调宽您的浏览器宽度或显示器分辨率宽度";
+						document.getElementById("ContainerSetYourExperience").style.display = "block";
+						document.getElementById("VisitButton").className = "visit-button-inactive";
+						document.getElementById("main").style.display = "none";
+					}
+					if (clientWidth > 1300) {
+						document.getElementById("descriptionwidth").innerHTML = "";
+						document.getElementById("VisitButton").className = "visit-button";
+					}
+				})
+
+			})
+		</script>
+
+		<script type="text/javascript">
+			function settingbox() {
+				var h = document.getElementById("SettingFloat").offsetHeight;
+				console.log(h);
+				if (h == 0) {
+					document.getElementById("SettingFloat").style.height = "80px";
+					setTimeout(function() {
+						document.getElementById("SettingFloat").style.height = "0";
+					}, 2500)
+				}
+				if (h == 80) {
+					document.getElementById("SettingFloat").style.height = "0";
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			function closepage() {
+				window.opener = null;
+				window.open(' ', '_self');
+				window.close();
+			}
+		</script>
+		<script type="text/javascript">
+			var sentences = [
+				'汉堡可乐是世界上最好吃的美食。如果再多一样的话，也可以算上披萨',
+				'老舍的《昼寝的风潮》写的非常好，建议全文背诵',
+				'我喜欢吃饼干、面包。不喜欢吃桃酥',
+				'我喜欢看电影，不喜欢二次元',
+				'感谢开源社区里的每一位开发者',
+				'为什么要中英文混杂呢？因为Roboto字体的中文显示效果没有英文好',
+				'本站还没有在safari上测试过呢',
+				'夏天到啦！可以吃樱桃啦！',
+				'写着写着就会审美疲劳，再引以为傲的项目也会不想更新'
+			];
+			var a = sentences[Math.floor(Math.random() * sentences.length)];
+			document.getElementById("sentences").innerHTML = a;
+		</script>
+	</body>
+</html>
