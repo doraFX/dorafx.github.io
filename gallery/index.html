@@ -644,6 +644,11 @@
 				pic();
 				document.getElementById("largerPic").src = "img/gallery/China%20Eastern%20Above%20the%20clouds.webp";
 			}
+			
+			function pic5() {
+				pic();
+				document.getElementById("largerPic").src = "img/gallery/mushroom.webp";
+			}
 		</script>
 		<script type="text/javascript">
 			function visit() {
@@ -790,7 +795,11 @@
 				query.set("email", email)
 				query.set("words", words)
 				query.save().then(res => {
-					console.log(res)
+					console.log(res);
+					alert("发布成功！");
+					document.getElementById("name").value = "";
+					document.getElementById("email").value = "";
+					document.getElementById("words").value = "";
 				}).catch(err => {
 					console.log(err)
 				})
