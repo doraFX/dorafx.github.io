@@ -85,7 +85,7 @@
 											<td class="mdui-table-col-numeric">苹果官方</td>
 											<td class="mdui-table-col-numeric">￥1030.00</td>
 										</tr>
-										<tr class="" id="pad5">
+										<tr class="mdui-table-row-selected" id="pad5">
 											<td class="mdui-table-col-numeric">（推荐）妙控键盘</td>
 											<td class="mdui-table-col-numeric">苹果官方</td>
 											<td class="mdui-table-col-numeric">￥1660.00</td>
@@ -113,12 +113,37 @@
 										<tr class="mdui-table-row-selected" id="drive1">
 											<td class="mdui-table-col-numeric">固态硬盘</td>
 											<td class="mdui-table-col-numeric">1TB</td>
-											<td class="mdui-table-col-numeric">￥999.00</td>
+											<td class="mdui-table-col-numeric">￥739.00</td>
 										</tr>
 										<tr class="mdui-table-row-selected" id="drive2">
 											<td class="mdui-table-col-numeric">移动硬盘</td>
 											<td class="mdui-table-col-numeric">4TB</td>
 											<td class="mdui-table-col-numeric">￥659.00</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="mdui-panel-item mdui-panel-item-open">
+							<div class="mdui-panel-item-header">
+								<div class="text">其他</div>
+								<div class="spacer"></div>
+								<div class="price" id="otherprice"></div>
+							</div>
+							<div class="mdui-panel-item-body">
+								<table class="mdui-table mdui-table-selectable">
+									<thead>
+										<tr>
+											<th class="mdui-table-col-numeric">项目</th>
+											<th class="mdui-table-col-numeric">参数</th>
+											<th class="mdui-table-col-numeric">优惠后价格</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="mdui-table-row-selected" id="watch">
+											<td class="mdui-table-col-numeric">手表</td>
+											<td class="mdui-table-col-numeric">GTS 2e</td>
+											<td class="mdui-table-col-numeric">￥699.00</td>
 										</tr>
 									</tbody>
 								</table>
@@ -164,6 +189,7 @@
 				i7 = document.getElementById("pad5").className;
 				i8 = document.getElementById("drive1").className;
 				i9 = document.getElementById("drive2").className;
+				i10 = document.getElementById("watch").className;
 				if (i1 == "mdui-table-row-selected") {
 					p1 = "<tr><<td>小米11</td><td>￥3999.00</td></tr>";
 					price1 = 3999;
@@ -221,8 +247,8 @@
 				}
 
 				if (i8 == "mdui-table-row-selected") {
-					p8 = "<tr><td>固态硬盘	</td><td>￥999.00</td></tr>";
-					price8 = 990;
+					p8 = "<tr><td>固态硬盘	</td><td>￥739.00</td></tr>";
+					price8 = 739;
 				} else {
 					p8 = "";
 					price8 = 0;
@@ -235,10 +261,18 @@
 					p9 = "";
 					price9 = 0;
 				}
+				
+				if (i10 == "mdui-table-row-selected") {
+					p10 = "<tr><td>手表</td><td>￥699.00</td></tr>";
+					price10 = 659;
+				} else {
+					p10 = "";
+					price10 = 0;
+				}
 
-				price = price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 + price9;
-				p10 = '<tr style="height:60px;"><td style="font-size:18px;font-weight:900;">合计</td><td style="color:#ff0000;font-size:18px;font-weight:900;">￥' + price + ".00</td></tr>";
-				p = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10;
+				price = price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 + price9 + price10;
+				pfinal = '<tr style="height:60px;"><td style="font-size:18px;font-weight:900;">合计</td><td style="color:#ff0000;font-size:18px;font-weight:900;">￥' + price + ".00</td></tr>";
+				p = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + pfinal;
 				$("#receiptinner").html(p);
 				window.location.href = "#receipttext";
 			}
@@ -308,7 +342,7 @@
 					p31 = 0;
 				}
 				if (drive1 == "mdui-table-row-selected") {
-					p31 = 999;
+					p31 = 739;
 				}
 				if (drive2 == "") {
 					p32 = 0;
@@ -319,6 +353,17 @@
 				p3 = p31 + p32;
 				p3t = "￥" + p3 + ".00";
 				$("#driveprice").html(p3t);
+				
+				watch = document.getElementById("watch").className;
+				if (watch == "") {
+					p41 = 0;
+				}
+				if (watch == "mdui-table-row-selected") {
+					p41 = 699;
+				}
+				p4 = p41;
+				p4t = "￥" + p4 + ".00";
+				$("#otherprice").html(p4t);
 			}, 100);
 		</script>
 	</body>
