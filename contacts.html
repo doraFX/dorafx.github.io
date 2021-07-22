@@ -1,88 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="img/logo.ico" type="image/png">
-    <title>DoraFX 联系方式</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
+		<title>DoraFX 联系方式</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
 
-<body id="Contacts_page">
+	<body id="Contacts_page">
 
-<div class="social-networks_col">
-    <div class="logotype"><a href="index.html"><img src="img/DoraFX.png" alt="DoraFX"></a></div>
-    <nav class="social-networks">
-			<a href="https://twitter.com/home"><i class="fab fa-twitter"></i></a>
-			<a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-			<a href="https://www.behance.net/dorafx"><i class="fab fa-behance-square"></i></a>
-			<a href="contacts.html"><i class="far fa-id-card"></i></a>
-    </nav>
-</div>
+		<div class="social-networks_col">
+			<div class="logotype"><a href="index.html"><img src="img/DoraFX.png" alt="DoraFX"></a></div>
+			<nav class="social-networks">
+				<a href="https://twitter.com/home"><i class="fab fa-twitter"></i></a>
+				<a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.behance.net/dorafx"><i class="fab fa-behance-square"></i></a>
+				<a href="contacts.html"><i class="far fa-id-card"></i></a>
+			</nav>
+		</div>
 
-<div class="header-title"><a href="index.html" class="company-name">DoraFX</a>
-    <h1>联系方式</h1></div>
+		<div class="header-title"><a href="index.html" class="company-name">DoraFX</a>
+			<h1>联系方式</h1>
+		</div>
 
-<button class="menu-open_button" id="openNavbar"><span></span></button>
+		<button class="menu-open_button" id="openNavbar"><span></span></button>
 
-<main class="content_block">
-    <div class="swiper-container">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-            <!-- Slides -->
-            <div class="swiper-slide main-contacts_slide">
-                <h3>我的个人联系方式</h3>
-                <div class="contact_block"><i class="fas fa-mobile"></i><h4>Phone</h4><a href="tel:15852713098">+86 15852713098</a></div>
-                <div class="contact_block"><i class="fas fa-envelope"></i><h4>Email</h4><a href="mailto:sqxvafilm@gmail.com">sqxvafilm@gmail.com</a></div>
-                <div class="contact_block"><i class="fab fa-qq"></i><h4>QQ</h4><a href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=209237739&amp;website=www.oicqzone.com">209237739</a></div>
-            </div>
-            <!--
-			<div class="swiper-slide card_slide">
-                <h3>Card</h3>
-                <iframe src="http://www.google.cn/maps/embed?pb=!1m18!1m12!1m3!1d2880.6099049388354!2d-79.4735893840318!3d43.78095587911714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b2e754c0e1bfb%3A0x9f5391da42806035!2zMSBNYWduZXRpYyBEciAjMnQsIE5vcnRoIFlvcmssIE9OIE0zSCA1VjksINCa0LDQvdCw0LTQsA!5e0!3m2!1sru!2sru!4v1553312970828"
-                        allowfullscreen></iframe>
-            </div>
-			-->
-            <div class="swiper-slide form_slide">
-                <div class="contact-form_wrapper">
-                    <h3>欢迎留言</h3>
-                    <form action="https://getsimpleform.com/messages?form_api_token=3494fbe9ae5035bf194cb265dda95ce3" method="post">
-                        <input type='hidden' name='redirect_to' value='https://dorafx.github.io/thank_you.html' />
-						<input type="email" name='email' placeholder="您的邮箱">
-                        <textarea name="message" placeholder="您的留言"></textarea>
-                        <button class="button">发送<i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-			
-			
-			<div class="swiper-slide subscribe_slide2">
+		<main class="content_block">
+			<div class="swiper-container">
+				<!-- Additional required wrapper -->
+				<div class="swiper-wrapper">
+					<!-- Slides -->
+					<div class="swiper-slide main-contacts_slide">
+						<h3>我的个人联系方式</h3>
+						<div class="contact_block"><i class="fas fa-mobile"></i>
+							<h4>Phone</h4><a href="tel:15852713098">+86 15852713098</a>
+						</div>
+						<div class="contact_block"><i class="fas fa-envelope"></i>
+							<h4>Email</h4><a href="mailto:sqxvafilm@gmail.com">sqxvafilm@gmail.com</a>
+						</div>
+						<div class="contact_block"><i class="fab fa-qq"></i>
+							<h4>QQ</h4><a
+								href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=209237739&amp;website=www.oicqzone.com">209237739</a>
+						</div>
+					</div>
+					<div class="swiper-slide form_slide">
+						<div class="contact-form_wrapper">
+							<h3>欢迎留言</h3>
+							<form>
+								<input type="email" name="email" id="email" placeholder="您的邮箱">
+								<textarea name="message" id="message" placeholder="您的留言"></textarea>
+								<button onclick="send();" class="button">发送<i class="fas fa-paper-plane"></i></button>
+							</form>
+						</div>
+					</div>
+
+
+					<div class="swiper-slide subscribe_slide2">
+					</div>
+
+
+				</div>
+				<!-- If we need scrollbar -->
+				<div class="swiper-scrollbar"></div>
 			</div>
-			
-			
-        </div>
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar"></div>
-    </div>
-</main>
+		</main>
 
-<nav class="main-menu">
-    <button id="closeNavbar" class="menu-close_button">
-        <span></span><span></span>
-    </button>
-    <a href="index.html">主页</a>
-    <a href="about.html">个人简介</a>
-    <a href="portfolio.html">作品集</a>
-    <a href="contacts.html" class="active">联系方式</a>
-</nav>
+		<nav class="main-menu">
+			<button id="closeNavbar" class="menu-close_button">
+				<span></span><span></span>
+			</button>
+			<a href="index.html">主页</a>
+			<a href="about.html">个人简介</a>
+			<a href="portfolio.html">作品集</a>
+			<a href="contacts.html" class="active">联系方式</a>
+		</nav>
 
-<!--Scripts-->
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/swiper.min.js"></script>
-<script src="js/main.js"></script>
+		<!--Scripts-->
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/swiper.min.js"></script>
+		<script src="js/main.js"></script>
+		<script src="js/Bomb.js"></script>
+		<script type="text/javascript">
+			Bmob.initialize("f97125e26b047963", "669524");
 
-</body>
+			function send() {
+				var email = document.getElementById("email").value;
+				var message = document.getElementById("message").value;
+				console.log(email);
+				console.log(message);
+				const query = Bmob.Query("Homepage");
+				query.set("Email", email);
+				query.set("Message", message);
+				query.save().then(res => {
+					console.log(res);
+					alert("发布成功！");
+				}).catch(err => {
+					console.log(err);
+				})
+			}
+		</script>
+
+	</body>
 
 </html>
