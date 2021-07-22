@@ -89,13 +89,13 @@
 			function send() {
 				var Email = document.getElementById("email").value;
 				var Message = document.getElementById("message").value;
-				console.log(Email);
-				console.log(Message);
+				//console.log(Email);
+				//console.log(Message);
 				const query = Bmob.Query("DoraFX");
 				query.set("Email", Email);
 				query.set("Message", Message);
 				query.save().then(res => {
-					console.log(res);
+					//console.log(res);
 					alert("提交成功！");
 				}).catch(err => {
 					console.log(err);
