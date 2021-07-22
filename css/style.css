@@ -1036,7 +1036,7 @@ h8 {
 	width: 400px;
 }
 
-#Contacts_page .form_slide .contact-form_wrapper form {
+#Contacts_page .form_slide .contact-form_wrapper .contactpart {
 	display: flex;
 	flex-flow: column;
 	align-items: end;

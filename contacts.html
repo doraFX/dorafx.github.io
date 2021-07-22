@@ -48,11 +48,11 @@
 					<div class="swiper-slide form_slide">
 						<div class="contact-form_wrapper">
 							<h3>欢迎留言</h3>
-							<form>
+							<div class="contactpart">
 								<input type="email" name="email" id="email" placeholder="您的邮箱">
-								<textarea name="message" id="message" placeholder="您的留言"></textarea>
+								<textarea type="message" name="message" id="message" placeholder="您的留言"></textarea>
 								<button onclick="send();" class="button">发送<i class="fas fa-paper-plane"></i></button>
-							</form>
+							</div>
 						</div>
 					</div>
 
@@ -87,16 +87,16 @@
 			Bmob.initialize("f97125e26b047963", "669524");
 
 			function send() {
-				var email = document.getElementById("email").value;
-				var message = document.getElementById("message").value;
-				console.log(email);
-				console.log(message);
-				const query = Bmob.Query("Homepage");
-				query.set("Email", email);
-				query.set("Message", message);
+				var Email = document.getElementById("email").value;
+				var Message = document.getElementById("message").value;
+				console.log(Email);
+				console.log(Message);
+				const query = Bmob.Query("DoraFX");
+				query.set("Email", Email);
+				query.set("Message", Message);
 				query.save().then(res => {
 					console.log(res);
-					alert("发布成功！");
+					alert("提交成功！");
 				}).catch(err => {
 					console.log(err);
 				})
