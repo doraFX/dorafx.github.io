@@ -9,28 +9,44 @@
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<style type="text/css">
 			.back-button {
-				position: absolute;
-				left: 10px;
 				height: 60px;
 				line-height: 60px;
 			}
-			
+
 			.back-button i {
 				font-size: 20px;
+			}
+			
+			.button-left {
+				width: 60px;
+				height: 100%;
+			}
+			
+			.button-right {
+				width: 60px;
+				height: 100%;
+			}
+			
+			.header {
+				justify-content: space-between;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="header">灯浮标山海零时</div>
-			<div onclick="back();" class="back-button"> <i class="fas fa-arrow-left"></i></div>
-			<div class="portfolio">
-				<p>项目是同学的项目，我负责排版整张展示图</p>
-				<img src="img/portfolio1/10detail.jpg">
+			<div class="inner-container">
+				<div class="header"><div class="button-left"><div onclick="back();" class="back-button"> <i class="fas fa-arrow-left"></i></div></div>灯浮标山海零时<div class="button-right"></div></div>
+				<div class="portfolio">
+					<p>项目是同学的项目，我负责排版整张展示图</p>
+					<img src="img/portfolio1/10detail.jpg">
+				</div>
+				<div class="copyright">
+					<p>Designed by DoraFX</p>
+				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
-			function back(){
+			function back() {
 				window.location.href = "index.html";
 			}
 		</script>
