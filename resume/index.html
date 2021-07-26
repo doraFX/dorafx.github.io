@@ -64,26 +64,20 @@
 				<div class="portfolio-block">
 					<div id="p2" class="head1">DEMOREEL</div>
 					<div class="portfolio-block">
-						<video class="" webkit-playsinline="isiPhoneShowPlaysinline"
-							playsinline="isiPhoneShowPlaysinline"
-							controls="controls" poster="img/portfolio2/1poster.jpg"
-							src="http://mpvideo.qpic.cn/0bf2tiaayaaadiahbpp3xbqfbgwdbsnaadaa.f10002.mp4?dis_k=6004a9647d61382e0a7d19eecb664130&dis_t=1627120511&vid=wxv_1971354307870392325&format_id=10002&support_redirect=0&mmversion=false"
-							preload="metadata">您的浏览器不支持 video 标签</video>
-						<video class="" webkit-playsinline="isiPhoneShowPlaysinline"
-							playsinline="isiPhoneShowPlaysinline"
-							controls="controls" poster="img/portfolio2/2poster.jpg"
-							src="http://mpvideo.qpic.cn/0bf2hiaaqaaaeyahkvx3xzqfaowdba5aacaa.f10002.mp4?dis_k=8e09f3216a6e57fca135e6a65c3761ae&dis_t=1627120593&vid=wxv_1971356923253817344&format_id=10002&support_redirect=0&mmversion=false"
-							preload="metadata">您的浏览器不支持 video 标签</video>
+						<div class="portfolio-block-inner">
+							<iframe id="video1" style='width: 100%;' frameborder='no' allowfullscreen mozallowfullscreen webkitallowfullscreen src='http://go.plvideo.cn/front/video/preview?vid=1ba02dff4e5779716bf82b36453c8ece_1'></iframe>
+						</div>
+						<div class="portfolio-block-inner">
+							<iframe id="video2" style='width: 100%;' frameborder='no' allowfullscreen mozallowfullscreen webkitallowfullscreen src='http://go.plvideo.cn/front/video/preview?vid=1ba02dff4e30a367aaedc387a5db7f42_1'></iframe>
+						</div>
 					</div>
 				</div>
 				<div class="portfolio-block">
 					<div id="p3" class="head1">视频作品</div>
 					<div class="portfolio-block">
-						<video class="video_fill" webkit-playsinline="isiPhoneShowPlaysinline"
-							playsinline="isiPhoneShowPlaysinline"
-							controls="controls" poster="img/portfolio3/poster.jpg"
-							src="http://mpvideo.qpic.cn/0b78aaaagaaa3yaikyx3wbqfaagdamaaaaya.f10002.mp4?dis_k=c5c614418829d8d3510f725ac04bec90&dis_t=1627120632&vid=wxv_1971398835406962695&format_id=10002&support_redirect=0&mmversion=false"
-							preload="metadata"> 您的浏览器不支持 video 标签 </video>
+						<div class="portfolio-block-inner">
+							<iframe id="video3" style='width: 100%;' frameborder='no' allowfullscreen mozallowfullscreen webkitallowfullscreen src='http://go.plvideo.cn/front/video/preview?vid=1ba02dff4e91ef3300b05271324e47f8_1'></iframe>
+						</div>
 					</div>
 				</div>
 				<div class="portfolio-block">
@@ -126,6 +120,25 @@
 			function link3() {
 				window.location.href = "https://dorafx.top/";
 			}
+		</script>
+		<script type="text/javascript">
+		    var width1 = document.getElementById("video1").clientWidth;
+		    //console.log(width1);
+		    height1 = width1 * 27 / 64 + 60;
+		    //console.log(height1);
+		    document.getElementById("video1").style.height = height1 + "px";
+			
+		    var width2 = document.getElementById("video2").clientWidth;
+		    //console.log(width2);
+		    height2 = width2 * 27 / 64 + 60;
+		    //console.log(height2);
+		    document.getElementById("video2").style.height = height2 + "px";
+			
+			var width3 = document.getElementById("video3").clientWidth;
+			//console.log(width3);
+			height3 = width3 * 9 / 16 + 60;
+			//console.log(height3);
+			document.getElementById("video3").style.height = height3 + "px";
 		</script>
 	</body>
 </html>

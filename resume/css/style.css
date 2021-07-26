@@ -229,11 +229,18 @@ span {
 
 .portfolio-block {
 	width: 100%;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 }
 
 .portfolio-block .head1 {
 	margin-bottom: 4px;
+}
+
+.portfolio-block-inner {
+	width: calc(100% - 48px);
+	margin-top: 24px;
+	margin-left: 24px;
+	margin-right: 24px;
 }
 
 .portfolio img {
