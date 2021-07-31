@@ -1007,7 +1007,8 @@ blockquote {
 	width: 100%;
 	height: 100vh;
 	z-index: 9990;
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.6);
+	backdrop-filter: blur(4px);
 }
 
 .single-video {
@@ -1015,7 +1016,8 @@ blockquote {
 	width: 100%;
 	height: 100vh;
 	z-index: 9990;
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.6);
+	backdrop-filter: blur(4px);
 }
 
 .closebutton {
@@ -1069,6 +1071,15 @@ blockquote {
 	z-index: 9999;
 	border-radius: 5px;
 	max-height: calc(100vh - 40px);
+}
+
+@media (max-width: 768px) {
+	.single-v {
+		max-width: 100%;
+		z-index: 9999;
+		border-radius: 5px;
+		max-height: calc(100vh - 40px);
+	}
 }
 
 .logo-common {
