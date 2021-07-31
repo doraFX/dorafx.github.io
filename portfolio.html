@@ -1,319 +1,407 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="en" class="no-js">
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="shortcut icon" href="img/logo.ico" type="image/png">
-		<title>DoraFX 作品集</title>
-		<link rel="stylesheet" href="css/style.css">
-		<meta name="keywords" content="DoraFX、主页、Home、Official、后期、特效、作品集、个人" />
-		<meta name="description" content="DoraFX Presents|作品集" />
-		<!--视频css-->
-		<link rel="stylesheet" href="css/ckin.css" />
-		<!--大图-->
-		<link rel="stylesheet" type="text/css" href="css/magnific-popup.css"/>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>DoraFX - Responsive Minimal Template</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="author" content="MyraStudio" />
+		<link rel="shortcut icon" href="images/favicon.ico"> <!-- Bootstrap Css-->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" /> <!-- Materialdesign icon Css-->
+		<link rel="stylesheet" type="text/css" href="css/icofont.min.css" /> <!-- Pe 7 icon Css-->
+		<link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css" /> <!-- Custom Css -->
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/all.css" />
 	</head>
-
-	<body id="Portfolio_page">
-		<div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
-			<div id="innerdiv" style="position:absolute;">
-				<img id="bigimg" style="border:5px solid #fff;" src="" />
+	<body>
+		<div class="single" style="display: none;">
+			<div onclick="closebutton();" class="closebutton"><i class="fas fa-times"></i></div>
+			<div class="single-contain">
+				<div class="single-inner"><img id="SImg" src="" class="single-img"></div>
 			</div>
 		</div>
-
-		<div class="social-networks_col">
-			<div class="logotype"><a href="index.html"><img src="img/DoraFX.png" alt="DoraFX"></a></div>
-			<nav class="social-networks">
-				<a href="https://twitter.com/home"><i class="fab fa-twitter"></i></a>
-				<a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-				<a href="https://www.behance.net/dorafx"><i class="fab fa-behance-square"></i></a>
-				<a href="portfolio.html"><i class="far fa-images"></i></a>
-			</nav>
-		</div>
-
-		<div class="header-title"><a href="index.html" class="company-name">DoraFX</a>
-			<h1>作品集</h1>
-		</div>
-
-		<button class="menu-open_button" id="openNavbar"><span></span></button>
-
-		<main class="content_block">
-			<div class="swiper-container">
-				<!-- Additional required wrapper -->
-				<div class="swiper-wrapper">
-					<!-- Slides -->
-
-
-
-					<div class="swiper-slide">
-						<!--empty-->
-					</div>
-
-
-
-					<!-- -->
-					<div class="swiper-slide">
-						<img src="img/whiteline.png" alt="">
-						<div class="videooo">
-							<video id="video" src="https://demoreel-video-2xhe81ply.vercel.app/DEMOREEL_x264.mp4" poster="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/demoreelposter.jpg"
-							 height="100%" width="100%" data-ckin="default" data-overlay="1" data-title="DEMOREEL"></video>
-						</div>
-						<img src="img/whiteline.png" alt="">
-					</div>
-					<!-- -->
-					
-					
-					
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_4.webp" class="image-link">
-							<img class="post_new" src="./img/post.png" >
-							<div class="description">
-								<h4>A BIKE</h4>
-								<p>与同学合作的项目，Bike模型由他提供，我渲染了一张电商风格的banner</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/header_4.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_1.jpg" class="image-link">
-							<div class="description">
-								<h4>Hot Air Balloon</h4>
-								<p>热气球与远处的群山和浓云，飞行高度约为8000英尺</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_1.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/Start_menu0728.webp" class="image-link">
-							<div class="description">
-								<h4>Windows 10 start menu</h4>
-								<p>Windows 10 开始菜单的三维演绎</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/Start_menu0728.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_3.jpg" class="image-link">
-							<div class="description">
-								<h4>Star Trek Enterprise</h4>
-								<p>创意来源于《星际迷航》中企业号曲速航行的镜头</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_3.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_4.jpg" class="image-link">
-							<div class="description">
-								<h4>Amazfit GTR 42mm</h4>
-								<p>图中黑色手表就是我手上戴着的这一款，很遗憾没有买46mm的版本</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_4.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_5.jpg" class="image-link">
-							<div class=" description">
-								<h4>Minecraft: Star Gate</h4>
-								<p>创意来源于《星际争霸II》中的折跃星门</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_5.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_6.jpg" class="image-link">
-							<div class="description">
-								<h4>London Bus Stop</h4>
-								<p>伦敦公交巴士车站</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_6.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_7.jpg" class="image-link">
-							<div class="description">
-								<h4>Old stairwell</h4>
-								<p>旧楼梯井，墙面上的涂鸦值得考究</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/portfolio_7.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="./Third_party_assets.html">
-							<div class="description">
-								<h4>Third-Party-Assets Reel</h4>
-								<p>第三方素材展示画面</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/2larger.jpg"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide" id="flightblog">
-						<a href="3page/flight/index.html">
-							<div class="description">
-								<h4>点击进入Flight Blog Page</h4>
-								<p>图为中国东方航空A320&nbsp ·&nbsp Redshift渲染器渲染</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/China%20Eastern%20Above%20the%20clouds.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/mushroom.webp" class="image-link">
-							<div class="description">
-								<h4>Mushrooms grew on the moss</h4>
-								<p>苔生蕈</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/mushroom.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/2colored.webp" class="image-link">
-							<div class="description">
-								<h4>Some cameras rendered</h4>
-								<p>禄来，尼康FM，佳能Eos5，应该没说错吧</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/2colored.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/hoeee1.webp" class="image-link">
-							<div class="description">
-								<h4>Hammer&Screws&Metals</h4>
-								<p>一些五金小玩意</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/hoeee1.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<a href="https://www.zcool.com.cn/work/ZNDYzNjUwMjA=.html">
-							<div class="description">
-								<h4>Cards of Cardcaptor Sakura</h4>
-								<p>《百变小樱魔术卡》饭制作品</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/clowbookRS2.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/fruit.webp" class="image-link">
-							<div class="description">
-								<h4>Fruit on the table</h4>
-								<p>餐桌水果</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/fruit.webp"
-							 alt="">
-						</a>
-					</div>
-					
-					
-					<div class="swiper-slide">
-						<a href="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/urgent.webp" class="image-link">
-							<div class="description">
-								<h4>Extremely Urgent</h4>
-								<p>迫在眉睫</p>
-							</div>
-							<img class="portfolioimg img-border" src="https://cdn.jsdelivr.net/gh/doraFX/dorafx.github.io/img/urgent.webp"
-							 alt="">
-						</a>
-					</div>
-
-
-					<div class="swiper-slide">
-						<div class="end">
-							<div class="end-text">
-								<a href="portfolio-abandoned.html"><button class="end-button" type="button">查看废弃作品集</button><br><br></a>
-								<h8>什么是废弃作品集？<br>顾名思义，就是一些不满意的作品，废弃掉了</h8>
-							</div>
-						</div>
-					</div>
-
-
-
-					<div class="swiper-slide">
-						<!--empty-->
-					</div>
-
-
-
+		
+		<div class="single-video" style="display: none;">
+			<div onclick="closebuttonvideo();" class="closebutton"><i class="fas fa-times"></i></div>
+			<div class="single-contain">
+				<div class="single-inner">
+					<video id="SVideo" class="single-v" src="" poster=""
+					 height="100%" width="100%" data-ckin="default" controls="" data-title=""></video>
 				</div>
 			</div>
-			<!-- If we need scrollbar -->
-			<div class="swiper-scrollbar"></div>
+		</div>
+		
+		<nav class="navbar navbar-expand-lg navbar-default navbar-custom navbar-light">
+			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
+				<div class="navbar-header"> <button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbar-collapse-1" aria-controls="navbarSupportedContent" aria-expanded="false"
+						aria-label="Toggle navigation"><i class="fas fa-bars"></i></button> </div>
+				<div class="collapse navbar-collapse" id="navbar-collapse-1">
+					<ul class="nav navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="resume/index.html">Resume</a></li>
+						<li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
+						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+					</ul>
+				</div>
 			</div>
-		</main>
-
-		<nav class="main-menu">
-			<button id="closeNavbar" class="menu-close_button">
-				<span></span><span></span>
-			</button>
-			<a href="index.html">主页</a>
-			<a href="about.html">个人简介</a>
-			<a href="portfolio.html" class="active">作品集</a>
-			<a href="contacts.html">联系方式</a>
 		</nav>
+		
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-title text-center">
+							<div class="row justify-content-center">
+								<div class="col-lg-9">
+									<h2>This is <span>Portfolio</span></h2>
+									<p class="text-muted">Here are my recent works.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<section class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="portfolio-filter text-center">
+							<a href="#" data-filter="*" class="current waves-effect waves-success">All</a>
+							<a href="#" data-filter=".3D" class="waves-effect waves-success">3D</a>
+							<a href="#" data-filter=".2D" class="waves-effect waves-success">2D</a>
+							<a href="#" data-filter=".video" class="waves-effect waves-success">Video</a>
+							<a href="#" data-filter=".web" class="waves-effect waves-success">Web</a>
+						</div>
+					</div>
+				</div>
+				<div class="port portfolio-masonry m-b-30">
+					<div class="portfolioContainer row">
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p1();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/01.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>A bike</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p2();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/02.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Hammer Screws Metals</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p3();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/03.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Fruits</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p4();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/04.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Cards of Cardcaptor Sakura</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p5();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/05.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Mushroom</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p6();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/06.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Ergent</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p7();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/07.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Ergent</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p8();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/08.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Old Temple</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 3D personal">
+							<a onclick="p9();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/09.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>3D Render</p>
+										<h4>Sculpture Gallery</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 2D personal">
+							<a onclick="p10();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/10.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>2D</p>
+										<h4>Float Beacon</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 video personal">
+							<a onclick="p11();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/11.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>Video</p>
+										<h4>China Education Modernization 2035</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 video personal">
+							<a onclick="p12();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/12.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>Video</p>
+										<h4>DEMOREEL</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 video personal">
+							<a onclick="p13();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/13.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>Video</p>
+										<h4>Third Party Assets Showreel</h4>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+						<div class="col-lg-4 web personal">
+							<a onclick="p14();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/14.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>WEB</p>
+										<h4>MSFS Page</h4>
+									</div>
+								</div>
+							</a>
+						</div>
 
-		<!--Scripts-->
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/popper.min.js"></script>
-		<script src="js/swiper.min.js"></script>
-		<script src="js/jquery.magnific-popup.min.js"></script>
-		<script src="js/main.js"></script>
+					</div> <!-- end portfoliocontainer-->
+				</div> <!-- End row -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="text-center margin-t-30">
+							<a href="https://www.zcool.com.cn/u/17973793" class="btn btn-custom">Zcool</a>
+							<a href="https://www.behance.net/dorafx" class="btn btn-custom">Behance</a>
+							<a href="https://www.ggac.com/u/DoraFX" class="btn btn-custom">GGAC</a>
+						</div>
+					</div>
+				</div>
+			</div> <!-- end container -->
+		</section> <!-- FOOTER -->
+		<footer class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="text-center"> <a class="pb-2 display-4 mb-0 d-inline-block text-dark"
+								href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
+							
+							<ul class="list-inline social-circle margin-t-30">
+								<li class="list-inline-item"><a href=""> <i class="icofont-twitter"></i> </a></li>
+								<li class="list-inline-item"><a href=""> <i class="icofont-facebook"></i> </a></li>
+								<li class="list-inline-item"><a href=""> <i class="icofont-vimeo"></i> </a></li>
+								<li class="list-inline-item"><a href=""> <i class="icofont-instagram"></i> </a></li>
+								<li class="list-inline-item"><a href=""> <i class="icofont-github"></i> </a></li>
+							</ul>
+							<p class="text-muted m-b-0 copyright-txt" id="copyright"></p>
+						</div>
+					</div>
+				</div> <!-- end row -->
+			</div>
+		</footer> <!-- END FOOTER -->
+		<!-- JAVASCRIPTS -->
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/bootstrap.min.js"></script> <!-- isotope filter plugin -->
+		<script src="js/isotope.pkgd.min.js"></script>
+		<script src="js/portfolio-filter.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript">
+		    var date = new Date();
+			var year = date.getFullYear();
+			copyright = " © " + year + " DoraFX";
+			$("#copyright").html(copyright);
+		</script>
+		<script type="text/javascript">
+			function closebutton() {
+				$(".single").hide();
+			}
+			
+			function closebuttonvideo() {
+				$(".single-video").hide();
+			}
 
-		<script src="js/ckin.js"></script>
-
+			function p1() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/01.webp");
+			}
+			
+			function p2() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/02.webp");
+			}
+			
+			function p3() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/03.webp");
+			}
+			
+			function p4() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/04.webp");
+			}
+			
+			function p5() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/05.webp");
+			}
+			
+			function p6() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/06.webp");
+			}
+			
+			function p7() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/07.webp");
+			}
+			
+			function p8() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/08.webp");
+			}
+			
+			function p9() {
+				$(".single").show();
+				$("#SImg").attr("src", "images/works/09.webp");
+			}
+			
+			function p10() {
+				window.location.href = "floatbeacon.html";
+			}
+			
+			function p11() {
+				$(".single-video").show();
+				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/2035.mp4");
+				$("#SVideo").attr("poster", "images/works/11.webp");
+			}
+			
+			function p12() {
+				$(".single-video").show();
+				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/DEMOREEL_x264.mp4");
+				$("#SVideo").attr("poster", "images/works/12.webp");
+			}
+			
+			function p13() {
+				$(".single-video").show();
+				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/third-party-assets.mp4");
+				$("#SVideo").attr("poster", "images/works/13.webp");
+			}
+			
+			function p14() {
+				window.location.href = "gallery/index.html";
+			}
+		</script>
 	</body>
-
 </html>
