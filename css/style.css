@@ -1086,3 +1086,12 @@ blockquote {
 	width: 42px;
 	height: 42px;
 }
+
+
+
+.f-b-img {
+	margin-left: 10px;
+	margin-right: 10px;
+	max-width: calc(100% - 20px);
+	margin-top: 20px;
+}
