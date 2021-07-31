@@ -277,6 +277,20 @@
 								</div>
 							</a>
 						</div>
+						
+						<div class="col-lg-4 video personal">
+							<a onclick="p15();">
+								<div class="portfolio-box">
+									<div class="portfolio-box-img">
+										<img src="images/works/15.webp" class="img-fluid" alt="member-image">
+									</div>
+									<div class="portfolio-box-detail">
+										<p>Video</p>
+										<h4>JNU 60th Anniversary</h4>
+									</div>
+								</div>
+							</a>
+						</div>
 
 					</div> <!-- end portfoliocontainer-->
 				</div> <!-- End row -->
@@ -401,6 +415,12 @@
 			
 			function p14() {
 				window.location.href = "gallery/index.html";
+			}
+			
+			function p15() {
+				$(".single-video").show();
+				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/JNU60.mp4");
+				$("#SVideo").attr("poster", "images/works/15.webp");
 			}
 		</script>
 	</body>
