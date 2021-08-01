@@ -95,7 +95,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12 text-right">
-									<input type="submit" onclick="send();" class="btn btn-dark btn-rounded" value="Send Message">
+									<div onclick="send();" class="btn btn-dark btn-rounded">Send Message</div>
 								</div>
 							</div>
 						</form>
@@ -161,7 +161,7 @@
 		<script type="text/javascript">
 			Bmob.initialize("f97125e26b047963", "669524");
 		
-			function send() {
+			function send(){
 				var name = document.getElementById("name").value;
 				var email = document.getElementById("email").value;
 				var subject = document.getElementById("subject").value;
