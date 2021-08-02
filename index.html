@@ -13,6 +13,57 @@
 		<link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css" /> <!-- Custom Css -->
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
+		
+		<script src="js/Bomb.js"></script>
+		
+		<script type="text/javascript">
+			Bmob.initialize("f97125e26b047963", "669524");
+			
+			const query = Bmob.Query("portfolio");
+			query.find().then(res => {
+			    //console.log(res);
+				a = res.length;
+				//console.log(a);
+				b = a-1;
+				if (a <= 20) {
+					for (var i = b; i >= 0; i--){
+						t1 = '<div class="col-lg-4 ';
+						t2 = ' personal"><a onclick="p';
+						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+						t4 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+						t5 = '</p><h4>';
+						t6 = '</h4></div></div></a></div>';
+						num = res[i].num;
+						if (num < 10){
+							num = "0" + num;
+						}
+						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 + res[i].name + t6;
+						$("#addplace").append(tfinal);
+					    //console.log(res[i].num);
+					}
+				}
+				if (a > 20) {
+					al = a - 20;
+					for (var i = b; i >= al; i--){
+						t1 = '<div class="col-lg-4 ';
+						t2 = ' personal"><a onclick="p';
+						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+						t4 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+						t5 = '</p><h4>';
+						t6 = '</h4></div></div></a></div>';
+						num = res[i].num;
+						if (num < 10){
+							num = "0" + num;
+						}
+						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 + res[i].name + t6;
+						$("#addplace").append(tfinal);
+					    //console.log(res[i].num);
+					}
+				}
+			});
+		</script>
+		
+		<script src="js/portfolio.js"></script>
 	</head>
 	<body>
 		<div class="single" style="display: none;">
@@ -78,224 +129,21 @@
 							<a href="#" data-filter="*" class="current waves-effect waves-success">All</a>
 							<a href="#" data-filter=".3D" class="waves-effect waves-success">3D</a>
 							<a href="#" data-filter=".2D" class="waves-effect waves-success">2D</a>
-							<a href="#" data-filter=".video" class="waves-effect waves-success">Video</a>
-							<a href="#" data-filter=".web" class="waves-effect waves-success">Web</a>
+							<a href="#" data-filter=".Video" class="waves-effect waves-success">Video</a>
+							<a href="#" data-filter=".Web" class="waves-effect waves-success">Web</a>
 						</div>
 					</div>
 				</div>
 				<div class="port portfolio-masonry m-b-30">
-					<div class="portfolioContainer row">
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p1();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/01.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>A bike</h4>
-									</div>
-								</div>
-							</a>
+					<div class="page-title text-center">
+						<div class="row justify-content-center">
+							<div class="col-lg-9">
+								<p class="text-muted">The homepage only displays a maximum of 20 works, please visit <a href="portfolio.html">portfolio</a> to view all works.</p>
+							</div>
 						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p2();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/02.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Hammer Screws Metals</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p3();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/03.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Fruits</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p4();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/04.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Cards of Cardcaptor Sakura</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p5();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/05.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Mushroom</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p6();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/06.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Ergent</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p7();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/07.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Ergent</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p8();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/08.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Old Temple</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 3D personal">
-							<a onclick="p9();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/09.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Sculpture Gallery</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 2D personal">
-							<a onclick="p10();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/10.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>Float Beacon</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 video personal">
-							<a onclick="p11();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/11.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>China Education Modernization 2035</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 video personal">
-							<a onclick="p12();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/12.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>DEMOREEL</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 video personal">
-							<a onclick="p13();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/13.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>Third Party Assets Showreel</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 web personal">
-							<a onclick="p14();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/14.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>WEB</p>
-										<h4>MSFS Page</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-						
-						<div class="col-lg-4 video personal">
-							<a onclick="p15();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/15.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>JNU 60th Anniversary</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-					
+					</div>
+					<div class="portfolioContainer row" id="addplace">
+						<!--在这里添加的作品-->
 					</div> <!-- end portfoliocontainer-->
 				</div> <!-- End row -->
 				<div class="row">
@@ -332,97 +180,13 @@
 		<script src="js/isotope.pkgd.min.js"></script>
 		<script src="js/portfolio-filter.js"></script>
 		<script src="js/app.js"></script>
+		
 		<script type="text/javascript">
 		    var date = new Date();
 			var year = date.getFullYear();
 			copyright = " © " + year + " DoraFX";
 			$("#copyright").html(copyright);
 		</script>
-		<script type="text/javascript">
-			function closebutton() {
-				$(".single").hide();
-			}
-			
-			function closebuttonvideo() {
-				$(".single-video").hide();
-			}
 		
-			function p1() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/01.webp");
-			}
-			
-			function p2() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/02.webp");
-			}
-			
-			function p3() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/03.webp");
-			}
-			
-			function p4() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/04.webp");
-			}
-			
-			function p5() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/05.webp");
-			}
-			
-			function p6() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/06.webp");
-			}
-			
-			function p7() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/07.webp");
-			}
-			
-			function p8() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/08.webp");
-			}
-			
-			function p9() {
-				$(".single").show();
-				$("#SImg").attr("src", "images/works/09.webp");
-			}
-			
-			function p10() {
-				window.location.href = "floatbeacon.html";
-			}
-			
-			function p11() {
-				$(".single-video").show();
-				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/2035.mp4");
-				$("#SVideo").attr("poster", "images/works/11.webp");
-			}
-			
-			function p12() {
-				$(".single-video").show();
-				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/DEMOREEL_x264.mp4");
-				$("#SVideo").attr("poster", "images/works/12.webp");
-			}
-			
-			function p13() {
-				$(".single-video").show();
-				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/third-party-assets.mp4");
-				$("#SVideo").attr("poster", "images/works/13.webp");
-			}
-			
-			function p14() {
-				window.location.href = "gallery/index.html";
-			}
-			
-			function p15() {
-				$(".single-video").show();
-				$("#SVideo").attr("src", "https://demoreel-video.vercel.app/JNU60.mp4");
-				$("#SVideo").attr("poster", "images/works/15.webp");
-			}
-		</script>
 	</body>
 </html>
