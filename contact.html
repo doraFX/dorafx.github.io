@@ -106,21 +106,17 @@
 		<section class="margin-t-50">
 			<div class="container">
 				<div class="row margin-t-50">
-					<div class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/github.png" class="img-fluid"
-								alt="client-logo"> </div>
+					<div onclick="github();" class="col-lg-3">
+						<div class="client-box"> <img src="images/clients/github.png" class="img-fluid" alt="client-logo"> </div>
 					</div>
-					<div class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/vercel.png" class="img-fluid"
-								alt="client-logo"> </div>
+					<div onclick="vercel();" class="col-lg-3">
+						<div class="client-box"> <img src="images/clients/vercel.png" class="img-fluid" alt="client-logo"> </div>
 					</div>
-					<div class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/DNSPOD.png" class="img-fluid"
-								alt="client-logo"> </div>
+					<div onclick="dnspod();" class="col-lg-3">
+						<div class="client-box"> <img src="images/clients/DNSPOD.png" class="img-fluid" alt="client-logo"> </div>
 					</div>
-					<div class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/bmob.png" class="img-fluid"
-								alt="client-logo"> </div>
+					<div onclick="bmob();" class="col-lg-3">
+						<div class="client-box"> <img src="images/clients/bmob.png" class="img-fluid" alt="client-logo"> </div>
 					</div>
 				</div>
 			</div> <!-- end container -->
@@ -180,6 +176,23 @@
 					console.log(err);
 					alert("提交失败！");
 				})
+			}
+		</script>
+		<script type="text/javascript">
+			function github(){
+				window.location.href = "https://github.com/";
+			}
+			
+			function vercel(){
+				window.location.href = "https://vercel.com/";
+			}
+			
+			function dnspod(){
+				window.location.href = "https://www.dnspod.cn/";
+			}
+			
+			function bmob(){
+				window.location.href = "https://www.bmob.cn/";
 			}
 		</script>
 	</body>

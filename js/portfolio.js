@@ -87,3 +87,8 @@ function p16() {
 	$(".single").show();
 	$("#SImg").attr("src", "images/works/16.webp");
 }
+
+function p17() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/17.webp");
+}
