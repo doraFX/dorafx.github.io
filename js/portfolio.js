@@ -4,6 +4,7 @@ function closebutton() {
 
 function closebuttonvideo() {
 	$(".single-video").hide();
+	$('#SVideo').get(0).pause();
 }
 
 function p1() {
