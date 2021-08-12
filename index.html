@@ -15,18 +15,27 @@
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<script src="js/jquery-2.1.4.min.js"></script>
 		<script src="js/Bomb.js"></script>
-		
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?8730c7bd77352ff16d63e2d493255930";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+
 		<script type="text/javascript">
 			Bmob.initialize("f97125e26b047963", "669524");
-			
+
 			const query = Bmob.Query("portfolio");
 			query.find().then(res => {
-			    //console.log(res);
+				//console.log(res);
 				a = res.length;
 				//console.log(a);
-				b = a-1;
+				b = a - 1;
 				if (a <= 20) {
-					for (var i = b; i >= 0; i--){
+					for (var i = b; i >= 0; i--) {
 						t1 = '<div class="col-lg-4 ';
 						t2 = ' personal"><a onclick="p';
 						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
@@ -34,17 +43,18 @@
 						t5 = '</p><h4>';
 						t6 = '</h4></div></div></a></div>';
 						num = res[i].num;
-						if (num < 10){
+						if (num < 10) {
 							num = "0" + num;
 						}
-						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 + res[i].name + t6;
+						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 +
+							res[i].name + t6;
 						$("#addplace").append(tfinal);
-					    //console.log(res[i].num);
+						//console.log(res[i].num);
 					}
 				}
 				if (a > 20) {
 					al = a - 20;
-					for (var i = b; i >= al; i--){
+					for (var i = b; i >= al; i--) {
 						t1 = '<div class="col-lg-4 ';
 						t2 = ' personal"><a onclick="p';
 						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
@@ -52,17 +62,18 @@
 						t5 = '</p><h4>';
 						t6 = '</h4></div></div></a></div>';
 						num = res[i].num;
-						if (num < 10){
+						if (num < 10) {
 							num = "0" + num;
 						}
-						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 + res[i].name + t6;
+						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 +
+							res[i].name + t6;
 						$("#addplace").append(tfinal);
-					    //console.log(res[i].num);
+						//console.log(res[i].num);
 					}
 				}
 			});
 		</script>
-		
+
 		<script src="js/portfolio.js"></script>
 	</head>
 	<body>
@@ -72,20 +83,21 @@
 				<div class="single-inner"><img id="SImg" src="" class="single-img"></div>
 			</div>
 		</div>
-		
+
 		<div class="single-video" style="display: none;">
 			<div onclick="closebuttonvideo();" class="closebutton"><i class="fas fa-times"></i></div>
 			<div class="single-contain">
 				<div class="single-inner">
-					<video id="SVideo" class="single-v" src="" poster=""
-					 height="100%" width="100%" data-ckin="default" controls="" data-title=""></video>
+					<video id="SVideo" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
+						controls="" data-title=""></video>
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Start Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-default navbar-custom navbar-light">
-			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
+			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.png"
+						class="logo-common"></a>
 				<div class="navbar-header"> <button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#navbar-collapse-1" aria-controls="navbarSupportedContent" aria-expanded="false"
 						aria-label="Toggle navigation"><i class="fas fa-bars"></i></button> </div>
@@ -109,10 +121,11 @@
 								<div class="col-lg-9">
 									<h2>Welcome!<br>My name is<br><span>宋清鑫 Song Qingxin</span></h2>
 									<p class="text-muted">I am a student at Communication University of China<br>
-									I am also a CG art creator <br>
-									<a href="https://www.zcool.com.cn/u/17973793">Zcool</a>&emsp;
-									<a href="https://www.behance.net/dorafx">Behance</a>&emsp; 
-									<a href="https://www.ggac.com/u/DoraFX">GGAC</a></p>
+										I am also a CG art creator <br>
+										<a href="https://www.zcool.com.cn/u/17973793">Zcool</a>&emsp;
+										<a href="https://www.behance.net/dorafx">Behance</a>&emsp;
+										<a href="https://www.ggac.com/u/DoraFX">GGAC</a>
+									</p>
 								</div>
 							</div>
 						</div>
@@ -138,7 +151,8 @@
 					<div class="page-title text-center">
 						<div class="row justify-content-center">
 							<div class="col-lg-9">
-								<p class="text-muted">The homepage only displays a maximum of 20 works, please visit <a href="portfolio.html">portfolio</a> to view all works.</p>
+								<p class="text-muted">The homepage only displays a maximum of 20 works, please visit <a
+										href="portfolio.html">portfolio</a> to view all works.</p>
 							</div>
 						</div>
 					</div>
@@ -148,7 +162,8 @@
 				</div> <!-- End row -->
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="text-center margin-t-30"> <a href="portfolio.html" class="btn btn-custom">More works</a>
+						<div class="text-center margin-t-30"> <a href="portfolio.html" class="btn btn-custom">More
+								works</a>
 						</div>
 					</div>
 				</div>
@@ -159,14 +174,18 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-center"> <a class="pb-2 display-4 mb-0 d-inline-block text-dark"
-								href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
-							
+								href="index.html"><img src="images/DoraFX.png" class="logo-common"></a>
+
 							<ul class="list-inline social-circle margin-t-30">
-								<li onclick="s1();" class="list-inline-item"><a> <i class="icofont-twitter"></i> </a></li>
-								<li onclick="s2();" class="list-inline-item"><a> <i class="icofont-facebook"></i> </a></li>
+								<li onclick="s1();" class="list-inline-item"><a> <i class="icofont-twitter"></i> </a>
+								</li>
+								<li onclick="s2();" class="list-inline-item"><a> <i class="icofont-facebook"></i> </a>
+								</li>
 								<li onclick="s3();" class="list-inline-item"><a> <i class="icofont-vimeo"></i> </a></li>
-								<li onclick="s4();" class="list-inline-item"><a> <i class="icofont-instagram"></i> </a></li>
-								<li onclick="s5();" class="list-inline-item"><a> <i class="icofont-github"></i> </a></li>
+								<li onclick="s4();" class="list-inline-item"><a> <i class="icofont-instagram"></i> </a>
+								</li>
+								<li onclick="s5();" class="list-inline-item"><a> <i class="icofont-github"></i> </a>
+								</li>
 							</ul>
 							<p class="text-muted m-b-0 copyright-txt" id="copyright"></p>
 						</div>
@@ -180,18 +199,22 @@
 		<script src="js/portfolio-filter.js"></script>
 		<script src="js/app.js"></script>
 		<script src="js/social.js"></script>
-		
+
 		<script type="text/javascript">
-		    var date = new Date();
+			var date = new Date();
 			var year = date.getFullYear();
 			copyright = " © " + year + " DoraFX";
 			$("#copyright").html(copyright);
 		</script>
-		
-		<script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280206731'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280206731%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+		<script type="text/javascript">
+			document.write(unescape(
+				"%3Cspan id='cnzz_stat_icon_1280206731'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280206731%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"
+				));
+		</script>
 		<script type="text/javascript">
 			$("#cnzz_stat_icon_1280206731").hide();
 		</script>
-		
+
 	</body>
 </html>
