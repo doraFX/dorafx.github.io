@@ -100,12 +100,19 @@ h6 {
 	color: #777 !important;
 }
 
-.page-title h2,
-.page-title h3 {
+.page-title h2 {
 	line-height: 50px;
-	margin: 60px 0 40px 0;
+	margin: 60px 0 20px 0;
 	letter-spacing: 1px;
 	font-size: 34px;
+	font-weight: 500;
+}
+
+.page-title h3 {
+	line-height: 40px;
+	margin: 30px 0 10px 0;
+	letter-spacing: 1px;
+	font-size: 20px;
 	font-weight: 300;
 }
 
@@ -1026,7 +1033,7 @@ blockquote {
 
 	.page-title h2 {
 		line-height: 36px;
-		font-size: 22px;
+		font-size: 32px;
 		margin-top: 40px;
 	}
 }
@@ -1124,4 +1131,62 @@ blockquote {
 	margin-right: 10px;
 	max-width: calc(100% - 20px);
 	margin-top: 20px;
+}
+
+
+
+
+.gc-display1 {
+	display: flex;
+	overflow-x: auto;
+	padding-bottom: 20px;
+	justify-content: center;
+}
+
+.gc-display1 img{
+	height: 600px;
+	margin-right: 40px;
+	border-radius: 20px;
+	box-shadow: 0 1px 5px #aaaaaa;
+}
+
+
+@media (max-width: 768px) {
+	.gc-display1 {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	.gc-display1 img{
+		width: 80%;
+		margin: 0;
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+		margin-top: 40px;
+		border-radius: 20px;
+		box-shadow: 0 1px 5px #aaaaaa;
+	}
+}
+
+.gc-weather {
+	height: 400px;
+	left: 50%;
+	transform: translateX(-50%);
+	position: relative;
+	border-radius: 20px;
+	margin-bottom: 40px;
+	margin-top: 20px;
+	box-shadow: 0 1px 5px #aaaaaa;
+}
+
+.gc-huangli {
+	height: 500px;
+	left: 50%;
+	transform: translateX(-50%);
+	position: relative;
+	border-radius: 20px;
+	margin-bottom: 40px;
+	margin-top: 20px;
+	box-shadow: 0 1px 5px #aaaaaa;
 }

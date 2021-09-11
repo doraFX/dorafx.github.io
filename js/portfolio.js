@@ -93,3 +93,7 @@ function p17() {
 	$(".single").show();
 	$("#SImg").attr("src", "images/works/17.webp");
 }
+
+function p18() {
+	window.location.href = "goodcloud.html";
+}
