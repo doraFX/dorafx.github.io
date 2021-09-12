@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap');
 
 * {
 	margin: 0;
 	font-size: 20px;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', 'Noto Sans SC' , sans-serif;
 }
 
 html,
@@ -346,4 +347,55 @@ span {
 	text-align: center;
 	font-size: 14px;
 	color: #b2b2b2;
+}
+
+
+
+.project-info {
+	width: 100%;
+	height: auto;
+	background: #f7f7f7;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 40px;
+	border-top: #e5e5e5 1px solid;
+	border-bottom: #e5e5e5 1px solid;
+	padding-bottom: 10px;
+}
+
+@media (min-width: 500px) {
+	.project-info {
+		width: 500px;
+	}
+}
+
+.project-info-list {
+	margin-top: 10px;
+	padding-left: 40px;
+}
+
+.p-little-head {
+	display: flex;
+}
+
+.plh1 {
+	line-height: 35px;
+	height: 35px;
+	font-size: 16px;
+	width: fit-content;
+}
+
+.plh2 {
+	line-height: 35px;
+	font-size: 16px;
+	font-weight: 500;
+	width: fit-content;
+	margin-left: 0;
+	margin-right: 20px;
+}
+
+.pldes {
+	line-height: 35px;
+	height: 35px;
+	font-size: 14px;
 }
