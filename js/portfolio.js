@@ -97,3 +97,7 @@ function p17() {
 function p18() {
 	window.location.href = "goodcloud.html";
 }
+
+function p19() {
+	window.location.href = "forgotsth.html";
+}
