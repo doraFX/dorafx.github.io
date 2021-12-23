@@ -9,6 +9,8 @@
 		<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/Bomb.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="css/remixicon.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-bundle.min.css"/>
+		<script src="js/swiper-bundle.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var _0xodH = 'jsjiami.com.v6',
 				_0x3dd3 = [_0xodH, 'dcOQbcKvcWI=', 'RnzDqcKdFE7CgMOMMMOy', 'NWLCrcO3WcOpGcKfX8KWKsKwE8ODYHE=',
@@ -131,11 +133,14 @@
 			<div class="head-list" onclick="link1();">
 				首页
 			</div>
-			<div class="head-list" onclick="link2();">
-				成员
-			</div>
 			<div class="head-list" onclick="link3();">
 				观看
+			</div>
+			<div class="head-list" onclick="link5();">
+				剧照
+			</div>
+			<div class="head-list" onclick="link2();">
+				成员
 			</div>
 			<div class="head-list" onclick="link4();">
 				留言
@@ -149,7 +154,83 @@
 				</div>
 			</div>
 		</div>
+		<div class="videoplay" id="video">
+			<div class="common-head">
+				现在观看
+			</div>
+			<div class="videoplay-des">
+				本站提供多渠道观看平台
+			</div>
+			<div class="videoplay-contain">
+				<div class="videoplay-list" onclick="v1();">
+					<img src="img/b.webp">
+				</div>
+				<div class="videoplay-list" onclick="v2();">
+					<img src="img/x.webp">
+				</div>
+			</div>
+		</div>
+		<div class="photo" id="photo">
+			<div class="common-head">
+				剧照
+			</div>
+			<div class="common-des">
+				本片剧照
+			</div>
+			<div class="photo-container">
+				<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<img src="img/photos/1.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/2.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/3.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/4.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/5.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/6.webp" />
+						</div>
+					</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+				<div thumbsSlider="" class="swiper mySwiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<img src="img/photos/1.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/2.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/3.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/4.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/5.webp" />
+						</div>
+						<div class="swiper-slide">
+							<img src="img/photos/6.webp" />
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
 		<div class="productioninfo" id="partici">
+			<div class="common-head">
+				成员
+			</div>
 			<div class="pi-director">
 				<h1>导演</h1>
 				<h2>李浩然</h2>
@@ -175,24 +256,8 @@
 				<h2>朱轩毅&nbsp;&nbsp;艾可雯</h2>
 			</div>
 		</div>
-		<div class="videoplay" id="video">
-			<div class="videoplay-head">
-				现在观看
-			</div>
-			<div class="videoplay-des">
-				本站提供多渠道观看平台
-			</div>
-			<div class="videoplay-contain">
-				<div class="videoplay-list" onclick="v1();">
-					<img src="img/b.webp">
-				</div>
-				<div class="videoplay-list" onclick="v2();">
-					<img src="img/x.webp">
-				</div>
-			</div>
-		</div>
 		<div class="contact" id="contact">
-			<div class="contact-head">
+			<div class="common-head">
 				留言
 			</div>
 			<!-- <div class="contact-head-des">
@@ -203,7 +268,7 @@
 			</div>
 			<div class="contact-push">
 				<input type="" name="" id="inputwords" value="" />
-				<div class="inputsend" onclick="send();">SEND</div>
+				<div class="inputsend" onclick="send();">发送</div>
 			</div>
 			<div class="contact-load" id="cl">
 
@@ -273,6 +338,10 @@
 			function link4() {
 				window.location.href = "#contact";
 			}
+			
+			function link5() {
+				window.location.href = "#photo";
+			}
 		</script>
 		<script type="text/javascript">
 			const query = Bmob.Query("dnzsq");
@@ -325,6 +394,26 @@
 					})
 				}
 			}
+		</script>
+		<script>
+			var swiper = new Swiper(".mySwiper", {
+				loop: true,
+				spaceBetween: 10,
+				slidesPerView: 4,
+				freeMode: true,
+				watchSlidesProgress: true,
+			});
+			var swiper2 = new Swiper(".mySwiper2", {
+				loop: true,
+				spaceBetween: 10,
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+				},
+				thumbs: {
+					swiper: swiper,
+				},
+			});
 		</script>
 	</body>
 </html>
