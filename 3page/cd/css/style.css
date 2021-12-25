@@ -660,8 +660,7 @@ body {
 	z-index: 200;
 }
 
-.photo-container {
-}
+.photo-container {}
 
 @media (max-width: 920px) {
 	.photo-container {
@@ -700,8 +699,8 @@ body {
 	align-items: center;
 	justify-content: center;
 	color: #e8e8e8;
-	
-	
+
+
 	background: linear-gradient(360deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75));
 }
 
@@ -725,16 +724,14 @@ body {
 		font-size: 10vw;
 		line-height: 10vw;
 	}
-	
+
 	.countdown p {
 		font-size: 4vw;
 		line-height: 4vw;
 	}
-	
-	#countdownhead {
-		
-	}
-	
+
+	#countdownhead {}
+
 	.countdown h1 {
 		font-size: 6vw;
 		line-height: 6vw;
@@ -747,16 +744,14 @@ body {
 		font-size: 60px;
 		line-height: 60px;
 	}
-	
+
 	.countdown p {
 		font-size: 24px;
 		line-height: 24px;
 	}
-	
-	#countdownhead {
-		
-	}
-	
+
+	#countdownhead {}
+
 	.countdown h1 {
 		font-size: 36px;
 		line-height: 36px;
@@ -764,7 +759,8 @@ body {
 	}
 }
 
-.countdown-in-in, .countdown-in-days {
+.countdown-in-in,
+.countdown-in-days {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -799,4 +795,54 @@ body {
 
 .countdown-entry:hover {
 	filter: brightness(0.8);
+}
+
+
+
+#audio_btn {
+	position: fixed;
+	right: 0;
+	width: 60px;
+	height: 60px;
+	background-image: url(../img/music.svg);
+	background-size: contain;
+	z-index: 10000;
+	cursor: pointer;
+}
+
+.rotate {
+	-webkit-animation: rotating 3s linear infinite;
+	-moz-animation: rotating 3s linear infinite;
+	-o-animation: rotating 3s linear infinite;
+	animation: rotating 3s linear infinite
+}
+
+@-webkit-keyframes rotating {
+	from {
+		-webkit-transform: rotate(0)
+	}
+
+	to {
+		-webkit-transform: rotate(360deg)
+	}
+}
+
+@keyframes rotating {
+	from {
+		transform: rotate(0)
+	}
+
+	to {
+		transform: rotate(360deg)
+	}
+}
+
+@-moz-keyframes rotating {
+	from {
+		-moz-transform: rotate(0)
+	}
+
+	to {
+		-moz-transform: rotate(360deg)
+	}
 }
