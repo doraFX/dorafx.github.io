@@ -101,3 +101,7 @@ function p18() {
 function p19() {
 	window.location.href = "forgotsth.html";
 }
+
+function p20() {
+	window.location.href = "https://dorafx.top/3page/cd/index.html";
+}
