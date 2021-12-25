@@ -129,163 +129,194 @@
 		</script>
 	</head>
 	<body>
-		<div class="head">
-			<div class="head-list" onclick="link1();">
-				首页
-			</div>
-			<div class="head-list" onclick="link3();">
-				观看
-			</div>
-			<div class="head-list" onclick="link5();">
-				剧照
-			</div>
-			<div class="head-list" onclick="link2();">
-				成员
-			</div>
-			<div class="head-list" onclick="link4();">
-				留言
-			</div>
-		</div>
-		<div class="banner" id="banner">
-			<div class="bannerup">
-				<div class="bannertext">
-					<img src="img/logo.webp" id="logo">
-					<img src="img/presenter.webp" id="pre">
+		<div class="countdown">
+			<div class="countdown-up">
+				<p id="countdownhead">影片即将公映</p>
+				<h1>倒计时</h1>
+			<div class="countdown-in">
+				<div class="countdown-in-days">
+					<span id="days"></span>
+				    <p>天</p>
+				</div>
+				<div class="countdown-in-in">
+					<span id="hours"></span>
+				    <p>时</p>
+				</div>
+				<div class="countdown-in-in">
+					<span id="minutes"></span>
+				    <p>分</p>
+				</div>
+				<div class="countdown-in-in">
+					<span id="seconds"></span>
+				    <p>秒</p>
 				</div>
 			</div>
-		</div>
-		<div class="videoplay" id="video">
-			<div class="common-head">
-				现在观看
+			<div class="countdown-entry" onclick="ce();" style="opacity: 0;">
+				进入
 			</div>
-			<div class="videoplay-des">
-				本站提供多渠道观看平台
-			</div>
-			<div class="videoplay-contain">
-				<div class="videoplay-list" onclick="v1();">
-					<img src="img/b.webp">
-				</div>
-				<div class="videoplay-list" onclick="v2();">
-					<img src="img/x.webp">
-				</div>
-			</div>
-		</div>
-		<div class="photo" id="photo">
-			<div class="common-head">
-				剧照
-			</div>
-			<div class="common-des">
-				本片剧照
-			</div>
-			<div class="photo-container">
-				<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<img src="img/photos/1.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/2.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/3.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/4.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/5.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/6.webp" />
-						</div>
-					</div>
-					<div class="swiper-button-next"></div>
-					<div class="swiper-button-prev"></div>
-				</div>
-				<div thumbsSlider="" class="swiper mySwiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<img src="img/photos/1.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/2.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/3.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/4.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/5.webp" />
-						</div>
-						<div class="swiper-slide">
-							<img src="img/photos/6.webp" />
-						</div>
-					</div>
-				</div>
 			</div>
 			
 		</div>
-		<div class="productioninfo" id="partici">
-			<div class="common-head">
-				成员
+		<div class="main">
+			<div class="head">
+				<div class="head-list" onclick="link1();">
+					首页
+				</div>
+				<div class="head-list" onclick="link3();">
+					观看
+				</div>
+				<div class="head-list" onclick="link5();">
+					剧照
+				</div>
+				<div class="head-list" onclick="link2();">
+					成员
+				</div>
+				<div class="head-list" onclick="link4();">
+					留言
+				</div>
 			</div>
-			<div class="pi-director">
-				<h1>导演</h1>
-				<h2>李浩然</h2>
+			<div class="banner" id="banner">
+				<div class="bannerup">
+					<div class="bannertext">
+						<img src="img/logo.webp" id="logo">
+						<img src="img/presenter.webp" id="pre">
+					</div>
+				</div>
 			</div>
-			<div class="pi-director">
-				<h1>编剧</h1>
-				<h2>杨茗杰</h2>
+			<div class="videoplay" id="video">
+				<div class="common-head">
+					现在观看
+				</div>
+				<div class="videoplay-des">
+					本站提供多渠道观看平台
+				</div>
+				<div class="videoplay-contain">
+					<div class="videoplay-list" onclick="v1();">
+						<img src="img/b.webp">
+					</div>
+					<div class="videoplay-list" onclick="v2();">
+						<img src="img/x.webp">
+					</div>
+				</div>
 			</div>
-			<div class="pi-director">
-				<h1>摄影</h1>
-				<h2>宋清鑫&nbsp;&nbsp;李浩然</h2>
+			<div class="photo" id="photo">
+				<div class="common-head">
+					剧照
+				</div>
+				<div class="common-des">
+					本片剧照
+				</div>
+				<div class="photo-container">
+					<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<img src="img/photos/1.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/2.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/3.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/4.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/5.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/6.webp" />
+							</div>
+						</div>
+						<div class="swiper-button-next"></div>
+						<div class="swiper-button-prev"></div>
+					</div>
+					<div thumbsSlider="" class="swiper mySwiper">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<img src="img/photos/1.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/2.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/3.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/4.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/5.webp" />
+							</div>
+							<div class="swiper-slide">
+								<img src="img/photos/6.webp" />
+							</div>
+						</div>
+					</div>
+				</div>
+				
 			</div>
-			<div class="pi-director">
-				<h1>剪辑</h1>
-				<h2>李浩然&nbsp;&nbsp;宋清鑫</h2>
+			<div class="productioninfo" id="partici">
+				<div class="common-head">
+					成员
+				</div>
+				<div class="pi-director">
+					<h1>导演</h1>
+					<h2>李浩然</h2>
+				</div>
+				<div class="pi-director">
+					<h1>编剧</h1>
+					<h2>杨茗杰</h2>
+				</div>
+				<div class="pi-director">
+					<h1>摄影</h1>
+					<h2>宋清鑫&nbsp;&nbsp;李浩然</h2>
+				</div>
+				<div class="pi-director">
+					<h1>剪辑</h1>
+					<h2>李浩然&nbsp;&nbsp;宋清鑫</h2>
+				</div>
+				<div class="pi-director">
+					<h1>后期</h1>
+					<h2>宋清鑫&nbsp;&nbsp;杨茗杰&nbsp;&nbsp;李浩然</h2>
+				</div>
+				<div class="pi-director">
+					<h1>特别感谢</h1>
+					<h2>朱轩毅&nbsp;&nbsp;艾可雯</h2>
+				</div>
 			</div>
-			<div class="pi-director">
-				<h1>后期</h1>
-				<h2>宋清鑫&nbsp;&nbsp;杨茗杰&nbsp;&nbsp;李浩然</h2>
-			</div>
-			<div class="pi-director">
-				<h1>特别感谢</h1>
-				<h2>朱轩毅&nbsp;&nbsp;艾可雯</h2>
-			</div>
-		</div>
-		<div class="contact" id="contact">
-			<div class="common-head">
-				留言
-			</div>
-			<!-- <div class="contact-head-des">
-				MAKE A CONNECTION WITH US
-			</div> -->
-			<div class="contact-head-notice" id="notice1">
-				*评论区暂未开启留言审核，请文明发言*
-			</div>
-			<div class="contact-push">
-				<input type="" name="" id="inputwords" value="" />
-				<div class="inputsend" onclick="send();">发送</div>
-			</div>
-			<div class="contact-load" id="cl">
-
-			</div>
-		</div>
-		<div class="videoplay-full" id="vfull" style="display: none;">
-			<div class="videoplay-full-close" onclick="closevfull();">
-				<i class="ri-close-line"></i>
-			</div>
-			<div class="videoplay-full-con">
-				<!-- <video width="" height="" id="videofull" src="" controls=""></video>
-				<div class="videoplay-full-con-des">
-					<p id="videohead"><span>EPISODE</span></p>
-					<p id="videodescription"></p>
+			<div class="contact" id="contact">
+				<div class="common-head">
+					留言
+				</div>
+				<!-- <div class="contact-head-des">
+					MAKE A CONNECTION WITH US
 				</div> -->
+				<div class="contact-head-notice" id="notice1">
+					*评论区暂未开启留言审核，请文明发言*
+				</div>
+				<div class="contact-push">
+					<input type="" name="" id="inputwords" value="" />
+					<div class="inputsend" onclick="send();">发送</div>
+				</div>
+				<div class="contact-load" id="cl">
+			
+				</div>
+			</div>
+			<div class="videoplay-full" id="vfull" style="display: none;">
+				<div class="videoplay-full-close" onclick="closevfull();">
+					<i class="ri-close-line"></i>
+				</div>
+				<div class="videoplay-full-con">
+					<!-- <video width="" height="" id="videofull" src="" controls=""></video>
+					<div class="videoplay-full-con-des">
+						<p id="videohead"><span>EPISODE</span></p>
+						<p id="videodescription"></p>
+					</div> -->
+				</div>
 			</div>
 		</div>
+		
 		<script type="text/javascript">
 			function v1() {
 				setTimeout(function() {
@@ -414,6 +445,68 @@
 					swiper: swiper,
 				},
 			});
+		</script>
+		<script type="text/javascript">
+			var showtime = function () {
+			    nowtime = new Date();
+			    endtime = new Date("2021/12/29/18:00");
+				lefttime = endtime.getTime() - nowtime.getTime();
+				console.log(lefttime);
+				//console.log(lefttime);
+				
+				if(lefttime > 0) {
+					$(".main").empty();
+					setInterval (function () {
+						nowtime = new Date(),  //获取当前时间
+						lefttime = endtime.getTime() - nowtime.getTime(),  //距离结束时间的毫秒数
+						days = Math.floor(lefttime/(1000*60*60*24)),  //计算天数
+						hours = Math.floor(lefttime/(1000*60*60)%24),  //计算小时数
+						minutes = Math.floor(lefttime/(1000*60)%60),  //计算分钟数
+						seconds = Math.floor(lefttime/1000%60);  //计算秒数
+						if(lefttime > 0) {
+							if(days<10) {
+								days = "0" + days;
+							}
+							
+							if(hours<10) {
+								hours = "0" + hours;
+							}
+							
+							if(minutes<10) {
+								minutes = "0" + minutes;
+							}
+							
+							if(seconds<10) {
+								seconds = "0" + seconds;
+							}
+							$(".main").empty();
+							$("#days").html(days);
+							$("#hours").html(hours);
+							$("#minutes").html(minutes);
+							$("#seconds").html(seconds);
+						}
+						
+						
+						if(lefttime <= 0) {
+							$("#days").html("00");
+							$("#hours").html("00");
+							$("#minutes").html("00");
+							$("#seconds").html("00");
+							$(".countdown-entry").css("opacity","1");
+						}
+					}, 1000);  //反复执行函数本身
+				}
+				
+				if(lefttime <= 0) {
+					$(".countdown").remove();
+				}
+			}
+			
+			showtime();
+			
+			function ce() {
+				location.reload();
+			}
 		</script>
 	</body>
 </html>
