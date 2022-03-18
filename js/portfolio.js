@@ -105,3 +105,8 @@ function p19() {
 function p20() {
 	window.location.href = "https://dorafx.top/3page/cd/index.html";
 }
+
+function p21() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/21.webp");
+}
