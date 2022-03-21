@@ -110,3 +110,7 @@ function p21() {
 	$(".single").show();
 	$("#SImg").attr("src", "images/works/21.webp");
 }
+
+function p22() {
+	window.location.href = "newyeargala.html";
+}
