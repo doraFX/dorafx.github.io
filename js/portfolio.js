@@ -114,3 +114,18 @@ function p21() {
 function p22() {
 	window.location.href = "newyeargala.html";
 }
+
+function p23() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/23.webp");
+}
+
+function p24() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/24.webp");
+}
+
+function p25() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/25.webp");
+}
