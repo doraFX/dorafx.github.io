@@ -7,6 +7,10 @@ function closebuttonvideo() {
 	$('#SVideo').get(0).pause();
 }
 
+function closebuttonlink() {
+	$(".single-linksource").hide();
+}
+
 function p1() {
 	$(".single").show();
 	$("#SImg").attr("src", "images/works/01.webp");
@@ -128,4 +132,14 @@ function p24() {
 function p25() {
 	$(".single").show();
 	$("#SImg").attr("src", "images/works/25.webp");
+}
+
+function p26() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("Minecraft Theatre");
+		$(".single-linksource-p").html("前段时间我参与了一个剧院项目的建模工作，所以最近对剧院的设计布局开始感兴趣。这两天在休息的时候，玩Minecraft的同时建了一个剧院……");
+		$("#p26linkzcool").attr("href","https://www.zcool.com.cn/work/ZNTkzOTE0NTY=.html");
+		$("#p26linkbehance").attr("href","https://www.behance.net/gallery/142211397/Minecraft-Theatre");
+	},250);
 }
