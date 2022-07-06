@@ -1153,6 +1153,10 @@ blockquote {
 	max-height: 50vh;
 }
 
+#SVideo2 {
+	margin-bottom: 20px;
+}
+
 @media (max-width: 768px) {
 	.single-v {
 		max-width: 100%;
