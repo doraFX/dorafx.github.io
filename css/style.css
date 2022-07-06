@@ -1147,7 +1147,7 @@ blockquote {
 }
 
 .single-v {
-	max-width: calc(100% - 200px);
+	max-width: fit-content;
 	z-index: 9999;
 	border-radius: 5px;
 	max-height: 50vh;
