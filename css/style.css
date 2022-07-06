@@ -1164,6 +1164,10 @@ blockquote {
 		border-radius: 5px;
 		max-height: calc(100vh - 40px);
 	}
+	
+	#SVideo2 {
+		padding-bottom: 20px;
+	}
 }
 
 .logo-common {
