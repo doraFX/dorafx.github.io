@@ -9,6 +9,7 @@ function closebuttonvideo() {
 
 function closebuttonlink() {
 	$(".single-linksource").hide();
+	$('#SVideo2').get(0).pause();
 }
 
 function p1() {
@@ -139,7 +140,32 @@ function p26() {
 		$(".single-linksource").show();
 		$(".single-linksource-h").html("Minecraft Theatre");
 		$(".single-linksource-p").html("前段时间我参与了一个剧院项目的建模工作，所以最近对剧院的设计布局开始感兴趣。这两天在休息的时候，玩Minecraft的同时建了一个剧院……");
-		$("#p26linkzcool").attr("href","https://www.zcool.com.cn/work/ZNTkzOTE0NTY=.html");
-		$("#p26linkbehance").attr("href","https://www.behance.net/gallery/142211397/Minecraft-Theatre");
+		$(".single-linksource-h6").html("请选择作品预览平台:");
+		$("#btnlink1").html("Zcool");
+		$("#btnlink2").html("Behance");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNTkzOTE0NTY=.html");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/142211397/Minecraft-Theatre");
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
+	},50);
+}
+
+function p27() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("Motion Graphic Design");
+		$(".single-linksource-p").html("可能是2023年的C4D结课作业");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjA3NjUyNTI=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/147530811/Motion-Graphic-Design");
+		$("#btnlink3").html("Bilibili");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV14f4y1Z71r");
+		$("#btnlink4").hide();
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/cursor.mp4");
+		$("#SVideo2").attr("poster", "images/works/27.webp");
 	},50);
 }

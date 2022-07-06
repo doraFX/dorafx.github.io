@@ -37,40 +37,55 @@
 				if (a <= 20) {
 					for (var i = b; i >= 0; i--) {
 						t1 = '<div class="col-lg-4 ';
-						t2 = ' personal"><a onclick="p';
-						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
-						t4 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
-						t5 = '</p><h4>';
-						t6 = '</h4></div></div></a></div>';
+						t2 = ' personal" id="workid';
+						t3 = '"><a onclick="p';
+						t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+						t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+						t6 = '</p><h4>';
+						t7 = '</h4></div></div></a></div>';
 						num = res[i].num;
 						if (num < 10) {
 							num = "0" + num;
 						}
-						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 +
-							res[i].name + t6;
+						recommend = "";
+						recommendvalue = res[i].recommend;
+						if(recommendvalue == true){
+							currentID = "work" + res[i].num;
+							console.log(currentID);
+							recommend = "recommended";
+						} 
+						tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num + t5 + res[i].parameterdetail + t6 +
+							res[i].name + t7;
 						$("#addplace").append(tfinal);
-						//console.log(res[i].num);
 					}
 				}
 				if (a > 20) {
 					al = a - 20;
 					for (var i = b; i >= al; i--) {
 						t1 = '<div class="col-lg-4 ';
-						t2 = ' personal"><a onclick="p';
-						t3 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
-						t4 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
-						t5 = '</p><h4>';
-						t6 = '</h4></div></div></a></div>';
+						t2 = ' personal" id="workid';
+						t3 = '"><a onclick="p';
+						t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+						t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+						t6 = '</p><h4>';
+						t7 = '</h4></div></div></a></div>';
 						num = res[i].num;
 						if (num < 10) {
 							num = "0" + num;
 						}
-						tfinal = t1 + res[i].parameter + t2 + res[i].num + t3 + num + t4 + res[i].parameterdetail + t5 +
-							res[i].name + t6;
+						recommend = "";
+						recommendvalue = res[i].recommend;
+						if(recommendvalue == true){
+							currentID = "work" + res[i].num;
+							console.log(currentID);
+							recommend = "recommended";
+						} 
+						tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num + t5 + res[i].parameterdetail + t6 +
+							res[i].name + t7;
 						$("#addplace").append(tfinal);
-						//console.log(res[i].num);
 					}
 				}
+			    $('.recommended').append('<div class="recommend"><div class="recommend-inner"><div class="recommend-inner-icon"><img src="images/recommend.svg" alt=""></div><div class="recommend-text">Recommended</div></div></div>');
 			});
 		</script>
 
@@ -99,10 +114,16 @@
 			<div class="single-contain">
 				<p class="single-linksource-h"></p>
 				<p class="single-linksource-p"></p>
-				<p class="single-linksource-h6">请选择作品预览平台:</p>
+				<div class="single-inner" style="display: none;" id="slvideo">
+					<video id="SVideo2" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
+						controls="" data-title=""></video>
+				</div>
+				<p class="single-linksource-h6"></p>
 				<div class="text-center margin-t-30">
-					<a href="" class="btn btn-custom" id="p26linkzcool">Zcool</a>
-					<a href="" class="btn btn-custom" id="p26linkbehance">Behance</a>
+					<a href="" class="btn btn-custom" id="btnlink1"></a>
+					<a href="" class="btn btn-custom" id="btnlink2"></a>
+					<a href="" class="btn btn-custom" id="btnlink3"></a>
+					<a href="" class="btn btn-custom" id="btnlink4"></a>
 				</div>
 			</div>
 		</div>

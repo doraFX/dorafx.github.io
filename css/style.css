@@ -1256,3 +1256,58 @@ blockquote {
 	width: 100%;
 	text-align: center;
 }
+
+.recommend {
+	position: absolute;
+	width: auto;
+	height: 65px;
+	top: 0;
+	z-index: 888;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-start;
+	cursor: pointer;
+}
+
+.recommend-inner {
+	margin-left: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	overflow-x: hidden;
+	width: 40px;
+	transition: 0.2s ease-in-out;
+	background: linear-gradient( 135deg, #124c89 10%, #0b1c48 100%);
+	border-radius: 20px;
+}
+
+.recommend-inner-icon {
+	min-width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* border-radius: 20px; */
+	/* background: linear-gradient( 135deg, #124c89 10%, #0b1c48 100%); */
+	transition: 0.2s ease-in-out;
+}
+
+.recommend-inner img {
+	width: 24px;
+}
+
+.recommend-text {
+	color: #ffffff;
+	margin-right: 12px;
+}
+
+.recommend:hover .recommend-inner{
+	width: 162px;
+	filter: brightness(1.1);
+}
+
+.recommend:active .recommend-inner{
+	width: 162px;
+	filter: brightness(1.5);
+	transition: 0.2s linear;
+}
