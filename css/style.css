@@ -1150,7 +1150,7 @@ blockquote {
 	max-width: calc(100% - 200px);
 	z-index: 9999;
 	border-radius: 5px;
-	max-height: calc(100vh - 40px);
+	max-height: 50vh;
 }
 
 @media (max-width: 768px) {
