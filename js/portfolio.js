@@ -169,3 +169,23 @@ function p27() {
 		$("#SVideo2").attr("poster", "images/works/27.webp");
 	},50);
 }
+
+function p28() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("Promo For My Website");
+		$(".single-linksource-p").html("此网站的宣传片<br>立项和做预览的时候在暑假前，渲染的时候正好放暑假，所以显而易见烂尾的概率突然就变得大了起来，于是我尽力不让它烂尾……");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://my.zcool.com.cn/preview/work/ZNjEwMTA5NjQ=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/148574237/PROMO-FOR-MY-WEBSITE");
+		$("#btnlink3").html("Bilibili");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1yF411K7oc/");
+		$("#btnlink4").hide();
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/web.mp4");
+		$("#SVideo2").attr("poster", "images/works/28.webp");
+	},50);
+}
