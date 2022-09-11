@@ -14,7 +14,6 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-		<script>LA.init({id: "Jl5bi3TeBeipiIT3",ck: "Jl5bi3TeBeipiIT3",autoTrack:true})</script>
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -24,18 +23,85 @@
 				s.parentNode.insertBefore(hm, s);
 			})();
 		</script>
+		<script>
+			window.onload = function() {
+				// var allInput = this.document.getElementsByTagName('input');
+				localStorage.setItem("contact_page_send_name_value",0);
+				localStorage.setItem("contact_page_send_email_value",0);
+				localStorage.setItem("contact_page_send_subject_value",0);
+				// var contact_page_send_name_value = 0;
+				// var contact_page_send_email_value = 0;
+				// var contact_page_send_subject_value = 0;
+				nameinput = this.document.getElementById('name');
+				emailinput = document.getElementById('email');
+				subjectinput = document.getElementById('subject');
+				
+				nameinput.onblur = function() {
+					if (this.value.length == 0) {
+						this.style.borderColor = 'red';
+						this.style.background = "#ff000010";
+						localStorage.setItem("contact_page_send_name_value",0);
+					} else {
+						this.style.borderColor = '';
+						this.style.background = "#ffffff";
+						localStorage.setItem("contact_page_send_name_value",1);
+					}
+				};
+				
+				emailinput.onblur = function() {
+					if (this.value.length == 0) {
+						this.style.borderColor = 'red';
+						this.style.background = "#ff000010";
+						localStorage.setItem("contact_page_send_email_value",0);
+					} else {
+						this.style.borderColor = '';
+						this.style.background = "#ffffff";
+						localStorage.setItem("contact_page_send_email_value",1);
+					}
+				};
+				
+				subjectinput.onblur = function() {
+					if (this.value.length == 0) {
+						this.style.borderColor = 'red';
+						this.style.background = "#ff000010";
+						localStorage.setItem("contact_page_send_subject_value",0);
+					} else {
+						this.style.borderColor = '';
+						this.style.background = "#ffffff";
+						localStorage.setItem("contact_page_send_subject_value",1);
+					}
+				};
+				
+				// for (var i = 0; i < allInput.length; i++) {
+				// 	//2.添加onblur事件
+				// 	allInput[i].onblur = function() {
+				// 		if (this.value.length == 0) {
+				// 			this.style.borderColor = 'red';
+				// 			this.style.background = "#ff000010";
+				// 			localStorage.setItem("contact_page_send_value",0);
+				// 		} else {
+				// 			this.style.borderColor = '';
+				// 			this.style.background = "#ffffff";
+				// 			localStorage.setItem("contact_page_send_value",1);
+				// 		}
+
+				// 	};
+				// }
+			};
+		</script>
 	</head>
 	<body>
 		<!-- Start Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-default navbar-custom navbar-light">
-			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
+			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.png"
+						class="logo-common"></a>
 				<div class="navbar-header"> <button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#navbar-collapse-1" aria-controls="navbarSupportedContent" aria-expanded="false"
 						aria-label="Toggle navigation"> <i class="fas fa-bars"></i> </button> </div>
 				<div class="collapse navbar-collapse" id="navbar-collapse-1">
 					<ul class="nav navbar-nav ml-auto">
 						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" onclick="alert("待更新");">Resume</a></li>
+						<li class="nav-item"><a class="nav-link" onclick="alert(" 待更新");">Resume</a></li>
 						<li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
@@ -77,30 +143,34 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">
-										<input type="text" id="name" class="form-control" placeholder="Your Name" required>
+										<input type="text" id="name" class="form-control" placeholder="Your Name"
+											required>
 									</div>
 								</div>
-								
+
 								<div class="col-lg-6">
 									<div class="form-group">
-										<input type="email" id="email" class="form-control" placeholder="Your Email" required>
+										<input type="email" id="email" class="form-control" placeholder="Your Email"
+											required>
 									</div>
 								</div>
-								
+
 							</div>
-							
+
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
-										<input type="text" id="subject" class="form-control" placeholder="Subject" required>
+										<input type="text" id="subject" class="form-control" placeholder="Subject"
+											required>
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
-										<textarea class="form-control" id="message" rows="5" placeholder="Your Message...."></textarea>
+										<textarea class="form-control" id="message" rows="5"
+											placeholder="Your Message...."></textarea>
 									</div>
 								</div>
 							</div>
@@ -118,16 +188,20 @@
 			<div class="container">
 				<div class="row margin-t-50">
 					<div onclick="github();" class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/github.png" class="img-fluid" alt="client-logo"> </div>
+						<div class="client-box"> <img src="images/clients/github.png" class="img-fluid"
+								alt="client-logo"> </div>
 					</div>
 					<div onclick="vercel();" class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/vercel.png" class="img-fluid" alt="client-logo"> </div>
+						<div class="client-box"> <img src="images/clients/vercel.png" class="img-fluid"
+								alt="client-logo"> </div>
 					</div>
 					<div onclick="dnspod();" class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/DNSPOD.png" class="img-fluid" alt="client-logo"> </div>
+						<div class="client-box"> <img src="images/clients/DNSPOD.png" class="img-fluid"
+								alt="client-logo"> </div>
 					</div>
 					<div onclick="bmob();" class="col-lg-3">
-						<div class="client-box"> <img src="images/clients/bmob.png" class="img-fluid" alt="client-logo"> </div>
+						<div class="client-box"> <img src="images/clients/bmob.png" class="img-fluid" alt="client-logo">
+						</div>
 					</div>
 				</div>
 			</div> <!-- end container -->
@@ -137,14 +211,18 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-center"> <a class="pb-2 display-4 mb-0 d-inline-block text-dark"
-								href="index.html"><img src="images/DoraFX.png" class="logo-common" ></a>
-							
+								href="index.html"><img src="images/DoraFX.png" class="logo-common"></a>
+
 							<ul class="list-inline social-circle margin-t-30">
-								<li onclick="s1();" class="list-inline-item"><a> <i class="icofont-twitter"></i> </a></li>
-								<li onclick="s2();" class="list-inline-item"><a> <i class="icofont-facebook"></i> </a></li>
+								<li onclick="s1();" class="list-inline-item"><a> <i class="icofont-twitter"></i> </a>
+								</li>
+								<li onclick="s2();" class="list-inline-item"><a> <i class="icofont-facebook"></i> </a>
+								</li>
 								<li onclick="s3();" class="list-inline-item"><a> <i class="icofont-vimeo"></i> </a></li>
-								<li onclick="s4();" class="list-inline-item"><a> <i class="icofont-instagram"></i> </a></li>
-								<li onclick="s5();" class="list-inline-item"><a> <i class="icofont-github"></i> </a></li>
+								<li onclick="s4();" class="list-inline-item"><a> <i class="icofont-instagram"></i> </a>
+								</li>
+								<li onclick="s5();" class="list-inline-item"><a> <i class="icofont-github"></i> </a>
+								</li>
 							</ul>
 							<p class="text-muted m-b-0 copyright-txt" id="copyright"></p>
 						</div>
@@ -160,7 +238,7 @@
 		<script src="js/app.js"></script>
 		<script src="js/social.js"></script>
 		<script type="text/javascript">
-		    var date = new Date();
+			var date = new Date();
 			var year = date.getFullYear();
 			copyright = " © " + year + " DoraFX";
 			$("#copyright").html(copyright);
@@ -168,46 +246,54 @@
 		<script src="js/Bomb.js"></script>
 		<script type="text/javascript">
 			Bmob.initialize("1d8ff4d031855321", "669524");
-		
-			function send(){
+
+			function send() {
 				var name = document.getElementById("name").value;
 				var email = document.getElementById("email").value;
 				var subject = document.getElementById("subject").value;
 				var message = document.getElementById("message").value;
-				//console.log(Email);
-				//console.log(Message);
-				const query = Bmob.Query("DoraFX");
-				query.set("name", name);
-				query.set("email", email);
-				query.set("subject", subject);
-				query.set("message", message);
-				query.save().then(res => {
-					//console.log(res);
-					alert("提交成功！");
-				}).catch(err => {
-					console.log(err);
-					alert("提交失败！");
-				})
+				sendnamevalue = localStorage.getItem("contact_page_send_name_value");
+				sendemailvalue = localStorage.getItem("contact_page_send_email_value");
+				sendsubjectvalue = localStorage.getItem("contact_page_send_subject_value");
+				console.log(sendnamevalue + " " + sendemailvalue + " " +sendsubjectvalue);
+				if(sendnamevalue == 1 && sendemailvalue ==1 && sendsubjectvalue == 1) {
+					console.log("true");
+					const query = Bmob.Query("DoraFX");
+					query.set("name", name);
+					query.set("email", email);
+					query.set("subject", subject);
+					query.set("message", message);
+					query.save().then(res => {
+						//console.log(res);
+						alert("提交成功！");
+					}).catch(err => {
+						console.log(err);
+						alert("提交失败！");
+					})
+				}
+				else {
+					alert("您有必填项未填写！")
+				}
 			}
 		</script>
 		<script type="text/javascript">
-			function github(){
+			function github() {
 				window.location.href = "https://github.com/";
 			}
-			
-			function vercel(){
+
+			function vercel() {
 				window.location.href = "https://vercel.com/";
 			}
-			
-			function dnspod(){
+
+			function dnspod() {
 				window.location.href = "https://www.dnspod.cn/";
 			}
-			
-			function bmob(){
+
+			function bmob() {
 				window.location.href = "https://www.bmob.cn/";
 			}
 		</script>
-		
+
 		<!-- <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280206731'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280206731%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 		<script type="text/javascript">
 			$("#cnzz_stat_icon_1280206731").hide();
