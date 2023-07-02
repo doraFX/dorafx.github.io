@@ -178,7 +178,7 @@ function p28() {
 		$(".single-linksource-h6").html("其他平台查看:");
 		$("#single-linksource-h6").hide();
 		$("#btnlink1").html("Zcool");
-		$("#btnlink1").attr("href","https://my.zcool.com.cn/preview/work/ZNjEwMTA5NjQ=.html");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjEwMTA5NjQ=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/148574237/PROMO-FOR-MY-WEBSITE");
 		$("#btnlink3").html("Bilibili");
@@ -187,5 +187,30 @@ function p28() {
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/web.mp4");
 		$("#SVideo2").attr("poster", "images/works/28.webp");
+	},50);
+}
+
+function p29() {
+	$(".single").show();
+	$("#SImg").attr("src", "https://img.zcool.cn/community/01ctvbfwqmp0tflhdjtt9j3735.gif");
+}
+
+function p30() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("An Opening Title");
+		$(".single-linksource-p").html("这个狗日的片子叫《逃离梆子井》，在制作过程中遇到了极其不负责任的几个人，以后我会单独找时间把整个事情说清楚。");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjU2NzUzOTI=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/173892995/Recent-Opening-Title-Ive-made");
+		$("#btnlink3").html("Bilibili");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1Mj411S7sW/");
+		$("#btnlink4").hide();
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/OpeningTitle.mp4");
+		$("#SVideo2").attr("poster", "images/works/30.webp");
 	},50);
 }
