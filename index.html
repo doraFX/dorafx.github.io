@@ -16,7 +16,13 @@
 		<script src="js/jquery-2.1.4.min.js"></script>
 		<script src="js/Bomb.js"></script>
 		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-		<script>LA.init({id: "Jl5bi3TeBeipiIT3",ck: "Jl5bi3TeBeipiIT3",autoTrack:true})</script>
+		<script>
+			LA.init({
+				id: "Jl5bi3TeBeipiIT3",
+				ck: "Jl5bi3TeBeipiIT3",
+				autoTrack: true
+			})
+		</script>
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -28,67 +34,77 @@
 		</script>
 
 		<script type="text/javascript">
-			Bmob.initialize("32650e7c79688d28", "669524");
-
-			const query = Bmob.Query("portfolio");
-			query.find().then(res => {
-				//console.log(res);
-				a = res.length;
-				//console.log(a);
-				b = a - 1;
-				if (a <= 20) {
-					for (var i = b; i >= 0; i--) {
-						t1 = '<div class="col-lg-4 ';
-						t2 = ' personal" id="workid';
-						t3 = '"><a onclick="p';
-						t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
-						t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
-						t6 = '</p><h4>';
-						t7 = '</h4></div></div></a></div>';
-						num = res[i].num;
-						if (num < 10) {
-							num = "0" + num;
-						}
-						recommend = "";
-						recommendvalue = res[i].recommend;
-						if(recommendvalue == "true"){
-							currentID = "work" + res[i].num;
-							//console.log(currentID);
-							recommend = "recommended";
-						} 
-						tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num + t5 + res[i].parameterdetail + t6 +
-							res[i].name + t7;
-						$("#addplace").append(tfinal);
+			fetch('js/portfolio.json')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
 					}
-				}
-				if (a > 20) {
-					al = a - 20;
-					for (var i = b; i >= al; i--) {
-						t1 = '<div class="col-lg-4 ';
-						t2 = ' personal" id="workid';
-						t3 = '"><a onclick="p';
-						t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
-						t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
-						t6 = '</p><h4>';
-						t7 = '</h4></div></div></a></div>';
-						num = res[i].num;
-						if (num < 10) {
-							num = "0" + num;
+					return response.json();
+				})
+				.then(res => {
+					a = res.length;
+					//console.log(a);
+					b = a - 1;
+					if (a <= 20) {
+						for (var i = b; i >= 0; i--) {
+							t1 = '<div class="col-lg-4 ';
+							t2 = ' personal" id="workid';
+							t3 = '"><a onclick="p';
+							t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+							t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+							t6 = '</p><h4>';
+							t7 = '</h4></div></div></a></div>';
+							num = res[i].num;
+							if (num < 10) {
+								num = "0" + num;
+							}
+							recommend = "";
+							recommendvalue = res[i].recommend;
+							if (recommendvalue == "true") {
+								currentID = "work" + res[i].num;
+								//console.log(currentID);
+								recommend = "recommended";
+							}
+							tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num +
+								t5 + res[i].parameterdetail + t6 +
+								res[i].name + t7;
+							$("#addplace").append(tfinal);
 						}
-						recommend = "";
-						recommendvalue = res[i].recommend;
-						if(recommendvalue == "true"){
-							currentID = "work" + res[i].num;
-							//console.log(currentID);
-							recommend = "recommended";
-						} 
-						tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num + t5 + res[i].parameterdetail + t6 +
-							res[i].name + t7;
-						$("#addplace").append(tfinal);
 					}
-				}
-			    $('.recommended').append('<div class="recommend"><div class="recommend-inner"><div class="recommend-inner-icon"><img src="images/recommend.svg" alt=""></div><div class="recommend-text">Recommended</div></div></div>');
-			});
+					if (a > 20) {
+						al = a - 20;
+						for (var i = b; i >= al; i--) {
+							t1 = '<div class="col-lg-4 ';
+							t2 = ' personal" id="workid';
+							t3 = '"><a onclick="p';
+							t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+							t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+							t6 = '</p><h4>';
+							t7 = '</h4></div></div></a></div>';
+							num = res[i].num;
+							if (num < 10) {
+								num = "0" + num;
+							}
+							recommend = "";
+							recommendvalue = res[i].recommend;
+							if (recommendvalue == "true") {
+								currentID = "work" + res[i].num;
+								//console.log(currentID);
+								recommend = "recommended";
+							}
+							tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num +
+								t5 + res[i].parameterdetail + t6 +
+								res[i].name + t7;
+							$("#addplace").append(tfinal);
+						}
+					}
+					$('.recommended').append(
+						'<div class="recommend"><div class="recommend-inner"><div class="recommend-inner-icon"><img src="images/recommend.svg" alt=""></div><div class="recommend-text">Recommended</div></div></div>'
+					);
+				})
+				.catch(error => {
+					console.log('There was a problem with the fetch operation:', error);
+				});
 		</script>
 
 		<script src="js/portfolio.js"></script>
@@ -110,7 +126,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="single-linksource" style="display: none;">
 			<div onclick="closebuttonlink();" class="closebutton"><i class="fas fa-times"></i></div>
 			<div class="single-contain">
@@ -140,7 +156,7 @@
 				<div class="collapse navbar-collapse" id="navbar-collapse-1">
 					<ul class="nav navbar-nav ml-auto">
 						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" onclick="alert("待更新");">Resume</a></li>
+						<li class="nav-item"><a class="nav-link" onclick="alert(" 待更新");">Resume</a></li>
 						<li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
