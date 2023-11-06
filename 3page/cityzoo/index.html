@@ -4,8 +4,114 @@
 		<meta charset="utf-8">
 		<title>VR drama City zoo in coming</title>
 		<link rel="stylesheet" href="css/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="js/jquery-3.4.1.min.js"></script>
 	</head>
 	<body>
-		<img src="img/poster.webp" class="test" alt="">
+		<div class="page-container">
+			<div class="page-home">
+				<div class="subtitle">
+					<img src="img/subtitle.webp" alt="">
+				</div>
+				<div class="bottom">
+					<div class="bottom-left">
+						<img src="img/L.webp" alt="">
+					</div>
+					<div class="bottom-space">
+					</div>
+					<div class="bottom-right">
+						<img src="img/R.webp" alt="">
+					</div>
+				</div>
+				<div class="bottom-middle">
+					<img src="img/crew.webp" alt="">
+				</div>
+				<div class="bottom-logo">
+					<img src="img/logo.webp" alt="">
+				</div>
+				<div class="head">
+					<div class="btn" onclick="btn1();">
+						了解更多
+					</div>
+				</div>
+			</div>
+			<div class="page2">
+				<div class="page2-inner">
+					<div class="p-head">
+						<div class="p-head-btn" onclick="btn0();">
+							<svg t="1699290319272" class="icon" viewBox="0 0 1024 1024" version="1.1"
+								xmlns="http://www.w3.org/2000/svg" p-id="4148" width="200" height="200">
+								<path
+									d="M167.253333 466.651429L460.312381 173.592381l51.736381-51.736381 51.712 51.712L856.84419 466.651429l-51.712 51.712-256.512-256.463239v640.24381h-73.142857v-640.24381l-256.487619 256.48762L167.253333 466.651429z"
+									p-id="4149"></path>
+							</svg>
+						</div>
+						<div class="p-head-p">
+							阅读创作手记
+						</div>
+						<div class="p-head-btn">
+						</div>
+					</div>
+					<div class="p-context">
+						<img src="img/0.webp" alt="">
+						<img src="img/1.webp" alt="">
+						<img src="img/2.webp" alt="">
+						<img src="img/3.webp" alt="">
+						<img src="img/4.webp" alt="">
+						<img src="img/5.webp" alt="">
+						<img src="img/6.webp" alt="">
+						<img src="img/7.webp" alt="">
+					</div>
+				</div>
+				<!-- 			<div class="page4">
+				<div class="page-bottom-btn" style="opacity: 0;">
+					<div class="btn" onclick="">
+						下一页
+					</div>
+				</div>
+				<div class="page-top-btn">
+					<div class="btn" onclick="btn2();">
+						上一页
+					</div>
+				</div>
+			</div> -->
+			</div>
+			<script>
+				function btn0() {
+					setTimeout(function() {
+						$(".page-home").css("transform", "translateY(0%)");
+						$(".page2").css("transform", "translateY(0%)");
+						$(".page3").css("transform", "translateY(0%)");
+						$(".page4").css("transform", "translateY(0%)");
+					}, 200);
+				}
+
+				function btn1() {
+					setTimeout(function() {
+						$(".page-home").css("transform", "translateY(-100%)");
+						$(".page2").css("transform", "translateY(-100%)");
+						$(".page3").css("transform", "translateY(-100%)");
+						$(".page4").css("transform", "translateY(-100%)");
+					}, 200);
+				}
+
+				function btn2() {
+					setTimeout(function() {
+						$(".page-home").css("transform", "translateY(-200%)");
+						$(".page2").css("transform", "translateY(-200%)");
+						$(".page3").css("transform", "translateY(-200%)");
+						$(".page4").css("transform", "translateY(-200%)");
+					}, 200);
+				}
+
+				function btn3() {
+					setTimeout(function() {
+						$(".page-home").css("transform", "translateY(-300%)");
+						$(".page2").css("transform", "translateY(-300%)");
+						$(".page3").css("transform", "translateY(-300%)");
+						$(".page4").css("transform", "translateY(-300%)");
+					}, 200);
+				}
+			</script>
 	</body>
-</html>
+</html
