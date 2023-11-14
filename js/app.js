@@ -1,11 +1,3 @@
-
-/* Theme Name: Buckzo - Responsive Minimal Template
-   Author: MyraStudio
-   Version: 1.0.0
-   File Description: Main JS file of the template
-*/
-
-
 (function ($) {
 
     'use strict';
