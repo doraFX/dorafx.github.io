@@ -989,6 +989,11 @@ blockquote {
 .social-block img {
 	/* max-width: 20px; */
 	max-height: 20px;
+	transition: filter 0.5s ease-in-out;
+}
+
+.social-block:hover img {
+	filter: brightness(5) saturate(0);
 }
 
 .social-circle img {
@@ -1050,18 +1055,18 @@ blockquote {
 	height: 12px;
 }
 
-.wechat-block:hover + .wechat-code{
+.wechat-block:hover+.wechat-code {
 	opacity: 100%;
 	transition-delay: 0.3s;
 }
 
-.wechat-block:hover ~ .wechat-code {
-    transition-delay: 0.3s;
+.wechat-block:hover~.wechat-code {
+	transition-delay: 0.3s;
 }
 
-.wechat-block:hover ~ .wechat-code:hover {
-    opacity: 0%;
-    transition-delay: 0.3s;
+.wechat-block:hover~.wechat-code:hover {
+	opacity: 0%;
+	transition-delay: 0.3s;
 }
 
 .copyright-txt {
