@@ -1175,7 +1175,7 @@ blockquote {
 		border-radius: 5px;
 		max-height: calc(100vh - 40px);
 	}
-	
+
 	#SVideo2 {
 		padding-bottom: 20px;
 	}
@@ -1205,7 +1205,7 @@ blockquote {
 	justify-content: center;
 }
 
-.gc-display1 img{
+.gc-display1 img {
 	height: 600px;
 	margin-right: 40px;
 	border-radius: 20px;
@@ -1218,8 +1218,8 @@ blockquote {
 		display: flex;
 		flex-direction: column;
 	}
-	
-	.gc-display1 img{
+
+	.gc-display1 img {
 		width: 80%;
 		margin: 0;
 		position: relative;
@@ -1296,7 +1296,7 @@ blockquote {
 	overflow-x: hidden;
 	width: 40px;
 	transition: 0.2s ease-in-out;
-	background: linear-gradient( 135deg, #124c89 10%, #0b1c48 100%);
+	background: linear-gradient(135deg, #124c89 10%, #0b1c48 100%);
 	border-radius: 20px;
 }
 
@@ -1320,13 +1320,61 @@ blockquote {
 	margin-right: 12px;
 }
 
-.recommend:hover .recommend-inner{
+.recommend:hover .recommend-inner {
 	width: 162px;
 	filter: brightness(1.1);
 }
 
-.recommend:active .recommend-inner{
+.recommend:active .recommend-inner {
 	width: 162px;
 	filter: brightness(1.5);
 	transition: 0.2s linear;
+}
+
+.beian {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.ICP {}
+
+.gap {
+	width: 2px;
+	height: 2px;
+	background-color: #777;
+	border-radius: 1px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.Gongan {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.Gongan img {
+	height: 18px;
+	margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+	.beian {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.Gongan {
+		margin-top: 5px;
+	}
+	
+	.gap {
+		width: 0px;
+		height: 0px;
+		margin-left: 0px;
+		margin-right: 0px;
+	}
 }
