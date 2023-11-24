@@ -37,6 +37,7 @@ body {
 	padding: 0 0 30px 0;
 	font-size: 15px;
 	background: url("../images/bg-pattern.png") no-repeat;
+	background-size: cover;
 }
 
 ::selection {
