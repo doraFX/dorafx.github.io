@@ -1464,3 +1464,14 @@ blockquote {
 		margin-right: 0px;
 	}
 }
+
+
+
+.div404con {
+	width: 100%;
+	max-width: 100vw;
+}
+
+.div404con svg {
+	width: 100%;
+}
