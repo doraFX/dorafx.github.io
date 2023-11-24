@@ -132,6 +132,10 @@ button:focus {
 	outline: none !important;
 }
 
+video {
+	transition: 0.5s ease-in-out;
+}
+
 .subtitle {
 	font-weight: 300;
 	line-height: 28px;
@@ -1142,7 +1146,7 @@ blockquote {
 	height: 100vh;
 	z-index: 9990;
 	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(20px);
 }
 
 .single-video {
@@ -1151,7 +1155,7 @@ blockquote {
 	height: 100vh;
 	z-index: 9990;
 	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(20px);
 }
 
 .single-linksource {
@@ -1160,7 +1164,7 @@ blockquote {
 	height: 100vh;
 	z-index: 9990;
 	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(20px);
 }
 
 .single-linksource-h {
@@ -1189,7 +1193,7 @@ blockquote {
 
 .single-linksource-h6 {
 	width: 100%;
-	margin-top: 0;
+	margin-top: 20px;
 	margin-bottom: 0;
 	width: 100%;
 	display: flex;
@@ -1211,6 +1215,7 @@ blockquote {
 	border-radius: 5px;
 	color: #ffffff;
 	transition: all 0.2s;
+	z-index: 99999;
 }
 
 .closebutton:hover {
@@ -1252,7 +1257,7 @@ blockquote {
 }
 
 #SVideo2 {
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 }
 
 @media (max-width: 768px) {

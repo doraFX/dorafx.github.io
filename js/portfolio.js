@@ -9,6 +9,7 @@ function closebuttonvideo() {
 
 function closebuttonlink() {
 	$(".single-linksource").hide();
+	$("#slvideo").hide();
 	$('#SVideo2').get(0).pause();
 }
 
@@ -212,5 +213,26 @@ function p30() {
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/OpeningTitle.mp4");
 		$("#SVideo2").attr("poster", "images/works/30.webp");
+	},50);
+}
+
+function p31() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("The Blue Dream");
+		$(".single-linksource-p").html("本片旨在制作一部VR头显宣传片，通过动态图形设计的方式演绎，主题是探索VR的无限可能性。");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcxNTA3MDg=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics");
+		$("#btnlink3").html("Bilibili");
+		$("#btnlink3").attr("href","#");
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/the_blue_dream.mp4");
+		$("#SVideo2").attr("poster", "images/works/31.webp");
 	},50);
 }
