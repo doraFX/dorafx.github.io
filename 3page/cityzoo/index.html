@@ -6,8 +6,88 @@
 		<link rel="stylesheet" href="css/style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="js/jquery-3.4.1.min.js"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
 	</head>
 	<body>
+		<div class="single-linksource" style="display: none;">
+			<div onclick="closebuttonlink();" class="closebutton">
+				<svg t="1700964027075" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="4012" width="200" height="200">
+					<path
+						d="M576 512l277.333333 277.333333-64 64-277.333333-277.333333L234.666667 853.333333 170.666667 789.333333l277.333333-277.333333L170.666667 234.666667 234.666667 170.666667l277.333333 277.333333L789.333333 170.666667 853.333333 234.666667 576 512z"
+						fill="#000000" p-id="4013"></path>
+				</svg>
+			</div>
+			<div class="single-contain">
+				<div class="single-inner" style="display: none;" id="slvideo">
+					<video id="SVideo2" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
+						controls="" data-title=""></video>
+				</div>
+				<div class="social-share" style="display: none;">
+					<div class="social-item">
+						<a class="btn-social btn-wechat">
+							<svg fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 48 48"
+								aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"
+								class="arco-icon arco-icon-wechat" style="font-size: 32px;">
+								<path fill="currentColor" stroke="none"
+									d="M32.09 16.362a14.39 14.39 0 0 0-6.927 1.716 13.087 13.087 0 0 0-5.008 4.676 11.936 11.936 0 0 0-1.856 6.473c.01 1.137.185 2.273.517 3.36h-1.505a26.653 26.653 0 0 1-4.766-.593l-.925-.166-5.665 2.93 1.55-4.848C3.179 26.783 1.018 23.077 1 18.792a11.951 11.951 0 0 1 2.188-6.927 14.943 14.943 0 0 1 5.938-5.027 18.579 18.579 0 0 1 8.248-1.837A18.82 18.82 0 0 1 24.8 6.506a16.863 16.863 0 0 1 5.893 4.128 11.963 11.963 0 0 1 2.992 5.817 17.922 17.922 0 0 0-1.595-.09Zm-20.152-.414a2.167 2.167 0 0 0 1.505-.471c.405-.378.62-.908.593-1.46a1.881 1.881 0 0 0-.592-1.46 2.025 2.025 0 0 0-1.506-.535 2.778 2.778 0 0 0-1.67.535c-.454.323-.728.849-.728 1.401a1.708 1.708 0 0 0 .727 1.523 2.925 2.925 0 0 0 1.671.467ZM47 28.99a9.573 9.573 0 0 1-1.59 5.193c-1.128 1.6-2.52 3-4.129 4.128l1.258 4.129-4.51-2.413h-.243a20.758 20.758 0 0 1-4.6.76 15.538 15.538 0 0 1-7.03-1.59 13.089 13.089 0 0 1-5.008-4.313 10.501 10.501 0 0 1-1.838-5.939 10.29 10.29 0 0 1 1.838-5.92c1.266-1.847 3-3.334 5.008-4.313a15.579 15.579 0 0 1 7.03-1.59 14.919 14.919 0 0 1 6.761 1.59 13.286 13.286 0 0 1 5.09 4.312 10.004 10.004 0 0 1 1.94 5.966H47ZM23.407 11.955a2.77 2.77 0 0 0-1.747.534 1.65 1.65 0 0 0-.76 1.46c-.017.584.27 1.146.76 1.46.498.36 1.1.544 1.716.535a2.083 2.083 0 0 0 1.505-.472c.368-.404.561-.925.534-1.46a1.834 1.834 0 0 0-.534-1.532 1.887 1.887 0 0 0-1.532-.534h.063v.009h-.005Zm5.256 15.03a2.016 2.016 0 0 0 1.46-.498c.332-.288.525-.7.534-1.137a1.612 1.612 0 0 0-.534-1.136 2.062 2.062 0 0 0-1.46-.499 1.58 1.58 0 0 0-1.092.499c-.305.296-.49.71-.498 1.136.009.427.184.84.498 1.137.288.305.679.48 1.092.499Zm8.953 0a2.016 2.016 0 0 0 1.46-.498c.332-.288.525-.7.534-1.137a1.558 1.558 0 0 0-.593-1.136 2.12 2.12 0 0 0-1.401-.499 1.493 1.493 0 0 0-1.092.499c-.305.296-.49.71-.498 1.136.009.427.184.84.498 1.137.279.305.674.49 1.092.499Z">
+								</path>
+							</svg>
+						</a>
+					</div>
+					<div class="social-item">
+						<a class="btn-social btn-moment">
+							<svg t="1700967661139" class="icon" viewBox="0 0 1024 1024" version="1.1"
+								xmlns="http://www.w3.org/2000/svg" p-id="4738" width="200" height="200">
+								<path
+									d="M512 954.24A442.24 442.24 0 1 0 69.76 512 442.08 442.08 0 0 0 512 954.24z m0-30.88a401.12 401.12 0 0 1-137.12-21.92V621.6l274.24 276.64A356 356 0 0 1 512 923.36z m285.28-119.68a400 400 0 0 1-112 81.28L487.2 687.04l389.44 1.92a359.52 359.52 0 0 1-79.2 114.72z m118.24-289.28a400 400 0 0 1-21.92 136.96H613.76l276.8-273.92a355.04 355.04 0 0 1 25.12 136.96z m-232.8-368a355.68 355.68 0 0 1 114.56 79.04 402.88 402.88 0 0 1 81.44 112L680.96 535.52zM512 653.6A141.6 141.6 0 1 1 653.6 512 141.6 141.6 0 0 1 512 653.6z m0-548.32A400 400 0 0 1 649.12 128v280L375.04 130.4A356.32 356.32 0 0 1 512 105.28z m-285.28 119.84a405.44 405.44 0 0 1 112-81.44l198.4 198.08-389.44-2.08a355.68 355.68 0 0 1 79.04-114.56zM108.64 514.4a400 400 0 0 1 21.92-136.96h279.84L133.6 651.36a357.92 357.92 0 0 1-24.96-136.96z m234.72-21.12l-1.92 389.44a357.12 357.12 0 0 1-114.72-79.04 401.76 401.76 0 0 1-81.28-112z"
+									fill="#FFFFFF" p-id="4739"></path>
+								<path
+									d="M649.12 128A400 400 0 0 0 512 105.28a356.32 356.32 0 0 0-137.12 25.12l274.08 276.8z"
+									fill="#FC6B4F" p-id="4740"></path>
+								<path
+									d="M797.44 225.12a355.68 355.68 0 0 0-114.56-79.04l-1.92 389.44 197.92-198.08a402.88 402.88 0 0 0-81.44-112.32z"
+									fill="#7838F2" p-id="4741"></path>
+								<path
+									d="M893.76 651.36a400 400 0 0 0 21.92-136.96 355.04 355.04 0 0 0-25.12-136.96l-276.8 273.92z"
+									fill="#5698F3" p-id="4742"></path>
+								<path
+									d="M685.12 884.96a400 400 0 0 0 112-81.28 359.52 359.52 0 0 0 79.2-114.72l-389.44-1.92z"
+									fill="#20E9F4" p-id="4743"></path>
+								<path
+									d="M375.04 901.44A401.12 401.12 0 0 0 512 923.36a356 356 0 0 0 136.96-25.12L375.04 621.6z"
+									fill="#00FD60" p-id="4744"></path>
+								<path
+									d="M341.44 882.72l1.92-389.44L145.44 691.2a401.76 401.76 0 0 0 81.28 112 357.12 357.12 0 0 0 114.72 79.52z"
+									fill="#ABFB5B" p-id="4745"></path>
+								<path
+									d="M130.56 377.44a400 400 0 0 0-21.92 136.96 357.92 357.92 0 0 0 24.96 136.96l276.8-273.92z"
+									fill="#F0E254" p-id="4746"></path>
+								<path
+									d="M339.04 144a405.44 405.44 0 0 0-112 81.44 355.68 355.68 0 0 0-79.04 114.56l389.44 2.08z"
+									fill="#F6B351" p-id="4747"></path>
+							</svg>
+						</a>
+					</div>
+					<div class="social-item">
+						<a class="btn-social btn-wechat">
+							<i class="fa fa-weixin"></i>
+						</a>
+					</div>
+					<div class="social-item">
+						<a class="btn-social btn-wechat">
+							<i class="fa fa-weixin"></i>
+						</a>
+					</div>
+					<div class="social-item">
+						<a class="btn-social btn-wechat">
+							<i class="fa fa-weixin"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="page-container">
 			<div class="page-home">
 				<div class="subtitle">
@@ -32,6 +112,12 @@
 				<div class="head">
 					<div class="btn" onclick="btn1();">
 						了解更多
+					</div>
+					<div class="head-separate">
+
+					</div>
+					<div class="btn" onclick="trailer();">
+						观看预告片
 					</div>
 				</div>
 			</div>
@@ -63,7 +149,7 @@
 						<img src="img/7.webp" alt="">
 					</div>
 				</div>
-				<!-- 			<div class="page4">
+				<!--<div class="page4">
 				<div class="page-bottom-btn" style="opacity: 0;">
 					<div class="btn" onclick="">
 						下一页
@@ -73,45 +159,62 @@
 					<div class="btn" onclick="btn2();">
 						上一页
 					</div>
-				</div>
-			</div> -->
+				</div>-->
 			</div>
-			<script>
-				function btn0() {
-					setTimeout(function() {
-						$(".page-home").css("transform", "translateY(0%)");
-						$(".page2").css("transform", "translateY(0%)");
-						$(".page3").css("transform", "translateY(0%)");
-						$(".page4").css("transform", "translateY(0%)");
-					}, 200);
-				}
+		</div>
+		<script>
+			function btn0() {
+				setTimeout(function() {
+					$(".page-home").css("transform", "translateY(0%)");
+					$(".page2").css("transform", "translateY(0%)");
+					$(".page3").css("transform", "translateY(0%)");
+					$(".page4").css("transform", "translateY(0%)");
+				}, 200);
+			}
 
-				function btn1() {
-					setTimeout(function() {
-						$(".page-home").css("transform", "translateY(-100%)");
-						$(".page2").css("transform", "translateY(-100%)");
-						$(".page3").css("transform", "translateY(-100%)");
-						$(".page4").css("transform", "translateY(-100%)");
-					}, 200);
-				}
+			function btn1() {
+				setTimeout(function() {
+					$(".page-home").css("transform", "translateY(-100%)");
+					$(".page2").css("transform", "translateY(-100%)");
+					$(".page3").css("transform", "translateY(-100%)");
+					$(".page4").css("transform", "translateY(-100%)");
+				}, 200);
+			}
 
-				function btn2() {
-					setTimeout(function() {
-						$(".page-home").css("transform", "translateY(-200%)");
-						$(".page2").css("transform", "translateY(-200%)");
-						$(".page3").css("transform", "translateY(-200%)");
-						$(".page4").css("transform", "translateY(-200%)");
-					}, 200);
-				}
+			function btn2() {
+				setTimeout(function() {
+					$(".page-home").css("transform", "translateY(-200%)");
+					$(".page2").css("transform", "translateY(-200%)");
+					$(".page3").css("transform", "translateY(-200%)");
+					$(".page4").css("transform", "translateY(-200%)");
+				}, 200);
+			}
 
-				function btn3() {
-					setTimeout(function() {
-						$(".page-home").css("transform", "translateY(-300%)");
-						$(".page2").css("transform", "translateY(-300%)");
-						$(".page3").css("transform", "translateY(-300%)");
-						$(".page4").css("transform", "translateY(-300%)");
-					}, 200);
-				}
-			</script>
+			function btn3() {
+				setTimeout(function() {
+					$(".page-home").css("transform", "translateY(-300%)");
+					$(".page2").css("transform", "translateY(-300%)");
+					$(".page3").css("transform", "translateY(-300%)");
+					$(".page4").css("transform", "translateY(-300%)");
+				}, 200);
+			}
+
+			function trailer() {
+				setTimeout(function() {
+					$(".single-linksource").show();
+					//$(".single-linksource-h").html("The Blue Dream");
+					//$(".single-linksource-p").html("本片旨在制作一部VR头显宣传片，通过动态图形设计的方式演绎，主题是探索VR的无限可能性。");
+					$("#slvideo").show();
+					$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/city_zoo_trailer.mp4");
+					$("#SVideo2").attr("poster", "img/cover.webp");
+				}, 50);
+			}
+
+			function closebuttonlink() {
+				$(".single-linksource").hide();
+				$("#slvideo").hide();
+				$('#SVideo2').get(0).pause();
+			}
+		</script>
 	</body>
 </html
