@@ -30,6 +30,50 @@
 				s.parentNode.insertBefore(hm, s);
 			})();
 		</script>
+		<script type="text/javascript">
+			fetch('js/portfolio.json')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
+				.then(res => {
+					a = res.length;
+					//console.log(a);
+					b = a - 1;
+					for (var i = b; i >= 0; i--) {
+						t1 = '<div class="col-lg-4 ';
+						t2 = ' personal" id="workid';
+						t3 = '"><a onclick="p';
+						t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+						t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+						t6 = '</p><h4>';
+						t7 = '</h4></div></div></a></div>';
+						num = res[i].num;
+						if (num < 10) {
+							num = "0" + num;
+						}
+						recommend = "";
+						recommendvalue = res[i].recommend;
+						if (recommendvalue == "true") {
+							currentID = "work" + res[i].num;
+							//console.log(currentID);
+							recommend = "recommended";
+						}
+						tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num +
+							t5 + res[i].parameterdetail + t6 +
+							res[i].name + t7;
+						$("#addplace").append(tfinal);
+					}
+					$('.recommended').append(
+						'<div class="recommend"><div class="recommend-inner"><div class="recommend-inner-icon"><img src="images/recommend.svg" alt=""></div><div class="recommend-text">Recommended</div></div></div>'
+					);
+				})
+				.catch(error => {
+					console.log('There was a problem with the fetch operation:', error);
+				});
+		</script>
 	</head>
 	<body>
 		<div class="single" style="display: none;">
@@ -111,472 +155,13 @@
 							<a href="#" data-filter="*" class="current waves-effect waves-success">All</a>
 							<a href="#" data-filter=".3D" class="waves-effect waves-success">3D</a>
 							<a href="#" data-filter=".2D" class="waves-effect waves-success">2D</a>
-							<a href="#" data-filter=".video" class="waves-effect waves-success">Video</a>
-							<a href="#" data-filter=".web" class="waves-effect waves-success">Web</a>
+							<a href="#" data-filter=".Video" class="waves-effect waves-success">Video</a>
+							<a href="#" data-filter=".Web" class="waves-effect waves-success">Web</a>
 						</div>
 					</div>
 				</div>
 				<div class="port portfolio-masonry m-b-30">
-					<div class="portfolioContainer row">
-						
-						<div class="col-lg-4 video personal">
-							<div class="recommend">
-								<div class="recommend-inner">
-									<div class="recommend-inner-icon">
-										<img src="images/recommend.svg" alt="">
-									</div>
-									<div class="recommend-text">Recommended</div>
-								</div>
-							</div>
-							<a onclick="p31();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/31.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>The Blue Dream</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<div class="recommend">
-								<div class="recommend-inner">
-									<div class="recommend-inner-icon">
-										<img src="images/recommend.svg" alt="">
-									</div>
-									<div class="recommend-text">Recommended</div>
-								</div>
-							</div>
-							<a onclick="p30();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/30.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>An Opening Title</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<div class="recommend">
-								<div class="recommend-inner">
-									<div class="recommend-inner-icon">
-										<img src="images/recommend.svg" alt="">
-									</div>
-									<div class="recommend-text">Recommended</div>
-								</div>
-							</div>
-							<a onclick="p28();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/28.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>Promo For My Website</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<div class="recommend">
-								<div class="recommend-inner">
-									<div class="recommend-inner-icon">
-										<img src="images/recommend.svg" alt="">
-									</div>
-									<div class="recommend-text">Recommended</div>
-								</div>
-							</div>
-							<a onclick="p27();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/27.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>Motion Graphic Design</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p1();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/01.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>A bike</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p2();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/02.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Hammer Screws Metals</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p3();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/03.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Fruits</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p4();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/04.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Cards of Cardcaptor Sakura</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p5();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/05.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Mushroom</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p6();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/06.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Ergent</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p7();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/07.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Windows 10</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p8();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/08.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Old Temple</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p9();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/09.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Sculpture Gallery</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p10();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/10.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>Float Beacon</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<a onclick="p11();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/11.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>China Education Modernization 2035</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<a onclick="p12();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/12.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>DEMOREEL</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<a onclick="p13();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/13.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>Third Party Assets Showreel</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 web personal">
-							<a onclick="p14();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/14.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>WEB</p>
-										<h4>MSFS Page</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<a onclick="p15();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/15.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>JNU 60th Anniversary</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p16();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/16.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Harbor</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p17();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/17.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>3D Render</p>
-										<h4>Loneliness</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 Web personal">
-							<a onclick="p18();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/18.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>WEB</p>
-										<h4>Good Cloud</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 Web personal">
-							<a onclick="p19();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img">
-										<img src="images/works/19.webp" class="img-fluid" alt="member-image">
-									</div>
-									<div class="portfolio-box-detail">
-										<p>WEB</p>
-										<h4>看看忘带了什么没</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 video personal">
-							<a onclick="p20();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/20.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>Video</p>
-										<h4>电脑装死器</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p21();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/21.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>构成设计作业：章鱼哥吹竖笛</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p22();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/22.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>2022央视春晚登陆微信视频号文字动效</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p23();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/23.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>色彩构成作业#1</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p24();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/24.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>色彩构成作业#2</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p25();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/25.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>色彩构成作业#3</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 3D personal">
-							<a onclick="p26();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/26.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>3D</p>
-										<h4>Minecraft Theatre</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-lg-4 2D personal">
-							<a onclick="p29();">
-								<div class="portfolio-box">
-									<div class="portfolio-box-img"><img src="images/works/29.webp" class="img-fluid"
-											alt="member-image"></div>
-									<div class="portfolio-box-detail">
-										<p>2D</p>
-										<h4>设计基础Coursework：百花齐放</h4>
-									</div>
-								</div>
-							</a>
-						</div>
-
+					<div class="portfolioContainer row" id="addplace">
 
 					</div> <!-- end portfoliocontainer-->
 				</div> <!-- End row -->

@@ -142,12 +142,14 @@ function p26() {
 		$(".single-linksource-h").html("Minecraft Theatre");
 		$(".single-linksource-p").html("前段时间我参与了一个剧院项目的建模工作，所以最近对剧院的设计布局开始感兴趣。这两天在休息的时候，玩Minecraft的同时建了一个剧院……");
 		$(".single-linksource-h6").html("请选择作品预览平台:");
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink2").html("Behance");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNTkzOTE0NTY=.html");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/142211397/Minecraft-Theatre");
-		$("#btnlink3").hide();
-		$("#btnlink4").hide();
 	},50);
 }
 
@@ -158,13 +160,16 @@ function p27() {
 		$(".single-linksource-p").html("可能是2023年的C4D结课作业");
 		$(".single-linksource-h6").html("其他平台查看:");
 		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").show();
+		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjA3NjUyNTI=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/147530811/Motion-Graphic-Design");
 		$("#btnlink3").html("Bilibili");
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV14f4y1Z71r");
-		$("#btnlink4").hide();
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/cursor.mp4");
 		$("#SVideo2").attr("poster", "images/works/27.webp");
@@ -178,13 +183,16 @@ function p28() {
 		$(".single-linksource-p").html("此网站的宣传片<br>立项和做预览的时候在暑假前，渲染的时候正好放暑假，所以显而易见烂尾的概率突然就变得大了起来，于是我尽力不让它烂尾……");
 		$(".single-linksource-h6").html("其他平台查看:");
 		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").show();
+		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjEwMTA5NjQ=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/148574237/PROMO-FOR-MY-WEBSITE");
 		$("#btnlink3").html("Bilibili");
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1yF411K7oc/");
-		$("#btnlink4").hide();
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/web.mp4");
 		$("#SVideo2").attr("poster", "images/works/28.webp");
@@ -197,42 +205,73 @@ function p29() {
 }
 
 function p30() {
+	$(".single").show();
+	$("#SImg").attr("src", "images/works/30.webp");
+}
+
+function p31() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("热烈庆祝软著下证！");
+		$(".single-linksource-p").html("热烈庆祝办了半年的软著顺利下证");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjYxOTU0Mjg=.html");
+		$("#btnlink2").html("Bilibili");
+		$("#btnlink2").attr("href","https://www.bilibili.com/video/BV1814y1v7gA/");
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://video.dorafx.top/software_copyright.mp4");
+		$("#SVideo2").attr("poster", "images/works/31.webp");
+	},50);
+}
+
+function p32() {
 	setTimeout(function(){
 		$(".single-linksource").show();
 		$(".single-linksource-h").html("An Opening Title");
 		$(".single-linksource-p").html("这个狗日的片子叫《逃离梆子井》，在制作过程中遇到了极其不负责任的几个人，以后我会单独找时间把整个事情说清楚。");
 		$(".single-linksource-h6").html("其他平台查看:");
 		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").show();
+		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjU2NzUzOTI=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/173892995/Recent-Opening-Title-Ive-made");
 		$("#btnlink3").html("Bilibili");
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1Mj411S7sW/");
-		$("#btnlink4").hide();
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/OpeningTitle.mp4");
-		$("#SVideo2").attr("poster", "images/works/30.webp");
+		$("#SVideo2").attr("poster", "images/works/32.webp");
 	},50);
 }
 
-function p31() {
+function p33() {
 	setTimeout(function(){
 		$(".single-linksource").show();
 		$(".single-linksource-h").html("The Blue Dream");
 		$(".single-linksource-p").html("本片旨在制作一部VR头显宣传片，通过动态图形设计的方式演绎，主题是探索VR的无限可能性。");
 		$(".single-linksource-h6").html("其他平台查看:");
 		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcxNTA3MDg=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics");
 		$("#btnlink3").html("Bilibili");
 		$("#btnlink3").attr("href","#");
-		$("#btnlink3").hide();
-		$("#btnlink4").hide();
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/the_blue_dream.mp4");
-		$("#SVideo2").attr("poster", "images/works/31.webp");
+		$("#SVideo2").attr("poster", "images/works/33.webp");
 	},50);
 }
