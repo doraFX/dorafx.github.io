@@ -64,19 +64,19 @@ function p10() {
 
 function p11() {
 	$(".single-video").show();
-	$("#SVideo").attr("src", "https://demoreel-video.vercel.app/2035.mp4");
+	$("#SVideo").attr("src", "https://video.dorafx.top/2035.mp4");
 	$("#SVideo").attr("poster", "images/works/11.webp");
 }
 
 function p12() {
 	$(".single-video").show();
-	$("#SVideo").attr("src", "https://demoreel-video.vercel.app/DEMOREEL_x264.mp4");
+	$("#SVideo").attr("src", "https://video.dorafx.top/DEMOREEL_x264.mp4");
 	$("#SVideo").attr("poster", "images/works/12.webp");
 }
 
 function p13() {
 	$(".single-video").show();
-	$("#SVideo").attr("src", "https://demoreel-video.vercel.app/third-party-assets.mp4");
+	$("#SVideo").attr("src", "https://video.dorafx.top/third-party-assets.mp4");
 	$("#SVideo").attr("poster", "images/works/13.webp");
 }
 
@@ -86,7 +86,7 @@ function p14() {
 
 function p15() {
 	$(".single-video").show();
-	$("#SVideo").attr("src", "https://demoreel-video.vercel.app/JNU60.mp4");
+	$("#SVideo").attr("src", "https://video.dorafx.top/JNU60.mp4");
 	$("#SVideo").attr("poster", "images/works/15.webp");
 }
 
@@ -166,7 +166,7 @@ function p27() {
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV14f4y1Z71r");
 		$("#btnlink4").hide();
 		$("#slvideo").show();
-		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/cursor.mp4");
+		$("#SVideo2").attr("src", "https://video.dorafx.top/cursor.mp4");
 		$("#SVideo2").attr("poster", "images/works/27.webp");
 	},50);
 }
@@ -186,7 +186,7 @@ function p28() {
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1yF411K7oc/");
 		$("#btnlink4").hide();
 		$("#slvideo").show();
-		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/web.mp4");
+		$("#SVideo2").attr("src", "https://video.dorafx.top/web.mp4");
 		$("#SVideo2").attr("poster", "images/works/28.webp");
 	},50);
 }
@@ -211,7 +211,7 @@ function p30() {
 		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1Mj411S7sW/");
 		$("#btnlink4").hide();
 		$("#slvideo").show();
-		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/OpeningTitle.mp4");
+		$("#SVideo2").attr("src", "https://video.dorafx.top/OpeningTitle.mp4");
 		$("#SVideo2").attr("poster", "images/works/30.webp");
 	},50);
 }
@@ -232,7 +232,7 @@ function p31() {
 		$("#btnlink3").hide();
 		$("#btnlink4").hide();
 		$("#slvideo").show();
-		$("#SVideo2").attr("src", "https://demoreel-video.vercel.app/the_blue_dream.mp4");
+		$("#SVideo2").attr("src", "https://video.dorafx.top/the_blue_dream.mp4");
 		$("#SVideo2").attr("poster", "images/works/31.webp");
 	},50);
 }
