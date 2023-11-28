@@ -262,14 +262,14 @@ function p33() {
 		$("#single-linksource-h6").hide();
 		$("#btnlink1").show();
 		$("#btnlink2").show();
-		$("#btnlink3").hide();
+		$("#btnlink3").show();
 		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
 		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcxNTA3MDg=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics");
 		$("#btnlink3").html("Bilibili");
-		$("#btnlink3").attr("href","#");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1ku4y157Qt");
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/the_blue_dream.mp4");
 		$("#SVideo2").attr("poster", "images/works/33.webp");
