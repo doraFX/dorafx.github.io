@@ -269,7 +269,7 @@ function p33() {
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics");
 		$("#btnlink3").html("Bilibili");
-		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1ku4y157Qt");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1ku4y157Qt/");
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/the_blue_dream.mp4");
 		$("#SVideo2").attr("poster", "images/works/33.webp");
