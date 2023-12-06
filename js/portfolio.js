@@ -275,3 +275,26 @@ function p33() {
 		$("#SVideo2").attr("poster", "images/works/33.webp");
 	},50);
 }
+
+function p34() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("Thunderfire Opening Title");
+		$(".single-linksource-p").html("Thunderfire电影的预演Opening Title<br>After Effetcs制作，没什么技术含量");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").hide();
+		$("#btnlink4").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcyMTIyNjQ=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/185797953/Opening-Title-for-Thunderfire");
+		$("#btnlink3").html("Bilibili");
+		$("#btnlink3").attr("href","https://www.bilibili.com/video/BV1ku4y157Qt/");
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://video.dorafx.top/the_blue_dream.mp4");
+		$("#SVideo2").attr("poster", "images/works/33.webp");
+	},50);
+}
