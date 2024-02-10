@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>车牌图片生成器</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script src="js/city.js"></script>
+		<script src="js/html2canvas.min.js"></script>
+		<script src="js/three.min.js"></script>
+		<script src="js/generate.js"></script>
+		<script>
+			$(document).ready(function() {
+				localStorage.removeItem('bumpMap');
+				localStorage.removeItem('normalMap');
+				// 初始化国家下拉列表
+				function initCountrySelect() {
+					$.each(countryCities, function(country, cities) {
+						$('#country-select').append($('<option>', {
+							value: country,
+							text: country
+						}));
+					});
+				}
+
+				// 根据选定的国家更新城市列表
+				function updateCitySelect(country) {
+					var cities = countryCities[country]; // 根据国家获取城市列表
+
+					$('#city-select').empty(); // 清空城市下拉列表
+
+					// 遍历城市列表并添加到城市下拉列表中
+					$.each(cities, function(index, city) {
+						$('#city-select').append($('<option>', {
+							value: city,
+							text: city
+						}));
+					});
+				}
+
+				// 监听国家选择变化事件
+				$('#country-select').change(function() {
+					updateCitySelect($(this).val()); // 更新城市列表
+				});
+
+				// 初始化国家和城市下拉列表
+				initCountrySelect();
+
+				// 设置默认选项为“巴洛维亚”和“朱科夫斯基”
+				$('#country-select').val('巴洛维亚').trigger('change'); // 触发change事件来更新城市列表
+				$('#city-select').val('朱科夫斯基'); // 设置默认城市
+				$('.plate-left-code').html('PV');
+				$('.plate-right-citycode-val').html('CH');
+
+
+				$('#map-type').change(function() {
+					var selectedMapType = $(this).val();
+
+					// 根据选择的贴图类型更新凹凸/法线贴图展示区的内容
+					if (selectedMapType === 'bump') {
+						$('#bnmh').text('凹凸贴图展示');
+						$("#bump-normal-gen").text('凹凸贴图生成')
+					} else if (selectedMapType === 'normal') {
+						$('#bnmh').text('法线贴图展示');
+						$("#bump-normal-gen").text('法线贴图生成')
+					}
+				});
+
+				// 默认选择
+				$('#map-type').val('bump').trigger('change');
+
+				$('#random-wear').change(function() {
+					if ($(this).is(':checked')) {
+						console.log('随机磨损：开');
+						// 这里可以添加开启随机磨损时的逻辑
+					} else {
+						console.log('随机磨损：关');
+						// 这里可以添加关闭随机磨损时的逻辑
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="license-plate-generator">
+
+			<!-- 车牌贴图展示区 -->
+			<div id="plate-image">
+				<div class="head">
+					车牌贴图
+				</div>
+				<div class="plate-generate">
+					<div class="plate-left">
+						<div class="plate-left-flag">
+							<img src="img/flag1.jpg" alt="">
+						</div>
+						<div class="plate-left-code">
+
+						</div>
+					</div>
+					<div class="plate-right">
+						<div class="plate-right-citycode">
+							<div class="plate-right-citycode-val">
+
+							</div>
+						</div>
+						<div class="plate-right-value">
+							<div class="plate-right-value-val">
+								A00·CD
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 车牌蒙版 需要隐藏 -->
+			<div id="plate-image" style="position: fixed; opacity: 0; z-index: -9999;">
+				<div class="head">
+					车牌蒙版
+				</div>
+				<div class="plate-generate" id="plate-mask">
+					<div class="plate-left-mask">
+						<div class="plate-left-flag-mask">
+						</div>
+						<div class="plate-left-code">
+
+						</div>
+					</div>
+					<div class="plate-right-mask">
+						<div class="plate-right-citycode">
+							<div class="plate-right-citycode-val"
+								style="color: #ffffff; -webkit-text-stroke: 10px white; text-stroke: 10px white;">
+
+							</div>
+						</div>
+						<div class="plate-right-value">
+							<div class="plate-right-value-val" id="val4"
+								style="color: #ffffff; -webkit-text-stroke: 10px white; text-stroke: 10px white;">
+								A00·CD
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 凹凸/法线贴图展示区 -->
+			<div id="bump-normal-map">
+				<div class="head" id="bnmh">
+					车牌贴图
+				</div>
+				<div class="bump-normal-map-generate">
+					<img src="" alt="" id="bnmgenerate">
+				</div>
+			</div>
+
+
+			<div class="controls">
+				<div class="control-level">
+					<label for="country-select">国家:</label>
+					<select id="country-select">
+						<!-- 国家选项 -->
+					</select>
+
+					<label for="city-select">城市:</label>
+					<select id="city-select">
+						<!-- 城市选项 -->
+					</select>
+
+					<label for="map-type">生成贴图类型:</label>
+					<select id="map-type">
+						<option value="" disabled selected>选择贴图类型</option>
+						<option value="bump">凹凸贴图</option>
+						<option value="normal">法线贴图</option>
+					</select>
+
+					<div id="wear-toggle">
+						<label for="random-wear">生成随机磨损:</label>
+						<input type="checkbox" id="random-wear">
+					</div>
+
+				</div>
+				<div class="control-level">
+					<label for="plate-number">车牌号:</label>
+
+					<input type="text" id="plate-number" maxlength="5" value="A00CD" placeholder="A00CD">
+
+					<button id="bump-normal-gen">生成</button>
+
+					<button id="random-generate-btn" onclick="RandomGen();">随机生成</button>
+
+					<button class="save-btn" onclick="save1();">保存车牌</button>
+					<button class="save-btn" onclick="save2();">保存凹凸法线贴图</button>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+				$('#plate-number').on('input', function() {
+					var inputValue = $(this).val();
+
+					// 如果输入框为空，则将“A00CD”赋值给inputValue
+					if (inputValue === '') {
+						inputValue = 'A00CD';
+						outputValue = 'A00·CD';
+					} else {
+						// 限制字符为英文字母和数字，并确保长度不超过5个字符
+						inputValue = inputValue.replace(/[^a-zA-Z0-9]/g, '').substring(0, 5);
+						outputValue = inputValue;
+
+						// 如果输入值的长度大于3，在第三个和第四个字符之间插入“·”
+						if (inputValue.length > 3) {
+							inputValue = inputValue.substring(0, 3) + '·' + inputValue.substring(3);
+							outputValue = inputValue;
+						}
+					}
+
+					// 将处理过的值设置到所有具有class="a"的div中
+					$('.plate-right-value-val').text(outputValue);
+				});
+			});
+		</script>
+		<script>
+			function bumpgenerate() {
+				var wearChecked = document.getElementById('random-wear').checked;
+				localStorage.removeItem('bumpMap');
+				localStorage.removeItem('normalMap');
+				// 将div渲染到canvas
+				html2canvas(document.querySelector('#plate-mask')).then(canvas => {
+					var ctx = canvas.getContext('2d');
+
+					if (wearChecked) {
+						// 如果选中了随机磨损，应用磨损效果
+						var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+						var data = imageData.data;
+
+						for (var i = 0; i < data.length; i += 4) {
+							// 生成亮度在0到0.25范围内的随机噪波
+							var noise = Math.random() * 0.2 * 255; // 将亮度转换为0到255的范围
+
+							// 将噪波叠加到原始像素上，同时确保像素值不超过255
+							data[i] = Math.min(255, data[i] + noise); // R
+							data[i + 1] = Math.min(255, data[i + 1] + noise); // G
+							data[i + 2] = Math.min(255, data[i + 2] + noise); // B
+						}
+
+						// 将带有噪波的图像数据放回画布
+						ctx.putImageData(imageData, 0, 0);
+					}
+
+					// 将canvas转换为图像
+					var imageData = canvas.toDataURL('image/png');
+
+					// 存储图像数据到localStorage
+					localStorage.setItem('bumpmap', imageData);
+
+					// 从localStorage获取图像并设置到<img>元素
+					document.getElementById('bnmgenerate').src = localStorage.getItem('bumpmap');
+				});
+			}
+
+
+			function normalgenerate() {
+				var wearChecked = document.getElementById('random-wear').checked;
+				localStorage.removeItem('bumpMap');
+				localStorage.removeItem('normalMap');
+				// 将div渲染到canvas
+				html2canvas(document.querySelector('#plate-mask')).then(canvas => {
+					var ctx = canvas.getContext('2d');
+
+					if (wearChecked) {
+						// 如果选中了随机磨损，应用磨损效果
+						var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+						var data = imageData.data;
+
+						for (var i = 0; i < data.length; i += 4) {
+							// 生成亮度在0到0.5范围内的随机噪波
+							var noise = Math.random() * 0.2 * 255; // 将亮度调整为更大的范围
+
+							// 将噪波叠加到原始像素上，同时确保像素值不超过255
+							data[i] = Math.min(255, data[i] + noise); // R
+							data[i + 1] = Math.min(255, data[i + 1] + noise); // G
+							data[i + 2] = Math.min(255, data[i + 2] + noise); // B
+						}
+
+						// 将带有噪波的图像数据放回画布
+						ctx.putImageData(imageData, 0, 0);
+					}
+
+					// 将canvas转换为图像
+					var bumpMapDataURL = canvas.toDataURL('image/png');
+
+
+					const image = new Image();
+					image.src = bumpMapDataURL;
+					image.onload = function() {
+						const canvas = document.createElement('canvas');
+						const ctx = canvas.getContext('2d');
+
+						canvas.width = image.width;
+						canvas.height = image.height;
+
+						ctx.drawImage(image, 0, 0);
+						const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+						const normalData = ctx.createImageData(canvas.width, canvas.height);
+
+						for (let y = 1; y < canvas.height - 1; y++) {
+							for (let x = 1; x < canvas.width - 1; x++) {
+								// 获取当前像素及其相邻像素的亮度
+								const i = (y * canvas.width + x) * 4;
+								const above = ctx.getImageData(x, y - 1, 1, 1).data[0];
+								const below = ctx.getImageData(x, y + 1, 1, 1).data[0];
+								const right = ctx.getImageData(x + 1, y, 1, 1).data[0];
+								const left = ctx.getImageData(x - 1, y, 1, 1).data[0];
+
+								// 计算梯度
+								const dx = (left - right) / 255.0;
+								const dy = (above - below) / 255.0;
+
+								// 计算法线
+								const nx = dx;
+								const ny = dy;
+								const nz = 1.0 / Math.sqrt(nx * nx + ny * ny + 1);
+
+								// 将法线的x, y, z分量映射到[0, 255]区间
+								normalData.data[i] = (nx + 1) * 0.5 * 255;
+								normalData.data[i + 1] = (ny + 1) * 0.5 * 255;
+								normalData.data[i + 2] = nz * 255;
+								normalData.data[i + 3] = 255; // alpha通道保持不变
+							}
+						}
+
+						// 将生成的法线贴图绘制到canvas上
+						ctx.putImageData(normalData, 0, 0);
+
+						// 将canvas转换为DataURL
+						const normalMapDataURL = canvas.toDataURL();
+
+						// 首先将生成的图片替换到<img>元素
+						document.getElementById('bnmgenerate').src = normalMapDataURL;
+
+						// 然后将生成的DataURL保存到LocalStorage
+						localStorage.setItem('normalmap', normalMapDataURL);
+					};
+				});
+			}
+
+			function BumpNormalGen() {
+				const button = document.getElementById('bump-normal-gen');
+
+				// 根据按钮文本内容决定调用哪个函数
+				if (button.textContent === '凹凸贴图生成') {
+					bumpgenerate();
+				} else if (button.textContent === '法线贴图生成') {
+					normalgenerate();
+				}
+
+				return new Promise((resolve, reject) => {
+					// 在这里执行异步操作
+
+					// 假设我们使用setTimeout来模拟异步操作
+					setTimeout(() => {
+						// 异步操作完成
+
+						// 假设我们的异步操作成功完成
+						// 则调用resolve()来解决Promise
+						resolve('操作成功完成');
+
+						// 如果异步操作失败，应该调用reject(error)
+						// 例如: reject(new Error('操作失败'));
+					}, 100); // 延迟1秒来模拟异步操作
+				});
+			}
+			document.getElementById('bump-normal-gen').addEventListener('click', BumpNormalGen);
+		</script>
+		<script>
+			function RandomGen() {
+				var chars = '1234567890ABCDEFGHIJKLM1234567890NOPQRSTUVWXYZ0123456789';
+				var result = '';
+				var length = 5;
+				var randomString = "";
+				for (var i = 0; i < length; i++) {
+					randomString += chars.charAt(Math.floor(Math.random() * chars.length));
+				}
+
+				$('#plate-number').val(randomString);
+				randomString = randomString.substring(0, 3) + '·' + randomString.substring(3);
+				$('.plate-right-value-val').text(randomString);
+			}
+		</script>
+		<script>
+			function save1() {
+				var wearChecked = document.getElementById('random-wear').checked;
+				html2canvas(document.querySelector('#plate-generate')).then(canvas => {
+					var ctx = canvas.getContext('2d');
+
+					if (wearChecked) {
+						// 如果选中了随机磨损，应用磨损效果
+						var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+						var data = imageData.data;
+
+						for (var i = 0; i < data.length; i += 4) {
+							// 生成亮度在0到0.25范围内的随机噪波
+							var noise = Math.random() * 0.2 * 255; // 将亮度转换为0到255的范围
+
+							// 将噪波叠加到原始像素上，同时确保像素值不超过255
+							data[i] = Math.min(255, data[i] + noise); // R
+							data[i + 1] = Math.min(255, data[i + 1] + noise); // G
+							data[i + 2] = Math.min(255, data[i + 2] + noise); // B
+						}
+
+						// 将带有噪波的图像数据放回画布
+						ctx.putImageData(imageData, 0, 0);
+					}
+
+					// 将canvas转换为图像
+					canvas.toBlob(function(blob) {
+						var url = URL.createObjectURL(blob);
+
+						// 创建一个临时的<a>元素来触发下载
+						var downloadLink = document.createElement('a');
+						downloadLink.href = url;
+
+						t1 = $(".plate-right-citycode-val").html();
+						t2 = $("#plate-number").val()
+						Text = t1 + t2;
+						downloadLink.download = Text + '.png'; // 设置下载的文件名为A.png
+
+						// 模拟点击事件触发下载
+						document.body.appendChild(downloadLink);
+						downloadLink.click();
+
+						// 清理DOM和URL
+						document.body.removeChild(downloadLink);
+						URL.revokeObjectURL(url);
+					}, 'image/png');
+				});
+			}
+
+			async function save2() {
+				await BumpNormalGen();
+				html2canvas(document.querySelector('.bump-normal-map-generate')).then(canvas => {
+					// 将canvas转换为图像
+					canvas.toBlob(function(blob) {
+						var url = URL.createObjectURL(blob);
+
+						// 创建一个临时的<a>元素来触发下载
+						var downloadLink = document.createElement('a');
+						downloadLink.href = url;
+
+						t1 = $(".plate-right-citycode-val").html();
+						t2 = $("#plate-number").val()
+						Text = t1 + t2;
+
+						var selectedValue = $('#map-type').val();
+
+						// 声明变量a
+						var a;
+
+						// 根据选中的值设置a的值
+						if (selectedValue === 'bump') {
+							a = 'bump';
+						} else if (selectedValue === 'normal') {
+							a = 'normal';
+						}
+
+
+						downloadLink.download = Text + '_' + a + '.png'; // 设置下载的文件名为A.png
+
+						// 模拟点击事件触发下载
+						document.body.appendChild(downloadLink);
+						downloadLink.click();
+
+						// 清理DOM和URL
+						document.body.removeChild(downloadLink);
+						URL.revokeObjectURL(url);
+					}, 'image/png');
+				});
+			}
+		</script>
+	</body>
+</html>

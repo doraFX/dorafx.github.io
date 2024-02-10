@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Div to Image and Store</title>
+	</head>
+	<body>
+
+		<div class="plate-mask" style="width: 200px; height: 100px; background-color: blue;">
+			<!-- 这里是您想要转换的div内容 -->
+			Hello, World!
+		</div>
+
+		<img id="bnmgenerate" src="" alt="Generated Image">
+
+		<script>
+			// 当页面加载完毕
+			window.onload = function() {
+				// 将div渲染到canvas
+				html2canvas(document.querySelector('.plate-mask')).then(canvas => {
+					// 将canvas转换为图像
+					var imageData = canvas.toDataURL('image/png');
+
+					// 存储图像数据到localStorage
+					localStorage.setItem('divImage', imageData);
+
+					// 从localStorage获取图像并设置到<img>元素
+					document.getElementById('bnmgenerate').src = localStorage.getItem('divImage');
+				});
+			};
+
+			// 确保html2canvas库被包含
+		</script>
+		<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+	</body>
+</html>
