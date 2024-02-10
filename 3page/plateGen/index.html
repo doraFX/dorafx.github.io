@@ -14,6 +14,9 @@
 			$(document).ready(function() {
 				localStorage.removeItem('bumpMap');
 				localStorage.removeItem('normalMap');
+
+
+
 				// 初始化国家下拉列表
 				function initCountrySelect() {
 					$.each(countryCities, function(country, cities) {
@@ -90,10 +93,10 @@
 				<div class="head">
 					车牌贴图
 				</div>
-				<div class="plate-generate">
+				<div class="plate-generate" id="plate-generate-main">
 					<div class="plate-left">
 						<div class="plate-left-flag">
-							<img src="img/flag1.jpg" alt="">
+							<img src="./img/flag1.png" id="flag" alt="">
 						</div>
 						<div class="plate-left-code">
 
@@ -189,8 +192,8 @@
 
 					<button id="random-generate-btn" onclick="RandomGen();">随机生成</button>
 
-					<button class="save-btn" onclick="save1();">保存车牌</button>
-					<button class="save-btn" onclick="save2();">保存凹凸法线贴图</button>
+					<button class="save-btn" onclick="save();">保存车牌</button>
+					<button class="save-btn" onclick="savemap();">保存凹凸法线贴图</button>
 				</div>
 			</div>
 		</div>
@@ -389,9 +392,20 @@
 			}
 		</script>
 		<script>
-			function save1() {
+			function save() {
+				// 检查是否选中了随机磨损
 				var wearChecked = document.getElementById('random-wear').checked;
-				html2canvas(document.querySelector('#plate-generate')).then(canvas => {
+
+				// 使用 html2canvas 捕获内容
+				html2canvas(document.querySelector('.plate-generate'), {
+					// 确保跨源图像被允许绘制到画布上
+					onclone: function(clonedDoc) {
+						// 在克隆的文档中找到所有图像并设置 crossOrigin 属性
+						clonedDoc.querySelectorAll("img").forEach(function(img) {
+							img.crossOrigin = "anonymous";
+						});
+					}
+				}).then(canvas => {
 					var ctx = canvas.getContext('2d');
 
 					if (wearChecked) {
@@ -413,7 +427,7 @@
 						ctx.putImageData(imageData, 0, 0);
 					}
 
-					// 将canvas转换为图像
+					// 将canvas转换为图像并触发下载
 					canvas.toBlob(function(blob) {
 						var url = URL.createObjectURL(blob);
 
@@ -421,10 +435,13 @@
 						var downloadLink = document.createElement('a');
 						downloadLink.href = url;
 
-						t1 = $(".plate-right-citycode-val").html();
-						t2 = $("#plate-number").val()
-						Text = t1 + t2;
-						downloadLink.download = Text + '.png'; // 设置下载的文件名为A.png
+						// 获取需要添加到文件名的文本
+						var t1 = document.querySelector(".plate-right-citycode-val").textContent;
+						var t2 = document.getElementById("plate-number").value;
+						var text = t1 + t2;
+
+						// 设置下载的文件名
+						downloadLink.download = text + '.png';
 
 						// 模拟点击事件触发下载
 						document.body.appendChild(downloadLink);
@@ -437,7 +454,8 @@
 				});
 			}
 
-			async function save2() {
+
+			async function savemap() {
 				await BumpNormalGen();
 				html2canvas(document.querySelector('.bump-normal-map-generate')).then(canvas => {
 					// 将canvas转换为图像
