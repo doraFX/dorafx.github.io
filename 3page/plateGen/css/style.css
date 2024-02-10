@@ -136,6 +136,8 @@
 	position: relative;
 	border-radius: 5px;
 	background-image: url("../img/flag1.png");
+	background-position: center;
+	background-size: cover;
 }
 
 .plate-left-flag img {
