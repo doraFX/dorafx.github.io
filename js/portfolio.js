@@ -318,6 +318,6 @@ function p35() {
 		$("#btnlink3").attr("href","./3page/cityzoo/index.html");
 		$("#slvideo").show();
 		$("#SVideo2").attr("src", "https://video.dorafx.top/city_zoo_trailer.mp4");
-		$("#SVideo2").attr("poster", "images/works/35poster.webp");
+		$("#SVideo2").attr("poster", "./3page/cityzoo/img/cover.webp");
 	},50);
 }
