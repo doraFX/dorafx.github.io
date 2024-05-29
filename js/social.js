@@ -8,7 +8,8 @@ function s1() {
 				window.location.href = "https://www.zcool.com.cn/u/17973793";
 			}
 			else{
-				alert("您所在地区的网络无法访问Zcool");
+				//alert("您所在地区的网络无法访问Zcool");
+				window.location.href = "https://www.zcool.com.cn/u/17973793";
 			}
 		}
 	});
@@ -24,7 +25,8 @@ function s2() {
 				window.location.href = "https://www.behance.net/dorafx"
 			}
 			else{
-				alert("您所在地区的网络无法访问Behance");
+				//alert("您所在地区的网络无法访问Behance");
+				window.location.href = "https://www.behance.net/dorafx"
 			}
 		}
 	});
@@ -40,7 +42,8 @@ function s3() {
 				window.location.href = "https://vimeo.com/user99520914"
 			}
 			else{
-				alert("您所在地区的网络无法访问Vimeo");
+				//alert("您所在地区的网络无法访问Vimeo");
+				window.location.href = "https://vimeo.com/user99520914"
 			}
 		}
 	});
@@ -60,7 +63,8 @@ function s5() {
 				window.location.href = "https://github.com/dorafx";
 			}
 			else{
-				alert("您所在地区的网络无法访问Github");
+				//alert("您所在地区的网络无法访问Github");
+				window.location.href = "https://github.com/dorafx";
 			}
 		}
 	});
@@ -69,7 +73,7 @@ function s5() {
 function Language() {
 	//判断浏览器的首选语言
 	var language = navigator.language;
-	console.log("11111", language)
+	//console.log("11111", language)
 	if (language == "zh-CN") {
 		location.href = "中文网址";
 	} else {
