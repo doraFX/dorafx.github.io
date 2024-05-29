@@ -298,3 +298,26 @@ function p34() {
 		$("#SVideo2").attr("poster", "images/works/34.webp");
 	},50);
 }
+
+function p35() {
+	setTimeout(function(){
+		$(".single-linksource").show();
+		$(".single-linksource-h").html("CITY ZOO VR drama");
+		$(".single-linksource-p").html("2023年做的VR短片，目前在参投电影节，所以还没有公开");
+		$(".single-linksource-h6").html("其他平台查看:");
+		$("#single-linksource-h6").hide();
+		$("#btnlink1").show();
+		$("#btnlink2").show();
+		$("#btnlink3").show();
+		$("#btnlink4").hide();
+		$("#btnlink1").html("Zcool");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcyMTIyNjQ=.html");
+		$("#btnlink2").html("Behance");
+		$("#btnlink2").attr("href","https://www.behance.net/gallery/185367803/CITY-ZOO-VR-drama");
+		$("#btnlink3").html("宣发页");
+		$("#btnlink3").attr("href","./3page/cityzoo/index.html");
+		$("#slvideo").show();
+		$("#SVideo2").attr("src", "https://video.dorafx.top/city_zoo_trailer.mp4");
+		$("#SVideo2").attr("poster", "images/works/35poster.webp");
+	},50);
+}
