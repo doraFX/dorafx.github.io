@@ -311,7 +311,7 @@ function p35() {
 		$("#btnlink3").show();
 		$("#btnlink4").hide();
 		$("#btnlink1").html("Zcool");
-		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjcyMTIyNjQ=.html");
+		$("#btnlink1").attr("href","https://www.zcool.com.cn/work/ZNjg2OTA4NjQ=.html");
 		$("#btnlink2").html("Behance");
 		$("#btnlink2").attr("href","https://www.behance.net/gallery/185367803/CITY-ZOO-VR-drama");
 		$("#btnlink3").html("宣发页");
