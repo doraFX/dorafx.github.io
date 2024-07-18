@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<script src="js/aframe.min.js"></script>
+	<!-- we import arjs version without NFT but with marker + location based support -->
+	<script src="js/aframe-ar.js"></script>
+	<body style="margin : 0px; overflow: hidden;">
+		<a-scene embedded arjs>
+			<a-marker preset="hiro"
+				position="0 0 0"
+				scale="0.05 0.05 0.05"
+				gltf-model="model/box.gltf"
+				>
+				</a-entity>
+			</a-marker>
+			<a-entity camera></a-entity>
+		</a-scene>
+	</body>
+</html>
