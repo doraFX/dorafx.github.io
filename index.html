@@ -13,20 +13,6 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<script src="js/jquery-2.1.4.min.js"></script>
-		<script src="js/nprogress.js"></script>
-		<link rel="stylesheet" href="css/nprogress.css" />
-		<script>
-			// 页面访问时启动进度条
-			NProgress.start();
-
-			// 模拟页面加载中的逻辑，例如延迟两秒钟后再表示加载完成
-			window.addEventListener('load', () => {
-				// 页面及所有资源（图片、CSS、JS）加载完成后结束进度条
-				setTimeout(() => {
-					NProgress.done();
-				}, 2000);
-			});
-		</script>
 		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 		<script>
 			window.si = window.si || function() {
@@ -126,6 +112,21 @@
 		</script>
 
 		<script src="js/portfolio.js"></script>
+		
+		<script src="js/nprogress.js"></script>
+		<link rel="stylesheet" href="css/nprogress.css" />
+		<script>
+			// 页面访问时启动进度条
+			NProgress.start();
+		
+			// 模拟页面加载中的逻辑，例如延迟两秒钟后再表示加载完成
+			window.addEventListener('load', () => {
+				// 页面及所有资源（图片、CSS、JS）加载完成后结束进度条
+				setTimeout(() => {
+					NProgress.done();
+				}, 2000);
+			});
+		</script>
 	</head>
 	<body>
 		<div class="single" style="display: none;">
