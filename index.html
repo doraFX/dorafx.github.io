@@ -112,13 +112,26 @@
 		</script>
 
 		<script src="js/portfolio.js"></script>
-		
+
 		<script src="js/nprogress.js"></script>
 		<link rel="stylesheet" href="css/nprogress.css" />
+		<style>
+			/* 定制进度条样式，加粗方便观察 */
+			#nprogress .bar {
+				background: #29d;
+				height: 8px;
+				/* 加粗一些 */
+			}
+
+			#nprogress .peg {
+				box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+			}
+		</style>
 		<script>
 			// 页面访问时启动进度条
+			console.log('Starting NProgress');
 			NProgress.start();
-		
+
 			// 模拟页面加载中的逻辑，例如延迟两秒钟后再表示加载完成
 			window.addEventListener('load', () => {
 				// 页面及所有资源（图片、CSS、JS）加载完成后结束进度条
