@@ -325,6 +325,20 @@
 			/***********************
 			 * 监听模型选项变化，存入 localStorage
 			 ***********************/
+			window.addEventListener('DOMContentLoaded', (event) => {
+				const modelSelect = document.getElementById("modelSelect");
+
+				// 获取当前选择的值
+				const selectedModel = modelSelect.value;
+
+				// 存储到 localStorage
+				localStorage.setItem('LS_MODEL', selectedModel);
+
+				// 打印以确认存储
+				console.log("已存储的模型:", selectedModel);
+			});
+
+
 			modelSelect.addEventListener('change', function() {
 				localStorage.setItem(LS_MODEL, modelSelect.value);
 				console.log("模型选择更新为:", modelSelect.value);
@@ -405,7 +419,7 @@
 				localStorage.setItem(LS_API_KEY, key);
 				localStorage.setItem(LS_MODEL, model);
 				settingsStatus.style.color = 'green';
-				settingsStatus.textContent = "设置已保存";
+				//settingsStatus.textContent = "设置已保存";
 				console.log('设置已保存，API Key:', key, '模型:', model);
 				verifyApiKey(key, model);
 			});
@@ -466,46 +480,72 @@
 
 			// DeepSeek-R1 API Key 验证函数
 			async function verifyApiKeyR1(key) {
-				settingsStatus.style.color = '#333';
-				settingsStatus.textContent = "正在验证 API Key (R1)，请稍候...";
-				console.log("开始验证 API Key (R1)：", key);
+				const url = "https://api.deepseek.com/chat/completions"; // 修正 base_url
+				console.log('DeepSeek-R1 请求 URL:', url);
+
 				try {
-					const url = "https://api.deepseek.com";
 					const response = await fetch(url, {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
-							'Authorization': 'Bearer ' + key
+							'Authorization': 'Bearer ' + key // 使用传入的 API Key
 						},
 						body: JSON.stringify({
-							model: "deepseek-reasoner",
+							model: 'deepseek-reasoner', // 使用 deepseek-reasoner 模型进行验证
 							messages: [{
-								role: 'system',
-								content: '测试消息'
-							}],
+									role: 'system',
+									content: "You are a helpful assistant"
+								},
+								{
+									role: 'user',
+									content: "测试消息"
+								}
+							],
 							max_tokens: 50,
 							temperature: 1,
 							top_p: 1,
 							frequency_penalty: 0,
 							presence_penalty: 0,
-							stream: false
+							stream: false // 关闭流式
 						})
 					});
-					const data = await response.json();
-					console.log("R1 API Key 验证返回数据：", data);
+
+					// ** 先获取返回内容，不直接解析 JSON **
+					const responseText = await response.text();
+					console.log("服务器返回的原始内容:", responseText);
+
+					// ** 处理服务器返回空值的情况 **
+					if (!response.ok) {
+						throw new Error(`HTTP error ${response.status}: ${responseText || "服务器未返回数据"}`);
+					}
+
+					// ** 确保 responseText 不是空的 **
+					if (!responseText) {
+						throw new Error("服务器返回为空，无法解析 JSON");
+					}
+
+					// ** 解析 JSON **
+					const data = JSON.parse(responseText);
+					console.log('DeepSeek-R1 验证返回数据：', data);
+
+					// ** 检查 API 是否返回错误信息 **
 					if (data.error) {
+						console.error("验证失败：", data.error.message);
 						settingsStatus.style.color = 'red';
 						settingsStatus.textContent = "验证失败 (R1): " + data.error.message;
 					} else {
+						console.log("验证成功：", data);
 						settingsStatus.style.color = 'green';
 						settingsStatus.textContent = "验证成功 (R1)";
 					}
 				} catch (error) {
+					console.error("验证 API Key (R1) 过程中出错：", error);
 					settingsStatus.style.color = 'red';
 					settingsStatus.textContent = "验证失败 (R1): " + error.message;
-					console.error("验证 API Key (R1) 过程中出错：", error);
 				}
 			}
+
+
 
 			/***********************
 			 * 余额查询功能
@@ -692,82 +732,106 @@
 
 			// DeepSeek-R1 消息发送函数（非流式回复）
 			async function sendMessageR1(apiKey, model, messageText) {
-				const url = "https://api.deepseek.com";
-				console.log('DeepSeek-R1 请求 URL:', url);
-				try {
-					const response = await fetch(url, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': 'Bearer ' + apiKey
-						},
-						body: JSON.stringify({
-							model: "deepseek-reasoner",
-							messages: [{
-								role: 'user',
-								content: messageText
-							}],
-							max_tokens: 2048,
-							temperature: 1,
-							top_p: 1,
-							frequency_penalty: 0,
-							presence_penalty: 0,
-							stream: false // 关闭流式
-						})
+					const url = "https://api.deepseek.com/v1/chat/completions"; // 修正 base_url
+					console.log('DeepSeek-R1 请求 URL:', url, 'Model:', model);
+
+					try {
+						const response = await fetch(url, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': 'Bearer ' + apiKey // 确保 API Key 正确
+							},
+							body: JSON.stringify({
+								model: 'deepseek-reasoner', // 这里确保传入 deepseek-reasoner
+								messages: [{
+										role: 'system',
+										content: "You are a helpful assistant"
+									}, // system 角色内容不能是空字符串
+									{
+										role: 'user',
+										content: messageText
+									}
+								],
+								max_tokens: 2048,
+								temperature: 1,
+								top_p: 1,
+								frequency_penalty: 0,
+								presence_penalty: 0,
+								stream: false // 关闭流式
+							})
+						});
+
+						// **🔹 打印 HTTP 状态码 🔹**
+						console.log('HTTP 状态码: ${response.status}');
+
+							// **🔹 先获取返回的 headers 🔹**
+							console.log('服务器返回的 Headers:', response.headers);
+
+							// **🔹 先获取返回的原始文本 🔹**
+							const responseText = await response.text(); console.log("服务器返回的原始内容:", responseText);
+
+							// **🔹 如果 HTTP 状态码不是 2xx，抛出错误 🔹**
+							if (!response.ok) {
+								throw new Error('HTTP error ${response.status}: ${responseText || "服务器未返回数据"}');
+							}
+
+							// **🔹 如果返回内容为空，提示可能的原因 🔹**
+							if (!responseText) {
+								throw new Error("服务器返回为空，可能 API Key 无效、网络问题或服务器限流");
+							}
+
+							// **🔹 解析 JSON 🔹**
+							const data = JSON.parse(responseText); console.log('DeepSeek-R1 返回数据：', data);
+
+							let resultText = "";
+							if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message
+								.content) {
+								resultText = data.choices[0].message.content;
+							} else {
+								resultText = "没有收到有效回复。";
+							}
+
+							let badgeText = "";
+							if (data.model === "deepseek-chat") {
+								badgeText = "DeepSeek-V3";
+							} else if (data.model === "deepseek-reasoner") {
+								badgeText = "DeepSeek-R1";
+							}
+
+							console.log('DeepSeek-R1 回复消息:', resultText, '角标:', badgeText);
+
+							const botMsgObj = {
+								role: 'assistant',
+								content: resultText,
+								timestamp: Date.now()
+							}; currentConversation.messages.push(botMsgObj); saveCurrentConversation();
+
+							addMessage('api', resultText, badgeText);
+						}
+						catch (error) {
+							console.error("DeepSeek-R1 请求出错：", error);
+							addMessage('api', "错误: " + error.message, "");
+						}
+					}
+
+
+
+					/***********************
+					 * 移动端：侧边栏切换
+					 ***********************/
+					toggleSidebarBtn.addEventListener('click', () => {
+						sidebar.classList.toggle('active');
+						console.log('切换侧边栏显示状态');
 					});
-					if (!response.ok) {
-						throw new Error("HTTP error " + response.status);
-					}
-					const data = await response.json();
-					console.log('DeepSeek-R1 返回数据：', data);
-					let resultText = "";
-					if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message
-						.content) {
-						resultText = data.choices[0].message.content;
-					} else {
-						resultText = "没有收到有效回复。";
-					}
 
-					// 根据返回 JSON 中的 model 字段来确定角标
-					let badgeText = "";
-					if (data.model === "deepseek-chat") {
-						badgeText = "DeepSeek-V3";
-					} else if (data.model === "deepseek-reasoner") {
-						badgeText = "DeepSeek-R1";
-					}
-					console.log('DeepSeek-R1 回复消息:', resultText, '角标:', badgeText);
-
-					// 保存回复消息到当前对话中
-					const botMsgObj = {
-						role: 'assistant',
-						content: resultText,
-						timestamp: Date.now()
-					};
-					currentConversation.messages.push(botMsgObj);
-					saveCurrentConversation();
-
-					// 显示回复消息及角标
-					addMessage('api', resultText, badgeText);
-				} catch (error) {
-					console.error('DeepSeek-R1 请求出错：', error);
-					addMessage('api', "错误: " + error.message, "");
-				}
-			}
-
-			/***********************
-			 * 移动端：侧边栏切换
-			 ***********************/
-			toggleSidebarBtn.addEventListener('click', () => {
-				sidebar.classList.toggle('active');
-				console.log('切换侧边栏显示状态');
-			});
-
-			/***********************
-			 * 初始化加载历史对话列表
-			 ***********************/
-			loadConversationList();
-			console.log('历史对话列表加载完成');
+					/***********************
+					 * 初始化加载历史对话列表
+					 ***********************/
+					loadConversationList();
+					console.log('历史对话列表加载完成');
 		</script>
+		<script src="https://cdn.jsdelivr.net/npm/openai"></script>
 
 	</body>
 </html>
