@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>DeepSeek Chat</title>
+		<style>
+			/* 基础样式（模仿 ChatGPT 风格） */
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				background-color: #f7f7f7;
+			}
+
+			.container {
+				display: flex;
+				height: 100vh;
+				overflow: hidden;
+			}
+
+			/* 左侧边栏 */
+			#sidebar {
+				width: 260px;
+				background-color: #f1f1f1;
+				border-right: 1px solid #ddd;
+				padding: 16px;
+				display: flex;
+				flex-direction: column;
+				overflow-y: auto;
+				transition: transform 0.3s ease;
+			}
+
+			#sidebar-header {
+				margin-bottom: 16px;
+			}
+
+			#sidebar-header h1 {
+				font-size: 1.5em;
+				margin: 0;
+				padding: 0;
+			}
+
+			#new-chat-btn {
+				width: 100%;
+				padding: 10px;
+				margin-bottom: 16px;
+				background-color: #10a37f;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			/* 历史对话列表 */
+			#history {
+				flex: 1;
+				margin-bottom: 16px;
+			}
+
+			.history-item {
+				padding: 8px;
+				margin-bottom: 8px;
+				background-color: #fff;
+				border-radius: 4px;
+				cursor: pointer;
+				border: 1px solid transparent;
+			}
+
+			.history-item:hover {
+				border: 1px solid #ddd;
+			}
+
+			/* 设置区域 */
+			#settings {
+				border-top: 1px solid #ddd;
+				padding-top: 16px;
+			}
+
+			#settings h3 {
+				font-size: 1.2em;
+				margin-bottom: 8px;
+			}
+
+			#settings input,
+			#settings select {
+				width: 100%;
+				padding: 8px;
+				margin-bottom: 8px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				box-sizing: border-box;
+			}
+
+			#settings button {
+				width: 100%;
+				padding: 8px;
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				margin-bottom: 4px;
+			}
+
+			#settings button:hover {
+				background-color: #0069d9;
+			}
+
+			#settings-status {
+				margin-top: 8px;
+				font-size: 0.9em;
+				color: red;
+			}
+
+			/* 余额区域 */
+			#balance-section {
+				margin-top: 8px;
+				font-size: 0.9em;
+				color: #333;
+			}
+
+			/* 右侧聊天区 */
+			#chat-area {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				background-color: #fff;
+				overflow: hidden;
+				position: relative;
+			}
+
+			#chat-messages {
+				flex: 1;
+				padding: 16px;
+				overflow-y: auto;
+				background-color: #f7f7f7;
+			}
+
+			.message {
+				margin-bottom: 12px;
+				padding: 8px 12px;
+				border-radius: 6px;
+				max-width: 70%;
+				width: fit-content;
+				word-wrap: break-word;
+			}
+
+			.user-message {
+				background-color: #dcf8c6;
+				align-self: flex-end;
+			}
+
+			.api-message {
+				background-color: #f1f0f0;
+				align-self: flex-start;
+			}
+
+			#chat-input-container {
+				display: flex;
+				padding: 16px;
+				border-top: 1px solid #ddd;
+			}
+
+			#chat-input {
+				flex: 1;
+				padding: 12px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				font-size: 1em;
+				box-sizing: border-box;
+			}
+
+			#send-btn {
+				padding: 12px 20px;
+				margin-left: 8px;
+				background-color: #10a37f;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			/* 移动端样式 */
+			/* 屏幕宽度小于768px时，采用垂直布局，并隐藏侧边栏（可通过“汉堡菜单”切换显示） */
+			@media (max-width: 768px) {
+				.container {
+					flex-direction: column;
+				}
+
+				#sidebar {
+					position: fixed;
+					top: 0;
+					left: 0;
+					height: 100%;
+					z-index: 100;
+					transform: translateX(-100%);
+					width: 80%;
+					max-width: 300px;
+				}
+
+				#sidebar.active {
+					transform: translateX(0);
+				}
+
+				#chat-area {
+					flex: 1;
+					margin-top: 0;
+				}
+
+				/* 显示切换侧边栏的汉堡菜单按钮 */
+				#toggle-sidebar {
+					display: block;
+					position: fixed;
+					top: 10px;
+					left: 10px;
+					z-index: 200;
+					background: #10a37f;
+					color: #fff;
+					border: none;
+					border-radius: 4px;
+					padding: 8px;
+					cursor: pointer;
+				}
+
+				/* 防止汉堡菜单遮挡聊天输入区域 */
+				#chat-area {
+					padding-top: 50px;
+				}
+			}
+
+			/* 宽屏下隐藏汉堡菜单按钮 */
+			@media (min-width: 769px) {
+				#toggle-sidebar {
+					display: none;
+				}
+
+				#sidebar {
+					transform: translateX(0);
+					position: relative;
+				}
+			}
+
+			.message-container {
+				position: relative;
+				margin-bottom: 12px;
+			}
+
+			.model-badge {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				background-color: #007bff;
+				color: white;
+				padding: 4px 8px;
+				font-size: 0.8em;
+				border-radius: 4px;
+			}
+
+			details {
+				margin-top: 8px;
+				padding: 8px;
+				background-color: #f9f9f9;
+				border-radius: 4px;
+			}
+
+			summary {
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<button id="toggle-sidebar">☰</button>
+
+		<div class="container">
+			<div id="sidebar">
+				<div id="sidebar-header">
+					<h1>DeepSeek Chat</h1>
+				</div>
+				<button id="new-chat-btn">+ 新对话</button>
+				<div id="history"></div>
+				<div id="settings">
+					<h3>设置</h3>
+					<input type="text" id="apiKey" placeholder="API Key" />
+					<select id="modelSelect">
+						<option value="deepseek-chat">deepseek-chat (DeepSeek-V3)</option>
+						<option value="deepseek-reasoner">deepseek-reasoner (DeepSeek-R1)</option>
+					</select>
+					<button id="save-settings">保存设置</button>
+					<button id="check-balance">查询余额</button>
+					<div id="settings-status"></div>
+					<div id="balance-section"></div>
+				</div>
+			</div>
+
+			<div id="chat-area">
+				<div id="chat-messages"></div>
+				<div id="chat-input-container">
+					<input type="text" id="chat-input" placeholder="输入消息..." />
+					<button id="send-btn">发送</button>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			/***********************
+			 * 常量与页面元素获取
+			 ***********************/
+			const LS_API_KEY = 'ds_api_key';
+			const LS_MODEL = 'ds_model';
+
+			const apiKeyInput = document.getElementById('apiKey');
+			const modelSelect = document.getElementById('modelSelect');
+			const saveSettingsBtn = document.getElementById('save-settings');
+			const checkBalanceBtn = document.getElementById('check-balance');
+			const settingsStatus = document.getElementById('settings-status');
+			const balanceSection = document.getElementById('balance-section');
+			const chatMessagesDiv = document.getElementById('chat-messages');
+			const chatInput = document.getElementById('chat-input');
+			const sendBtn = document.getElementById('send-btn');
+			const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+			const sidebar = document.getElementById('sidebar');
+			const historyDiv = document.getElementById('history');
+
+			/***********************
+			 * 监听模型选项变化，存入 localStorage
+			 ***********************/
+			modelSelect.addEventListener('change', function() {
+				localStorage.setItem(LS_MODEL, modelSelect.value);
+				console.log("模型选择更新为:", modelSelect.value);
+			});
+
+			/***********************
+			 * 对话管理相关变量与函数
+			 ***********************/
+			let currentConversation = null; // 当前正在进行的对话对象
+			// 对话对象结构：
+			// {
+			//   id: 时间戳数字,
+			//   messages: [ { role: 'user' | 'assistant', content: string, timestamp: number } ]
+			// }
+
+			// 保存当前对话到 localStorage
+			function saveCurrentConversation() {
+				if (currentConversation) {
+					localStorage.setItem('conversation_' + currentConversation.id, JSON.stringify(currentConversation));
+					console.log('对话已保存，id:', currentConversation.id);
+				}
+			}
+
+			// 将某个对话添加到历史对话列表中
+			function addConversationToHistory(convo) {
+				// 检查是否已存在（避免重复添加）
+				if (document.getElementById('convo-' + convo.id)) return;
+
+				const convoItem = document.createElement('div');
+				convoItem.classList.add('history-item');
+				convoItem.id = 'convo-' + convo.id;
+				// 显示简单的时间戳或自定义名称
+				convoItem.textContent = '对话 ' + new Date(convo.id).toLocaleString();
+				convoItem.addEventListener('click', () => {
+					console.log('切换到对话：', convo.id);
+					switchConversation(convo);
+				});
+				historyDiv.appendChild(convoItem);
+			}
+
+			// 加载 localStorage 中所有对话并显示在历史列表
+			function loadConversationList() {
+				historyDiv.innerHTML = ''; // 先清空历史列表
+				for (let i = 0; i < localStorage.length; i++) {
+					const key = localStorage.key(i);
+					if (key.startsWith('conversation_')) {
+						try {
+							const convo = JSON.parse(localStorage.getItem(key));
+							addConversationToHistory(convo);
+						} catch (e) {
+							console.error('加载对话失败，key:', key, e);
+						}
+					}
+				}
+			}
+
+			// 切换对话时，更新 currentConversation 并显示该对话的所有消息
+			function switchConversation(convo) {
+				currentConversation = convo;
+				console.log('当前对话已切换为：', currentConversation.id);
+				chatMessagesDiv.innerHTML = ''; // 清空聊天显示区域
+				currentConversation.messages.forEach(msg => {
+					// 历史消息仅显示消息，不附加模型角标
+					addMessage(msg.role, msg.content);
+				});
+			}
+
+			/***********************
+			 * 设置区域：保存 API Key、模型选择并验证
+			 ***********************/
+			saveSettingsBtn.addEventListener('click', () => {
+				const key = apiKeyInput.value.trim();
+				const model = modelSelect.value;
+				if (!key) {
+					settingsStatus.textContent = "请填写 API Key";
+					return;
+				}
+				localStorage.setItem(LS_API_KEY, key);
+				localStorage.setItem(LS_MODEL, model);
+				settingsStatus.style.color = 'green';
+				settingsStatus.textContent = "设置已保存";
+				console.log('设置已保存，API Key:', key, '模型:', model);
+				verifyApiKey(key, model);
+			});
+
+			// 根据模型类型调用不同的 API Key 验证函数
+			function verifyApiKey(key, model) {
+				if (model === "deepseek-chat") {
+					verifyApiKeyV3(key);
+				} else if (model === "deepseek-reasoner") {
+					verifyApiKeyR1(key);
+				} else {
+					console.error("未知的模型类型：", model);
+				}
+			}
+
+			// DeepSeek-V3 API Key 验证函数
+			async function verifyApiKeyV3(key) {
+				settingsStatus.style.color = '#333';
+				settingsStatus.textContent = "正在验证 API Key (V3)，请稍候...";
+				console.log("开始验证 API Key (V3)：", key);
+				try {
+					const url = "https://api.deepseek.com/chat/completions";
+					const response = await fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer ' + key
+						},
+						body: JSON.stringify({
+							model: "deepseek-chat",
+							messages: [{
+								role: 'system',
+								content: '测试消息'
+							}],
+							max_tokens: 50,
+							temperature: 1,
+							top_p: 1,
+							frequency_penalty: 0,
+							presence_penalty: 0,
+							stream: false
+						})
+					});
+					const data = await response.json();
+					console.log("V3 API Key 验证返回数据：", data);
+					if (data.error) {
+						settingsStatus.style.color = 'red';
+						settingsStatus.textContent = "验证失败 (V3): " + data.error.message;
+					} else {
+						settingsStatus.style.color = 'green';
+						settingsStatus.textContent = "验证成功 (V3)";
+					}
+				} catch (error) {
+					settingsStatus.style.color = 'red';
+					settingsStatus.textContent = "验证失败 (V3): " + error.message;
+					console.error("验证 API Key (V3) 过程中出错：", error);
+				}
+			}
+
+			// DeepSeek-R1 API Key 验证函数
+			async function verifyApiKeyR1(key) {
+				settingsStatus.style.color = '#333';
+				settingsStatus.textContent = "正在验证 API Key (R1)，请稍候...";
+				console.log("开始验证 API Key (R1)：", key);
+				try {
+					const url = "https://api.deepseek.com";
+					const response = await fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer ' + key
+						},
+						body: JSON.stringify({
+							model: "deepseek-reasoner",
+							messages: [{
+								role: 'system',
+								content: '测试消息'
+							}],
+							max_tokens: 50,
+							temperature: 1,
+							top_p: 1,
+							frequency_penalty: 0,
+							presence_penalty: 0,
+							stream: false
+						})
+					});
+					const data = await response.json();
+					console.log("R1 API Key 验证返回数据：", data);
+					if (data.error) {
+						settingsStatus.style.color = 'red';
+						settingsStatus.textContent = "验证失败 (R1): " + data.error.message;
+					} else {
+						settingsStatus.style.color = 'green';
+						settingsStatus.textContent = "验证成功 (R1)";
+					}
+				} catch (error) {
+					settingsStatus.style.color = 'red';
+					settingsStatus.textContent = "验证失败 (R1): " + error.message;
+					console.error("验证 API Key (R1) 过程中出错：", error);
+				}
+			}
+
+			/***********************
+			 * 余额查询功能
+			 ***********************/
+			checkBalanceBtn.addEventListener('click', checkBalance);
+			async function checkBalance() {
+				const key = localStorage.getItem(LS_API_KEY);
+				if (!key) {
+					balanceSection.textContent = "请先设置 API Key";
+					return;
+				}
+				balanceSection.textContent = "正在查询余额...";
+				console.log('开始查询余额，API Key:', key);
+				try {
+					const response = await fetch('https://api.deepseek.com/user/balance', {
+						method: 'GET',
+						headers: {
+							'Accept': 'application/json',
+							'Authorization': 'Bearer ' + key
+						}
+					});
+					const data = await response.json();
+					console.log('余额查询返回数据：', data);
+					if (data && data.balance_infos && data.balance_infos.length > 0) {
+						const balance = parseFloat(data.balance_infos[0].granted_balance);
+						const formattedBalance = balance + "元";
+						balanceSection.textContent = "余额详情: " + formattedBalance;
+					} else {
+						balanceSection.textContent = "无法获取余额信息";
+					}
+				} catch (error) {
+					balanceSection.textContent = "查询余额失败: " + error.message;
+					console.error('查询余额出错：', error);
+				}
+			}
+
+			/***********************
+			 * 辅助函数：在聊天区域中添加消息
+			 * role: 'user' 或 'api'
+			 * badgeText：当 role==='api' 时，根据返回模型显示角标
+			 ***********************/
+			function addMessage(role, content, badgeText) {
+				const messageContainer = document.createElement('div');
+				messageContainer.classList.add('message-container');
+
+				const msgDiv = document.createElement('div');
+				msgDiv.classList.add('message', role === 'user' ? 'user-message' : 'api-message');
+				msgDiv.textContent = content;
+				messageContainer.appendChild(msgDiv);
+
+				if (role === 'api' && badgeText) {
+					const modelBadge = document.createElement('span');
+					modelBadge.classList.add('model-badge');
+					modelBadge.textContent = badgeText;
+					messageContainer.appendChild(modelBadge);
+				}
+				chatMessagesDiv.appendChild(messageContainer);
+				chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+			}
+
+			/***********************
+			 * 聊天逻辑：根据选择框分为 v3 与 r1 两个发送函数
+			 * 每次发送消息前从 localStorage 读取当前设置
+			 ***********************/
+			sendBtn.addEventListener('click', sendChat);
+			chatInput.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter') {
+					sendChat();
+				}
+			});
+
+			function sendChat() {
+				const messageText = chatInput.value.trim();
+				if (!messageText) return;
+				console.log('用户发送消息:', messageText);
+
+				// 如果当前没有对话，则创建新的对话并添加到历史记录中
+				if (!currentConversation) {
+					currentConversation = {
+						id: Date.now(),
+						messages: []
+					};
+					console.log('创建新对话，id:', currentConversation.id);
+					addConversationToHistory(currentConversation);
+				}
+
+				// 保存用户消息到当前对话
+				const userMsgObj = {
+					role: 'user',
+					content: messageText,
+					timestamp: Date.now()
+				};
+				currentConversation.messages.push(userMsgObj);
+				saveCurrentConversation();
+
+				// 显示用户消息
+				addMessage('user', messageText);
+				chatInput.value = "";
+
+				// 每次发送时，从 localStorage 读取当前设置
+				const apiKey = localStorage.getItem(LS_API_KEY);
+				const model = localStorage.getItem(LS_MODEL) || modelSelect.value;
+				console.log('当前 API Key:', apiKey, '当前模型:', model);
+				if (!apiKey) {
+					alert("请先在设置中保存 API Key");
+					return;
+				}
+
+				// 根据模型分支调用不同的发送函数
+				if (model === "deepseek-chat") {
+					console.log('调用 DeepSeek-V3 接口');
+					sendMessageV3(apiKey, model, messageText);
+				} else if (model === "deepseek-reasoner") {
+					console.log('调用 DeepSeek-R1 接口');
+					sendMessageR1(apiKey, model, messageText);
+				} else {
+					console.error('未知的模型类型:', model);
+				}
+			}
+
+			// DeepSeek-V3 消息发送函数（非流式回复）
+			async function sendMessageV3(apiKey, model, messageText) {
+				const url = "https://api.deepseek.com/chat/completions";
+				console.log('DeepSeek-V3 请求 URL:', url);
+				try {
+					const response = await fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer ' + apiKey
+						},
+						body: JSON.stringify({
+							model: model,
+							messages: [{
+								role: 'user',
+								content: messageText
+							}],
+							max_tokens: 2048,
+							temperature: 1,
+							top_p: 1,
+							frequency_penalty: 0,
+							presence_penalty: 0,
+							stream: false // 关闭流式
+						})
+					});
+					if (!response.ok) {
+						throw new Error("HTTP error " + response.status);
+					}
+					const data = await response.json();
+					console.log('DeepSeek-V3 返回数据：', data);
+					let resultText = "";
+					if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message
+						.content) {
+						resultText = data.choices[0].message.content;
+					} else {
+						resultText = "没有收到有效回复。";
+					}
+
+					// 根据返回 JSON 中的 model 字段来确定角标
+					let badgeText = "";
+					if (data.model === "deepseek-chat") {
+						badgeText = "DeepSeek-V3";
+					} else if (data.model === "deepseek-reasoner") {
+						badgeText = "DeepSeek-R1";
+					}
+					console.log('DeepSeek-V3 回复消息:', resultText, '角标:', badgeText);
+
+					// 保存回复消息到当前对话中
+					const botMsgObj = {
+						role: 'assistant',
+						content: resultText,
+						timestamp: Date.now()
+					};
+					currentConversation.messages.push(botMsgObj);
+					saveCurrentConversation();
+
+					// 显示回复消息及角标
+					addMessage('api', resultText, badgeText);
+				} catch (error) {
+					console.error('DeepSeek-V3 请求出错：', error);
+					addMessage('api', "错误: " + error.message, "");
+				}
+			}
+
+			// DeepSeek-R1 消息发送函数（非流式回复）
+			async function sendMessageR1(apiKey, model, messageText) {
+				const url = "https://api.deepseek.com";
+				console.log('DeepSeek-R1 请求 URL:', url);
+				try {
+					const response = await fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer ' + apiKey
+						},
+						body: JSON.stringify({
+							model: "deepseek-reasoner",
+							messages: [{
+								role: 'user',
+								content: messageText
+							}],
+							max_tokens: 2048,
+							temperature: 1,
+							top_p: 1,
+							frequency_penalty: 0,
+							presence_penalty: 0,
+							stream: false // 关闭流式
+						})
+					});
+					if (!response.ok) {
+						throw new Error("HTTP error " + response.status);
+					}
+					const data = await response.json();
+					console.log('DeepSeek-R1 返回数据：', data);
+					let resultText = "";
+					if (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message
+						.content) {
+						resultText = data.choices[0].message.content;
+					} else {
+						resultText = "没有收到有效回复。";
+					}
+
+					// 根据返回 JSON 中的 model 字段来确定角标
+					let badgeText = "";
+					if (data.model === "deepseek-chat") {
+						badgeText = "DeepSeek-V3";
+					} else if (data.model === "deepseek-reasoner") {
+						badgeText = "DeepSeek-R1";
+					}
+					console.log('DeepSeek-R1 回复消息:', resultText, '角标:', badgeText);
+
+					// 保存回复消息到当前对话中
+					const botMsgObj = {
+						role: 'assistant',
+						content: resultText,
+						timestamp: Date.now()
+					};
+					currentConversation.messages.push(botMsgObj);
+					saveCurrentConversation();
+
+					// 显示回复消息及角标
+					addMessage('api', resultText, badgeText);
+				} catch (error) {
+					console.error('DeepSeek-R1 请求出错：', error);
+					addMessage('api', "错误: " + error.message, "");
+				}
+			}
+
+			/***********************
+			 * 移动端：侧边栏切换
+			 ***********************/
+			toggleSidebarBtn.addEventListener('click', () => {
+				sidebar.classList.toggle('active');
+				console.log('切换侧边栏显示状态');
+			});
+
+			/***********************
+			 * 初始化加载历史对话列表
+			 ***********************/
+			loadConversationList();
+			console.log('历史对话列表加载完成');
+		</script>
+
+	</body>
+</html>
