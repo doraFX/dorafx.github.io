@@ -189,13 +189,13 @@
 	"num": "32",
 	"parameter": "Video",
 	"parameterdetail": "Video",
-	"recommend": "true"
+	"recommend": "false"
 } , {
 	"name": "The Blue Dream",
 	"num": "33",
 	"parameter": "Video",
 	"parameterdetail": "Video",
-	"recommend": "true"
+	"recommend": "false"
 } , {
 	"name": "Thunderfire Opening Title",
 	"num": "34",
@@ -205,6 +205,12 @@
 } , {
 	"name": "CITY ZOO VR drama",
 	"num": "35",
+	"parameter": "Video",
+	"parameterdetail": "Video",
+	"recommend": "false"
+} , {
+	"name": "毕业设计",
+	"num": "36",
 	"parameter": "Video",
 	"parameterdetail": "Video",
 	"recommend": "true"
