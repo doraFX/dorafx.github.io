@@ -345,3 +345,5 @@ function p36() {
 		$("#SVideo2").attr("poster", "images/works/36.webp");
 	},50);
 }
+
+

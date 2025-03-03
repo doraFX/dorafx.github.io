@@ -1246,7 +1246,7 @@ blockquote {
 	max-width: 100%;
 	z-index: 9999;
 	border-radius: 5px;
-	max-height: calc(100vh - 40px);
+	max-height: calc(60vh - 40px);
 }
 
 .single-v {

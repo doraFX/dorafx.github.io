@@ -13,8 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<script src="js/jquery-2.1.4.min.js"></script>
-
-		<!-- <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 		<script>
 			window.si = window.si || function() {
 				(window.siq = window.siq || []).push(arguments);
@@ -36,236 +35,103 @@
 				var s = document.getElementsByTagName("script")[0];
 				s.parentNode.insertBefore(hm, s);
 			})();
-		</script> -->
+		</script>
 
-
-
-
-
-		<script>
-			$(document).ready(function() {
-				// 定义开关变量和最大显示数量
-				// 当 limitSwitch = 1 时，仅显示 maxItems 个作品；当 limitSwitch = 0 时，显示全部作品
-				let limitSwitch = 1; // 1 开启限制，0 关闭限制
-				let maxItems = 20; // 当开启限制时，仅显示 20 个作品
-
-				// 全局保存 JSON 数据，后续点击时可直接查找对应作品信息
-				let portfolioData = [];
-
-				/**
-				 * 加载 JSON 数据并生成作品卡片
-				 * 数据从 js/portfolio.json 加载后先按 id 降序排序，
-				 * 再将推荐项目和非推荐项目分别筛选后，推荐项目排在前面。
-				 * 生成的卡片 HTML 格式如下：
-				 *
-				 * 推荐项目：
-				 * <div class="col-lg-4 {category} recommended personal" id="workid{ID}" style="position: absolute; left: 0px; top: 0px;">
-				 *   <a class="portfolio-link">
-				 *     <div class="portfolio-box">
-				 *       <div class="portfolio-box-img">
-				 *         <img src="{cover}" class="img-fluid" alt="member-image">
-				 *       </div>
-				 *       <div class="portfolio-box-detail">
-				 *         <p>{category}</p>
-				 *         <h4>{title}</h4>
-				 *       </div>
-				 *     </div>
-				 *   </a>
-				 *   <div class="recommend">
-				 *     <div class="recommend-inner">
-				 *       <div class="recommend-inner-icon">
-				 *         <img src="images/recommend.svg" alt="">
-				 *       </div>
-				 *       <div class="recommend-text">Recommended</div>
-				 *     </div>
-				 *   </div>
-				 * </div>
-				 *
-				 * 非推荐项目（不含后面的 <div class="recommend"> 块）。
-				 */
-				function loadPortfolio() {
-					$.getJSON("js/portfolio.json", function(data) {
-							// 保存数据到全局变量
-							portfolioData = data;
-
-							// 按 id 降序排序（id 较大排在前面）
-							const sortedData = data.slice().sort(function(a, b) {
-								return b.id - a.id;
-							});
-
-							// 筛选推荐和非推荐项目
-							let recommendedItems = sortedData.filter(item => item.recommend === true);
-							let nonRecommendedItems = sortedData.filter(item => !item.recommend);
-
-							// 合并时推荐项目放在前面
-							let mergedItems = recommendedItems.concat(nonRecommendedItems);
-
-							// 根据 limitSwitch 判断是否限制显示作品数量
-							let itemsToShow = (limitSwitch === 1) ? mergedItems.slice(0, maxItems) : mergedItems;
-
-							// 遍历每个作品，生成 HTML 卡片
-							itemsToShow.forEach(function(item) {
-								// 计算外层 div 的 class
-								// 始终包含 personal 与 category，如果推荐则再加 recommended
-								let classes = item.category + " personal";
-								if (item.recommend) {
-									classes += " recommended";
-								}
-
-								// 处理封面图片：若 media.poster 有值则使用，否则使用默认图片
-								let cover = "images/default.webp";
-								if (item.media && item.media.poster && item.media.poster.trim() !== "") {
-									cover = item.media.poster;
-								}
-
-								// 生成作品卡片 HTML
-								let cardHTML =
-									`<div class="col-lg-4 ${classes}" id="workid${item.id}" style="position: absolute; left: 0px; top: 0px;">`;
-								cardHTML += `<a class="portfolio-link">`;
-								cardHTML += `<div class="portfolio-box">`;
-								cardHTML += `<div class="portfolio-box-img">`;
-								cardHTML += `<img src="${cover}" class="img-fluid" alt="member-image">`;
-								cardHTML += `</div>`;
-								cardHTML += `<div class="portfolio-box-detail">`;
-								cardHTML += `<p>${item.category}</p>`;
-								cardHTML += `<h4>${item.title}</h4>`;
-								cardHTML += `</div>`;
-								cardHTML += `</div>`;
-								cardHTML += `</a>`;
-								// 如果为推荐项目，则添加额外的推荐标识块
-								if (item.recommend) {
-									cardHTML += `<div class="recommend">`;
-									cardHTML += `<div class="recommend-inner">`;
-									cardHTML += `<div class="recommend-inner-icon">`;
-									cardHTML += `<img src="images/recommend.svg" alt="">`;
-									cardHTML += `</div>`;
-									cardHTML += `<div class="recommend-text">Recommended</div>`;
-									cardHTML += `</div>`;
-									cardHTML += `</div>`;
-								}
-								cardHTML += `</div>`;
-
-								// 将生成的卡片追加到 #addplace 容器中
-								$("#addplace").append(cardHTML);
-							});
-						})
-						.fail(function() {
-							console.error("Error loading portfolio JSON");
-						});
-				}
-
-				// 调用加载函数
-				loadPortfolio();
-
-				/**
-				 * 为作品卡片绑定点击事件
-				 * 点击时直接从所在元素的 id 属性（格式 "workidXX"）中提取作品 id，
-				 * 然后调用 openWork(id) 根据 JSON 数据填充统一的弹出层。
-				 */
-				$("#addplace").on("click", ".portfolio-link", function() {
-					// 获取最近父元素的 id，例如 "workid36"
-					let parentId = $(this).closest("div[id^='workid']").attr("id");
-					// 去掉 "workid" 前缀，得到作品 id
-					let id = parentId.replace("workid", "");
-					openWork(id);
-				});
-
-				/**
-				 * 打开统一弹出层，填充作品详细信息
-				 * 根据作品 id 从 portfolioData 中查找对应记录，
-				 * 将 title 填充到 .single-linksource-h，
-				 * 将 description 填充到 .single-linksource-p，
-				 * 将 links 数组依次填充到 btnlink1~btnlink4（有多少链接显示多少按钮），
-				 * 如果媒体类型为 video，则显示视频预览区域，并设置视频元素 (#SVideo2) 的 src 与 poster。
-				 */
-				function openWork(id) {
-					// 查找作品记录（注意数值转换）
-					let work = portfolioData.find(item => Number(item.id) === Number(id));
-					if (!work) {
-						console.error("Work with id " + id + " not found.");
-						return;
+		<script type="text/javascript">
+			fetch('js/portfoliobackup.json')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
 					}
-
-					// 显示统一弹出层（这里保持使用 .single-linksource 类）
-					$(".single-linksource").show();
-
-					// 填充标题和描述
-					$(".single-linksource-h").html(work.title);
-					$(".single-linksource-p").html(work.description);
-
-					// 清空所有链接按钮，并隐藏
-					$("#btnlink1, #btnlink2, #btnlink3, #btnlink4").hide().html("");
-
-					// 遍历 links 数组，最多填充 4 个按钮
-					if (work.links && work.links.length > 0) {
-						work.links.forEach(function(link, index) {
-							if (index < 4) {
-								$("#btnlink" + (index + 1))
-									.html(link.name)
-									.attr("href", link.url)
-									.show();
+					return response.json();
+				})
+				.then(res => {
+					a = res.length;
+					//console.log(a);
+					b = a - 1;
+					if (a <= 20) {
+						for (var i = b; i >= 0; i--) {
+							t1 = '<div class="col-lg-4 ';
+							t2 = ' personal" id="workid';
+							t3 = '"><a onclick="p';
+							t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+							t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+							t6 = '</p><h4>';
+							t7 = '</h4></div></div></a></div>';
+							num = res[i].num;
+							if (num < 10) {
+								num = "0" + num;
 							}
-						});
+							recommend = "";
+							recommendvalue = res[i].recommend;
+							if (recommendvalue == "true") {
+								currentID = "work" + res[i].num;
+								//console.log(currentID);
+								recommend = "recommended";
+							}
+							tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num +
+								t5 + res[i].parameterdetail + t6 +
+								res[i].name + t7;
+							$("#addplace").append(tfinal);
+						}
 					}
-
-					// 根据媒体类型处理预览区域
-					if (work.media && work.media.type.toLowerCase() === "video") {
-						// 如果是视频，显示视频区域
-						$("#slvideo").show();
-						$("#SlImg").hide();
-						$("#SlBlog").hide();
-						$("#SVideo2")
-							.attr("src", work.media.url)
-							.attr("poster", work.media.poster);
-						// 如果存在图片预览元素，则移除
-						$("#SImg").remove();
-					} else if (work.media && work.media.type.toLowerCase() === "image") {
-						// 如果是图片，隐藏视频区域
-						$("#slvideo").hide();
-						$("#SlImg").show();
-						$("#SlBlog").hide();
-						$("#SImg").attr("src", work.media.url);
-					} else if (work.media && work.media.type.toLowerCase() === "blog") {
-						// 如果是博文，隐藏视频区域并将内容加载到 #popupMedia
-						$("#slvideo").hide();
-						$("#SlImg").hide();
-						$("#SlBlog").show();
-						$("#blogcontent").html(work.content || "");
-					} else {
-						// 其他情况，清空媒体区域
-						$("#slvideo").hide();
-						$("#SlImg").hide();
-						$("#SlBlog").hide();
-						$("#popupMedia").empty();
+					if (a > 20) {
+						al = a - 20;
+						for (var i = b; i >= al; i--) {
+							t1 = '<div class="col-lg-4 ';
+							t2 = ' personal" id="workid';
+							t3 = '"><a onclick="p';
+							t4 = '();"><div class="portfolio-box"><div class="portfolio-box-img"><img src="images/works/';
+							t5 = '.webp" class="img-fluid" alt="member-image"></div><div class="portfolio-box-detail"><p>';
+							t6 = '</p><h4>';
+							t7 = '</h4></div></div></a></div>';
+							num = res[i].num;
+							if (num < 10) {
+								num = "0" + num;
+							}
+							recommend = "";
+							recommendvalue = res[i].recommend;
+							if (recommendvalue == "true") {
+								currentID = "work" + res[i].num;
+								//console.log(currentID);
+								recommend = "recommended";
+							}
+							tfinal = t1 + res[i].parameter + " " + recommend + t2 + res[i].num + t3 + res[i].num + t4 + num +
+								t5 + res[i].parameterdetail + t6 +
+								res[i].name + t7;
+							$("#addplace").append(tfinal);
+						}
 					}
-
-				}
-
-				/**
-				 * 关闭弹出层函数
-				 * 隐藏 .single-linksource 后清空标题、描述、媒体和链接区域
-				 */
-				function closeBlog() {
-					$(".single-linksource").fadeOut(function() {
-						$(".single-linksource-h").empty();
-						$(".single-linksource-p").empty();
-						$("#slvideo").hide();
-						$("#SVideo2").attr("src", "").attr("poster", "");
-						$("#popupLinks").empty();
-					});
-				}
-
-				// 暴露关闭函数到全局，方便 HTML 中调用
-				window.closeBlog = closeBlog;
-			});
+					$('.recommended').append(
+						'<div class="recommend"><div class="recommend-inner"><div class="recommend-inner-icon"><img src="images/recommend.svg" alt=""></div><div class="recommend-text">Recommended</div></div></div>'
+					);
+				})
+				.catch(error => {
+					console.log('There was a problem with the fetch operation:', error);
+				});
 		</script>
 
 		<script src="js/portfolio.js"></script>
 	</head>
 	<body>
+		<div class="single" style="display: none;">
+			<div onclick="closebutton();" class="closebutton"><i class="fas fa-times"></i></div>
+			<div class="single-contain">
+				<div class="single-inner"><img id="SImg" src="" class="single-img"></div>
+			</div>
+		</div>
 
+		<div class="single-video" style="display: none;">
+			<div onclick="closebuttonvideo();" class="closebutton"><i class="fas fa-times"></i></div>
+			<div class="single-contain">
+				<div class="single-inner">
+					<video id="SVideo" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
+						controls="" data-title=""></video>
+				</div>
+			</div>
+		</div>
 
-		<div id="blogPopup" class="single-linksource" style="display: none;">
+		<div class="single-linksource" style="display: none;">
 			<div onclick="closebuttonlink();" class="closebutton"><i class="fas fa-times"></i></div>
 			<div class="single-contain">
 				<p class="single-linksource-h"></p>
@@ -273,13 +139,6 @@
 				<div class="single-inner" style="display: none;" id="slvideo">
 					<video id="SVideo2" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
 						controls="" data-title=""></video>
-				</div>
-				<div class="single-inner" style="display: none;" id="SlImg">
-					<img id="SImg" src="" class="single-img">
-				</div>
-				<div class="single-inner" style="display: none;" id="SlBlog">
-					<div id="blogcontent"></div>
-					
 				</div>
 				<p class="single-linksource-h6"></p>
 				<div class="text-center margin-t-30">
