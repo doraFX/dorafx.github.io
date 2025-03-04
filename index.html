@@ -59,7 +59,7 @@
 				 * 生成的卡片 HTML 格式如下：
 				 *
 				 * 推荐项目：
-				 * <div class="col-lg-4 {category} recommended personal" id="workid{ID}" style="position: absolute; left: 0px; top: 0px;">
+				 * <div class="col-lg-4 {category} recommended personal" id="workid{ID}" style="position: relative; left: 0px; top: 0px;">
 				 *   <a class="portfolio-link">
 				 *     <div class="portfolio-box">
 				 *       <div class="portfolio-box-img">
@@ -120,7 +120,7 @@
 
 								// 生成作品卡片 HTML
 								let cardHTML =
-									`<div class="col-lg-4 ${classes}" id="workid${item.id}" style="position: absolute; left: 0px; top: 0px;">`;
+									`<div class="col-lg-4 ${classes}" id="workid${item.id}" style="position: relative; left: 0px; top: 0px;">`;
 								cardHTML += `<a class="portfolio-link">`;
 								cardHTML += `<div class="portfolio-box">`;
 								cardHTML += `<div class="portfolio-box-img">`;
