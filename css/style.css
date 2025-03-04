@@ -1481,3 +1481,8 @@ blockquote {
 .div404con svg {
 	width: 100%;
 }
+
+
+#addplace {
+	min-height: fit-content;
+}
