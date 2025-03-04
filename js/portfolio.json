@@ -1,176 +1,198 @@
-[{
-		"id": 1,
-		"title": "Gaming Victory",
-		"category": "Video",
-		"description": "参加《第三届瑞云动画渲染大赛》作品",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/GamingVictory.mp4",
-			"poster": "./images/works/GamingVictory.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNjc0NjEwNzY=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/187834795/Gaming-Victory"
-			},
-			{
-				"name": "GGAC",
-				"url": "https://www.ggac.com/work/detail/1612453"
-			}
-		]
-	},
-	{
-		"id": 2,
-		"title": "Voyage Tale",
-		"category": "Video",
-		"description": "参加《第四届瑞云动画渲染大赛》作品",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/VoyageTale.mp4",
-			"poster": "./images/works/VorageTale.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNzEyMTc2MDQ=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/216398029/Voyage-Tale"
-			},
-			{
-				"name": "GGAC",
-				"url": "https://www.ggac.com/work/detail/1761450?t_id=1741010406673"
-			}
-		]
-	},
-	{
-		"id": 3,
-		"title": "The Blue Dream 动态图形设计",
-		"category": "Video",
-		"description": "本片系大三《动态图形设计》课程结课作业。旨在制作一部VR头显宣传片，通过动态图形设计的方式演绎，主题是探索VR的无限可能性。",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/TheBlueDream.mp4",
-			"poster": "./images/works/TheBlueDream.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNjcxNTA3MDg=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics"
-			},
-			{
-				"name": "GGAC",
-				"url": "https://www.ggac.com/work/detail/1594632?t_id=1741010406673"
-			}
-		]
-	},
-	{
-		"id": 4,
-		"title": "City Zoo 城市动物园",
-		"category": "Video",
-		"description": "本片系大三VR课程结课作业，已获得一些电影节奖项，有空我把它挂上来",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/TheBlueDream.mp4",
-			"poster": "./images/works/CityZoo.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNjg2OTA4NjQ=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/185367803/CITY-ZOO-VR-drama"
-			},
-			{
-				"name": "宣发页",
-				"url": "https://dorafx.top/3page/cityzoo/index.html"
-			}
-		]
-	},
-	{
-		"id": 5,
-		"title": "毕业设计",
-		"category": "Video",
-		"description": "毕业设计2025.3.3输出预览版本",
-		"recommend": true,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/Graduation.mp4",
-			"poster": "./images/works/Graduation.webp"
-		},
-		"links": []
-	},
-	{
-		"id": 6,
-		"title": "Opening Title for Thunderfire",
-		"category": "Video",
-		"description": "军事类短片电影Thunderfire片头动画，冷战风格，After Effetcs制作。",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/ThunderfireOT.mp4",
-			"poster": "./images/works/Thunderfire.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNjcyMTIyNjQ=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/185797953/Opening-Title-for-Thunderfire"
-			}
-		]
-	},
-	{
-		"id": 7,
-		"title": "The Gadget",
-		"category": "3D",
-		"description": "诺兰新片《奥本海默》中的“三位一体”核试验装置“The Gadget”建模与渲染",
-		"recommend": false,
-		"media": {
-			"type": "image",
-			"url": "./images/works/TheGadget.webp",
-			"poster": "./images/works/TheGadget.webp"
-		},
-		"links": [{
-				"name": "站酷",
-				"url": "https://www.zcool.com.cn/work/ZNjY0NjgxMDg=.html"
-			},
-			{
-				"name": "Behance",
-				"url": "https://www.behance.net/gallery/179660543/The-Gadget-from-Nolans-Oppenheimer"
-			},
-			{
-				"name": "GGAC",
-				"url": "https://www.ggac.com/work/detail/567274?t_id=1741010406673"
-			}
-		]
-	},
-	{
-		"id": 8,
-		"title": "热烈庆祝软著下证",
-		"category": "Video",
-		"description": "热烈庆祝办了半年的软著顺利下证",
-		"recommend": false,
-		"media": {
-			"type": "video",
-			"url": "https://video.dorafx.top/Ccopy.mp4",
-			"poster": "./images/works/Ccopy.webp"
-		},
-		"links": [{
-			"name": "站酷",
-			"url": "https://www.zcool.com.cn/work/ZNjYxOTU0Mjg=.html"
-		}]
-	}
+[
+  {
+    "id": 1,
+    "title": "Gaming Victory",
+    "category": "Video",
+    "description": "参加《第三届瑞云动画渲染大赛》作品",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/GamingVictory.mp4",
+      "poster": "./images/works/GamingVictory.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjc0NjEwNzY=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/187834795/Gaming-Victory"
+      },
+      {
+        "name": "GGAC",
+        "url": "https://www.ggac.com/work/detail/1612453"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Voyage Tale",
+    "category": "Video",
+    "description": "参加《第四届瑞云动画渲染大赛》作品",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/VoyageTale.mp4",
+      "poster": "./images/works/VorageTale.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNzEyMTc2MDQ=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/216398029/Voyage-Tale"
+      },
+      {
+        "name": "GGAC",
+        "url": "https://www.ggac.com/work/detail/1761450?t_id=1741010406673"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "The Blue Dream 动态图形设计",
+    "category": "Video",
+    "description": "本片系大三《动态图形设计》课程结课作业。旨在制作一部VR头显宣传片，通过动态图形设计的方式演绎，主题是探索VR的无限可能性。",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/TheBlueDream.mp4",
+      "poster": "./images/works/TheBlueDream.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjcxNTA3MDg=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/185275571/The-Blue-Dream-Motion-Graphics"
+      },
+      {
+        "name": "GGAC",
+        "url": "https://www.ggac.com/work/detail/1594632?t_id=1741010406673"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "City Zoo 城市动物园",
+    "category": "Video",
+    "description": "本片系大三VR课程结课作业，已获得一些电影节奖项，有空我把它挂上来",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/TheBlueDream.mp4",
+      "poster": "./images/works/CityZoo.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjg2OTA4NjQ=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/185367803/CITY-ZOO-VR-drama"
+      },
+      {
+        "name": "宣发页",
+        "url": "https://dorafx.top/3page/cityzoo/index.html"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Opening Title for Thunderfire",
+    "category": "Video",
+    "description": "军事类短片电影Thunderfire片头动画，冷战风格，After Effetcs制作。",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/ThunderfireOT.mp4",
+      "poster": "./images/works/Thunderfire.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjcyMTIyNjQ=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/185797953/Opening-Title-for-Thunderfire"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "The Gadget",
+    "category": "3D",
+    "description": "诺兰新片《奥本海默》中的“三位一体”核试验装置“The Gadget”建模与渲染",
+    "recommend": false,
+    "media": {
+      "type": "image",
+      "url": "./images/works/TheGadget.webp",
+      "poster": "./images/works/TheGadget.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjY0NjgxMDg=.html"
+      },
+      {
+        "name": "Behance",
+        "url": "https://www.behance.net/gallery/179660543/The-Gadget-from-Nolans-Oppenheimer"
+      },
+      {
+        "name": "GGAC",
+        "url": "https://www.ggac.com/work/detail/567274?t_id=1741010406673"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "短片 悍不畏死",
+    "category": "Video",
+    "description": "2024年摄制的短片《悍不畏死》，英文名：No Fear To Death。IMDB编号tt33307133。\n目前正在参投电影节，原则上不能公开，但是可以试看两分钟。",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/NoFearToDeath2min.mp4",
+      "poster": "./images/works/NoFearToDeath.webp"
+    },
+    "links": []
+  },
+  {
+    "id": 8,
+    "title": "热烈庆祝软著下证",
+    "category": "Video",
+    "description": "热烈庆祝办了半年的软著顺利下证",
+    "recommend": false,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/Ccopy.mp4",
+      "poster": "./images/works/Ccopy.webp"
+    },
+    "links": [
+      {
+        "name": "站酷",
+        "url": "https://www.zcool.com.cn/work/ZNjYxOTU0Mjg=.html"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "毕业设计",
+    "category": "Video",
+    "description": "毕业设计2025.3.3输出预览版本",
+    "recommend": true,
+    "media": {
+      "type": "video",
+      "url": "https://video.dorafx.top/Graduation.mp4",
+      "poster": "./images/works/Graduation.webp"
+    },
+    "links": []
+  }
 ]

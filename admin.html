@@ -1,439 +1,550 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>作品管理</title>
-		<!-- 引入 CSS -->
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-		<style>
-			#dropZone {
-				background-color: #f8f9fa;
-				border: 2px dashed #adb5bd;
-				border-radius: 5px;
-				padding: 20px;
-				text-align: center;
-				cursor: pointer;
-			}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 数据管理页面</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f5f5f5;
+            cursor: ew-resize;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            box-sizing: border-box;
+            height: 30px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 60px;
+            resize: vertical;
+        }
+        .ellipsis {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .media-details div {
+            margin-bottom: 5px;
+        }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .drop-zone.dragover {
+            background-color: #e0e0e0;
+        }
+        .container {
+            max-width: 100%;
+            width: 100%;
+        }
+        .btn-sm {
+            padding: 4px 8px;
+        }
+        .links-list {
+            list-style: none;
+            padding: 0;
+        }
+        .links-list li {
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JSON 数据管理</h1>
+        <input type="file" id="jsonFile" accept=".json" class="mb-3">
+        <button id="viewJson" class="btn btn-info mb-3">查看 JSON</button>
+        <button id="viewHistory" class="btn btn-info mb-3">查看历史记录</button>
+        <button id="manualSave" class="btn btn-secondary mb-3">手动保存</button>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>类别</th>
+                    <th>描述</th>
+                    <th>推荐</th>
+                    <th>媒体类型</th>
+                    <th>媒体详情</th>
+                    <th>链接</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="addItem" class="btn btn-primary mt-3">添加新项</button>
+        <button id="saveChanges" class="btn btn-success mt-3 ml-2">保存修改</button>
+    </div>
 
-			#imageDropZone {
-				background-color: #f8f9fa;
-				border: 2px dashed #adb5bd;
-				border-radius: 5px;
-				padding: 20px;
-				text-align: center;
-				cursor: pointer;
-			}
-		</style>
-	</head>
-	<body>
-		<!-- 导航栏 -->
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="#">作品管理</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-					aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ms-auto">
-						<li class="nav-item">
-							<button class="btn btn-primary" id="saveBtn">保存JSON</button>
-						</li>
-						<li class="nav-item">
-							<button class="btn btn-secondary ms-2" id="importBtn">导入JSON</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-
-		<!-- 表格区域 -->
-		<div class="container mt-3">
-			<button class="btn btn-success mb-3" id="addBtn">添加新作品</button>
-			<table id="worksTable" class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>标题</th>
-						<th>类别</th>
-						<th>描述</th>
-						<th>推荐</th>
-						<th>媒体类型</th>
-						<th>媒体URL</th>
-						<th>封面</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-
-		<!-- 编辑/添加模态框 -->
-		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="editModalLabel">编辑作品</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form id="editForm">
-							<input type="hidden" id="editId">
-							<div class="mb-3">
-								<label for="editTitle" class="form-label">标题</label>
-								<input type="text" class="form-control" id="editTitle" required>
-							</div>
-							<div class="mb-3">
-								<label for="editCategory" class="form-label">类别</label>
-								<select class="form-select" id="editCategory">
-									<option value="2D">2D</option>
-									<option value="3D">3D</option>
-									<option value="Video">视频</option>
-									<option value="Web">网页</option>
-								</select>
-							</div>
-							<div class="mb-3">
-								<label for="editDescription" class="form-label">描述</label>
-								<textarea class="form-control" id="editDescription" rows="3"></textarea>
-							</div>
-							<div class="mb-3 form-check">
-								<input type="checkbox" class="form-check-input" id="editRecommend">
-								<label class="form-check-label" for="editRecommend">推荐</label>
-							</div>
-							<div class="mb-3">
-								<label for="editMediaType" class="form-label">媒体类型</label>
-								<select class="form-select" id="editMediaType">
-									<option value="blog">博文</option>
-									<option value="video">视频</option>
-									<option value="image">图片</option>
-								</select>
-							</div>
-							<!-- 博文字段 -->
-							<div id="blog-fields" style="display: none;">
-								<label class="form-label">博文内容</label>
-								<div id="editor-container"></div>
-							</div>
-							<!-- 视频字段 -->
-							<div id="video-fields" style="display: none;">
-								<label for="editVideoUrl" class="form-label">视频 URL</label>
-								<input type="text" class="form-control" id="editVideoUrl" placeholder="请输入视频链接">
-								<label class="form-label mt-3">封面（Poster）</label>
-								<input type="file" id="poster-upload" accept="image/*">
-								<div id="dropZone" class="mt-2">拖拽图片到这里</div>
-							</div>
-							<!-- 图片字段 -->
-							<div id="image-fields" style="display: none;">
-								<label class="form-label">上传图片</label>
-								<input type="file" id="image-upload" accept="image/*">
-								<div id="imageDropZone" class="mt-2">拖拽图片到这里</div>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">链接</label>
-								<div id="linksContainer"></div>
-								<button type="button" class="btn btn-sm btn-secondary" id="addLinkBtn">添加链接</button>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary" id="saveEditBtn">保存</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- 引入 JS -->
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-		<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-		<script>
-			let table;
-			let quill = new Quill('#editor-container', {
-				theme: 'snow'
-			});
-
-			// 初始化 DataTables
-			$(document).ready(function() {
-				table = $('#worksTable').DataTable({
-					columns: [{
-							data: 'id'
-						},
-						{
-							data: 'title'
-						},
-						{
-							data: 'category'
-						},
-						{
-							data: 'description'
-						},
-						{
-							data: 'recommend',
-							render: data => data ? '是' : '否'
-						},
-						{
-							data: 'media.type'
-						},
-						{
-							data: 'media.url'
-						},
-						{
-							data: 'media.poster'
-						},
-						{
-							data: null,
-							render: () => '<button class="btn btn-sm btn-primary editBtn">编辑</button> ' +
-								'<button class="btn btn-sm btn-danger deleteBtn">删除</button>'
-						}
-					]
-				});
-				loadData(); // 初始化空数据
-
-				// 动态显示表单字段
-				document.getElementById('editMediaType').addEventListener('change', function() {
-					const type = this.value;
-					document.getElementById('blog-fields').style.display = type === 'blog' ? 'block' : 'none';
-					document.getElementById('video-fields').style.display = type === 'video' ? 'block' : 'none';
-					document.getElementById('image-fields').style.display = type === 'image' ? 'block' : 'none';
-				});
-			});
-
-			// 加载数据
-			function loadData(file) {
-				if (file) {
-					const reader = new FileReader();
-					reader.onload = function(e) {
-						try {
-							const works = JSON.parse(e.target.result);
-							table.clear().rows.add(works).draw();
-						} catch (error) {
-							Swal.fire('错误', '无法解析JSON文件', 'error');
-						}
-					};
-					reader.readAsText(file);
-				} else {
-					const works = [];
-					table.clear().rows.add(works).draw();
-				}
-			}
-
-			// 导入 JSON
-			$('#importBtn').on('click', function() {
-				const input = document.createElement('input');
-				input.type = 'file';
-				input.accept = '.json';
-				input.onchange = function(event) {
-					const file = event.target.files[0];
-					if (file) loadData(file);
-				};
-				input.click();
-			});
-
-			// 保存 JSON
-			$('#saveBtn').on('click', function() {
-				const data = table.rows().data().toArray();
-				const json = JSON.stringify(data, null, 2);
-				const blob = new Blob([json], {
-					type: 'application/json'
-				});
-				const url = URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = 'portfolio.json';
-				a.click();
-				URL.revokeObjectURL(url);
-			});
-
-			// 添加新作品
-			$('#addBtn').on('click', function() {
-				$('#editId').val('');
-				$('#editTitle').val('');
-				$('#editCategory').val('2D');
-				$('#editDescription').val('');
-				$('#editRecommend').prop('checked', false);
-				$('#editMediaType').val('image');
-				$('#linksContainer').empty();
-				quill.root.innerHTML = '';
-				document.getElementById('blog-fields').style.display = 'none';
-				document.getElementById('video-fields').style.display = 'none';
-				document.getElementById('image-fields').style.display = 'block';
-				$('#editModal').modal('show');
-			});
-
-			// 编辑作品
-			$('#worksTable tbody').on('click', '.editBtn', function() {
-				const row = table.row($(this).parents('tr')).data();
-				$('#editId').val(row.id);
-				$('#editTitle').val(row.title);
-				$('#editCategory').val(row.category);
-				$('#editDescription').val(row.description);
-				$('#editRecommend').prop('checked', row.recommend);
-				$('#editMediaType').val(row.media.type);
-				$('#linksContainer').empty();
-				row.links.forEach(link => addLinkField(link.name, link.url));
-				if (row.media.type === 'blog') {
-					quill.root.innerHTML = row.content || '';
-					document.getElementById('blog-fields').style.display = 'block';
-					document.getElementById('video-fields').style.display = 'none';
-					document.getElementById('image-fields').style.display = 'none';
-				} else if (row.media.type === 'video') {
-					document.getElementById('editVideoUrl').value = row.media.url || '';
-					document.getElementById('blog-fields').style.display = 'none';
-					document.getElementById('video-fields').style.display = 'block';
-					document.getElementById('image-fields').style.display = 'none';
-				} else {
-					document.getElementById('blog-fields').style.display = 'none';
-					document.getElementById('video-fields').style.display = 'none';
-					document.getElementById('image-fields').style.display = 'block';
-				}
-				$('#editModal').modal('show');
-			});
-
-			// 删除作品
-			$('#worksTable tbody').on('click', '.deleteBtn', function() {
-				const row = table.row($(this).parents('tr'));
-				Swal.fire({
-					title: '确定删除?',
-					text: '删除后无法恢复',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: '删除',
-					cancelButtonText: '取消'
-				}).then(result => {
-					if (result.isConfirmed) {
-						row.remove().draw();
-						Swal.fire('已删除', '', 'success');
-					}
-				});
-			});
-
-			// 添加链接字段
-			function addLinkField(name = '', url = '') {
-				const linkHtml = `
-                <div class="input-group mb-2">
-                    <input type="text" class="form-control" placeholder="名称" value="${name}">
-                    <input type="text" class="form-control" placeholder="URL" value="${url}">
-                    <button type="button" class="btn btn-danger removeLinkBtn">删除</button>
+    <!-- 博客内容编辑模态框 -->
+    <div id="blogModal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑博客内容</h5>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
                 </div>
-            `;
-				$('#linksContainer').append(linkHtml);
-			}
+                <div class="modal-body">
+                    <div id="editor"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveBlog" class="btn btn-primary">保存</button>
+                    <button id="cancelBlog" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			$('#addLinkBtn').on('click', () => addLinkField());
+    <!-- 链接编辑模态框 -->
+    <div id="linksModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑链接</h5>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div id="linksList"></div>
+                    <button id="addLink" class="btn btn-secondary mt-2">添加链接</button>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveLinks" class="btn btn-primary">保存</button>
+                    <button id="cancelLinks" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			$('#linksContainer').on('click', '.removeLinkBtn', function() {
-				$(this).parent().remove();
-			});
+    <!-- JSON 编辑模态框 -->
+    <div id="jsonModal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑 JSON</h5>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="jsonText" rows="20" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveJson" class="btn btn-primary">保存</button>
+                    <button id="cancelJson" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			// 保存编辑或新增
-			$('#saveEditBtn').on('click', function() {
-				const id = $('#editId').val();
-				const type = $('#editMediaType').val();
-				const newWork = {
-					id: id ? parseInt(id) : (Math.max(...table.rows().data().toArray().map(row => row.id), 0) + 1) ||
-						1,
-					title: $('#editTitle').val(),
-					category: $('#editCategory').val(),
-					description: $('#editDescription').val(),
-					recommend: $('#editRecommend').prop('checked'),
-					media: {
-						type: type
-					},
-					links: []
-				};
+    <!-- 历史记录模态框 -->
+    <div id="historyModal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">历史记录</h5>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <ul id="historyList" class="list-group"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button id="clearHistory" class="btn btn-danger">清除所有历史记录</button>
+                    <button id="closeHistory" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-				if (type === 'blog') {
-					newWork.content = quill.root.innerHTML;
-				} else if (type === 'video') {
-					newWork.media.url = $('#editVideoUrl').val();
-					const posterFile = document.getElementById('poster-upload').files[0];
-					newWork.media.poster = posterFile ? `./images/works/${posterFile.name}` : '';
-				} else if (type === 'image') {
-					const imageFile = document.getElementById('image-upload').files[0];
-					const path = imageFile ? `./images/works/${imageFile.name}` : '';
-					newWork.media.url = path;
-					newWork.media.poster = path;
-				}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script>
+        let items = [];
+        let currentEditingIndex = null;
+        let quill = null;
 
-				$('#linksContainer .input-group').each(function() {
-					const name = $(this).find('input:eq(0)').val();
-					const url = $(this).find('input:eq(1)').val();
-					if (name && url) newWork.links.push({
-						name,
-						url
-					});
-				});
+        $(document).ready(function() {
+            // 初始化 Quill 编辑器
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'video'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
 
-				if (id) {
-					const rowIndex = table.rows().data().toArray().findIndex(row => row.id == id);
-					if (rowIndex !== -1) table.row(rowIndex).data(newWork).draw();
-				} else {
-					table.row.add(newWork).draw();
-				}
-				$('#editModal').modal('hide');
-			});
+            // 从 localStorage 加载数据（如果存在）
+            if (localStorage.getItem('portfolioData')) {
+                items = JSON.parse(localStorage.getItem('portfolioData'));
+                populateTable();
+            }
 
-			// 拖拽上传逻辑
-			$('#editModal').on('shown.bs.modal', function() {
-				// 图片类型的拖拽区域
-				const imageDropZone = document.getElementById('imageDropZone');
-				if (imageDropZone) {
-					imageDropZone.addEventListener('dragover', e => {
-						e.preventDefault();
-						imageDropZone.style.backgroundColor = '#e9ecef';
-					});
-					imageDropZone.addEventListener('dragleave', e => {
-						e.preventDefault();
-						imageDropZone.style.backgroundColor = '';
-					});
-					imageDropZone.addEventListener('drop', e => {
-						e.preventDefault();
-						imageDropZone.style.backgroundColor = '';
-						const file = e.dataTransfer.files[0];
-						if (file && file.type.startsWith('image/')) {
-							const fileName = file.name;
-							const path = `./images/works/${fileName}`;
-							document.getElementById('image-upload').files = e.dataTransfer.files;
-							Swal.fire('提示', `请确保将图片 "${fileName}" 放置在 images/works/ 目录下`, 'info');
-						} else {
-							Swal.fire('错误', '请拖拽一个图片文件', 'error');
-						}
-					});
-				}
+            // 保存到 localStorage 的函数
+            function saveToLocalStorage() {
+                localStorage.setItem('portfolioData', JSON.stringify(items));
+                let history = JSON.parse(localStorage.getItem('portfolioHistory') || '[]');
+                history.push({ timestamp: new Date().toISOString(), data: JSON.parse(JSON.stringify(items)) });
+                localStorage.setItem('portfolioHistory', JSON.stringify(history));
+            }
 
-				// 视频封面的拖拽区域
-				const dropZone = document.getElementById('dropZone');
-				if (dropZone) {
-					dropZone.addEventListener('dragover', e => {
-						e.preventDefault();
-						dropZone.style.backgroundColor = '#e9ecef';
-					});
-					dropZone.addEventListener('dragleave', e => {
-						e.preventDefault();
-						dropZone.style.backgroundColor = '';
-					});
-					dropZone.addEventListener('drop', e => {
-						e.preventDefault();
-						dropZone.style.backgroundColor = '';
-						const file = e.dataTransfer.files[0];
-						if (file && file.type.startsWith('image/')) {
-							const fileName = file.name;
-							const path = `./images/works/${fileName}`;
-							document.getElementById('poster-upload').files = e.dataTransfer.files;
-							Swal.fire('提示', `请确保将图片 "${fileName}" 放置在 images/works/ 目录下`, 'info');
-						} else {
-							Swal.fire('错误', '请拖拽一个图片文件', 'error');
-						}
-					});
-				}
-			});
-		</script>
-	</body>
+            // 填充表格并启用拖拽
+            function populateTable() {
+                $('#dataTable tbody').empty();
+                items.forEach((item, index) => {
+                    const row = $('<tr>').data('index', index);
+                    row.append($('<td>').text(item.id).addClass('ellipsis'));
+                    row.append($('<td>').append($('<input type="text" class="form-control title">').val(item.title)));
+                    const categorySelect = $('<select class="form-control category">');
+                    ['2D', '3D', 'Video', 'Web'].forEach(cat => categorySelect.append($('<option>').val(cat).text(cat)));
+                    categorySelect.val(item.category || 'Video');
+                    row.append($('<td>').append(categorySelect));
+                    row.append($('<td>').append($('<textarea class="form-control description">').val(item.description)));
+                    const recommendCheckbox = $('<input type="checkbox" class="recommend">').prop('checked', item.recommend);
+                    row.append($('<td>').append(recommendCheckbox));
+                    const mediaTypeSelect = $('<select class="form-control media-type">');
+                    ['video', 'image', 'blog'].forEach(type => mediaTypeSelect.append($('<option>').val(type).text(type)));
+                    mediaTypeSelect.val(item.media.type);
+                    row.append($('<td>').append(mediaTypeSelect));
+                    const mediaDetailsCell = $('<td class="media-details">');
+                    updateMediaDetails(mediaDetailsCell, item.media);
+                    row.append(mediaDetailsCell);
+                    const linksCell = $('<td>');
+                    const linksList = $('<ul class="links-list">');
+                    item.links.forEach(link => linksList.append($('<li>').text(`${link.name}: ${link.url}`).data('link', link)));
+                    linksCell.append(linksList);
+                    linksCell.append($('<button class="btn btn-info btn-sm edit-links">编辑链接</button>'));
+                    row.append(linksCell);
+                    const deleteButton = $('<button class="btn btn-danger btn-sm delete">删除</button>');
+                    row.append($('<td>').append(deleteButton));
+                    $('#dataTable tbody').append(row);
+                });
+
+                // 初始化 Sortable.js 实现拖拽
+                new Sortable(document.getElementById('dataTable').getElementsByTagName('tbody')[0], {
+                    animation: 150,
+                    onEnd: function(evt) {
+                        const movedItem = items.splice(evt.oldIndex, 1)[0];
+                        items.splice(evt.newIndex, 0, movedItem);
+                        items.forEach((item, index) => item.id = index + 1);
+                        populateTable();
+                        saveToLocalStorage(); // 拖拽后自动保存
+                    }
+                });
+            }
+
+            // 更新媒体详情
+            function updateMediaDetails(cell, media) {
+                cell.empty();
+                if (media.type === 'video' || media.type === 'image') {
+                    const urlInput = $('<input type="text" class="form-control media-url">').val(media.url || '');
+                    cell.append($('<div>').append('<label>URL:</label>').append(urlInput));
+                    const posterInput = $('<input type="text" class="form-control media-poster">').val(media.poster || '');
+                    const dropZone = $('<div class="drop-zone">拖拽图片或点击此处上传封面</div>');
+                    setupDropZone(dropZone, posterInput);
+                    cell.append($('<div>').append('<label>Poster:</label>').append(posterInput).append(dropZone));
+                } else if (media.type === 'blog') {
+                    cell.append($('<button class="btn btn-info btn-sm edit-content">编辑内容</button>'));
+                    const posterInput = $('<input type="text" class="form-control media-poster">').val(media.poster || '');
+                    const dropZone = $('<div class="drop-zone">拖拽图片或点击此处上传封面</div>');
+                    setupDropZone(dropZone, posterInput);
+                    cell.append($('<div>').append('<label>Poster:</label>').append(posterInput).append(dropZone));
+                }
+            }
+
+            // 设置拖拽区域
+            function setupDropZone(dropZone, input) {
+                dropZone.on({
+                    dragover: function(e) { e.preventDefault(); $(this).addClass('dragover'); },
+                    dragleave: function() { $(this).removeClass('dragover'); },
+                    drop: function(e) {
+                        e.preventDefault();
+                        $(this).removeClass('dragover');
+                        const file = e.originalEvent.dataTransfer.files[0];
+                        if (file && file.type.startsWith('image/')) input.val(`./images/works/${file.name}`);
+                    },
+                    click: function() {
+                        const fileInput = $('<input type="file" accept="image/*">').hide();
+                        fileInput.on('change', function() {
+                            if (this.files[0]) input.val(`./images/works/${this.files[0].name}`);
+                        });
+                        fileInput.click();
+                    }
+                });
+            }
+
+            // 读取 JSON 文件
+            $('#jsonFile').on('change', function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    items = JSON.parse(e.target.result);
+                    items.forEach((item, index) => item.id = index + 1);
+                    populateTable();
+                    saveToLocalStorage();
+                };
+                reader.readAsText(file);
+            });
+
+            // 媒体类型变化
+            $('#dataTable').on('change', '.media-type', function() {
+                const row = $(this).closest('tr');
+                const index = row.data('index');
+                const mediaType = $(this).val();
+                items[index].media = (mediaType === 'video' || mediaType === 'image') ?
+                    { type: mediaType, url: '', poster: '' } :
+                    { type: 'blog', content: '', poster: '' };
+                updateMediaDetails(row.find('.media-details'), items[index].media);
+            });
+
+            // 编辑博客内容
+            $('#dataTable').on('click', '.edit-content', function() {
+                const row = $(this).closest('tr');
+                currentEditingIndex = row.data('index');
+                quill.setContents(items[currentEditingIndex].media.content || '');
+                $('#blogModal').modal('show');
+            });
+
+            // 保存博客内容
+            $('#saveBlog').on('click', function() {
+                items[currentEditingIndex].media.content = quill.getContents();
+                $('#blogModal').modal('hide');
+                populateTable();
+                saveToLocalStorage();
+            });
+
+            // 编辑链接
+            $('#dataTable').on('click', '.edit-links', function() {
+                const row = $(this).closest('tr');
+                currentEditingIndex = row.data('index');
+                openLinksModal(items[currentEditingIndex].links);
+            });
+
+            // 打开链接模态框
+            function openLinksModal(links) {
+                $('#linksList').empty();
+                links.forEach(link => {
+                    const linkDiv = $('<div class="form-group d-flex">');
+                    linkDiv.append($('<input type="text" class="form-control link-name mr-2">').val(link.name).attr('placeholder', '名称'));
+                    linkDiv.append($('<input type="text" class="form-control link-url mr-2">').val(link.url).attr('placeholder', 'URL'));
+                    linkDiv.append($('<button class="btn btn-danger btn-sm remove-link">删除</button>'));
+                    $('#linksList').append(linkDiv);
+                });
+                $('#linksModal').modal('show');
+            }
+
+            // 添加链接
+            $('#addLink').on('click', function() {
+                const linkDiv = $('<div class="form-group d-flex">');
+                linkDiv.append($('<input type="text" class="form-control link-name mr-2">').attr('placeholder', '名称'));
+                linkDiv.append($('<input type="text" class="form-control link-url mr-2">').attr('placeholder', 'URL'));
+                linkDiv.append($('<button class="btn btn-danger btn-sm remove-link">删除</button>'));
+                $('#linksList').append(linkDiv);
+            });
+
+            // 删除链接
+            $('#linksList').on('click', '.remove-link', function() {
+                $(this).parent().remove();
+            });
+
+            // 保存链接
+            $('#saveLinks').on('click', function() {
+                const links = [];
+                $('#linksList > div').each(function() {
+                    const name = $(this).find('.link-name').val();
+                    const url = $(this).find('.link-url').val();
+                    if (name && url) links.push({ name, url });
+                });
+                items[currentEditingIndex].links = links;
+                populateTable();
+                saveToLocalStorage();
+                $('#linksModal').modal('hide');
+            });
+
+            // 删除项
+            $('#dataTable').on('click', '.delete', function() {
+                const index = $(this).closest('tr').data('index');
+                items.splice(index, 1);
+                items.forEach((item, i) => item.id = i + 1);
+                populateTable();
+                saveToLocalStorage();
+            });
+
+            // 添加新项
+            $('#addItem').on('click', function() {
+                const newItem = {
+                    id: items.length + 1,
+                    title: '',
+                    category: 'Video',
+                    description: '',
+                    recommend: false,
+                    media: { type: 'video', url: '', poster: '' },
+                    links: []
+                };
+                items.push(newItem);
+                populateTable();
+                saveToLocalStorage();
+            });
+
+            // 保存修改并下载为 portfolio.json
+            $('#saveChanges').on('click', function() {
+                const updatedItems = [];
+                $('#dataTable tbody tr').each(function() {
+                    const row = $(this);
+                    const index = row.data('index');
+                    const item = {
+                        id: items[index].id,
+                        title: row.find('.title').val(),
+                        category: row.find('.category').val(),
+                        description: row.find('.description').val(),
+                        recommend: row.find('.recommend').is(':checked'),
+                        media: {},
+                        links: items[index].links
+                    };
+                    const mediaType = row.find('.media-type').val();
+                    item.media.type = mediaType;
+                    if (mediaType === 'video' || mediaType === 'image') {
+                        item.media.url = row.find('.media-url').val();
+                        item.media.poster = row.find('.media-poster').val();
+                    } else if (mediaType === 'blog') {
+                        item.media.content = items[index].media.content;
+                        item.media.poster = row.find('.media-poster').val();
+                    }
+                    updatedItems.push(item);
+                });
+                items = updatedItems; // 更新 items
+                saveToLocalStorage(); // 保存到 localStorage
+                const json = JSON.stringify(updatedItems, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'portfolio.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // 查看 JSON
+            $('#viewJson').on('click', function() {
+                $('#jsonText').val(JSON.stringify(items, null, 2));
+                $('#jsonModal').modal('show');
+            });
+
+            // 保存 JSON
+            $('#saveJson').on('click', function() {
+                try {
+                    items = JSON.parse($('#jsonText').val());
+                    items.forEach((item, index) => item.id = index + 1);
+                    populateTable();
+                    saveToLocalStorage();
+                    $('#jsonModal').modal('hide');
+                } catch (e) {
+                    alert('JSON 格式错误，请检查后重试。');
+                }
+            });
+
+            // 手动保存
+            $('#manualSave').on('click', function() {
+                saveToLocalStorage();
+                alert('已手动保存到历史记录');
+            });
+
+            // 查看历史记录
+            $('#viewHistory').on('click', function() {
+                populateHistory();
+                $('#historyModal').modal('show');
+            });
+
+            // 填充历史记录列表
+            function populateHistory() {
+                const history = JSON.parse(localStorage.getItem('portfolioHistory') || '[]');
+                $('#historyList').empty();
+                if (history.length === 0) {
+                    $('#historyList').append('<li class="list-group-item">暂无历史记录</li>');
+                } else {
+                    history.forEach((record, index) => {
+                        const listItem = $('<li class="list-group-item d-flex justify-content-between align-items-center">')
+                            .text(record.timestamp)
+                            .append($('<button class="btn btn-sm btn-primary load-history">加载</button>').data('index', index))
+                            .append($('<button class="btn btn-sm btn-danger delete-history">删除</button>').data('index', index));
+                        $('#historyList').append(listItem);
+                    });
+                }
+            }
+
+            // 加载历史记录
+            $('#historyList').on('click', '.load-history', function() {
+                const index = $(this).data('index');
+                const history = JSON.parse(localStorage.getItem('portfolioHistory'));
+                items = history[index].data;
+                populateTable();
+                saveToLocalStorage();
+                $('#historyModal').modal('hide');
+            });
+
+            // 删除单个历史记录
+            $('#historyList').on('click', '.delete-history', function() {
+                if (confirm('确定要删除该历史记录吗？')) {
+                    const index = $(this).data('index');
+                    let history = JSON.parse(localStorage.getItem('portfolioHistory'));
+                    history.splice(index, 1);
+                    localStorage.setItem('portfolioHistory', JSON.stringify(history));
+                    populateHistory();
+                }
+            });
+
+            // 清除所有历史记录
+            $('#clearHistory').on('click', function() {
+                if (confirm('确定要清除所有历史记录吗？')) {
+                    localStorage.removeItem('portfolioHistory');
+                    populateHistory();
+                }
+            });
+
+            // 表格列宽调整
+            let isResizing = false;
+            let startX, startWidth, targetTh;
+            $('th').on('mousedown', function(e) {
+                if (e.offsetX > $(this).width() - 10) {
+                    isResizing = true;
+                    startX = e.pageX;
+                    startWidth = $(this).width();
+                    targetTh = this;
+                }
+            });
+            $(document).on('mousemove', function(e) {
+                if (isResizing) $(targetTh).width(startWidth + (e.pageX - startX));
+            });
+            $(document).on('mouseup', function() {
+                isResizing = false;
+            });
+        });
+    </script>
+</body>
 </html>
