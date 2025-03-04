@@ -218,7 +218,6 @@
 							.attr("src", work.media.url)
 							.attr("poster", work.media.poster);
 						// 如果存在图片预览元素，则移除
-						$("#SImg").remove();
 					} else if (work.media && work.media.type.toLowerCase() === "image") {
 						// 如果是图片，隐藏视频区域
 						$("#slvideo").hide();
@@ -236,7 +235,6 @@
 						$("#slvideo").hide();
 						$("#SlImg").hide();
 						$("#SlBlog").hide();
-						$("#popupMedia").empty();
 					}
 
 				}
