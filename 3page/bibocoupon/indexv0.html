@@ -246,10 +246,7 @@
 					<div class="flex-grow flex flex-col items-center justify-center -mt-20 w-full overflow-hidden">
 						<!-- 兔子：固定占位容器 -->
 						<div class="h-48 flex items-end justify-center w-full">
-							<!-- <div class="text-[130px] rabbit-jump" :class="{ 'is-pressing-rabbit': isPressing }">🐰</div> -->
-							<img class="rabbit-jump w-[140px] h-[140px] object-contain select-none"
-								:class="{ 'is-pressing-rabbit': isPressing }" :src="currentFrameSrc" alt="rabbit" />
-
+							<div class="text-[130px] rabbit-jump" :class="{ 'is-pressing-rabbit': isPressing }">🐰</div>
 						</div>
 
 						<!-- 气泡提示：固定占位容器 -->
@@ -298,28 +295,6 @@
 						msg: ''
 					});
 					const isPlaying = ref(false);
-
-					const frames = {
-						// 你的帧数量（改成实际数量）
-						biboCount: 29,
-						// 帧文件夹
-						dir: 'frames',
-						// 前缀
-						biboPrefix: 'bibo12fps_',
-						// 扩展名：png 或 webp
-						ext: 'webp',
-						// 静止帧（通常 0）
-						idleIndex: 0,
-					};
-
-					const frameIndex = ref(frames.idleIndex);
-					const currentFrameSrc = computed(() => {
-						const n = String(frameIndex.value).padStart(3, '0');
-						return `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
-					});
-
-					let frameTimer = null;
-
 
 					// --- 静态配置 ---
 					const currentCoupon = {
@@ -391,17 +366,6 @@
 
 							view.value = page;
 						});
-
-						const preloadBiboFrames = () => {
-							// 只预载 bibo 用到的帧
-							for (let i = 0; i < frames.biboCount; i++) {
-								const img = new Image();
-								const n = String(i).padStart(3, '0');
-								img.src = `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
-							}
-						};
-						preloadBiboFrames();
-
 					});
 
 
@@ -461,127 +425,49 @@
 						if (navigator.vibrate) navigator.vibrate(15);
 					};
 
-					// const triggerBibo = async () => {
-					// 	// 播放期间锁住
-					// 	if (isPlaying.value) return;
-
-					// 	const audio = document.getElementById('audioPlayer');
-					// 	if (!audio) return;
-
-					// 	isPlaying.value = true; // 禁用按钮
-					// 	isPressing.value = true; // 兔子弹起（到位）
-
-					// 	// 防止重复绑定 ended
-					// 	audio.onended = null;
-					// 	audio.onended = () => {
-					// 		isPressing.value = false; // 音频结束才回落
-					// 		isPlaying.value = false; // 解锁按钮
-					// 	};
-
-					// 	// 兜底：有些浏览器 ended 不触发（极少），再加一个超时解锁
-					// 	const fallbackMs = Math.max(800, (audio.duration ? audio.duration * 1000 + 200 : 2500));
-					// 	const fallbackTimer = setTimeout(() => {
-					// 		isPressing.value = false;
-					// 		isPlaying.value = false;
-					// 	}, fallbackMs);
-
-					// 	try {
-					// 		// 从头播放
-					// 		audio.currentTime = 0;
-					// 		await audio.play();
-					// 		if (navigator.vibrate) navigator.vibrate(15);
-
-					// 		// 如果正常播放，会走 ended；结束后清理 fallback
-					// 		audio.onended = () => {
-					// 			clearTimeout(fallbackTimer);
-					// 			isPressing.value = false;
-					// 			isPlaying.value = false;
-					// 		};
-					// 	} catch (e) {
-					// 		// 播放失败也要回落解锁
-					// 		clearTimeout(fallbackTimer);
-					// 		isPressing.value = false;
-					// 		isPlaying.value = false;
-					// 		console.warn("Audio play blocked or failed", e);
-					// 		showToast('播放失败：请再点一次或检查 bibo.mp3');
-					// 	}
-					// };
-
-
-					const stopFrameAnim = () => {
-						if (frameTimer) {
-							clearInterval(frameTimer);
-							frameTimer = null;
-						}
-					};
-
-					const startFrameAnim = (audio) => {
-						stopFrameAnim();
-						frameIndex.value = 0;
-
-						// 如果拿得到音频时长，就让帧序列“刚好覆盖音频”
-						const dur = audio.duration && isFinite(audio.duration) ? audio.duration : null;
-
-						// fps：默认 15；如果有 dur 就按 dur 自动算
-						const fps = dur ? (frames.biboCount / dur) : 12;
-						const interval = Math.max(1000 / fps, 16); // 最快不超过 60fps
-
-						frameTimer = setInterval(() => {
-							frameIndex.value++;
-							if (frameIndex.value >= frames.biboCount) {
-								// 播完帧序列后停在最后一帧（等音频结束再回 idle）
-								frameIndex.value = frames.biboCount - 1;
-								stopFrameAnim();
-							}
-						}, interval);
-					};
-
-					const resetToIdle = () => {
-						stopFrameAnim();
-						frameIndex.value = frames.idleIndex;
-					};
-
 					const triggerBibo = async () => {
+						// 播放期间锁住
 						if (isPlaying.value) return;
 
 						const audio = document.getElementById('audioPlayer');
 						if (!audio) return;
 
-						isPlaying.value = true;
-						isPressing.value = true;
+						isPlaying.value = true; // 禁用按钮
+						isPressing.value = true; // 兔子弹起（到位）
 
-						// ended：音频结束才回落/解锁/回到 idle
+						// 防止重复绑定 ended
+						audio.onended = null;
 						audio.onended = () => {
-							resetToIdle();
-							isPressing.value = false;
-							isPlaying.value = false;
+							isPressing.value = false; // 音频结束才回落
+							isPlaying.value = false; // 解锁按钮
 						};
 
-						try {
-							audio.currentTime = 0;
-
-							// iOS/部分浏览器：第一次 play 前 duration 可能是 NaN
-							// 先 play，再在 metadata 可用时启动更准的 fps
-							await audio.play();
-
-							// 先用默认 fps 启动
-							startFrameAnim(audio);
-
-							// 如果 duration 尚未就绪，等 metadata 再重启一次动画（同步更准）
-							const onMeta = () => {
-								startFrameAnim(audio); // 重新计算 fps
-								audio.removeEventListener('loadedmetadata', onMeta);
-							};
-							audio.addEventListener('loadedmetadata', onMeta);
-
-							if (navigator.vibrate) navigator.vibrate(15);
-						} catch (e) {
-							// 播放失败也要解锁并复位
-							resetToIdle();
+						// 兜底：有些浏览器 ended 不触发（极少），再加一个超时解锁
+						const fallbackMs = Math.max(800, (audio.duration ? audio.duration * 1000 + 200 : 2500));
+						const fallbackTimer = setTimeout(() => {
 							isPressing.value = false;
 							isPlaying.value = false;
-							showToast('播放失败：检查 bibo.mp3 或浏览器权限');
-							console.warn(e);
+						}, fallbackMs);
+
+						try {
+							// 从头播放
+							audio.currentTime = 0;
+							await audio.play();
+							if (navigator.vibrate) navigator.vibrate(15);
+
+							// 如果正常播放，会走 ended；结束后清理 fallback
+							audio.onended = () => {
+								clearTimeout(fallbackTimer);
+								isPressing.value = false;
+								isPlaying.value = false;
+							};
+						} catch (e) {
+							// 播放失败也要回落解锁
+							clearTimeout(fallbackTimer);
+							isPressing.value = false;
+							isPlaying.value = false;
+							console.warn("Audio play blocked or failed", e);
+							showToast('播放失败：请再点一次或检查 bibo.mp3');
 						}
 					};
 
@@ -601,10 +487,6 @@
 						playBibo,
 						isPlaying,
 						triggerBibo,
-						currentFrameSrc,
-						triggerBibo,
-						isPlaying,
-						isPressing,
 					};
 				}
 			}).mount('#app');
