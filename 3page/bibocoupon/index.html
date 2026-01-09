@@ -357,9 +357,12 @@
 
 					const frameIndex = ref(frames.idleIndex);
 					const currentFrameSrc = computed(() => {
-						  const img = FrameCache.list[frameIndex.value];
-						  return img ? img.src : `${frames.dir}/${frames.biboPrefix}000.${frames.ext}`;
+						const img = FrameCache.list[frameIndex.value];
+						if (img) return img.src;
+						const n = String(frames.idleIndex).padStart(3, '0');
+						return `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
 					});
+
 
 					let frameTimer = null;
 
@@ -434,17 +437,6 @@
 
 							view.value = page;
 						});
-
-						const preloadBiboFrames = () => {
-							// 只预载 bibo 用到的帧
-							for (let i = 0; i < frames.biboCount; i++) {
-								const img = new Image();
-								const n = String(i).padStart(3, '0');
-								img.src = `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
-							}
-						};
-						preloadBiboFrames();
-
 					});
 
 
@@ -486,19 +478,22 @@
 						return today > end;
 					};
 
-					const useCoupon = (item) => {
+					const useCoupon = async (item) => {
 						if (checkExpired(item.endTime)) return showToast('这张券已经过期啦');
-						switchView('use');
 
 						try {
+							// 先加载帧（只会加载一次）
 							showToast('装载兔兔中…');
 							await preloadFramesOnce(frames);
+
+							// 再进 use 页
 							switchView('use');
 						} catch (e) {
 							console.warn(e);
-							showToast('兔兔帧加载失败（检查路径/跨域）');
+							showToast('兔兔帧加载失败（检查路径/跨域/文件名）');
 						}
 					};
+
 
 					const playBibo = (e) => {
 						isPressing.value = true;
@@ -512,53 +507,6 @@
 						}
 						if (navigator.vibrate) navigator.vibrate(15);
 					};
-
-					// const triggerBibo = async () => {
-					// 	// 播放期间锁住
-					// 	if (isPlaying.value) return;
-
-					// 	const audio = document.getElementById('audioPlayer');
-					// 	if (!audio) return;
-
-					// 	isPlaying.value = true; // 禁用按钮
-					// 	isPressing.value = true; // 兔子弹起（到位）
-
-					// 	// 防止重复绑定 ended
-					// 	audio.onended = null;
-					// 	audio.onended = () => {
-					// 		isPressing.value = false; // 音频结束才回落
-					// 		isPlaying.value = false; // 解锁按钮
-					// 	};
-
-					// 	// 兜底：有些浏览器 ended 不触发（极少），再加一个超时解锁
-					// 	const fallbackMs = Math.max(800, (audio.duration ? audio.duration * 1000 + 200 : 2500));
-					// 	const fallbackTimer = setTimeout(() => {
-					// 		isPressing.value = false;
-					// 		isPlaying.value = false;
-					// 	}, fallbackMs);
-
-					// 	try {
-					// 		// 从头播放
-					// 		audio.currentTime = 0;
-					// 		await audio.play();
-					// 		if (navigator.vibrate) navigator.vibrate(15);
-
-					// 		// 如果正常播放，会走 ended；结束后清理 fallback
-					// 		audio.onended = () => {
-					// 			clearTimeout(fallbackTimer);
-					// 			isPressing.value = false;
-					// 			isPlaying.value = false;
-					// 		};
-					// 	} catch (e) {
-					// 		// 播放失败也要回落解锁
-					// 		clearTimeout(fallbackTimer);
-					// 		isPressing.value = false;
-					// 		isPlaying.value = false;
-					// 		console.warn("Audio play blocked or failed", e);
-					// 		showToast('播放失败：请再点一次或检查 bibo.mp3');
-					// 	}
-					// };
-
 
 					const stopFrameAnim = () => {
 						if (frameTimer) {
@@ -645,18 +593,15 @@
 						displayDate,
 						toast,
 						isPressing,
+						isPlaying,
+						currentFrameSrc,
+
 						switchView,
 						goBack,
 						collectCoupon,
 						checkExpired,
 						useCoupon,
-						playBibo,
-						isPlaying,
 						triggerBibo,
-						currentFrameSrc,
-						triggerBibo,
-						isPlaying,
-						isPressing,
 					};
 				}
 			}).mount('#app');
