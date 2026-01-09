@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>哔啵~ 顽劣兔专属领券中心</title>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+		<style>
+			:root {
+				--primary-pink: #ff9ead;
+				--dark-pink: #db2777;
+				--bg-cream: #fffaf0;
+			}
+
+			body {
+				background-color: var(--bg-cream);
+				font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+				user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				overflow: hidden;
+				/* 锁定根部，禁止任何滚动抖动 */
+				position: fixed;
+				/* 彻底锁定移动端视口 */
+				width: 100%;
+				height: 100%;
+			}
+
+			/* 优惠券造型 */
+			.coupon-card {
+				position: relative;
+				background: white;
+				border: 4px solid var(--primary-pink);
+				border-radius: 24px;
+			}
+
+			.coupon-card::before,
+			.coupon-card::after {
+				content: '';
+				position: absolute;
+				top: 70%;
+				width: 30px;
+				height: 30px;
+				background-color: var(--bg-cream);
+				border: 4px solid var(--primary-pink);
+				border-radius: 50%;
+				z-index: 10;
+			}
+
+			.coupon-card::before {
+				left: -19px;
+			}
+
+			.coupon-card::after {
+				right: -19px;
+			}
+
+			/* 过期样式 */
+			.expired {
+				filter: grayscale(100%);
+				opacity: 0.6;
+				pointer-events: none;
+			}
+
+			/* 兔子耳朵装饰 */
+			.bunny-ear {
+				width: 40px;
+				height: 60px;
+				background: #ffb7c5;
+				border: 3px solid #333;
+				border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+				display: inline-block;
+			}
+
+			/* --- 核心：强力反馈按钮 --- */
+			.bibo-btn-fancy {
+				position: relative;
+				width: 140px;
+				height: 140px;
+				background: linear-gradient(145deg, #ff5e9e, #ff4d8d);
+				border-radius: 50%;
+				color: white;
+				font-size: 1.8rem;
+				font-weight: bold;
+				border: 6px solid #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-shadow: 0 12px 0 0 var(--dark-pink), 0 20px 30px rgba(219, 39, 119, 0.3);
+				/* 回弹动画 */
+				transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+				outline: none;
+			}
+
+			/* 按下瞬间的物理挤压感 */
+			.bibo-btn-fancy:active {
+				transform: translateY(10px) scale(1.05, 0.9);
+				box-shadow: 0 2px 0 0 var(--dark-pink), 0 5px 10px rgba(219, 39, 119, 0.2);
+				background: #f43f5e;
+				transition: all 0.05s;
+			}
+
+			/* 禁用态：看起来被按下去 + 不能点 */
+			.bibo-disabled {
+				cursor: not-allowed;
+				opacity: 0.75;
+				transform: translateY(10px) scale(1.05, 0.9);
+				box-shadow: 0 2px 0 0 var(--dark-pink), 0 5px 10px rgba(219, 39, 119, 0.18);
+				background: linear-gradient(145deg, #fb7185, #f43f5e);
+				filter: saturate(0.9);
+			}
+
+			/* disabled 本身也别再触发 active 效果 */
+			.bibo-btn-fancy:disabled:active {
+				transform: translateY(10px) scale(1.05, 0.9);
+			}
+
+			/* 兔子垂直跳跃，不占用文档流高度 */
+			.rabbit-jump {
+				display: inline-block;
+				/* transition: transform 0.15s cubic-bezier(0.22, 0.61, 0.36, 1); */
+
+				transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+				will-change: transform;
+			}
+
+			.is-pressing-rabbit {
+				transform: translateY(-55px) scale(1.15);
+			}
+
+			/* Toast 气泡动效 */
+			.toast-enter-active,
+			.toast-leave-active {
+				transition: all 0.2s ease-out;
+			}
+
+			.toast-enter-from,
+			.toast-leave-to {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+
+			/* 已领取印章 */
+			.stamp {
+				border: 4px double #ff9ead;
+				color: #ff9ead;
+				font-weight: bold;
+				padding: 2px 8px;
+				border-radius: 4px;
+				transform: rotate(-15deg);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" class="max-w-md mx-auto h-full relative flex flex-col overflow-hidden">
+
+			<!-- 浮层 Toast -->
+			<transition name="toast">
+				<div v-if="toast.show"
+					class="fixed top-12 left-0 right-0 z-[100] flex justify-center pointer-events-none">
+					<div
+						class="bg-pink-500 text-white px-8 py-3 rounded-full shadow-2xl border-2 border-white text-sm font-bold">
+						{{ toast.msg }} 🐰
+					</div>
+				</div>
+			</transition>
+
+			<!-- 顶部导航栏 -->
+			<nav class="flex justify-around py-6 bg-white/70 backdrop-blur-md border-b border-pink-100 z-40 shrink-0">
+				<div @click="switchView('collect')"
+					:class="view === 'collect' ? 'text-pink-600 scale-110' : 'text-gray-400'"
+					class="cursor-pointer transition-all font-bold">领券中心</div>
+				<div @click="switchView('history')"
+					:class="view === 'history' ? 'text-pink-600 scale-110' : 'text-gray-400'"
+					class="cursor-pointer transition-all font-bold">我的口袋</div>
+			</nav>
+
+			<!-- 主体展示区 (固定高度并支持滚动) -->
+			<div class="flex-grow overflow-y-auto">
+
+				<!-- 1. 领券展示 -->
+				<div v-if="view === 'collect'" class="p-6 flex flex-col items-center">
+					<div class="flex -space-x-2 mb-2 mt-8">
+						<div class="bunny-ear -rotate-12"></div>
+						<div class="bunny-ear rotate-12"></div>
+					</div>
+					<h1 class="text-3xl text-pink-500 mb-8">顽劣兔补给站</h1>
+
+					<div class="coupon-card w-full p-8 shadow-xl bg-white relative">
+						<div v-if="hasClaimedCurrent" class="absolute top-4 right-4 stamp">已入袋</div>
+						<div class="text-pink-300 text-xs tracking-widest mb-3 italic">LIMITED OFFER</div>
+						<h2 class="text-2xl text-gray-800 mb-4">{{ currentCoupon.title }}</h2>
+						<p class="text-gray-500 text-sm leading-relaxed mb-10 h-12">{{ currentCoupon.desc }}</p>
+
+						<div class="border-t-2 border-dashed border-pink-100 pt-6">
+							<p class="text-pink-400 text-xs mb-6 text-center">📅 {{ displayDate }}</p>
+							<button v-if="!hasClaimedCurrent" @click="collectCoupon"
+								class="w-full py-4 bg-pink-400 text-white rounded-2xl shadow-lg active:scale-95 transition-all font-bold text-lg">
+								立刻领走 🐾
+							</button>
+							<button v-else @click="switchView('history')"
+								class="w-full py-4 bg-gray-50 text-pink-300 rounded-2xl border border-gray-100 font-bold">
+								已在口袋里，去看看
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- 2. 历史列表 -->
+				<div v-if="view === 'history'" class="p-6">
+					<h2 class="text-xl text-pink-500 mb-8 font-bold flex items-center">
+						<span class="mr-2 text-2xl">🎒</span> 我的全部卡券
+					</h2>
+					<div v-if="myCoupons.length === 0" class="text-center py-20 text-gray-300">目前口袋空空 🥕</div>
+					<div v-for="item in myCoupons" :key="item.id"
+						class="coupon-card p-5 mb-6 shadow-sm flex justify-between items-center bg-white"
+						:class="{ 'expired': checkExpired(item.endTime) }">
+						<div>
+							<h3 class="font-bold text-gray-700 text-lg">{{ item.title }}</h3>
+							<p class="text-[11px] text-gray-400 mt-1">
+								{{ item.startTime === item.endTime ? item.startTime + ' 当日有效' : item.startTime + ' 至 ' + item.endTime }}
+							</p>
+						</div>
+						<button v-if="!checkExpired(item.endTime)" @click="useCoupon(item)"
+							class="bg-pink-400 text-white px-5 py-2 rounded-full text-xs font-bold shadow-md active:scale-90 transition-transform">
+							去使用
+						</button>
+						<span v-else class="text-gray-400 text-sm font-bold italic mr-2">已过期</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- 3. 使用详情页 (全屏浮层) -->
+			<transition name="toast">
+				<div v-if="view === 'use'" class="fixed inset-0 bg-pink-50 z-50 flex flex-col items-center">
+					<!-- 返回按钮区 -->
+					<div class="w-full p-6 shrink-0 z-50">
+						<div @click="goBack"
+							class="inline-flex items-center text-pink-400 text-xl font-bold cursor-pointer px-4 py-2 -ml-4 active:opacity-50 transition-opacity">
+							<span class="text-3xl mr-1" style="margin-top:-4px">‹</span> 返回
+						</div>
+					</div>
+
+					<!-- 互动交互区 -->
+					<div class="flex-grow flex flex-col items-center justify-center -mt-20 w-full overflow-hidden">
+						<!-- 兔子：固定占位容器 -->
+						<div class="h-48 flex items-end justify-center w-full">
+							<div class="text-[130px] rabbit-jump" :class="{ 'is-pressing-rabbit': isPressing }">🐰</div>
+						</div>
+
+						<!-- 气泡提示：固定占位容器 -->
+						<div class="h-20 mt-2 flex items-center justify-center w-full">
+							<transition name="toast">
+								<div v-if="isPressing"
+									class="bg-white px-8 py-2 rounded-full border-2 border-pink-300 text-pink-500 font-bold shadow-lg">
+									BIBO! BIBO!
+								</div>
+							</transition>
+						</div>
+
+						<!-- 核心按钮：位置绝对固定 -->
+						<div class="mt-6">
+							<button @click="triggerBibo" :disabled="isPlaying" class="bibo-btn-fancy"
+								:class="{ 'bibo-disabled': isPlaying }">
+								{{ isPlaying ? '哔啵中…' : '哔啵' }}
+							</button>
+
+						</div>
+
+						<p class="mt-12 text-pink-300 text-sm tracking-[0.3em] opacity-60">顽劣兔特权执行中</p>
+					</div>
+					<!-- 音频 -->
+					<audio id="audioPlayer" src="bibo.mp3" preload="auto"></audio>
+				</div>
+			</transition>
+
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted
+			} = Vue;
+
+			createApp({
+				setup() {
+					const view = ref('collect');
+					const myCoupons = ref([]);
+					const isPressing = ref(false);
+					const toast = ref({
+						show: false,
+						msg: ''
+					});
+					const isPlaying = ref(false);
+
+					// --- 静态配置 ---
+					const currentCoupon = {
+						id: "BIBO_2026_0109",
+						title: "哔啵限时券",
+						desc: "允许顽劣兔凭此券“哔啵”“哔啵”地叫。按一下叫一声，不按不准叫。",
+						startTime: "2026-01-09",
+						endTime: "2026-01-09"
+					};
+
+					// 核心逻辑：切换视图并处理历史记录
+					const switchView = (newView) => {
+						if (view.value === newView) return;
+
+						if (newView === 'use') {
+							// ✅ 进入 use：创建一个新的历史记录，保证可回退
+							history.pushState({
+								page: 'use'
+							}, '');
+							view.value = 'use';
+							return;
+						}
+
+						// ✅ 切换 collect/history：只更新“当前 entry”，不额外增加历史记录
+						view.value = newView;
+						history.replaceState({
+							page: newView
+						}, '');
+					};
+
+
+					// 核心逻辑：返回按钮
+					const goBack = () => {
+						if (view.value === 'use') {
+							history.back(); // 触发 popstate -> 按 state 回到 history/collect
+							return;
+						}
+						view.value = 'history';
+						history.replaceState({
+							page: 'history'
+						}, '');
+					};
+
+
+					onMounted(() => {
+						// 读取存储
+						const saved = localStorage.getItem('rabbit_coupons_v3');
+						if (saved) myCoupons.value = JSON.parse(saved);
+
+						// ✅ 关键：给当前页面写一个“初始 state”，否则 back 可能直接退出页面或不触发你想要的逻辑
+						if (!history.state || !history.state.page) {
+							history.replaceState({
+								page: view.value
+							}, '');
+						}
+
+						// ✅ 处理浏览器/手机返回键：按 state 还原页面
+						window.addEventListener('popstate', (event) => {
+							const page = event.state?.page;
+
+							// 没有 state 的情况（某些环境会出现），给一个安全回落
+							if (!page) {
+								view.value = 'history';
+								history.replaceState({
+									page: 'history'
+								}, '');
+								return;
+							}
+
+							view.value = page;
+						});
+					});
+
+
+					const hasClaimedCurrent = computed(() => myCoupons.value.some(c => c.id === currentCoupon.id));
+					const displayDate = computed(() => {
+						const {
+							startTime,
+							endTime
+						} = currentCoupon;
+						return startTime === endTime ? `${startTime} 当日有效` : `${startTime} 至 ${endTime}`;
+					});
+
+					const showToast = (msg) => {
+						toast.value.msg = msg;
+						toast.value.show = true;
+						setTimeout(() => {
+							toast.value.show = false
+						}, 2000);
+					};
+
+					const collectCoupon = () => {
+						if (hasClaimedCurrent.value) return;
+						myCoupons.value.unshift({
+							...currentCoupon,
+							claimTime: Date.now()
+						});
+						localStorage.setItem('rabbit_coupons_v3', JSON.stringify(myCoupons.value));
+						showToast('领取成功！请收好哦');
+						setTimeout(() => {
+							switchView('history')
+						}, 1000);
+					};
+
+					const checkExpired = (endTimeStr) => {
+						const today = new Date();
+						today.setHours(0, 0, 0, 0);
+						const end = new Date(endTimeStr);
+						end.setHours(0, 0, 0, 0);
+						return today > end;
+					};
+
+					const useCoupon = (item) => {
+						if (checkExpired(item.endTime)) return showToast('这张券已经过期啦');
+						switchView('use');
+					};
+
+					const playBibo = (e) => {
+						isPressing.value = true;
+						const audio = document.getElementById('audioPlayer');
+						if (audio) {
+							audio.currentTime = 0;
+							audio.play().catch(() => {
+								// 处理移动端首刷未交互不播音的问题
+								console.warn("Audio play blocked or failed");
+							});
+						}
+						if (navigator.vibrate) navigator.vibrate(15);
+					};
+
+					const triggerBibo = async () => {
+						// 播放期间锁住
+						if (isPlaying.value) return;
+
+						const audio = document.getElementById('audioPlayer');
+						if (!audio) return;
+
+						isPlaying.value = true; // 禁用按钮
+						isPressing.value = true; // 兔子弹起（到位）
+
+						// 防止重复绑定 ended
+						audio.onended = null;
+						audio.onended = () => {
+							isPressing.value = false; // 音频结束才回落
+							isPlaying.value = false; // 解锁按钮
+						};
+
+						// 兜底：有些浏览器 ended 不触发（极少），再加一个超时解锁
+						const fallbackMs = Math.max(800, (audio.duration ? audio.duration * 1000 + 200 : 2500));
+						const fallbackTimer = setTimeout(() => {
+							isPressing.value = false;
+							isPlaying.value = false;
+						}, fallbackMs);
+
+						try {
+							// 从头播放
+							audio.currentTime = 0;
+							await audio.play();
+							if (navigator.vibrate) navigator.vibrate(15);
+
+							// 如果正常播放，会走 ended；结束后清理 fallback
+							audio.onended = () => {
+								clearTimeout(fallbackTimer);
+								isPressing.value = false;
+								isPlaying.value = false;
+							};
+						} catch (e) {
+							// 播放失败也要回落解锁
+							clearTimeout(fallbackTimer);
+							isPressing.value = false;
+							isPlaying.value = false;
+							console.warn("Audio play blocked or failed", e);
+							showToast('播放失败：请再点一次或检查 bibo.mp3');
+						}
+					};
+
+					return {
+						view,
+						currentCoupon,
+						myCoupons,
+						hasClaimedCurrent,
+						displayDate,
+						toast,
+						isPressing,
+						switchView,
+						goBack,
+						collectCoupon,
+						checkExpired,
+						useCoupon,
+						playBibo,
+						isPlaying,
+						triggerBibo,
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
