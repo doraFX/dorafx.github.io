@@ -312,10 +312,53 @@
 						idleIndex: 0,
 					};
 
+					const FrameCache = {
+						loaded: false,
+						list: [],
+						loadingPromise: null,
+					};
+
+					const preloadFramesOnce = (frames) => {
+						if (FrameCache.loaded) return Promise.resolve(FrameCache.list);
+						if (FrameCache.loadingPromise) return FrameCache.loadingPromise;
+
+						FrameCache.loadingPromise = new Promise((resolve, reject) => {
+							const arr = [];
+							let done = 0;
+							const total = frames.biboCount;
+
+							for (let i = 0; i < total; i++) {
+								const img = new Image();
+								const n = String(i).padStart(3, '0');
+								img.src = `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
+
+								img.onload = async () => {
+									// 关键：提前 decode，避免播放时解码卡顿（支持的浏览器更稳）
+									if (img.decode) {
+										try {
+											await img.decode();
+										} catch {}
+									}
+									done++;
+									if (done === total) {
+										FrameCache.loaded = true;
+										FrameCache.list = arr;
+										resolve(arr);
+									}
+								};
+								img.onerror = (e) => reject(e);
+
+								arr.push(img);
+							}
+						});
+
+						return FrameCache.loadingPromise;
+					};
+
 					const frameIndex = ref(frames.idleIndex);
 					const currentFrameSrc = computed(() => {
-						const n = String(frameIndex.value).padStart(3, '0');
-						return `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
+						const img = FrameCache.list[frameIndex.value];
+						return img ? img.src : `${frames.dir}/${frames.biboPrefix}000.${frames.ext}`;
 					});
 
 					let frameTimer = null;
@@ -446,6 +489,15 @@
 					const useCoupon = (item) => {
 						if (checkExpired(item.endTime)) return showToast('这张券已经过期啦');
 						switchView('use');
+
+						try {
+							showToast('装载兔兔中…');
+							await preloadFramesOnce(frames);
+							switchView('use');
+						} catch (e) {
+							console.warn(e);
+							showToast('兔兔帧加载失败（检查路径/跨域）');
+						}
 					};
 
 					const playBibo = (e) => {
@@ -527,12 +579,33 @@
 						const interval = Math.max(1000 / fps, 16); // 最快不超过 60fps
 
 						frameTimer = setInterval(() => {
-							frameIndex.value++;
-							if (frameIndex.value >= frames.biboCount) {
-								// 播完帧序列后停在最后一帧（等音频结束再回 idle）
-								frameIndex.value = frames.biboCount - 1;
-								stopFrameAnim();
-							}
+							let rafId = 0;
+
+							const startFrameAnim = (audio) => {
+								cancelAnimationFrame(rafId);
+								frameIndex.value = 0;
+
+								const total = frames.biboCount;
+								const dur = audio.duration && isFinite(audio.duration) ? audio.duration :
+									(total / 15);
+								const start = performance.now();
+
+								const step = (now) => {
+									const t = (now - start) / 1000; // 秒
+									const progress = Math.min(t / dur, 1);
+									const idx = Math.floor(progress * (total - 1));
+									frameIndex.value = idx;
+
+									if (progress < 1 && isPlaying.value) {
+										rafId = requestAnimationFrame(step);
+									}
+								};
+
+								rafId = requestAnimationFrame(step);
+							};
+
+							const stopFrameAnim = () => cancelAnimationFrame(rafId);
+
 						}, interval);
 					};
 
