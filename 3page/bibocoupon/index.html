@@ -363,10 +363,6 @@
 						return `${frames.dir}/${frames.biboPrefix}${n}.${frames.ext}`;
 					});
 
-
-					let frameTimer = null;
-
-
 					// --- 静态配置 ---
 					const currentCoupon = {
 						id: "BIBO_2026_0109",
@@ -508,33 +504,41 @@
 						if (navigator.vibrate) navigator.vibrate(15);
 					};
 
-					const stopFrameAnim = () => {
-						if (frameTimer) {
-							clearInterval(frameTimer);
-							frameTimer = null;
-						}
-					};
+					let rafId = 0;
 
+					// 根据音频播放进度推进帧（真正同步）
 					const startFrameAnim = (audio) => {
-						stopFrameAnim();
-						frameIndex.value = 0;
+						cancelAnimationFrame(rafId);
 
-						// 如果拿得到音频时长，就让帧序列“刚好覆盖音频”
-						const dur = audio.duration && isFinite(audio.duration) ? audio.duration : null;
+						// 以当前音频时间为起点（如果你允许中途播放也稳）
+						const total = frames.biboCount;
 
-						// fps：默认 15；如果有 dur 就按 dur 自动算
-						const fps = dur ? (frames.biboCount / dur) : 12;
-						const interval = Math.max(1000 / fps, 16); // 最快不超过 60fps
+						const tick = () => {
+							if (!isPlaying.value) return;
 
-						frameTimer = setInterval(() => {
-							frameIndex.value++;
-							if (frameIndex.value >= frames.biboCount) {
-								// 播完帧序列后停在最后一帧（等音频结束再回 idle）
-								frameIndex.value = frames.biboCount - 1;
-								stopFrameAnim();
+							// 用真实音频进度驱动动画
+							const t = audio.currentTime || 0; // 秒
+							const dur = (audio.duration && isFinite(audio.duration)) ? audio.duration : 0;
+
+							if (dur > 0) {
+								const progress = Math.min(t / dur, 1);
+								const idx = Math.floor(progress * (total - 1));
+								frameIndex.value = Math.max(0, Math.min(total - 1, idx));
+							} else {
+								// duration 还没出来时，先保持在第 0 帧（避免乱跳）
+								frameIndex.value = 0;
 							}
-						}, interval);
+
+							rafId = requestAnimationFrame(tick);
+						};
+
+						rafId = requestAnimationFrame(tick);
 					};
+
+					const stopFrameAnim = () => {
+						cancelAnimationFrame(rafId);
+					};
+
 
 					const resetToIdle = () => {
 						stopFrameAnim();
@@ -550,7 +554,10 @@
 						isPlaying.value = true;
 						isPressing.value = true;
 
-						// ended：音频结束才回落/解锁/回到 idle
+						// 清理旧的 ended（避免多次绑定叠加）
+						audio.onended = null;
+
+						// 音频结束：回 idle + 解锁
 						audio.onended = () => {
 							resetToIdle();
 							isPressing.value = false;
@@ -558,25 +565,21 @@
 						};
 
 						try {
+							// 从头播
 							audio.currentTime = 0;
 
-							// iOS/部分浏览器：第一次 play 前 duration 可能是 NaN
-							// 先 play，再在 metadata 可用时启动更准的 fps
+							// 注意：安卓这里“声音真正出来”会有延迟
+							// 但我们动画是用 audio.currentTime 驱动 -> 天生同步
 							await audio.play();
 
-							// 先用默认 fps 启动
-							startFrameAnim(audio);
+							// 一开始把帧置 0（起跳）
+							frameIndex.value = 0;
 
-							// 如果 duration 尚未就绪，等 metadata 再重启一次动画（同步更准）
-							const onMeta = () => {
-								startFrameAnim(audio); // 重新计算 fps
-								audio.removeEventListener('loadedmetadata', onMeta);
-							};
-							audio.addEventListener('loadedmetadata', onMeta);
+							// 开始：用 audio.currentTime 驱动动画
+							startFrameAnim(audio);
 
 							if (navigator.vibrate) navigator.vibrate(15);
 						} catch (e) {
-							// 播放失败也要解锁并复位
 							resetToIdle();
 							isPressing.value = false;
 							isPlaying.value = false;
@@ -584,6 +587,7 @@
 							console.warn(e);
 						}
 					};
+
 
 					return {
 						view,
