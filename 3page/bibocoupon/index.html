@@ -357,8 +357,8 @@
 
 					const frameIndex = ref(frames.idleIndex);
 					const currentFrameSrc = computed(() => {
-						const img = FrameCache.list[frameIndex.value];
-						return img ? img.src : `${frames.dir}/${frames.biboPrefix}000.${frames.ext}`;
+						  const img = FrameCache.list[frameIndex.value];
+						  return img ? img.src : `${frames.dir}/${frames.biboPrefix}000.${frames.ext}`;
 					});
 
 					let frameTimer = null;
@@ -579,33 +579,12 @@
 						const interval = Math.max(1000 / fps, 16); // 最快不超过 60fps
 
 						frameTimer = setInterval(() => {
-							let rafId = 0;
-
-							const startFrameAnim = (audio) => {
-								cancelAnimationFrame(rafId);
-								frameIndex.value = 0;
-
-								const total = frames.biboCount;
-								const dur = audio.duration && isFinite(audio.duration) ? audio.duration :
-									(total / 15);
-								const start = performance.now();
-
-								const step = (now) => {
-									const t = (now - start) / 1000; // 秒
-									const progress = Math.min(t / dur, 1);
-									const idx = Math.floor(progress * (total - 1));
-									frameIndex.value = idx;
-
-									if (progress < 1 && isPlaying.value) {
-										rafId = requestAnimationFrame(step);
-									}
-								};
-
-								rafId = requestAnimationFrame(step);
-							};
-
-							const stopFrameAnim = () => cancelAnimationFrame(rafId);
-
+							frameIndex.value++;
+							if (frameIndex.value >= frames.biboCount) {
+								// 播完帧序列后停在最后一帧（等音频结束再回 idle）
+								frameIndex.value = frames.biboCount - 1;
+								stopFrameAnim();
+							}
 						}, interval);
 					};
 
