@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Watch App</title>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<style>
+			/* --- 基础样式 --- */
+			* {
+				box-sizing: border-box;
+				-webkit-tap-highlight-color: transparent;
+				user-select: none;
+			}
+
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #000;
+				color: #fff;
+				font-family: sans-serif;
+				overflow: hidden;
+			}
+
+			/* 应用容器 */
+			#app {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				overflow: hidden;
+			}
+
+			/* 通用页面容器 */
+			.container {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				/* 绝对定位用于转场动画叠加 */
+				background: #000;
+			}
+
+			/* 顶部导航栏 */
+			.topbar {
+				height: 60px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 30px;
+				flex-shrink: 0;
+				z-index: 10;
+			}
+
+			.top-title {
+				font-size: 32px;
+				font-weight: 400;
+				color: #ffffff;
+			}
+
+			.back-icon,
+			.right-ph {
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.back-icon {
+				width: 40px;
+			}
+
+			.right-ph {
+				width: 30px;
+			}
+
+			.back-icon img {
+				width: 40px;
+				height: 40px;
+			}
+
+			/* 通用列表行 */
+			.row {
+				height: 100px;
+				background-color: #1a1a1a;
+				border-radius: 26px;
+				margin-bottom: 24px;
+				display: flex;
+				align-items: center;
+				padding: 0 16px 0 28px;
+				transition: 0.1s;
+			}
+
+			#IntensityRow .row {
+				height: 86px;
+			}
+
+			.row:active {
+				background-color: #2a2a2a;
+				opacity: 0.9;
+			}
+
+			.row-t {
+				flex: 1;
+				font-size: 30px;
+				color: #fff;
+			}
+
+			.row-v {
+				font-size: 30px;
+				color: rgba(255, 255, 255, 0.7);
+				margin-right: 8px;
+			}
+
+			.radio-icon {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				margin-right: 14px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: background-color 0.2s;
+			}
+
+			/* 选中状态：蓝色背景 */
+			.radio-icon.selected {
+				background-color: #007aff;
+				/* 截图中的亮蓝色 */
+				border: none;
+			}
+
+			/* 未选中状态：深色背景 (模拟截图上半部分) */
+			.radio-icon.unselected {
+				background-color: #000000;
+				/* 或者 #111，比 row 背景更深 */
+				/* 如果想要截图那种隐约的边框，可以加下面这行，不需要则删除 */
+				border: 1px solid rgba(255, 255, 255, 0.1);
+			}
+
+			/* 纯 CSS 绘制白色对钩 */
+			.checkmark {
+				width: 28px;
+				height: 28px;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.checkmark-svg {
+				width: 28px;
+				/* 大小可调 */
+				height: 28px;
+				/* 不需要 transform rotate，SVG 内部画好了 */
+			}
+
+			.arrow {
+				width: 44px;
+				height: 44px;
+			}
+
+			/* 开关 Switch */
+			.switch {
+				position: relative;
+				width: 110px;
+				height: 60px;
+				border-radius: 30px;
+				background-color: #333;
+				transition: 0.3s;
+			}
+
+			.switch.checked {
+				background-color: #0d84ff;
+			}
+
+			.switch-thumb {
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				background-color: #fff;
+				transition: 0.3s;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+			}
+
+			.switch.checked .switch-thumb {
+				left: 55px;
+			}
+
+			/* 滑块 Slider */
+			.slider-wrap {
+				flex: 1;
+				height: 60px;
+				display: flex;
+				align-items: center;
+				margin: 0 30px;
+				position: relative;
+			}
+
+			.slider-track {
+				width: 100%;
+				height: 6px;
+				background: #333;
+				border-radius: 3px;
+				position: relative;
+			}
+
+			.slider-fill {
+				height: 6px;
+				background: #0d84ff;
+				border-radius: 3px;
+				position: relative;
+				left: 0;
+				top: 0;
+			}
+
+			.slider-thumb {
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background: #0d84ff;
+				position: absolute;
+				top: 50%;
+				margin-top: -14px;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+				transform: translateX(-50%);
+			}
+
+			.slider-input {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				top: 0;
+				left: 0;
+				z-index: 10;
+			}
+
+			/* 按钮 */
+			.btn {
+				width: 100%;
+				height: 88px;
+				background-color: #262626;
+				color: #fff;
+				font-size: 30px;
+				border-radius: 44px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: none;
+				outline: none;
+			}
+
+			.btn:active {
+				opacity: 0.8;
+			}
+
+			.btn.disabled {
+				color: #555;
+				background-color: #1a1a1a;
+				pointer-events: none;
+			}
+
+			/* Home 页特殊布局 */
+			.home-swiper-v {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				position: relative;
+			}
+
+			.home-track-v {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+			}
+
+			.home-page {
+				width: 100%;
+				height: 100%;
+				flex-shrink: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-between;
+				padding-top: 40px;
+				padding-bottom: 28px;
+			}
+
+			/* Home 内部横向 Swiper */
+			.h-swiper-container {
+				width: 100%;
+				height: 230px;
+				overflow: hidden;
+				position: relative;
+				margin-bottom: 10px;
+			}
+
+			.h-track {
+				display: flex;
+				height: 100%;
+				transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+			}
+
+			.h-item {
+				width: 100%;
+				flex-shrink: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.logo-circle {
+				width: 170px;
+				height: 170px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: 0.3s;
+				border: 0px solid transparent;
+			}
+
+			.logo-circle.active {
+				transform: scale(1);
+				opacity: 1;
+			}
+
+			.logo-circle.inactive {
+				transform: scale(1);
+				border: 2px solid #777;
+				opacity: 0.6;
+			}
+
+			.logo-img {
+				width: 160px;
+				height: 160px;
+				object-fit: contain;
+			}
+
+			/* 侧边指示点 */
+			.dots {
+				position: absolute;
+				right: 6px;
+				top: 0;
+				bottom: 0;
+				display: flex;
+				align-items: center;
+				pointer-events: none;
+				transition: opacity 0.3s;
+				z-index: 20;
+			}
+
+			.dots-box {
+				background: #333;
+				padding: 8px 4px;
+				border-radius: 10px;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #808080;
+				transition: 0.2s;
+			}
+
+			.dot.active {
+				background: #fff;
+			}
+
+			/* 滚动区域 (About页) */
+			.scroll-view {
+				flex: 1;
+				overflow-y: auto;
+				width: 100%;
+				padding: 0 16px;
+			}
+
+			.card {
+				background-color: rgba(255, 255, 255, 0.08);
+				border-radius: 22px;
+				padding: 20px;
+				margin-bottom: 18px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.label {
+				color: rgba(255, 255, 255, 0.65);
+				font-size: 22px;
+				margin-bottom: 8px;
+			}
+
+			.value {
+				color: #fff;
+				font-size: 32px;
+				font-weight: 500;
+				line-height: 1;
+			}
+
+			.value.small {
+				font-size: 28px;
+				font-weight: 600;
+				color: rgba(255, 255, 255, 0.88);
+			}
+
+			/* 页面切换动画 */
+			.page-enter-active,
+			.page-leave-active {
+				transition: all 0.25s ease;
+			}
+
+			.page-enter-from {
+				opacity: 0;
+				transform: translateX(30px);
+			}
+
+			.page-leave-to {
+				opacity: 0;
+				transform: translateX(-30px);
+			}
+		</style>
+
+		<style>
+			.example {
+				width: 432px;
+				height: 514px;
+				position: fixed;
+				left: 0;
+				top: 0;
+				z-index: 9999;
+				display: none;
+			}
+
+			.example img {
+				width: 100%;
+				height: 100%;
+				opacity: 0.25;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 		<div class="example">
+			<img src="5.png" alt="" />
+		</div> -->
+
+		<div id="app">
+			<transition name="page">
+
+				<!-- 1. HOME 页面 -->
+				<div class="container" v-if="currentPage === 'Home'" key="home" @touchstart="onTouchStart"
+					@touchmove="onTouchMove" @touchend="onTouchEnd" @mousedown="onMouseDown" @mousemove="onMouseMove"
+					@mouseup="onMouseUp" @mouseleave="onMouseUp" @wheel="onWheel">
+
+					<!-- 垂直轨道 -->
+					<div class="home-swiper-v">
+						<div class="home-track-v" :style="{ transform: 'translateY(' + (-activeSection * 100) + '%)' }">
+
+							<!-- Section 0-2: 动物发声页 -->
+							<div class="home-page" v-for="(sec, sIdx) in soundSections" :key="sIdx">
+								<div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+									<!-- 横向 Swiper (动物变体) -->
+									<div class="h-swiper-container">
+										<div class="h-track"
+											:style="{ transform: 'translateX(' + (-sec.currentIdx * 100) + '%)' }">
+											<div class="h-item" v-for="(v, vIdx) in sec.variants" :key="vIdx">
+												<div
+													:class="['logo-circle', sec.currentIdx === vIdx ? 'active' : 'inactive']">
+													<img :src="v.logo" class="logo-img">
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- 进度条 -->
+									<div v-if="sec.variants.length > 1"
+										style="width:100px; height:2px; background:rgba(255,255,255,0.25); margin-top:14px; position:relative; overflow:hidden;">
+										<div
+											:style="{ width: (100/sec.variants.length)+'%', left: (sec.currentIdx * 100 / sec.variants.length)+'%', position:'absolute', height:'100%', background:'#fff', transition:'left 0.3s' }">
+										</div>
+									</div>
+
+									<div class="top-title" style="margin-top:12px;">
+										{{ sec.variants[sec.currentIdx].text }}
+									</div>
+								</div>
+
+								<button class="btn" :class="{ disabled: isPlaying }" style="width:340px;"
+									@click.stop="playVoice(sIdx)">
+									{{ isPlaying && playingSid === sIdx ? '播放中' : '叫一声' }}
+								</button>
+							</div>
+
+							<!-- Section 3: 菜单页 -->
+							<div class="home-page menu-page" style="justify-content: flex-start; padding-top:60px;">
+								<div style="width:90%; display:flex; flex-direction:column;">
+									<div class="row" @click.stop="navigate('Settings')">
+										<img src="../common/image/setting.png" style="width:56px;height:56px;">
+										<span class="row-t" style="margin-left:16px;">设置</span>
+										<img class="arrow" src="../common/image/arrow-r.png">
+									</div>
+									<div class="row" @click.stop="navigate('About')">
+										<img src="../common/image/info.png" style="width:56px;height:56px;">
+										<span class="row-t" style="margin-left:16px;">关于</span>
+										<img class="arrow" src="../common/image/arrow-r.png">
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- 右侧指示点 -->
+					<div class="dots" :style="{ opacity: showDots ? 1 : 0 }">
+						<div class="dots-box">
+							<div v-for="i in 4" :class="['dot', activeSection === (i-1) ? 'active' : '']"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 2. Settings 页面 -->
+				<div class="container" v-else-if="currentPage === 'Settings'" key="settings">
+					<div class="topbar">
+						<div class="back-icon" @click="navigate('back')">
+							<img src="../common/image/back.png">
+						</div>
+						<div class="top-title">设置</div>
+						<div class="right-ph"></div>
+					</div>
+					<div style="flex:1; padding:12px 16px;">
+						<!-- 震动开关 -->
+						<div class="row">
+							<span class="row-t">震动拟声</span>
+							<div :class="['switch', settings.vibeEnabled ? 'checked' : '']" @click="toggleVibe">
+								<div class="switch-thumb"></div>
+							</div>
+						</div>
+						<!-- 强度跳转 -->
+						<div class="row" @click="navigate('Intensity')">
+							<span class="row-t">强度模式</span>
+							<span class="row-v">{{ modeLabel }}</span>
+							<img class="arrow" src="../common/image/arrow-r.png">
+						</div>
+					</div>
+				</div>
+
+				<!-- 3. Intensity 页面 -->
+				<div class="container" v-else-if="currentPage === 'Intensity'" key="intensity">
+					<div class="topbar">
+						<div class="back-icon" @click="navigate('back')">
+							<img src="../common/image/back.png">
+						</div>
+						<div class="top-title">振动幅度</div>
+						<div class="right-ph"></div>
+					</div>
+					<div id="IntensityRow" style="flex:1; padding:12px 16px;">
+						<div class="row" v-for="m in modes" :key="m.k" @click="selectIntensity(m.k)">
+							<div style="display:flex; align-items:center; flex:1;">
+								<!-- Radio Circle -->
+								<div class="radio-icon"
+									:class="settings.intensityMode === m.k ? 'selected' : 'unselected'">
+									<!-- 只有选中时显示对钩 -->
+									<div v-if="settings.intensityMode === m.k" class="checkmark">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+											class="checkmark-svg">
+											<path d="M5 12L10 17L19 8" stroke="white" stroke-width="4"
+												stroke-linecap="round" stroke-linejoin="round" />
+										</svg>
+									</div>
+
+								</div>
+								<span class="row-t">{{ m.label }}</span>
+							</div>
+							<img v-if="m.k === 'custom'" class="arrow" src="../common/image/arrow-r.png">
+						</div>
+					</div>
+				</div>
+
+				<!-- 4. Advanced 页面 -->
+				<div class="container" v-else-if="currentPage === 'Advanced'" key="advanced">
+					<div class="topbar">
+						<div class="back-icon" @click="navigate('back')">
+							<img src="../common/image/back.png">
+						</div>
+						<div class="top-title">自定义</div>
+						<div class="right-ph"></div>
+					</div>
+
+					<div style="flex:1; padding:12px 16px;">
+						<!-- 面板 -->
+						<div style="background:#1a1a1a; border-radius:26px; padding:8px 20px; margin-bottom:30px;">
+							<div style="margin-bottom:2px;">
+								<span style="font-size:32px; color:rgba(255,255,255,0.85);">震动强度</span>
+							</div>
+							<div style="display:flex; align-items:center; justify-content:space-between;">
+								<!-- 减按钮 -->
+								<div class="logo-circle"
+									style="width:88px; height:88px; background:#2a2a2a; border:none;"
+									@click="adjPower(-1)">
+									<img src="../common/image/minus.png" style="width:36px; height:36px;">
+								</div>
+
+								<!-- 滑块 -->
+								<div class="slider-wrap">
+									<div class="slider-track">
+										<div class="slider-fill" :style="{ width: ((customPower-1)/11*100) + '%' }">
+										</div>
+									</div>
+
+									<div class="slider-thumb" :style="{ left: ((customPower-1)/11*100) + '%' }"></div>
+									<input type="range" class="slider-input" min="1" max="12" step="1"
+										v-model.number="customPower" @input="saveCustomPower">
+								</div>
+
+								<!-- 加按钮 -->
+								<div class="logo-circle"
+									style="width:88px; height:88px; background:#2a2a2a; border:none;"
+									@click="adjPower(1)">
+									<img src="../common/image/add.png" style="width:36px; height:36px;">
+								</div>
+							</div>
+						</div>
+
+						<button class="btn" style="height: 84px;" @click="previewCustom">预览</button>
+					</div>
+				</div>
+
+				<!-- 5. About 页面 -->
+				<div class="container" v-else-if="currentPage === 'About'" key="about">
+					<div class="topbar">
+						<div class="back-icon" @click="navigate('back')">
+							<img src="../common/image/back.png">
+						</div>
+						<div class="top-title">关于</div>
+						<div class="right-ph"></div>
+					</div>
+					<div class="scroll-view">
+						<div class="card">
+							<div style="margin-bottom:18px;">
+								<div class="label">应用名称</div>
+								<div class="value">企企兔</div>
+							</div>
+							<div>
+								<div class="label">应用版本</div>
+								<div class="value">1.0.1</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="label">运行平台</div>
+							<div class="value small">HyperOS Web Emulator</div>
+						</div>
+						<div class="card">
+							<div style="margin-bottom:18px;">
+								<div class="label">开发者</div>
+								<div class="value">企鹅企企</div>
+							</div>
+							<div>
+								<div class="label">联系邮箱</div>
+								<div class="value small">dorafx@163.com</div>
+							</div>
+						</div>
+						<div style="height:20px;"></div>
+					</div>
+				</div>
+
+			</transition>
+		</div>
+
+		<script>
+			// ================= 系统模拟 (Mocks) =================
+			const mockStorage = {
+				get(key) {
+					return localStorage.getItem(key);
+				},
+				set(key, val) {
+					localStorage.setItem(key, val);
+				}
+			};
+
+			const mockVibrator = {
+				vibrate(ms) {
+					if (navigator.vibrate) navigator.vibrate(ms);
+				}
+			};
+
+			const mockAudio = new Audio();
+			const audioManager = {
+				play(path) {
+					mockAudio.src = path;
+					mockAudio.currentTime = 0;
+					mockAudio.play().catch(e => console.warn('Audio blocked:', e));
+				},
+				stop() {
+					mockAudio.pause();
+				},
+				onEnded(cb) {
+					mockAudio.onended = cb;
+				}
+			};
+
+			// ================= 全局 Store (数据管理) =================
+			const store = Vue.reactive({
+				settings: {
+					vibeEnabled: true,
+					intensityMode: "mid",
+					custom: {
+						power: 6,
+						gap: 150
+					}
+				},
+				load() {
+					const raw = mockStorage.get('pb_settings');
+					if (raw) {
+						try {
+							const s = JSON.parse(raw);
+							if (s.vibeEnabled !== undefined) this.settings.vibeEnabled = s.vibeEnabled;
+							if (s.intensityMode) this.settings.intensityMode = s.intensityMode;
+							if (s.custom) this.settings.custom = {
+								...this.settings.custom,
+								...s.custom
+							};
+						} catch (e) {}
+					}
+				},
+				save() {
+					mockStorage.set('pb_settings', JSON.stringify(this.settings));
+				}
+			});
+
+			// ================= 主 Vue 应用 =================
+			Vue.createApp({
+				data() {
+					return {
+						// 路由栈
+						pageStack: ['Home'],
+
+						// === Home 页数据 ===
+						activeSection: 0,
+						soundSections: [{
+								currentIdx: 0,
+								variants: [{
+										logo: "../common/image/rabbit_1.png",
+										text: "哔啵兔",
+										sound: "../common/audio/rabbit_1.mp3"
+									},
+									{
+										logo: "../common/image/rabbit_2.png",
+										text: "顽劣大黄兔",
+										sound: "../common/audio/rabbit_2.mp3"
+									},
+									{
+										logo: "../common/image/rabbit_3.png",
+										text: "鸡贼黄袋鼠兔",
+										sound: "../common/audio/rabbit_3.mp3"
+									},
+									{
+										logo: "../common/image/rabbit_4.png",
+										text: "嘎布拉兔",
+										sound: "../common/audio/rabbit_4.mp3"
+									}
+								]
+							},
+							{
+								currentIdx: 0,
+								variants: [{
+										logo: "../common/image/chick_1.png",
+										text: "企鹅幼崽",
+										sound: "../common/audio/chick_1.mp3"
+									},
+									{
+										logo: "../common/image/chick_2.png",
+										text: "企鹅宝宝",
+										sound: "../common/audio/chick_2.mp3"
+									},
+									{
+										logo: "../common/image/chick_3.png",
+										text: "小企鹅",
+										sound: "../common/audio/chick_2.mp3"
+									}
+								]
+							},
+							{
+								currentIdx: 0,
+								variants: [{
+										logo: "../common/image/penguin_1.png",
+										text: "成年企鹅",
+										sound: "../common/audio/penguin_1.mp3"
+									},
+									{
+										logo: "../common/image/penguin_2.png",
+										text: "伟岸企鹅",
+										sound: "../common/audio/penguin_2.mp3"
+									},
+									{
+										logo: "../common/image/penguin_3.png",
+										text: "大企鹅们",
+										sound: "../common/audio/penguin_3.mp3"
+									}
+								]
+							}
+						],
+						isPlaying: false,
+						playingSid: -1,
+						showDots: false,
+						dotTimer: null,
+						touch: {
+							startX: 0,
+							startY: 0,
+							isMoving: false,
+							direction: null
+						},
+
+						// === Intensity 页数据 ===
+						modes: [{
+								k: 'normal',
+								label: '一般'
+							},
+							{
+								k: 'mid',
+								label: '中等'
+							},
+							{
+								k: 'strong',
+								label: '强烈'
+							},
+							{
+								k: 'custom',
+								label: '自定义'
+							}
+						],
+
+						// === Advanced 页数据 ===
+						customPower: 6
+					}
+				},
+				computed: {
+					// 引用全局 Store
+					settings() {
+						return store.settings;
+					},
+
+					// 当前页面名称
+					currentPage() {
+						return this.pageStack[this.pageStack.length - 1];
+					},
+
+					// Intensity 文字
+					modeLabel() {
+						const map = {
+							normal: '一般',
+							mid: '中',
+							strong: '强',
+							custom: '自定义'
+						};
+						return map[this.settings.intensityMode] || '中';
+					}
+				},
+				created() {
+					store.load(); // 加载配置
+					this.customPower = this.settings.custom.power || 6;
+
+					audioManager.onEnded(() => {
+						this.isPlaying = false;
+						this.playingSid = -1;
+					});
+				},
+				methods: {
+					// --- 路由 ---
+					navigate(target) {
+						if (target === 'back') {
+							if (this.pageStack.length > 1) this.pageStack.pop();
+						} else {
+							this.pageStack.push(target);
+						}
+					},
+
+					// --- 通用逻辑处理函数 (供触摸和鼠标共用) ---
+					handleStart(x, y) {
+						this.touch.startX = x;
+						this.touch.startY = y;
+						this.touch.isMoving = true;
+						this.touch.direction = null;
+					},
+					handleMove(x, y) {
+						if (!this.touch.isMoving) return;
+						const dx = x - this.touch.startX;
+						const dy = y - this.touch.startY;
+
+						// 锁定方向
+						if (!this.touch.direction) {
+							if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) this.touch.direction = 'h';
+							else if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) this.touch.direction = 'v';
+						}
+
+						// 垂直滑动时停止声音
+						if (this.touch.direction === 'v' && this.isPlaying) {
+							audioManager.stop();
+							this.isPlaying = false;
+						}
+					},
+					handleEnd(x, y) {
+						if (!this.touch.isMoving) return;
+						this.touch.isMoving = false;
+
+						const dx = x - this.touch.startX;
+						const dy = y - this.touch.startY;
+						const threshold = 60;
+
+						if (this.touch.direction === 'v') {
+							// 上下翻页
+							if (dy < -threshold && this.activeSection < 3) {
+								this.activeSection++;
+								this.activateDots();
+							} else if (dy > threshold && this.activeSection > 0) {
+								this.activeSection--;
+								this.activateDots();
+							}
+						} else if (this.touch.direction === 'h' && this.activeSection < 3) {
+							// 左右切换变体
+							const sec = this.soundSections[this.activeSection];
+							if (dx < -threshold && sec.currentIdx < sec.variants.length - 1) sec.currentIdx++;
+							else if (dx > threshold && sec.currentIdx > 0) sec.currentIdx--;
+						}
+					},
+
+					// --- 触摸事件 (Touch) ---
+					onTouchStart(e) {
+						this.handleStart(e.touches[0].clientX, e.touches[0].clientY);
+					},
+					onTouchMove(e) {
+						this.handleMove(e.touches[0].clientX, e.touches[0].clientY);
+					},
+					onTouchEnd(e) {
+						this.handleEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+					},
+
+					// --- 鼠标事件 (Mouse) ---
+					onMouseDown(e) {
+						this.handleStart(e.clientX, e.clientY);
+					},
+					onMouseMove(e) {
+						// 只有当鼠标按下且移动时才触发
+						if (this.touch.isMoving) {
+							// 防止鼠标选中文字
+							e.preventDefault();
+							this.handleMove(e.clientX, e.clientY);
+						}
+					},
+					onMouseUp(e) {
+						this.handleEnd(e.clientX, e.clientY);
+					},
+					onWheel(e) {
+						// 鼠标滚轮模拟表冠
+						if (this._wheelLock) return;
+						this._wheelLock = true;
+						setTimeout(() => this._wheelLock = false, 300);
+
+						if (e.deltaY > 0 && this.activeSection < 3) {
+							this.activeSection++;
+							this.activateDots();
+						} else if (e.deltaY < 0 && this.activeSection > 0) {
+							this.activeSection--;
+							this.activateDots();
+						}
+					},
+					activateDots() {
+						this.showDots = true;
+						if (this.dotTimer) clearTimeout(this.dotTimer);
+						this.dotTimer = setTimeout(() => this.showDots = false, 2000);
+						if (this.isPlaying) {
+							audioManager.stop();
+							this.isPlaying = false;
+						}
+					},
+
+					// --- Home: 播放 ---
+					playVoice(sIdx) {
+						if (this.isPlaying) return;
+						const sec = this.soundSections[sIdx];
+						const variant = sec.variants[sec.currentIdx];
+
+						this.playingSid = sIdx;
+						this.isPlaying = true;
+						audioManager.play(variant.sound);
+
+						if (this.settings.vibeEnabled) this.triggerVibe();
+					},
+					triggerVibe() {
+						const mode = this.settings.intensityMode;
+						if (mode === 'normal') mockVibrator.vibrate([50, 50]);
+						else if (mode === 'strong') mockVibrator.vibrate([100, 50, 100]);
+						else if (mode === 'custom') mockVibrator.vibrate((this.settings.custom.power || 6) * 20);
+						else mockVibrator.vibrate(80); // mid
+					},
+
+					// --- Settings ---
+					toggleVibe() {
+						this.settings.vibeEnabled = !this.settings.vibeEnabled;
+						store.save();
+					},
+
+					// --- Intensity ---
+					selectIntensity(k) {
+						if (k === 'custom') {
+							this.settings.intensityMode = 'custom';
+							store.save();
+							this.navigate('Advanced');
+						} else {
+							this.settings.intensityMode = k;
+							store.save();
+							mockVibrator.vibrate(100);
+						}
+					},
+
+					// --- Advanced ---
+					adjPower(delta) {
+						let n = this.customPower + delta;
+						if (n < 1) n = 1;
+						if (n > 12) n = 12;
+						this.customPower = n;
+						this.saveCustomPower();
+					},
+					saveCustomPower() {
+						this.settings.custom.power = this.customPower;
+						store.save();
+					},
+					previewCustom() {
+						let count = 0;
+						const t = setInterval(() => {
+							if (count >= this.customPower) {
+								clearInterval(t);
+								return;
+							}
+							mockVibrator.vibrate(50);
+							count++;
+						}, 150);
+					}
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
