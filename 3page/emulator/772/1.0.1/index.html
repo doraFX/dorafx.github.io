@@ -5,6 +5,43 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<title>企企兔模拟器</title>
 		<link rel="shortcut icon" href="logo.png">
+		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+		<script>
+			LA.init({
+				id: "Jl5bi3TeBeipiIT3",
+				ck: "Jl5bi3TeBeipiIT3",
+				autoTrack: true,
+				hashMode: true,
+				screenRecord: true
+			})
+		</script>
+		<script>
+			window.si = window.si || function() {
+				(window.siq = window.siq || []).push(arguments);
+			};
+		</script>
+		<script defer src="/_vercel/speed-insights/script.js"></script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?8730c7bd77352ff16d63e2d493255930";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-4N6X53WMGZ');
+		</script>
 
 		<style>
 			html,
@@ -42,13 +79,16 @@
 			/* app：屏幕区域 */
 			#app {
 				position: absolute;
-				left: 47px; /* x */
-				top: 183px; /* y */
+				left: 47px;
+				/* x */
+				top: 183px;
+				/* y */
 				width: 432px;
 				height: 514px;
 				border-radius: 100px;
 				z-index: 1;
-				background: #000000; /* 改为黑色背景，模拟屏幕 */
+				background: #000000;
+				/* 改为黑色背景，模拟屏幕 */
 				overflow: hidden;
 				/* 为了居中 loading */
 				display: flex;
@@ -64,9 +104,12 @@
 				width: 100%;
 				height: 100%;
 				border: none;
-				opacity: 0; /* 初始隐藏 */
-				transition: opacity 250ms ease-in-out; /* 250ms 渐显 */
-				z-index: 10; /* 确保在 loading 之上 */
+				opacity: 0;
+				/* 初始隐藏 */
+				transition: opacity 250ms ease-in-out;
+				/* 250ms 渐显 */
+				z-index: 10;
+				/* 确保在 loading 之上 */
 			}
 
 			/* CSS Loading 转圈 */
@@ -81,8 +124,13 @@
 			}
 
 			@keyframes spin {
-				0% { transform: rotate(0deg); }
-				100% { transform: rotate(360deg); }
+				0% {
+					transform: rotate(0deg);
+				}
+
+				100% {
+					transform: rotate(360deg);
+				}
 			}
 
 			/* watch.png：在最上层 */
@@ -129,7 +177,10 @@
 					const vv = window.visualViewport;
 					const vw = vv ? vv.width : window.innerWidth;
 					const vh = vv ? vv.height : window.innerHeight;
-					return { vw, vh };
+					return {
+						vw,
+						vh
+					};
 				}
 
 				function getStagePadding() {
@@ -137,12 +188,21 @@
 					const px = (v) => parseFloat(v) || 0;
 					const padX = px(cs.paddingLeft) + px(cs.paddingRight);
 					const padY = px(cs.paddingTop) + px(cs.paddingBottom);
-					return { padX, padY };
+					return {
+						padX,
+						padY
+					};
 				}
 
 				function applyScale() {
-					const { vw, vh } = getViewportWH();
-					const { padX, padY } = getStagePadding();
+					const {
+						vw,
+						vh
+					} = getViewportWH();
+					const {
+						padX,
+						padY
+					} = getStagePadding();
 					const availW = Math.max(0, vw - padX);
 					const availH = Math.max(0, vh - padY);
 
@@ -179,7 +239,7 @@
 
 					// 延迟一点点移除 loading，确保渐变平滑
 					setTimeout(() => {
-						if(loading) loading.style.display = 'none';
+						if (loading) loading.style.display = 'none';
 					}, 250);
 				});
 
