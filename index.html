@@ -51,6 +51,7 @@
 		<!-- WEB STATISTICS END -->
 
 		<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -951,6 +952,51 @@
 										class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
 									</div>
 								</div>
+
+								<!-- ================= 分享功能区域 ================= -->
+								<div
+									class="mt-12 pt-8 px-1 md:px-0  border-t border-neutral-200 dark:border-neutral-800">
+									<div class="flex items-center justify-between">
+										<span
+											class="text-sm font-medium text-neutral-500">{{ t('media.share') || 'Share this work' }}</span>
+
+										<div class="flex items-center gap-3">
+											<!-- 按钮 1: 复制链接 -->
+											<button @click="copyLink"
+												class="group relative inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+												:title="t('article.copyLink') || 'Copy Link'">
+
+												<!-- 复制图标 -->
+												<span v-if="!linkCopied"
+													class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-file-copy-line"></i>
+												</span>
+
+												<!-- 成功反馈图标 (对勾) -->
+												<span v-else class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-check-line text-green-500"></i>
+												</span>
+
+												<!-- 简单的 Tooltip 反馈 -->
+												<span v-if="linkCopied"
+													class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 text-xs text-white bg-black rounded shadow-sm whitespace-nowrap">
+													Copied!
+												</span>
+											</button>
+
+											<!-- 按钮 2: 浏览器原生分享 (仅在支持时显示) -->
+											<button v-if="canNativeShare" @click="nativeShare"
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+												:title="t('media.shareVia') || 'Share via...'">
+												<span class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-share-2-line"></i>
+												</span>
+											</button>
+										</div>
+									</div>
+								</div>
+								<!-- ================= 结束：分享功能区域 ================= -->
+
 							</div>
 						</div>
 					</article>
@@ -1065,12 +1111,57 @@
 								<div class="prose prose-neutral dark:prose-invert max-w-none">
 									<div v-html="renderArticleContent(currentMedia.description[currentLang])"></div>
 								</div>
+
+								<!-- ================= 分享功能区域 ================= -->
+								<div
+									class="mt-12 pt-8 px-1 md:px-0  border-t border-neutral-200 dark:border-neutral-800">
+									<div class="flex items-center justify-between">
+										<span
+											class="text-sm font-medium text-neutral-500">{{ t('media.share') || 'Share this work' }}</span>
+
+										<div class="flex items-center gap-3">
+											<!-- 按钮 1: 复制链接 -->
+											<button @click="copyLink"
+												class="group relative inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+												:title="t('article.copyLink') || 'Copy Link'">
+
+												<!-- 复制图标 -->
+												<span v-if="!linkCopied"
+													class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-file-copy-line"></i>
+												</span>
+
+												<!-- 成功反馈图标 (对勾) -->
+												<span v-else class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-check-line text-green-500"></i>
+												</span>
+
+												<!-- 简单的 Tooltip 反馈 -->
+												<span v-if="linkCopied"
+													class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 text-xs text-white bg-black rounded shadow-sm whitespace-nowrap">
+													Copied!
+												</span>
+											</button>
+
+											<!-- 按钮 2: 浏览器原生分享 (仅在支持时显示) -->
+											<button v-if="canNativeShare" @click="nativeShare"
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
+												:title="t('media.shareVia') || 'Share via...'">
+												<span class="w-5 h-5 flex items-center justify-center">
+													<i class="ri-share-2-line"></i>
+												</span>
+											</button>
+										</div>
+									</div>
+								</div>
+								<!-- ================= 结束：分享功能区域 ================= -->
+
 							</div>
 						</div>
 					</section>
 				</template>
 
-				<!-- ========== ABOUT PAGE (Apple-ish / IP tone) ========== -->
+				<!-- ========== ABOUT PAGE ========== -->
 				<template v-if="currentPage === 'about'">
 					<section class="relative py-20 sm:py-28 overflow-hidden">
 						<!-- Soft glow background -->
@@ -1409,11 +1500,24 @@
 												<span>{{ t('appstore.learnMore') }}</span>
 											</button>
 
-											<!-- Button 3: 分享（暂不实现） -->
-											<button
-												class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800">
-												<i class="fa-solid fa-share-nodes"></i>
-											</button>
+											<div class="flex gap-3">
+												<!-- Button 3: 复制链接 (点击变对勾，2秒还原) -->
+												<button @click="copyLink"
+													class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													:title="t('appstore.copyLink') || 'Copy Link'">
+													<!-- 未复制时显示链接图标 -->
+													<i v-if="!linkCopied" class="ri-file-copy-line"></i>
+													<!-- 复制成功显示绿色对勾 -->
+													<i v-else class="ri-check-line text-green-500"></i>
+												</button>
+
+												<!-- Button 4: 浏览器原生分享 (仅在浏览器支持时显示) -->
+												<button v-if="canNativeShare" @click="nativeShare"
+													class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													:title="t('appstore.share') || 'Share'">
+													<i class="ri-share-circle-line"></i>
+												</button>
+											</div>
 										</div>
 
 										<!-- Meta Info (核心信息) -->
@@ -1925,17 +2029,19 @@
 					articles: {
 						title: "个人随笔",
 						subtitle: "分享我的思考与见解",
-						search: "搜索文章..."
+						search: "搜索文章...",
 					},
 					article: {
 						back: "返回文章列表",
-						minRead: "分钟阅读"
+						minRead: "分钟阅读",
+						share: "分享此篇文章",
 					},
 					media: {
 						title: "媒体作品",
 						subtitle: "数字影像作品集",
 						search: "搜索作品...",
-						back: "返回作品列表"
+						back: "返回作品列表",
+						share: "分享此作品",
 					},
 					about: {
 						nickname: "企鹅企企",
@@ -2049,13 +2155,15 @@
 					},
 					article: {
 						back: "Back to Articles",
-						minRead: "min read"
+						minRead: "min read",
+						share: "Share this article",
 					},
 					media: {
 						title: "Media Works",
 						subtitle: "Digital media portfolio",
 						search: "Search works...",
-						back: "Back to Gallery"
+						back: "Back to Gallery",
+						share: "Share this work",
 					},
 					about: {
 						nickname: "Penguin QiQi",
@@ -2169,13 +2277,15 @@
 					},
 					article: {
 						back: "記事一覧に戻る",
-						minRead: "分で読める"
+						minRead: "分で読める",
+						share: "この記事を共有",
 					},
 					media: {
 						title: "メディア作品",
 						subtitle: "デジタルメディアポートフォリオ",
 						search: "作品を検索...",
-						back: "ギャラリーに戻る"
+						back: "ギャラリーに戻る",
+						share: "この作品を共有",
 					},
 					about: {
 						nickname: "ペンギン企企",
@@ -2289,13 +2399,15 @@
 					},
 					article: {
 						back: "글 목록으로",
-						minRead: "분 읽기"
+						minRead: "분 읽기",
+						share: "이 글 공유하기",
 					},
 					media: {
 						title: "미디어 작품",
 						subtitle: "디지털 미디어 포트폴리오",
 						search: "작품 검색...",
-						back: "갤러리로 돌아가기"
+						back: "갤러리로 돌아가기",
+						share: "이 작품 공유하기",
 					},
 					about: {
 						nickname: "펭귄 치치",
@@ -2502,61 +2614,191 @@
 
 					// 3. 修改 navigate 方法
 					const navigate = (page) => {
-						// 站内“普通页面”名单：这些不走 appdetail
-						const normalPages = new Set([
-							'home', 'about', 'apps', 'media', 'media-detail',
-							'articles', 'article-detail', 'contact', 'dashboard',
-							'appdetail'
-						]);
+						// page 既可能是：'home'/'about'... 也可能是：app slug / url / apps/xxx.html
+						const p = String(page || "").trim();
 
-						// 1) 站内普通页面
-						if (normalPages.has(page)) {
-							currentPage.value = page;
-							currentAppUrl.value = '';
-							window.scrollTo({
-								top: 0,
-								behavior: 'smooth'
+						// 1) 站内固定页
+						const map = {
+							home: "home",
+							about: "about",
+							contact: "contact",
+							apps: "appv1",
+							appsv2: "launchpad",
+							articles: "articles",
+							media: "media",
+							changelog: "changelog"
+						};
+						if (map[p]) return setHash(map[p]);
+
+						// 2) 如果是完整 URL 或 apps/xxx.html：仍然落到 #app?name=xxx
+						//    （你现在是直接塞 iframe，这里统一成「只认 name」）
+						if (/^https?:\/\//.test(p)) {
+							// 你如果要支持外链 iframe，也可以：setHash('app', { url: p })
+							// 但你当前设计是 apps/*.html，这里先不放开外链。
+							return setHash("home");
+						}
+
+						if (p.includes("/") && p.endsWith(".html")) {
+							const name = p.split("/").pop().replace(/\.html$/, "");
+							return setHash("app", {
+								name
 							});
-							return;
 						}
 
-						// 2) 如果传进来就是完整 URL（https://...），直接塞 iframe
-						if (typeof page === 'string' && /^https?:\/\//.test(page)) {
-							currentAppUrl.value = page;
-							currentPage.value = 'appdetail';
-							window.scrollTo({
-								top: 0,
-								behavior: 'smooth'
-							});
-							return;
-						}
-
-						// 3) 如果传进来已经是 apps/xxx.html 这种路径，也直接用
-						if (typeof page === 'string' && page.includes('/') && page.endsWith('.html')) {
-							currentAppUrl.value = page;
-							currentPage.value = 'appdetail';
-							window.scrollTo({
-								top: 0,
-								behavior: 'smooth'
-							});
-							return;
-						}
-
-						// 4) 默认：把它当 app slug：dietpro -> apps/dietpro.html
-						const slug = String(page || '').trim();
-						if (slug) {
-							currentAppUrl.value = `apps/${slug}.html`;
-							currentPage.value = 'appdetail';
-						} else {
-							currentPage.value = 'home';
-							currentAppUrl.value = '';
-						}
-
-						window.scrollTo({
-							top: 0,
-							behavior: 'smooth'
+						// 3) 默认：当作 app slug
+						if (p) return setHash("app", {
+							name: p
 						});
+
+						setHash("home");
 					};
+
+					function parseHash() {
+						// 支持：/#articles?id=xxx  或  #articles?id=xxx
+						const raw = (location.hash || "").replace(/^#\/?/, ""); // 去掉 # 或 #/
+						if (!raw) return {
+							path: "home",
+							query: {}
+						};
+
+						const [path, qs = ""] = raw.split("?");
+						const query = Object.fromEntries(new URLSearchParams(qs));
+						return {
+							path: (path || "home").trim(),
+							query
+						};
+					}
+
+					function setHash(path, query = {}) {
+						// 默认把当前语言带上，支持 deep link：#media?id=xxx&lang=zh
+						const q = {
+							...query
+						};
+						if (!('lang' in q) && typeof currentLang !== 'undefined' && currentLang?.value) {
+							q.lang = currentLang.value;
+						}
+						const qs = new URLSearchParams(
+							Object.entries(q).filter(([, v]) => v != null && String(v).trim() !== "")
+						).toString();
+						location.hash = `#${path}${qs ? "?" + qs : ""}`;
+					}
+
+					async function applyRoute() {
+						const {
+							path,
+							query
+						} = parseHash();
+
+						// 支持 #xxx?...&lang=zh|en|ja|ko
+						if (query.lang && ['zh', 'en', 'ja', 'ko'].includes(String(query.lang))) {
+							try {
+								setLanguage(String(query.lang));
+							} catch (e) {}
+						}
+
+						// 统一滚顶（你原来各处都在滚顶）
+						const scrollTop = () => window.scrollTo({
+							top: 0,
+							behavior: "smooth"
+						});
+
+						switch (path) {
+							case "home":
+								currentPage.value = "home";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+
+							case "about":
+								currentPage.value = "about";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+
+							case "contact":
+								currentPage.value = "contact";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+
+							case "appv1":
+								currentPage.value = "apps";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+
+							case "launchpad":
+								currentPage.value = "appsv2";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+
+								// ① app iframe 详情页
+							case "app": {
+								const name = (query.name || "").trim();
+								currentPage.value = "appdetail";
+								currentAppUrl.value = name ? `apps/${name}.html` : "";
+								scrollTop();
+								break;
+							}
+
+							// ② 应用商店详情页（你也可以把 store 作为别名）
+							case "store":
+							case "appv2": {
+								const name = (query.name || "").trim();
+								// 等 applist 有数据后再打开（避免刷新直达时 currentApp 为空）
+								if (!applist.value?.length) await fetchApps(false);
+								testOpenStore(name); // 你已有：进 app-store + 生成推荐 :contentReference[oaicite:2]{index=2}
+								scrollTop();
+								break;
+							}
+
+							case "changelog": {
+								const name = (query.name || "").trim();
+								if (!applist.value?.length) await fetchApps(false);
+								if (name) testOpenStore(name, {
+									syncHash: false
+								}); // ✅ 只为了设 currentApp，不改 hash
+								currentPage.value = "changelog";
+								scrollTop();
+								break;
+							}
+
+							// ③ 博客：列表 / 详情
+							case "articles": {
+								const key = (query.id || query.slug || "").trim();
+								if (key) {
+									await ensureArticleByKey(key);
+									currentArticleId.value = key;
+									currentPage.value = "article-detail";
+								} else {
+									currentPage.value = "articles";
+								}
+								scrollTop();
+								break;
+							}
+
+							// ④ 作品：列表 / 详情
+							case "media": {
+								const id = (query.id || "").trim();
+								if (id) {
+									await ensureMediaById(id);
+									currentMediaId.value = id;
+									currentPage.value = "media-detail";
+								} else {
+									currentPage.value = "media";
+								}
+								scrollTop();
+								break;
+							}
+
+							default:
+								currentPage.value = "home";
+								currentAppUrl.value = "";
+								scrollTop();
+								break;
+						}
+					}
 
 
 					// Languages
@@ -2605,11 +2847,13 @@
 					})
 
 					const currentArticle = computed(() => {
-						return articles.value.find(a => a.id === currentArticleId.value)
+						const key = String(currentArticleId.value ?? '')
+						return articles.value.find(a => String(a.slug ?? a.id) === key || String(a.id) === key)
 					})
 
 					const currentMedia = computed(() => {
-						return mediaItems.value.find(m => m.id === currentMediaId.value)
+						const key = String(currentMediaId.value ?? '')
+						return mediaItems.value.find(m => String(m.id) === key)
 					})
 
 					// Methods
@@ -2674,23 +2918,20 @@
 
 
 
-					const viewArticle = (id) => {
-						currentArticleId.value = id
-						currentPage.value = 'article-detail'
-						window.scrollTo({
-							top: 0,
-							behavior: 'smooth'
-						})
-					}
+					const viewArticle = (article) => {
+						const key = (typeof article === 'object' && article) ? (article.slug || article.id) :
+							article;
+						setHash("articles", {
+							id: key
+						});
+					};
+					const viewMedia = (item) => {
+						const key = (typeof item === 'object' && item) ? (item.id) : item;
+						setHash("media", {
+							id: key
+						});
+					};
 
-					const viewMedia = (id) => {
-						currentMediaId.value = id
-						currentPage.value = 'media-detail'
-						window.scrollTo({
-							top: 0,
-							behavior: 'smooth'
-						})
-					}
 
 					const setLanguage = (lang) => {
 						currentLang.value = lang
@@ -3234,6 +3475,135 @@
 						});
 					}
 
+					async function fetchBlogById(id) {
+						// Supabase id 可能是 int；路由参数是 string，这里做一次兼容转换
+						const raw = String(id ?? "").trim();
+						const idNum = /^\d+$/.test(raw) ? Number(raw) : raw;
+
+						const {
+							data,
+							error
+						} = await supabase
+							.from("blog")
+							.select("*")
+							.eq("id", idNum)
+							.eq("published", true)
+							.maybeSingle(); // 查不到不会 throw
+						if (error) throw error;
+						if (!data) return null;
+						const [row] = await normalizeBlog([data]);
+						return row || null;
+					}
+
+					async function fetchBlogBySlug(slug) {
+						const s = String(slug ?? "").trim();
+						if (!s) return null;
+						const {
+							data,
+							error
+						} = await supabase
+							.from("blog")
+							.select("*")
+							.eq("slug", s)
+							.eq("published", true)
+							.maybeSingle();
+						if (error) throw error;
+						if (!data) return null;
+						const [row] = await normalizeBlog([data]);
+						return row || null;
+					}
+
+					async function fetchMediaById(id) {
+						const raw = String(id ?? "").trim();
+						const idNum = /^\d+$/.test(raw) ? Number(raw) : raw;
+
+						const {
+							data,
+							error
+						} = await supabase
+							.from("media")
+							.select("*")
+							.eq("id", idNum)
+							.eq("published", true)
+							.maybeSingle();
+						if (error) throw error;
+						if (!data) return null;
+						const [row] = await normalizeMedia([data]);
+						return row || null;
+					}
+
+					async function ensureArticleByKey(key) {
+						const k = String(key ?? "").trim();
+						if (!k) return null;
+
+						// ✅ 用同一把“key”去命中：slug 优先，其次 id
+						const matchKey = (a) => {
+							const s = a?.slug ? String(a.slug) : "";
+							const id = a?.id != null ? String(a.id) : "";
+							return s === k || id === k;
+						};
+
+						// 1) 先从内存里找（避免重复请求）
+						const hit = articles.value.find(matchKey);
+						if (hit) return hit;
+
+						// 2) 再去拉单条（你原本就是这么做的）
+						if (!supabase) return null;
+
+						// ✅ 兼容：传的是纯数字 id / 或 post-xxxx slug
+						let row = null;
+
+						if (k.startsWith("post-")) {
+							row = await fetchBlogBySlug(k);
+						} else if (/^\d+$/.test(k)) {
+							// ✅ 关键：纯数字优先当成 slug 的尾号
+							row = await fetchBlogBySlug(`post-${k}`);
+							// 如果你 blog 表确实也可能用数字做 id，再兜底查一次
+							if (!row) row = await fetchBlogById(Number(k));
+						} else {
+							// 其它字符串：当 slug 查
+							row = await fetchBlogBySlug(k);
+						}
+						if (!row) return null;
+
+						// 3) ✅ upsert：如果列表里已经有同 slug 或同 id，就替换；否则插入
+						const idx = articles.value.findIndex(a => {
+							const s = a?.slug ? String(a.slug) : "";
+							const id = a?.id != null ? String(a.id) : "";
+							return (row.slug && s === String(row.slug)) || (row.id != null && id === String(
+								row.id));
+						});
+
+						if (idx >= 0) articles.value.splice(idx, 1, row);
+						else articles.value.unshift(row);
+
+						return row;
+					}
+
+
+					async function ensureMediaById(id) {
+						const key = String(id ?? "").trim();
+						if (!key) return null;
+
+						// ✅ 统一转 string，避免 9 vs "9" 命中失败
+						const hit = mediaItems.value.find(m => String(m.id) === key);
+						if (hit) return hit;
+
+						if (!supabase) return null;
+
+						const row = await fetchMediaById(key);
+						if (!row) return null;
+
+						// ✅ upsert：已有同 id 就替换；没有才插入，彻底杜绝重复
+						const idx = mediaItems.value.findIndex(m => String(m.id) === String(row.id));
+						if (idx >= 0) mediaItems.value.splice(idx, 1, row);
+						else mediaItems.value.unshift(row);
+
+						return row;
+					}
+
+
+
 					/** ========== 4) normalize：修复 ...r，并把图片字段转成 blob 本地 URL ========== */
 					/* 下面两个字段名请按你表结构改：
 					   - blog: cover / hero / image 之类
@@ -3620,16 +3990,16 @@
 
 					// 测试部分
 					// ✅ 测试阶段：一个函数解决「进入商店 + 生成推荐」
-					function testOpenStore(appOrId) {
+					function testOpenStore(appOrId, {
+						syncHash = true
+					} = {}) {
 						const list = Array.isArray(applist?.value) ? applist.value : (applist || []);
 
-						// 兼容：传 app 对象 或 id
 						const app =
 							(appOrId && typeof appOrId === "object") ?
 							appOrId :
 							list.find(x => x.id === appOrId);
 
-						// 找不到：也能进 app-store
 						if (!app) {
 							currentApp.value = null;
 							appRecommend.value = [];
@@ -3638,31 +4008,36 @@
 							return;
 						}
 
-						// 1) 传参到 app-store
 						currentApp.value = app;
 						currentPage.value = "app-store";
 						window.scrollTo(0, 0);
 
-						// 2) 生成推荐：排除自己 -> 打乱 -> 取最多 4 个
 						const pool = list.filter(x => x && x.id !== app.id && !x.disabled);
-
-						// Fisher-Yates shuffle
 						const shuffled = pool.slice();
 						for (let i = shuffled.length - 1; i > 0; i--) {
 							const j = Math.floor(Math.random() * (i + 1));
 							[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
 						}
-
 						appRecommend.value = shuffled.slice(0, 4);
+
+						if (syncHash) {
+							const id = (appOrId && typeof appOrId === "object") ? appOrId.id : appOrId;
+							if (id) setHash("appv2", {
+								name: id
+							});
+						}
 					}
 
 					const currentApp = ref(null);
 					const appRecommend = ref([]);
 
 					function openChangelog() {
-						currentPage.value = 'changelog'
-						window.scrollTo(0, 0)
+						const id = currentApp.value?.id;
+						setHash("changelog", id ? {
+							name: id
+						} : {});
 					}
+
 
 					const filteredChangelogs = computed(() => {
 						const app = currentApp.value
@@ -3717,7 +4092,73 @@
 
 
 
+					// 状态
+					const linkCopied = ref(false);
+					const canNativeShare = ref(false);
 
+					const getShareLink = () => {
+						const {
+							origin,
+							pathname,
+							hash
+						} = window.location;
+
+						// pathname 可能是 / 或 /index.html，统一保留
+						const base = pathname && pathname !== "/" ? pathname : "";
+
+						// hash 为空时，至少保证有 #home
+						const safeHash = hash && hash.length > 1 ? hash : "#home";
+
+						return `${origin}${base}${safeHash}`;
+					};
+
+
+
+					// 功能 1: 复制当前链接
+					const copyLink = async () => {
+						try {
+							const link = getShareLink();
+							await navigator.clipboard.writeText(link);
+
+							linkCopied.value = true;
+							setTimeout(() => {
+								linkCopied.value = false;
+							}, 2000);
+						} catch (err) {
+							console.error("Failed to copy:", err);
+						}
+					};
+
+					// 功能 2: 调用浏览器原生分享
+					const nativeShare = async () => {
+						const link = getShareLink();
+
+						// 尽量给一个合理的 title（不强依赖 article / media）
+						let title = "DoraFX";
+						let text = "Check this page on DoraFX";
+
+						if (currentArticle.value) {
+							title = currentArticle.value.title?.[currentLang.value] || title;
+							text = title;
+						} else if (currentMedia.value) {
+							title = currentMedia.value.title || title;
+							text = title;
+						} else if (currentApp.value) {
+							title = currentApp.value.name || title;
+							text = title;
+						}
+
+						try {
+							await navigator.share({
+								title,
+								text,
+								url: link,
+							});
+						} catch (err) {
+							// 用户取消分享是正常行为
+							console.log("Share cancelled or failed:", err);
+						}
+					};
 
 
 
@@ -3732,6 +4173,12 @@
 
 					// Lifecycle
 					onMounted(async () => {
+
+						// navigator.share 仅在 HTTPS 或 localhost 下可用
+						if (navigator.share) {
+							canNativeShare.value = true;
+						}
+
 						if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
 							isDark.value = true
 							document.documentElement.classList.add("dark")
@@ -3745,6 +4192,15 @@
 
 						// 再拉 supabase 的 blog/media
 						await loadBlogAndMedia()
+
+						await fetchApps(false);
+						await loadBlogAndMedia();
+
+						// 先执行一次：支持用户直接打开某个 hash 链接
+						await applyRoute();
+
+						// 监听 hash 变化：支持点击/复制链接跳转
+						window.addEventListener("hashchange", applyRoute);
 					})
 
 					return {
@@ -3821,7 +4277,13 @@
 						resolveUrl,
 						appsSearch,
 						filteredAppsV2,
-						toggleAppsLauncher
+						toggleAppsLauncher,
+
+
+						linkCopied,
+						canNativeShare,
+						copyLink,
+						nativeShare
 					}
 				},
 				methods: {
