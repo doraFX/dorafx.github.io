@@ -12,7 +12,7 @@
 		<script src="js/supabase-js@2.js"></script>
 
 		<!-- WEB STATISTICS START-->
-		<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+		<script charset="UTF-8" id="LA_COLLECT" async src="https://sdk.51.la/js-sdk-pro.min.js"></script>
 		<script>
 			LA.init({
 				id: "Jl5bi3TeBeipiIT3",
@@ -2952,9 +2952,22 @@
 					const setLanguage = (lang) => {
 						currentLang.value = lang
 						showLangMenu.value = false
-						document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang === 'en' ? 'en' : lang ===
-							'ja' ? 'ja' : 'ko'
+						document.documentElement.lang =
+							lang === 'zh' ? 'zh-CN' : lang === 'en' ? 'en' : lang === 'ja' ? 'ja' : 'ko'
+
+						// 同步 URL：保持当前 path 和其它 query 不变，只更新 lang
+						const {
+							path,
+							query
+						} = parseHash()
+						if (String(query.lang || '') !== String(lang)) {
+							setHash(path, {
+								...query,
+								lang
+							})
+						}
 					}
+
 
 					const toggleTheme = () => {
 						isDark.value = !isDark.value
