@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Diet Pro Detail</title>
+
+		<script src="../js/vue.global.js"></script>
+		<script src="../js/tailwindcss.3.4.17.js"></script>
+		
+		<!-- Google Fonts 最好也加上 -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet">
+
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ['Noto Sans', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'sans-serif'],
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+
+			/* 隐藏滚动条样式 */
+			.scrollbar-hide::-webkit-scrollbar {
+				display: none;
+			}
+
+			.scrollbar-hide {
+				-ms-overflow-style: none;
+				scrollbar-width: none;
+			}
+
+			/* 动画定义 */
+			@keyframes fadeInUp {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.animate-fade-in-up {
+				animation: fadeInUp 0.6s ease-out forwards;
+			}
+		</style>
+	</head>
+	<!-- 这里的 body 不需要 padding-top，因为在 iframe 里 -->
+	<body class="bg-white dark:bg-black text-neutral-900 dark:text-white transition-colors duration-300">
+
+		<div id="sub-app" v-cloak>
+			<div class="bg-white dark:bg-black min-h-screen font-sans selection:bg-emerald-500/30">
+
+				<!-- Part 1: Product Intro (The "Hero" Shot) -->
+				<section class="relative pt-32 pb-20 lg:pb-40 overflow-hidden">
+					<!-- Background Glow -->
+					<div
+						class="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[800px] bg-gradient-to-b from-emerald-100/30 to-transparent dark:from-emerald-900/20 dark:to-transparent rounded-[100%] blur-3xl pointer-events-none">
+					</div>
+
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+
+						<!-- Header Text Group -->
+						<div class="relative z-20 flex flex-col items-center">
+
+							<!-- 1. Logo (Centered, Premium Style) -->
+							<div class="mb-8 animate-fade-in-up group">
+
+
+								<div class="relative w-24 h-24 sm:w-20 sm:h-20 shrink-0 rounded-[1.2rem]
+								       shadow-xl shadow-emerald-500/20 ring-1 ring-black/5 dark:ring-white/10
+								       overflow-hidden bg-white dark:bg-neutral-900 flex items-center justify-center">
+									<img src="../images/dietpro/icon.png" class="w-full h-full object-contain" />
+								</div>
+							</div>
+
+							<!-- 2. App Name -->
+							<h1 class="text-6xl md:text-8xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6 animate-fade-in-up"
+								style="animation-delay: 0.1s">
+								Diet Pro
+							</h1>
+
+							<!-- 3. Gradient Slogan -->
+							<p class="text-2xl sm:text-3xl py-1 font-medium text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 mb-16 text-center max-w-3xl mx-auto animate-fade-in-up"
+								style="animation-delay: 0.2s">
+								{{ t('dietpro.heroSlogan') }}
+							</p>
+
+						</div>
+
+						<!-- Three Phones Mockup Container -->
+						<div class="relative mt-12 lg:mt-20 w-full">
+							<div ref="scrollContainer" @scroll="handleScroll" class="flex overflow-x-auto snap-x snap-mandatory pb-8
+						           px-[calc((100%-300px)/2)]
+						           gap-10 sm:gap-12
+						           lg:grid lg:grid-cols-3 lg:gap-12 lg:px-0 lg:pb-0 lg:max-w-5xl lg:mx-auto
+						           scrollbar-hide w-full drop-shadow-2xl">
+
+
+								<div class="snap-center shrink-0 flex justify-center animate-fade-in-up">
+									<div class="relative w-[300px] h-[610px]">
+										<img src="../images/dietpro/banner01.png"
+											class="absolute inset-0 w-full h-full z-20 pointer-events-none select-none">
+									</div>
+								</div>
+
+								<div class="snap-center shrink-0 flex justify-center animate-fade-in-up">
+									<div class="relative w-[300px] h-[610px]">
+										<img src="../images/dietpro/banner02.png"
+											class="absolute inset-0 w-full h-full z-20 pointer-events-none select-none">
+									</div>
+								</div>
+
+								<div class="snap-center shrink-0 flex justify-center animate-fade-in-up">
+									<div class="relative w-[300px] h-[610px]">
+										<img src="../images/dietpro/banner03.png"
+											class="absolute inset-0 w-full h-full z-20 pointer-events-none select-none">
+									</div>
+								</div>
+
+							</div>
+
+							<!-- 2. Mobile Nav Dots (Hidden on Desktop) -->
+							<div class="flex justify-center gap-2 mt-4 lg:hidden">
+								<button v-for="index in 3" :key="index" @click="scrollToPhone(index - 1)"
+									class="w-2 h-2 rounded-full transition-all duration-300"
+									:class="currentPhoneIndex === (index - 1) ? 'bg-neutral-800 dark:bg-white w-4' : 'bg-neutral-300 dark:bg-neutral-700'">
+								</button>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Part 2: Features (Bento Grid) -->
+				<section class="py-24 bg-neutral-50 dark:bg-black relative overflow-hidden">
+					<!-- Decorative Background Blob -->
+					<div
+						class="absolute top-1/4 right-0 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none">
+					</div>
+
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+						<!-- Section Header -->
+						<div class="text-center mb-20">
+							<h2
+								class="text-4xl md:text-5xl font-bold mb-6 text-neutral-900 dark:text-white tracking-tight">
+								{{ t('dietpro.featuresTitle') }}
+							</h2>
+							<p class="text-lg text-neutral-500 dark:text-neutral-400 mx-auto leading-relaxed">
+								{{ t('dietpro.featuresDesc') }}
+							</p>
+						</div>
+
+						<!-- Bento Grid Layout -->
+						<div
+							class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-6 auto-rows-[minmax(180px,auto)]">
+							<!-- 1. All-in-one Logging (Main Feature) -->
+							<!-- Style: Light Gray Glass, Text Top-Left, Phone UI Bottom-Right -->
+							<div
+								class="md:col-span-4 min-h-[360px] md:min-h-[500px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#F5F5F7] dark:bg-[#111111] p-10 flex flex-col transition-all">
+
+								<!-- Text Area -->
+								<div class="relative z-20">
+									<h3
+										class="text-2xl md:text-3xl font-bold mb-4 text-neutral-900 dark:text-white tracking-tight">
+										{{ t('dietpro.f1_title') }}
+									</h3>
+									<p class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
+										{{ t('dietpro.f1_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of the App Dashboard or Phone Mockup -->
+								<div class=" absolute bottom-0 w-[125%] md:w-[100%] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+
+								    <!-- Y轴动画（两端都有） -->
+							  	    translate-y-10
+								    group-hover:scale-105
+							  	    group-hover:translate-y-6
+								  
+								    transition-transform duration-700 ease-out">
+									<img src="../images/dietpro/features/001.png"
+										class="w-full h-auto drop-shadow-2xl object-contain" />
+								</div>
+							</div>
+
+							<!-- 2. K-Line Analysis (Vertical Dark Mode) -->
+							<!-- Style: Deep Black, High Contrast, Data Chart Visual -->
+							<div
+								class="md:col-span-2 md:row-span-2 min-h-[810px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#0A0A0A] p-10 flex flex-col justify-between">
+
+								<!-- Text Area -->
+								<div class="relative z-20">
+									<h3 class="text-2xl md:text-3xl font-bold mb-4 text-white tracking-tight">
+										{{ t('dietpro.f2_title') }}
+									</h3>
+									<p class="text-neutral-400 dark:text-neutral-600 text-base leading-relaxed">
+										{{ t('dietpro.f2_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of a Graph/Chart with gradient -->
+								<div class=" absolute bottom-0 w-[calc(100%-60px)] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+								  
+								    <!-- Y轴动画（两端都有） -->
+								    translate-y-0
+								    group-hover:scale-105
+								    group-hover:translate-y-0
+								  
+								    transition-transform duration-700 ease-out">
+
+									<img src="../images/dietpro/features/002.png"
+										class="w-full h-full object-contain object-bottom" />
+								</div>
+							</div>
+
+							<!-- 3. AI Camera (Square) -->
+							<!-- Style: Clean White, Lens/Photo focus -->
+							<div
+								class="md:col-span-2 min-h-[500px] md:min-h-[360px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#F5F5F7] dark:bg-[#111111] p-10 flex flex-col">
+								<div class="relative z-20 mb-auto">
+									<h3
+										class="text-2xl md:text-3xl font-bold mb-3 text-neutral-900 dark:text-white tracking-tight">
+										{{ t('dietpro.f3_title') }}
+									</h3>
+									<p class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
+										{{ t('dietpro.f3_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of a Camera Viewfinder or Food Scan -->
+								<div class=" absolute bottom-0 w-[100%] md:w-[80%] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+								  
+								    <!-- 桌面端：右侧定位 -->
+								    md:left-auto md:right-0 md:translate-x-0
+								  
+								    <!-- Y轴动画（两端都有） -->
+								    translate-y-10
+									md:translate-y-24
+								    group-hover:scale-102
+								    group-hover:translate-y-6
+								    group-hover:md:translate-y-20
+								  
+								    <!-- X轴动画（仅桌面端） -->
+								    md:translate-x-10
+								    group-hover:md:scale-100
+								    group-hover:md:translate-x-6
+								  
+								    transition-transform duration-700 ease-out">
+									<img src="../images/dietpro/features/003.png"
+										class="w-full h-auto drop-shadow-xl" />
+								</div>
+							</div>
+
+							<!-- 4. Funny Tool (Square) -->
+							<!-- Style: Clean White, Chip/Database focus -->
+							<div
+								class="md:col-span-2 min-h-[400px] md:min-h-[360px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#F5F5F7] dark:bg-[#111111] p-10 flex flex-col">
+								<div class="relative z-20 mb-auto">
+									<h3
+										class="text-2xl md:text-3xl font-bold mb-3 text-neutral-900 dark:text-white tracking-tight">
+										{{ t('dietpro.f4_title') }}
+									</h3>
+									<p class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
+										{{ t('dietpro.f4_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of a Database Icon or List UI -->
+								<div class=" absolute bottom-0 w-[100%] md:w-[100%] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+								  
+								    <!-- 桌面端：右侧定位 -->
+								    md:left-auto md:right-0 md:translate-x-0
+								  
+								    <!-- Y轴动画（两端都有） -->
+								    translate-y-0
+									md:translate-y-10
+								    group-hover:scale-105
+								    group-hover:translate-y-0
+								    group-hover:md:translate-y-6
+								  
+								    <!-- X轴动画（仅桌面端） -->
+								    md:translate-x-10
+								    group-hover:md:scale-100
+								    group-hover:md:translate-x-6
+								  
+								    transition-transform duration-700 ease-out">
+									<img src="../images/dietpro/features/004.png"
+										class="w-full h-auto drop-shadow-xl" />
+								</div>
+							</div>
+
+							<!-- 5. Weekly Report (Horizontal) -->
+							<!-- Style: Wide, Report/Paper texture -->
+							<div
+								class="md:col-span-3 min-h-[340px] md:min-h-[400px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#F5F5F7] dark:bg-[#111111] p-10 flex flex-col transition-all">
+								<div class="relative z-20 mb-auto">
+									<h3
+										class="text-2xl md:text-3xl font-bold mb-3 text-neutral-900 dark:text-white tracking-tight">
+										{{ t('dietpro.f5_title') }}
+									</h3>
+									<p class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
+										{{ t('dietpro.f5_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of the App Dashboard or Phone Mockup -->
+								<div class=" absolute bottom-0 w-[120%] md:w-[100%] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+								
+								    <!-- Y轴动画（两端都有） -->
+								    translate-y-10
+								    group-hover:scale-105
+								    group-hover:translate-y-6
+								  
+								    transition-transform duration-700 ease-out">
+									<img src="../images/dietpro/features/005.png"
+										class="w-full h-auto drop-shadow-2xl object-contain" />
+								</div>
+							</div>
+
+							<!-- 6. AI Advisor (Horizontal Dark) -->
+							<!-- Style: Dark Green/Black Gradient, High Tech -->
+							<div
+								class="md:col-span-3 min-h-[340px] md:min-h-[400px] group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-gradient-to-br from-[#052e16] to-[#000000] p-10 flex flex-col md:flex-row items-start md:items-center">
+								<div class="relative z-20 mb-auto">
+									<h3 class="text-2xl md:text-3xl font-bold mb-3 text-white tracking-tight">
+										{{ t('dietpro.f6_title') }}
+									</h3>
+									<p class="text-neutral-400 dark:text-neutral-400 text-base leading-relaxed">
+										{{ t('dietpro.f6_desc') }}
+									</p>
+								</div>
+
+								<!-- Image Area: Needs a PNG of the App Dashboard or Phone Mockup -->
+								<div class=" absolute bottom-0 w-[120%] md:w-[100%] h-auto z-10
+								
+								    <!-- 移动端：水平居中 -->
+								    left-1/2 -translate-x-1/2
+								
+								    <!-- Y轴动画（两端都有） -->
+								    translate-y-10
+								    group-hover:scale-105
+								    group-hover:translate-y-6
+								  
+								    transition-transform duration-700 ease-out">
+									<img src="../images/dietpro/features/006.png"
+										class="w-full h-auto drop-shadow-2xl object-contain" />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<!-- Part 3: Copyright -->
+				<!-- Part 3: Copyright (Digital Certificate Style) -->
+				<section class="py-24 bg-white dark:bg-black border-t border-neutral-100 dark:border-neutral-900"
+					style="display: none;">
+					<div class="max-w-3xl mx-auto px-4">
+
+						<!-- Certificate Card -->
+						<div
+							class="relative overflow-hidden rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-10 hover:border-emerald-500/20 transition-colors duration-500">
+
+							<!-- Decorative Background Glow -->
+							<div
+								class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none">
+							</div>
+
+							<!-- 1. Seal / Icon -->
+							<div class="shrink-0 relative">
+								<div
+									class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-50 to-white dark:from-neutral-800 dark:to-neutral-900 border border-emerald-100 dark:border-emerald-900/50 shadow-lg flex items-center justify-center relative z-10">
+									<svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor"
+										viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+											d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+										</path>
+									</svg>
+								</div>
+								<!-- Back Glow -->
+								<div class="absolute inset-0 bg-emerald-500/20 blur-xl transform scale-90 z-0">
+								</div>
+							</div>
+
+							<!-- 2. Text Info -->
+							<div class="text-center md:text-left flex-1 min-w-0">
+								<div class="flex flex-col md:flex-row md:items-center gap-3 mb-3">
+									<h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+										{{ t('dietpro.copyrightTitle') }}
+									</h3>
+
+								</div>
+
+								<p class="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed mb-5">
+									{{ t('dietpro.copyrightInfo') }}
+								</p>
+
+								<!-- Registration Number Chip -->
+								<div
+									class="inline-flex items-center gap-3 pl-3 pr-4 py-2 bg-white dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-sm">
+									<span class="text-xs font-medium text-neutral-400 uppercase tracking-wider">Reg.
+										No</span>
+									<span
+										class="font-mono text-sm font-semibold text-neutral-700 dark:text-neutral-200 tracking-wide">
+										2024SRxxxxxx
+									</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<!-- Part 3: Copyright (Clean & Technical) -->
+				<section class="py-24 bg-white dark:bg-black relative">
+					<div class="max-w-5xl mx-auto px-6 lg:px-8">
+
+						<!-- Card Container -->
+						<div
+							class="group relative overflow-hidden rounded-[1.5rem] md:rounded-[2rem] bg-[#F9F9FA] dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 p-8 md:p-12 transition-all hover:border-neutral-300 dark:hover:border-neutral-700">
+
+							<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+
+								<!-- Left: Icon & Text -->
+								<div class="flex items-center gap-6">
+									<!-- Icon: Simple Shield -->
+									<div
+										class="shrink-0 w-14 h-14 rounded-2xl bg-white dark:bg-black border border-neutral-200 dark:border-neutral-800 flex items-center justify-center shadow-sm">
+										<svg class="w-7 h-7 text-neutral-900 dark:text-white" fill="none"
+											stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+											<path stroke-linecap="round" stroke-linejoin="round"
+												d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+										</svg>
+									</div>
+
+									<!-- Info -->
+									<div>
+										<h3
+											class="text-lg md:text-xl font-bold text-neutral-900 dark:text-white mb-1 tracking-tight">
+											{{ t('dietpro.copyrightTitle') }}
+										</h3>
+										<p class="text-sm text-neutral-500 dark:text-neutral-400">
+											{{ t('dietpro.copyrightInfo') }}
+										</p>
+									</div>
+								</div>
+
+								<!-- Right: Registration Number (Technical Style) -->
+								<div
+									class="w-full md:w-auto pt-6 md:pt-0 border-t md:border-t-0 border-neutral-200 dark:border-neutral-800">
+									<div class="flex flex-col md:items-end gap-1">
+										<span
+											class="text-xs font-medium text-neutral-400">{{ t('dietpro.copyrightName') }}</span>
+										<span
+											class="font-mono text-lg font-semibold text-neutral-800 dark:text-neutral-200 tracking-wide">
+											{{ t('dietpro.copyrightNumber') }}
+										</span>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Part 4: CTA (The Closer) -->
+				<section class="py-32 bg-white dark:bg-black text-center relative overflow-hidden">
+					<div class="relative z-10 max-w-4xl mx-auto px-4">
+						<div
+							class="w-20 h-20 mx-auto rounded-[1.5rem] bg-gradient-to-br from-emerald-400 to-teal-600 shadow-xl flex items-center justify-center text-4xl mb-8">
+							<img src="../images/dietpro/icon.png"
+								class="w-full h-full object-contain rounded-[1.2rem]" />
+						</div>
+						<h2 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Diet Pro</h2>
+						<p class="text-xl text-neutral-500 mb-10">{{ t('dietpro.heroSlogan') }}</p>
+						<button @click="goDietPro"
+							class="px-10 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-semibold transition-all shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40">
+							{{ t('hero.tryNow') }}
+						</button>
+					</div>
+				</section>
+
+			</div>
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				onMounted
+			} = Vue
+
+			createApp({
+				setup() {
+					// 1. 获取 URL 参数中的语言和主题
+					const urlParams = new URLSearchParams(window.location.search)
+					const lang = urlParams.get('lang') || 'zh'
+					const theme = urlParams.get('theme') || 'light'
+
+					// 2. 简单的翻译字典 (仅针对此页面的内容)
+					const translations = {
+						zh: {
+							dietpro: {
+								heroSlogan: '科学记录，健康瘦身',
+								intro: 'AI 驱动的健康减重助手，让每一顿和每一步都有依据。',
+								features: '核心功能',
+								featuresTitle: '全能，更是全才。',
+								featuresDesc: 'Diet Pro 将专业的营养学与先进的 AI 技术结合，为您提供从未有过的减重体验。',
+
+								f1_title: '全维度记录',
+								f1_desc: '饮食、运动、体重、围度。只需指尖轻点，生活轨迹尽在掌握。',
+
+								f2_title: '专业趋势分析',
+								f2_desc: '首创体重 K 线图与趋势线分析。像分析股市一样分析您的体重走势，拒绝焦虑，看清长期趋势。',
+
+								f3_title: 'AI 慧眼',
+								f3_desc: '拍张照，卡路里一目了然。',
+
+								f4_title: '智能减重小工具',
+								f4_desc: '随机食谱抽卡、减重冷知识，让控制饮食也有点乐趣。',
+
+								f5_title: '周报与勋章',
+								f5_desc: '可视化的周度总结，每一次突破都值得一枚闪亮的勋章。',
+
+								f6_title: 'AI 智能顾问',
+								f6_desc: 'AI 会根据您的体重波动和饮食结构，给出专业的营养建议和运动方案。',
+
+								copyrightTitle: '已取得软件著作权登记',
+								copyrightInfo: '本软件的核心算法与设计已受国家法律法规保护。',
+								copyrightName: '软著登记号',
+								copyrightNumber: '2024SR0614518',
+							},
+							hero: {
+								tryNow: '现在体验'
+							}
+						},
+						en: {
+							dietpro: {
+								heroSlogan: 'Scientific Tracking, Healthy Weight Loss',
+								intro: 'AI-powered healthy weight loss assistant, giving every meal and every step a solid basis.',
+								features: 'Core Features',
+								featuresTitle: 'All-rounded, and More Than Capable.',
+								featuresDesc: 'Diet Pro combines professional nutrition with advanced AI technology to bring you an unprecedented weight loss experience.',
+
+								f1_title: 'Comprehensive Tracking',
+								f1_desc: 'Diet, exercise, weight, body measurements. Just a tap of your finger, and your daily routine is all under control.',
+
+								f2_title: 'Professional Analysis',
+								f2_desc: 'Pioneering weight K-line & trend analysis, analyze weight like stocks, ban anxiety.',
+
+								f3_title: 'AI Insight',
+								f3_desc: 'Take a photo, and the calories are clear at a glance.',
+
+								f4_title: 'Smart Tools',
+								f4_desc: 'Random recipes, weight loss facts, make diet control fun.',
+
+								f5_title: 'Weekly Reports & Badges',
+								f5_desc: 'Visual weekly summaries, every breakthrough deserves a shiny badge.',
+
+								f6_title: 'AI Smart Consultant',
+								f6_desc: 'Based on your weight fluctuations and dietary structure, AI provides professional nutritional advice and exercise plans.',
+
+								copyrightTitle: 'Software Copyright Registered',
+								copyrightInfo: 'The core algorithms and designs of this software are protected by national laws and regulations.',
+								copyrightName: 'Registration No.',
+								copyrightNumber: '2024SR0614518'
+							},
+							hero: {
+								tryNow: 'Try Now'
+							}
+						},
+						ja: {
+							dietpro: {
+								heroSlogan: '科学的な記録、健康的に痩身',
+								intro: 'AI駆動の健康減量アシスタント、食事ごと、一歩ごとに根拠をつける。',
+								features: 'コア機能',
+								featuresTitle: '全能な上、万能な存在。',
+								featuresDesc: 'Diet Proは専門的な栄養学と先進的なAI技術を融合し、これまでにない減量体験をお届けします。',
+
+								f1_title: '全次元記録',
+								f1_desc: '食事、運動、体重、ボディーサイズ。指先を軽くタップするだけで、生活の軌跡がすべて把握できます。',
+
+								f2_title: '専門的なトレンド分析',
+								f2_desc: '国内初の体重K線図・トレンドライン分析。株式市場を分析するように体重の変動傾向を分析し、不安を捨て、長期的な傾向を明確に把握。',
+
+								f3_title: 'AI慧眼',
+								f3_desc: '写真を撮るだけで、カロリーが一見わかる。',
+
+								f4_title: 'スマート減量ツール',
+								f4_desc: 'ランダムレシピ抽選、減量豆知識。食事管理もちょっとした楽しみに変えます。',
+
+								f5_title: '週報とバッジ',
+								f5_desc: '視覚化された週間サマリー、一つ一つの突破には輝くバッジが応えます。',
+
+								f6_title: 'AIスマートコンサルタント',
+								f6_desc: 'AIが体重の変動と食事構成に基づき、専門的な栄養アドバイスと運動プランを提案します。',
+
+								copyrightTitle: 'ソフトウェア著作権登録済',
+								copyrightInfo: '本ソフトウェアのコアアルゴリズムとデザインは国家法令により保護されています。',
+								copyrightName: 'ソフトウェア著作権登録番号',
+								copyrightNumber: '2024SR0614518'
+							},
+							hero: {
+								tryNow: '今すぐ体験'
+							}
+						},
+						ko: {
+							dietpro: {
+								heroSlogan: '과학적 기록, 건강한 체중 감량',
+								intro: 'AI 기반 건강 체중 감량 어시스턴트, 매 식사와 매 걸음에 근거를 부여합니다.',
+								features: '핵심 기능',
+								featuresTitle: '전능적이면서, 더욱 만능적인 존재.',
+								featuresDesc: 'Diet Pro는 전문 영양학과 선진 AI 기술을 융합하여, 이전에는 경험할 수 없었던 체중 감량 경험을 선사합니다.',
+
+								f1_title: '전차원 기록',
+								f1_desc: '식사, 운동, 체중, 신체 치수. 손가락으로 가볍게 탭하기만 하면, 생활 궤적이 모두 파악됩니다.',
+
+								f2_title: '전문적 추세 분석',
+								f2_desc: '선구적인 체중 캔들차트 및 추세선 분석. 주식 시장을 분석하듯 체중 변동 추세를 분석하고, 불안을 버리고 장기적 추세를 명확히 파악하세요.',
+
+								f3_title: 'AI 혜안',
+								f3_desc: '사진을 찍기만 하면, 칼로리가 한눈에 보입니다.',
+
+								f4_title: '스마트 체중 감량 툴',
+								f4_desc: '랜덤 레시피 추첨, 체중 감량 상식. 식사 관리도 조금의 재미로 만들어줍니다.',
+
+								f5_title: '주간 보고서 및 배지',
+								f5_desc: '시각화된 주간 요약, 매번의 돌파구에는 빛나는 배지가 어울립니다.',
+
+								f6_title: 'AI 스마트 컨설턴트',
+								f6_desc: 'AI가 체중 변동과 식사 구조에 기반해 전문적인 영양 조언과 운동 계획을 제시합니다.',
+
+								copyrightTitle: '소프트웨어 저작권 등록 완료',
+								copyrightInfo: '본 소프트웨어의 핵심 알고리즘과 디자인은 국가 법규에 의해 보호받고 있습니다.',
+								copyrightName: '소프트웨어 저작권 등록 번호',
+								copyrightNumber: '2024SR0614518'
+							},
+							hero: {
+								tryNow: '지금 체험하기'
+							}
+						}
+						// ... 复制原文件中 dietpro 相关的翻译 ...
+					}
+
+					const t = (key) => {
+						// 1. 先拿到当前语言的所有翻译对象
+						let value = translations[lang]
+
+						// 2. 将 'dietpro.heroSlogan' 按照 '.' 拆分成数组 ['dietpro', 'heroSlogan']
+						const keys = key.split('.')
+
+						// 3. 逐层深入查找
+						for (const k of keys) {
+							// 如果当前层级存在，就继续往下一层找
+							if (value && value[k]) {
+								value = value[k]
+							} else {
+								// 找不到就返回 undefined，最终会返回 key
+								return key
+							}
+						}
+
+						return value
+					}
+
+					// 3. 逻辑复刻 (比如手机滚动的逻辑)
+					const scrollContainer = ref(null)
+					const currentPhoneIndex = ref(0)
+
+					const handleScroll = (e) => {
+						const container = e.target
+						const scrollLeft = container.scrollLeft
+						const cardWidth = container.clientWidth
+						// 计算当前是第几张图 (四舍五入)
+						currentPhoneIndex.value = Math.round(scrollLeft / cardWidth)
+					}
+
+					const scrollToPhone = (index) => {
+						if (scrollContainer.value) {
+							const cardWidth = scrollContainer.value.clientWidth
+							scrollContainer.value.scrollTo({
+								left: index * cardWidth, // 简化计算，大致滚动到对应位置
+								behavior: 'smooth'
+							})
+						}
+					}
+
+					// 4. 初始化主题
+					onMounted(() => {
+						if (theme === 'dark') {
+							document.documentElement.classList.add('dark')
+						} else {
+							document.documentElement.classList.remove('dark')
+						}
+					})
+
+					return {
+						t,
+						scrollContainer,
+						currentPhoneIndex,
+						handleScroll,
+						scrollToPhone,
+					}
+				},
+				methods: {
+					goDietPro: function() {
+						window.open("https://dietpro.dorafx.top", "_blank", "noopener,noreferrer");
+					}
+				}
+			}).mount('#sub-app')
+		</script>
+	</body>
+</html>

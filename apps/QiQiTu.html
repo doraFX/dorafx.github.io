@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Diet Pro Detail</title>
+
+		<script src="../js/vue.global.js"></script>
+		<script src="../js/tailwindcss.3.4.17.js"></script>
+		
+		<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+		<!-- Google Fonts 最好也加上 -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet">
+
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ['Noto Sans', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'sans-serif'],
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+
+			/* 隐藏滚动条但保留功能 */
+			::-webkit-scrollbar {
+				width: 0px;
+				background: transparent;
+			}
+
+			.watch-frame-outer {
+				background: #1f2937;
+				border-radius: 48px;
+				box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+				position: relative;
+			}
+
+			/* 模拟手表表冠 */
+			.crown {
+				position: absolute;
+				right: -6px;
+				top: 40px;
+				width: 8px;
+				height: 32px;
+				background: #374151;
+				border-radius: 0 4px 4px 0;
+			}
+		</style>
+	</head>
+
+	<body class="bg-white dark:bg-black text-neutral-900 dark:text-white transition-colors duration-300">
+		<div id="app" v-cloak>
+
+			<!-- Hero / Banner Section -->
+			<section class="relative overflow-hidden pt-20 pb-24 lg:pt-32 lg:pb-40">
+
+				<!-- 1. 背景层：基础色 -->
+				<div class="absolute inset-0 bg-neutral-50 dark:bg-[#050505] transition-colors duration-300"></div>
+
+				<!-- 2. 背景层：点阵纹理 (Grid Pattern) -->
+				<div
+					class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjAwLDIwMCwyMDAsMC4zKSIvPjwvc3ZnPg==')] dark:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoNTAsNTAsNTAsMC4zKSIvPjwvc3ZnPg==')] [mask-image:linear-gradient(to_bottom,white,transparent)] pointer-events-none">
+				</div>
+
+				<!-- 3. 背景层：动态光晕 (Glowing Orbs) -->
+				<div
+					class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none overflow-visible">
+					<!-- 主光晕：粉色 -->
+					<div
+						class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-400/20 dark:bg-brand-500/10 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-screen animate-pulse">
+					</div>
+					<!-- 副光晕：橙色 (增加暖意) -->
+					<div
+						class="absolute top-20 right-1/4 w-[400px] h-[400px] bg-orange-300/20 dark:bg-orange-500/10 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-screen">
+					</div>
+				</div>
+
+				<!-- 4. 内容区域 -->
+				<div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+
+					<!-- Logo Area with Animation -->
+					<div class="group relative inline-block mx-auto mb-10">
+						<!-- 外部光晕 -->
+						<div
+							class="absolute inset-0 bg-brand-500/30 rounded-[2rem] blur-xl group-hover:blur-2xl transition-all duration-500 opacity-50 group-hover:opacity-80">
+						</div>
+
+						<!-- 图标容器：增加浮动动画 -->
+						<div
+							class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-[2rem] bg-white dark:bg-neutral-900 p-2 shadow-2xl ring-1 ring-black/5 dark:ring-white/10">
+							<div
+								class="w-full h-full rounded-[1.5rem] overflow-hidden bg-gradient-to-br from-brand-100 to-orange-50 dark:from-brand-900 dark:to-neutral-800">
+								<img src="../images/QiQiTu/icon.png" alt="App Icon"
+									class="w-full h-full object-cover" />
+							</div>
+							<!-- 高光反射 -->
+							<div
+								class="absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-white/20 pointer-events-none">
+							</div>
+						</div>
+
+						<!-- 装饰性小标 -->
+						<div class="absolute -right-4 -top-4 animate-[float_5s_ease-in-out_infinite_1s]">
+							<span
+								class="flex items-center justify-center w-10 h-10 bg-white dark:bg-neutral-800 rounded-full shadow-lg text-xl border border-neutral-100 dark:border-neutral-700">
+								🥕
+							</span>
+						</div>
+					</div>
+
+					<!-- Tags / Badges -->
+					<div class="flex flex-wrap justify-center gap-3 mb-8 animate-fade-in-up"
+						style="animation-delay: 0.1s;">
+						<div
+							class="px-4 py-1.5 rounded-full bg-white/60 dark:bg-neutral-800/60 backdrop-blur-md border border-neutral-200 dark:border-brand-800/30 shadow-sm flex items-center gap-2">
+							<span class="text-xs font-bold text-brand-600 dark:text-brand-30">{{ t('platform') }}</span>
+						</div>
+						<div
+							class="px-4 py-1.5 rounded-full bg-white/60 dark:bg-brand-900/20 backdrop-blur-md border border-brand-100 dark:border-brand-800/30 shadow-sm flex items-center gap-2">
+							<span class="text-xs font-bold text-brand-600 dark:text-brand-300">{{ t('version') }}</span>
+						</div>
+					</div>
+
+					<!-- Main Typography -->
+					<h1 class="text-5xl sm:text-6xl md:text-7xl font-black tracking-tight mb-6 animate-fade-in-up"
+						style="animation-delay: 0.2s;">
+						<span
+							class="text-transparent bg-clip-text bg-gradient-to-br from-neutral-900 via-neutral-700 to-neutral-500 dark:from-white dark:via-neutral-200 dark:to-neutral-500 drop-shadow-sm">
+							{{ t('name') }}
+						</span>
+					</h1>
+
+					<p class="text-xl sm:text-2xl text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed font-medium animate-fade-in-up"
+						style="animation-delay: 0.3s;">
+						{{ t('slogan') }}
+					</p>
+
+				</div>
+			</section>
+
+			<!-- Live Emulator Section -->
+			<section class="py-10 bg-white dark:bg-black">
+			    <div class="max-w-4xl mx-auto px-4 flex flex-col items-center">
+			        <h2 class="text-xl font-bold mb-8 flex items-center gap-2">
+			            <i class="fa-solid fa-play-circle text-brand-500"></i>
+			            {{ t('tryIt') }}
+			        </h2>
+			
+			        <!-- 屏幕容器 -->
+			        <!-- 
+			           style="touch-action: none" -> 核心：禁止手指在此区域触发父页面的滚动/缩放
+			           style="overscroll-behavior: contain" -> 保险：防止滚动链传导
+			        -->
+			        <div class="w-full h-[500px] md:h-[810px] relative overflow-hidden bg-neutral-100 dark:bg-neutral-900 rounded-2xl" 
+			             style="touch-action: none; overscroll-behavior: contain;">
+			            
+			            <iframe 
+			                src="../3page/emulator/772/1.0.1/index.html"
+			                class="w-full h-full border-0 block" 
+			                style="touch-action: none;"
+			                scrolling="no" 
+			                title="QiQiTu Emulator">
+			            </iframe>
+			
+			        </div>
+			
+			        <p class="mt-6 text-sm text-neutral-400 text-center">
+			            {{ t('emulatorHint') }}
+			        </p>
+			    </div>
+			</section>
+			
+			<!-- Feature Grid (Filling Content) -->
+			<section class="py-16 bg-neutral-50 dark:bg-neutral-900/50">
+				<div class="max-w-4xl mx-auto px-6">
+					<div class="grid md:grid-cols-3 gap-6">
+						<!-- Feature 1 -->
+						<div
+							class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-100 dark:border-neutral-800">
+							<div
+								class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-500 flex items-center justify-center mb-4 text-lg">
+								<i class="fa-solid fa-music"></i>
+							</div>
+							<h3 class="font-bold text-lg mb-2">{{ t('features.sound.title') }}</h3>
+							<p class="text-sm text-neutral-500 leading-relaxed">{{ t('features.sound.desc') }}</p>
+						</div>
+
+						<!-- Feature 2 -->
+						<div
+							class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-100 dark:border-neutral-800">
+							<div
+								class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 flex items-center justify-center mb-4 text-lg">
+								<i class="fa-solid fa-hand-pointer"></i>
+							</div>
+							<h3 class="font-bold text-lg mb-2">{{ t('features.touch.title') }}</h3>
+							<p class="text-sm text-neutral-500 leading-relaxed">{{ t('features.touch.desc') }}</p>
+						</div>
+
+						<!-- Feature 3 -->
+						<div
+							class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-100 dark:border-neutral-800">
+							<div
+								class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center mb-4 text-lg">
+								<i class="fa-solid fa-battery-full"></i>
+							</div>
+							<h3 class="font-bold text-lg mb-2">{{ t('features.battery.title') }}</h3>
+							<p class="text-sm text-neutral-500 leading-relaxed">{{ t('features.battery.desc') }}</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Download Section -->
+			<section class="py-24 bg-white dark:bg-black">
+				<div class="max-w-md mx-auto px-6 text-center">
+					<h2 class="text-2xl font-bold mb-8 text-neutral-900 dark:text-white">
+						{{ t('downloadTitle') }}
+					</h2>
+
+					<!-- 下载按钮 -->
+					<a href="https://dorafx.top/qiqitu/latest.rpk"
+						class="group relative bg-neutral-900 dark:bg-neutral-200/20 inline-flex items-center justify-center gap-3 px-10 py-4 bg-brand-600 hover:bg-brand-500 text-white text-lg font-medium rounded-full transition-all duration-300 shadow-xl shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-1">
+
+						<!-- 图标 -->
+						<i class="fa-solid fa-download group-hover:animate-bounce"></i>
+
+						<!-- 文字 -->
+						<span>{{ t('Download') }}</span>
+					</a>
+
+					<!-- 底部微字 -->
+					<p class="mt-8 text-xs text-neutral-400">
+						* {{ t('disclaimer') }}
+					</p>
+				</div>
+			</section>
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				onMounted
+			} = Vue
+
+			createApp({
+				setup() {
+					const currentLang = ref('zh')
+					const isDark = ref(false)
+
+					// 简单的内部翻译数据，保证独立性
+					const translations = {
+						zh: {
+							platform: 'HyperOS',
+							version: 'v1.0.1',
+							name: '企企兔',
+							slogan: '一款为智能手表打造的治愈系企鹅兔子发声应用。轻点屏幕，感受指尖的律动。',
+							tryIt: '在线试玩',
+							emulatorHint: '提示：在上方模拟器中点击屏幕即可体验交互',
+							downloadTitle: '准备好开始了吗？',
+							viewChangelog: '更新日志',
+							disclaimer: '需要搭载 HyperOS 系统的手表设备。',
+							features: {
+								sound: {
+									title: '真实采样',
+									desc: '内置多种企鹅与兔子的高保真萌宠叫声，治愈你的每一天。'
+								},
+								touch: {
+									title: '触感反馈',
+									desc: '完美适配手表线性马达，每一次点击都有真实的震动反馈。'
+								},
+								battery: {
+									title: '极低功耗',
+									desc: '针对 OLED 屏幕优化的纯黑背景，全天候游玩也不费电。'
+								}
+							}
+						},
+						en: {
+							name: 'QiQi Rabbit',
+							slogan: 'A healing sound app designed for smartwatches. Tap and feel the rhythm.',
+							tryIt: 'Try it Online',
+							emulatorHint: 'Tip: Tap the screen above to interact',
+							downloadTitle: 'Ready to Install?',
+							viewChangelog: 'Changelog',
+							disclaimer: 'Requires HyperOS Watch devices.',
+							features: {
+								sound: {
+									title: 'Real Sounds',
+									desc: 'High-fidelity cute penguin and rabbit sounds included.'
+								},
+								touch: {
+									title: 'Haptic Feedback',
+									desc: 'Optimized for linear motors, giving real vibration feedback.'
+								},
+								battery: {
+									title: 'Low Power',
+									desc: 'Optimized specifically for OLED screens to save battery.'
+								}
+							}
+						}
+					}
+
+					const t = (path) => {
+						const keys = path.split('.')
+						let val = translations[currentLang.value] || translations['zh']
+						for (const k of keys) {
+							val = val?.[k]
+						}
+						return val || path
+					}
+
+					onMounted(() => {
+						// 1. 获取 URL 参数
+						const params = new URLSearchParams(window.location.search)
+						const themeParam = params.get('theme')
+						const langParam = params.get('lang')
+
+						// 2. 设置主题
+						if (themeParam === 'dark') {
+							isDark.value = true
+							document.documentElement.classList.add('dark')
+						} else {
+							isDark.value = false
+							document.documentElement.classList.remove('dark')
+						}
+
+						// 3. 设置语言
+						if (langParam) {
+							currentLang.value = langParam.startsWith('zh') ? 'zh' : 'en' // 简单处理
+						}
+					})
+
+					return {
+						t,
+						isDark
+					}
+				}
+			}).mount('#app')
+		</script>
+	</body>
+</html>

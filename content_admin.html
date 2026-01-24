@@ -1,0 +1,4132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>企鹅企企内容管理</title>
+
+		<!-- 核心库 -->
+		<script src="js/vue.global.js"></script>
+		<script src="js/tailwindcss.3.4.17.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+
+		<!-- Editor.js 核心 -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+		<!-- === 常用格式插件 === -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script> <!-- 用于 YouTube/B站 -->
+
+		<!-- === 新增：更多富文本插件 === -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script> <!-- 表格 -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script> <!-- 待办清单 -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script> <!-- 黄色高亮 -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script> <!-- 行内代码 -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/underline@latest"></script> <!-- 下划线 -->
+
+		<!-- === 图片与视频上传 === -->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+		<!-- 视频上传插件 (社区版，支持 HTML5 Video) -->
+		<script src="https://cdn.jsdelivr.net/npm/@weekwood/editorjs-video@latest"></script>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet">
+
+		<link rel="stylesheet" href="css/style.css" />
+
+		<link rel="stylesheet" href="css/apple-video-player.css" />
+		<script src="js/apple-video-player.js"></script>
+		<script>
+			AppleTVLikePlayer.auto();
+		</script>
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: [
+								'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans', 'sans-serif',
+							],
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
+
+		<style>
+			/* =========================================
+		       1. 全局变量与基础设置 (Apple Style)
+		       ========================================= */
+			:root {
+				--apple-bg: #f5f5f7;
+				--apple-card: rgba(255, 255, 255, .72);
+				--apple-border: rgba(60, 60, 67, .14);
+				--apple-border-strong: rgba(60, 60, 67, .22);
+				--apple-text: #1d1d1f;
+				--apple-sub: rgba(29, 29, 31, .62);
+				--apple-blue: #0A84FF;
+				--apple-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+				--apple-shadow-soft: 0 6px 18px rgba(0, 0, 0, .06);
+			}
+
+			/* 统一卡片毛玻璃感 */
+			.apple-card {
+				background: var(--apple-card);
+				border: 1px solid var(--apple-border);
+				backdrop-filter: blur(14px);
+				-webkit-backdrop-filter: blur(14px);
+				box-shadow: var(--apple-shadow-soft);
+				border-radius: 18px;
+			}
+
+			/* 更“苹果”的输入/选择框 */
+			.apple-input {
+				background: rgba(255, 255, 255, .8);
+				border: 1px solid var(--apple-border);
+				border-radius: 12px;
+			}
+
+			.apple-input:focus {
+				outline: none;
+				border-color: rgba(10, 132, 255, .55);
+				box-shadow: 0 0 0 4px rgba(10, 132, 255, .16);
+			}
+
+			/* =========================================
+		       2. 遮罩层动画 (合并优化版)
+		       ========================================= */
+			.modal-enter-active,
+			.modal-leave-active {
+				transition: all 0.25s ease-out;
+			}
+
+			.modal-enter-from,
+			.modal-leave-to {
+				opacity: 0;
+				transform: scale(0.98);
+			}
+
+			/* =========================================
+		       3. Editor.js 核心修复与美化
+		       ========================================= */
+
+			/* 容器样式 (A4纸张感) */
+			.editor-paper {
+				background: white;
+				min-height: 800px;
+				padding: 60px 80px;
+				/* 宽敞内边距，为左侧工具栏留出空间 */
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+				border-radius: 8px;
+				margin: 0 auto;
+				max-width: 850px;
+				box-sizing: border-box;
+			}
+
+			/* 修复 Editor.js 默认最大宽度限制，使其填满 editor-paper */
+			.ce-block__content,
+			.ce-toolbar__content {
+				max-width: 100% !important;
+				margin: 0 auto !important;
+			}
+
+			/* 修复编辑区域底部间距，防止最后一行被遮挡 */
+			.codex-editor__redactor {
+				padding-bottom: 100px !important;
+				margin-right: 0 !important;
+				/* 修复右侧溢出 */
+			}
+
+			/* 修复工具栏(加号/设置)位置，利用 padding 留出的空间 */
+			.ce-toolbar__actions {
+				left: -76px;
+				/* 调整工具栏按钮位置，使其位于 padding 区域内 */
+				right: auto;
+			}
+
+			/* 提升工具栏层级，防止被遮挡 */
+			.ce-toolbar,
+			.ce-popover,
+			.ce-inline-toolbar,
+			.ce-settings,
+			.codex-editor-overlay {
+				z-index: 9999 !important;
+			}
+
+			@media (max-width: 600px) {
+				.ce-toolbar {
+					margin-left: 44px;
+				}
+
+				.ce-toolbar__actions {
+					left: -40px;
+				}
+			}
+
+			/* 标题样式 */
+			.ce-header {
+				font-weight: 700;
+			}
+
+			h1.ce-header {
+				font-size: 2.25em;
+			}
+
+			h2.ce-header {
+				font-size: 1.75em;
+			}
+
+			h3.ce-header {
+				font-size: 1.35em;
+			}
+
+			/* 正文样式 */
+			.ce-paragraph {
+				font-size: 16px;
+				line-height: 1.8;
+				color: #37352f;
+			}
+
+			/* 图片居中与圆角 */
+			.image-tool__image-picture {
+				margin: 0 auto;
+				border-radius: 8px;
+				display: block;
+			}
+
+			/* =========================================
+		       5. 侧边栏与导航
+		       ========================================= */
+			.nav-item {
+				transition: all 0.2s;
+			}
+
+			.nav-item:hover:not(.nav-item-active) {
+				background-color: #d3dde6;
+			}
+
+			.nav-item-active {
+				background-color: #d3dde6;
+				color: rgb(51 65 85 / var(--tw-bg-opacity, 1));
+				font-weight: 600;
+			}
+
+
+			/* ===== Editor.js：仿飞书的 Block hover & Media padding ===== */
+
+			/* 1. 让每个 block 都有“容器感” */
+			#editorjs .ce-block {
+				border-radius: 12px;
+				transition: background-color 0.1s ease;
+				border: 1px solid transparent;
+				/* 预留边框位置防止抖动 */
+				margin: 4px 0;
+				/* 块与块之间的间距 */
+				transition: all 0.25s ease-in-out;
+			}
+
+			/* 2. 实现你想要的 Hover 效果 (对应 hover-bg-b5) */
+			/* 只有当鼠标悬停在块内，且不是正在输入文字的状态时显示背景 */
+			#editorjs .ce-block:hover {
+				background-color: rgba(0, 0, 0, 0.04);
+			}
+
+			/* 3. 【关键修复】给内容加宽敞的内边距 */
+			/* 这里的 40px 就是你的“点击把手”，点击视频旁边的这个区域即可选中视频块 */
+			#editorjs .ce-block__content {
+				padding: 0px 14px !important;
+				max-width: 100% !important;
+				box-sizing: border-box;
+				transition: all 0.25s ease-in-out;
+			}
+
+			#editorjs .ce-block:hover .ce-block__content {
+				padding: 0px 14px !important;
+			}
+
+			#editorjs .ce-block:hover .ce-paragraph {
+				color: #000000;
+				transition: all 0.25s;
+			}
+
+			/* 修复 Video 工具默认样式可能导致的点击穿透问题 */
+			.video-tool__video video {
+				display: block;
+				width: 100%;
+			}
+
+			.video-tool__video>div {
+				width: 100% !important;
+				height: 100% !important;
+			}
+
+
+
+
+
+			/* ===============================
+			   Media Control (Image / Video)
+			   飞书 / Notion 风格
+			================================ */
+
+			/* 1️⃣ 容器：默认隐藏，hover block 显示 */
+			.ce-block .media-ctrl {
+				margin-top: 10px;
+				padding: 10px 12px;
+				border-radius: 10px;
+				background: rgba(245, 246, 247, 0.95);
+				border: 1px solid rgba(0, 0, 0, 0.06);
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+
+				font-size: 12px;
+				color: #444;
+
+				opacity: 0.75;
+				pointer-events: none;
+
+				transition:
+					opacity .25s ease,
+					transform .25s ease;
+			}
+
+			/* 2️⃣ hover block 时显示（关键） */
+			.ce-block:hover .media-ctrl,
+			.ce-block.ce-block--focused .media-ctrl,
+			.ce-block.ce-block--selected .media-ctrl {
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			/* 3️⃣ URL 输入框 */
+			.media-ctrl__input {
+				flex: 1;
+				min-width: 200px;
+
+				height: 30px;
+				padding: 0 10px;
+
+				font-size: 12px;
+				border-radius: 6px;
+				border: 1px solid rgba(0, 0, 0, 0.12);
+				background: #fff;
+				color: #222;
+
+				outline: none;
+			}
+
+			.media-ctrl__input:focus {
+				border-color: rgb(65, 79, 99);
+				;
+				box-shadow: 0 0 0 2px rgba(79, 70, 229, .15);
+			}
+
+			/* 4️⃣ 按钮统一风格 */
+			.media-ctrl__btn {
+				height: 30px;
+				padding: 0 10px;
+
+				font-size: 12px;
+				font-weight: 500;
+
+				border-radius: 6px;
+				border: 1px solid rgba(0, 0, 0, 0.12);
+				background: #fff;
+				color: #333;
+
+				cursor: pointer;
+				white-space: nowrap;
+
+				transition:
+					background .15s ease,
+					border-color .15s ease,
+					color .15s ease;
+			}
+
+			.media-ctrl__btn:hover {
+				background: #f3f4f6;
+			}
+
+			/* 5️⃣ 主操作按钮（应用 URL） */
+			.media-ctrl__apply {
+				background: #eef2ff;
+				border-color: rgba(79, 70, 229, .25);
+				color: rgb(65, 79, 99);
+				;
+			}
+
+			.media-ctrl__apply:hover {
+				background: #e0e7ff;
+			}
+
+			/* 6️⃣ 上传按钮（次级） */
+			.media-ctrl__upload {
+				background: #f8fafc;
+			}
+
+			.media-ctrl__upload:hover {
+				background: #e5e7eb;
+			}
+
+			/* 7️⃣ 提示文字 */
+			.media-ctrl__hint {
+				font-size: 11px;
+				color: #888;
+				margin-left: auto;
+				white-space: nowrap;
+			}
+
+			/* 8️⃣ 移动端稍微紧凑 */
+			@media (max-width: 640px) {
+				.media-ctrl {
+					padding: 8px;
+					gap: 6px;
+				}
+
+				.media-ctrl__hint {
+					display: none;
+				}
+			}
+
+
+
+
+			.video-progress {
+				margin-top: 10px;
+				display: none;
+				align-items: center;
+				gap: 10px;
+				width: 100%;
+			}
+
+			.video-progress__bar {
+				flex: 1;
+				height: 6px;
+				border-radius: 999px;
+				background: rgba(0, 0, 0, .10);
+				overflow: hidden;
+			}
+
+			.video-progress__fill {
+				height: 100%;
+				width: 0%;
+				background: rgba(79, 70, 229, .85);
+			}
+
+			.video-progress__pct {
+				font-size: 11px;
+				color: #666;
+				min-width: 42px;
+				text-align: right;
+			}
+
+
+
+
+
+			/* 其他 */
+
+			.video-tool {
+				border: none;
+			}
+
+			.video-tool__video {
+				display: flex;
+				justify-content: center;
+				border: none !important;
+			}
+
+
+
+			.hover-bg-b5 {
+				transition: background-color 0.2s ease;
+			}
+
+			.hover-bg-b5:hover {
+				background-color: rgba(0, 0, 0, 0.05);
+				color: rgba(0, 0, 0, 0.8);
+			}
+
+			.cdx-block .cdx-input {
+				/* display: none; */
+				margin: 0;
+				padding: 0;
+				opacity: 1;
+				position: relative;
+				border-radius: 10px;
+				font-size: 18px;
+				transition: all 0.25s ease-in-out;
+				display: flex;
+				align-items: center;
+				padding-left: 10px;
+			}
+
+			.cdx-input {
+				height: 44px;
+			}
+
+			#editorjs .ce-block:hover .cdx-input {
+				height: 44px;
+				opacity: 1;
+				font-size: 18px;
+				line-height: 44px;
+			}
+
+			.image-tool--caption {
+				padding-bottom: 12px;
+				padding-top: 12px;
+			}
+		</style>
+	</head>
+	<body class="bg-slate-100 text-slate-800">
+		<div id="app" class="h-screen flex overflow-hidden bg-[#f5f6f7]">
+
+			<!-- 1. 左侧侧边栏 (工具导航) + 移动端底部 Tab -->
+			<!-- Desktop Sidebar (>= md) -->
+			<aside v-if="session" class="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col z-20 shrink-0">
+				<div class="h-28 flex flex-col items-center justify-center gap-3 px-6 border-b border-slate-100">
+					<div class="w-8 h-8">
+						<img src="images/logo.webp" class="w-full h-full rounded" alt="" />
+					</div>
+					<h1 class="font-bold text-lg tracking-tight text-slate-800">企鹅企企内容管理</h1>
+				</div>
+
+				<nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+					<div class="px-2 py-2 text-xs font-bold text-slate-400 uppercase">内容管理</div>
+					<button @click="switchTab('blog')"
+						:class="['nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm', currentTab === 'blog' ? 'nav-item-active' : 'text-slate-600']">
+						文章
+					</button>
+					<button @click="switchTab('media')"
+						:class="['nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm', currentTab === 'media' ? 'nav-item-active' : 'text-slate-600']">
+						作品
+					</button>
+				</nav>
+
+				<div class="p-4 border-t border-slate-100">
+					<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-50 mb-2">
+						<div
+							class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs">
+							{{ session.user.email[0].toUpperCase() }}
+						</div>
+						<div class="flex-1 min-w-0">
+							<p class="text-xs font-medium text-slate-900 truncate">{{ session.user.email }}</p>
+						</div>
+					</div>
+					<button @click="logout"
+						class="w-full py-2 text-xs font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+						退出登录
+					</button>
+				</div>
+			</aside>
+
+			<!-- Mobile Bottom Tab Bar (< md) -->
+			<div v-if="session"
+				class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 pb-[env(safe-area-inset-bottom)]">
+				<div class="grid grid-cols-2">
+					<button @click="switchTab('blog')"
+						:class="['py-3 text-sm font-semibold transition-colors', currentTab==='blog' ? 'text-slate-600' : 'text-slate-500']">
+						文章
+					</button>
+					<button @click="switchTab('media')"
+						:class="['py-3 text-sm font-semibold transition-colors', currentTab==='media' ? 'text-slate-600' : 'text-slate-500']">
+						作品
+					</button>
+				</div>
+			</div>
+
+			<!-- 2. 登录界面 (未登录时全屏) -->
+			<div v-if="!session" class="fixed inset-0 z-50 bg-slate-100 flex items-center justify-center p-4">
+				<div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+					<h2 class="text-2xl font-bold mb-6 text-center text-slate-800">管理员登录</h2>
+					<div class="space-y-4">
+						<div>
+							<label class="block text-sm font-medium mb-1 text-slate-600">邮箱</label>
+							<input v-model="email" type="email"
+								class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-500 outline-none transition-all">
+						</div>
+						<div>
+							<label class="block text-sm font-medium mb-1 text-slate-600">密码</label>
+							<input v-model="password" type="password"
+								class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-500 outline-none transition-all">
+						</div>
+						<button @click="login" :disabled="loading"
+							class="w-full py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-medium transition-all disabled:opacity-50 shadow-lg shadow-slate-200">
+							{{ loading ? '登录中...' : '进入后台' }}
+						</button>
+						<p v-if="msg" class="text-red-500 text-sm text-center mt-2">{{ msg }}</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 3. 主列表区 -->
+			<main v-else class="flex-1 flex flex-col min-w-0 overflow-hidden bg-white/50">
+				<!-- 顶部工具栏 -->
+				<header
+					class="h-auto md:h-16 bg-white border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-8 py-3 md:py-0 sticky top-0 z-10 gap-3">
+					<h2 class="text-lg md:text-xl font-bold text-slate-800 leading-tight">
+						{{ currentTab === 'blog' ? '文章列表' : '作品列表' }}
+					</h2>
+
+					<div class="flex gap-2 md:gap-3 w-full md:w-auto">
+						<button @click="fetchList(true)"
+							class="flex-1 md:flex-none px-3 md:px-4 py-2 bg-white border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 text-xs md:text-sm font-medium transition-all">
+							刷新
+						</button>
+						<button @click="openEditModal(null)"
+							class="flex-1 md:flex-none px-3 md:px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 shadow-md shadow-slate-200 text-xs md:text-sm font-medium flex items-center justify-center gap-2 transition-all">
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 4v16m8-8H4"></path>
+							</svg>
+							<span>新增</span>
+						</button>
+					</div>
+				</header>
+
+				<!-- 列表内容 -->
+				<div class="flex-1 overflow-auto p-4 md:p-8 pb-24 md:pb-8">
+					<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+
+						<!-- ===== Mobile Cards (< md) ===== -->
+						<div class="md:hidden divide-y divide-slate-100">
+							<div v-for="item in displayList" :key="item.id" class="p-4 active:bg-slate-50">
+								<div class="flex gap-3">
+									<div
+										class="w-20 h-14 bg-slate-100 rounded-lg border border-slate-200 overflow-hidden shrink-0">
+										<img v-if="currentTab==='blog' ? item.cover : item.thumbnail"
+											:src="currentTab==='blog' ? item.cover : item.thumbnail"
+											class="w-full h-full object-cover">
+										<div v-else
+											class="w-full h-full flex items-center justify-center text-slate-300 text-xs">
+											无图</div>
+									</div>
+
+									<div class="flex-1 min-w-0">
+										<div class="flex items-start justify-between gap-2">
+											<div class="font-semibold text-slate-900 text-sm leading-snug line-clamp-2">
+												{{ getI18n(item.title, 'zh') || '(未命名)' }}
+											</div>
+											<span
+												:class="['shrink-0 px-2 py-0.5 rounded-full text-[11px] font-bold border',
+													item.published ? 'bg-green-50 text-green-700 border-green-100' : 'bg-slate-100 text-slate-500 border-slate-200']">
+												{{ item.published ? '已发布' : '草稿' }}
+											</span>
+										</div>
+
+										<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+											<!-- 属性 -->
+											<template v-if="currentTab==='blog'">
+												<span
+													class="inline-flex items-center px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-medium">
+													{{ getI18n(item.category, 'zh') || '未分类' }}
+												</span>
+												<span>{{ item.read_time }} min</span>
+											</template>
+											<template v-else>
+												<span
+													class="inline-flex items-center px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">
+													{{ getI18n(item.type, 'zh') || '未知类型' }}
+												</span>
+											</template>
+
+											<!-- 日期 -->
+											<span class="ml-auto text-[11px] text-slate-400">{{ item.date }}</span>
+										</div>
+
+										<div class="mt-3 flex gap-2">
+											<button @click="openEditModal(item)"
+												class="flex-1 text-slate-600 font-semibold text-xs bg-slate-50 px-3 py-2 rounded-lg active:bg-slate-100">
+												编辑
+											</button>
+											<button @click="deleteItem(item.id)"
+												class="flex-1 text-red-600 font-semibold text-xs bg-red-50 px-3 py-2 rounded-lg active:bg-red-100">
+												删除
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="displayList.length === 0"
+								class="px-6 py-16 text-center text-slate-400 flex flex-col items-center justify-center">
+								<span class="text-4xl mb-4">📭</span>
+								<span class="text-sm">暂无数据，请点击上方新增</span>
+							</div>
+						</div>
+
+						<!-- ===== Desktop Table (>= md) ===== -->
+						<table class="hidden md:table w-full text-sm text-left">
+							<thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold">
+								<tr>
+									<th class="px-6 py-4 w-20 text-center">排序</th>
+									<th class="px-6 py-4 w-24">封面</th>
+									<th class="px-6 py-4 w-1/3">标题</th>
+									<th class="px-6 py-4">属性</th>
+									<th class="px-6 py-4">发布时间</th>
+									<th class="px-6 py-4 text-center">状态</th>
+									<th class="px-6 py-4 text-right">操作</th>
+								</tr>
+							</thead>
+
+							<tbody class="divide-y divide-slate-100">
+								<tr v-for="item in displayList" :key="item.id"
+									class="hover:bg-slate-50/50 transition-colors group">
+									<td class="px-6 py-4 text-center text-slate-400">{{ item.sort }}</td>
+
+									<td class="px-6 py-4">
+										<div
+											class="w-16 h-10 bg-slate-100 rounded-md border border-slate-200 overflow-hidden relative">
+											<img v-if="currentTab==='blog' ? item.cover : item.thumbnail"
+												:src="currentTab==='blog' ? item.cover : item.thumbnail"
+												class="w-full h-full object-cover">
+											<div v-else
+												class="w-full h-full flex items-center justify-center text-slate-300 text-xs">
+												无图</div>
+										</div>
+									</td>
+
+									<td class="px-6 py-4">
+										<div class="font-semibold text-slate-900 text-base mb-1 truncate">
+											{{ getI18n(item.title, 'zh') || '(未命名)' }}
+										</div>
+									</td>
+
+									<td class="px-6 py-4 text-slate-500">
+										<div v-if="currentTab==='blog'" class="flex flex-col gap-1">
+											<span
+												class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 w-fit">
+												{{ getI18n(item.category, 'zh') || '未分类' }}
+											</span>
+											<span class="text-xs">{{ item.read_time }} min read</span>
+										</div>
+										<div v-else>
+											<span
+												class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">
+												{{ getI18n(item.type, 'zh') || '未知类型' }}
+											</span>
+										</div>
+									</td>
+
+									<td class="px-6 py-4 text-slate-500 text-xs">{{ item.date }}</td>
+
+									<td class="px-6 py-4 text-center">
+										<span
+											:class="['px-2.5 py-1 rounded-full text-xs font-bold border',
+											item.published ? 'bg-green-50 text-green-700 border-green-100' : 'bg-slate-100 text-slate-500 border-slate-200']">
+											{{ item.published ? '已发布' : '草稿' }}
+										</span>
+									</td>
+
+									<td class="px-6 py-4 text-right">
+										<div
+											class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-3">
+											<button @click="openEditModal(item)"
+												class="text-slate-600 hover:text-slate-800 font-medium text-xs bg-slate-50 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors">
+												编辑
+											</button>
+											<button @click="deleteItem(item.id)"
+												class="text-red-500 hover:text-red-700 font-medium text-xs bg-red-50 px-3 py-1.5 rounded-md hover:bg-red-100 transition-colors">
+												删除
+											</button>
+										</div>
+									</td>
+								</tr>
+
+								<tr v-if="displayList.length === 0">
+									<td colspan="7" class="px-6 py-20 text-center text-slate-400">
+										<div class="flex flex-col items-center justify-center">
+											<span class="text-4xl mb-4">📭</span>
+											<span>暂无数据，请点击右上角新增</span>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+			</main>
+
+			<!-- 4. 编辑全屏弹窗 (类似飞书文档) -->
+			<transition name="modal">
+				<div v-if="showModal"
+					class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+					<!-- 移除 @click.self，防止误触关闭 -->
+					<div
+						class="bg-[#f5f6f7] w-full h-full md:w-[95vw] md:h-[95vh] md:rounded-xl shadow-2xl flex flex-col overflow-hidden relative">
+
+						<!-- 顶部操作栏（移动端更紧凑 + 安全区） -->
+						<div
+							class="bg-white border-b border-slate-200 flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-6 py-3 md:py-0 md:h-16 shrink-0 z-20 shadow-sm pt-[calc(env(safe-area-inset-top)+0.75rem)] md:pt-0">
+							<!-- 左侧：关闭 + 标题 -->
+							<div class="flex items-center gap-3 md:gap-4">
+								<button @click="confirmClose"
+									class="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+									title="关闭 (不保存)">
+									<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								</button>
+								<div class="flex flex-col leading-tight">
+									<span
+										class="font-bold text-slate-800 text-sm md:text-base">{{ editId ? '编辑内容' : '创建新内容' }}</span>
+									<span v-if="lastSavedTime" class="text-[11px] md:text-xs text-slate-400">上次保存:
+										{{ lastSavedTime }}</span>
+								</div>
+							</div>
+
+							<!-- 右侧：工具按钮（移动端分两行） -->
+							<div class="mt-3 md:mt-0 flex flex-col md:flex-row md:items-center gap-3 w-full md:w-auto">
+								<div class="flex items-center gap-2 md:gap-3 w-auto max-sm:overflow-x-scroll md:w-auto">
+									<!-- 预览切换 -->
+									<div class="bg-slate-100 p-1 rounded-lg flex flex-1 md:flex-none">
+										<button @click="isPreviewMode = false"
+											:class="['flex-1 whitespace-nowrap md:flex-none px-3 md:px-4 py-1.5 rounded-md text-xs md:text-sm font-medium transition-all', !isPreviewMode ? 'bg-white text-slate-600 shadow-sm' : 'text-slate-500 hover:text-slate-700']">
+											编辑
+										</button>
+										<button @click="generatePreview"
+											:class="['flex-1 whitespace-nowrap md:flex-none px-3 md:px-4 py-1.5 rounded-md text-xs md:text-sm font-medium transition-all', isPreviewMode ? 'bg-white text-slate-600 shadow-sm' : 'text-slate-500 hover:text-slate-700']">
+											预览
+										</button>
+									</div>
+
+									<!-- 移动端：属性抽屉按钮 -->
+									<button @click="showMobileMeta = true"
+										class="md:hidden whitespace-nowrap px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50">
+										属性
+									</button>
+
+									<button @click="copyCurrentLangPayload"
+										class="px-3 h-10 rounded-xl bg-white border border-black/10 hover:bg-black/5 text-sm font-medium">
+										<!-- 复制当前语言 --><i class="fa-regular fa-copy"></i>
+									</button>
+
+									<button @click="pasteToCurrentLangPayload"
+										class="px-3 h-10 rounded-xl bg-white border border-black/10 hover:bg-black/5 text-sm font-medium">
+										<!-- 从剪贴板粘贴 --><i class="fa-regular fa-paste"></i>
+									</button>
+
+
+									<!-- 查找替换 -->
+									<button @click="openFindReplace()"
+										class="px-3 py-2 whitespace-nowrap bg-white border border-slate-200 rounded-lg text-xs md:text-sm font-semibold text-slate-700 hover:bg-slate-50">
+										查找替换
+									</button>
+
+									<!-- 语言切换 -->
+									<select v-model="currentLang" @change="handleLangSwitch($event)"
+										class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs md:text-sm font-medium outline-none focus:border-slate-500">
+										<option v-for="lang in langs" :key="lang.code" :value="lang.code">
+											{{ lang.label }}
+										</option>
+									</select>
+								</div>
+
+								<div class="flex items-center gap-2 md:gap-3 w-full md:w-auto">
+									<div class="hidden md:block w-px h-6 bg-slate-300 mx-2"></div>
+
+									<button @click="saveData" :disabled="saving"
+										class="flex-1 md:flex-none justify-center px-5 md:px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-medium shadow-md shadow-slate-200 transition-all flex items-center gap-2 text-sm">
+										<span v-if="saving"
+											class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+										{{ saving ? '保存中...' : '保 存' }}
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<!-- 内容编辑区 (左右布局：桌面左右 / 手机只留编辑区) -->
+						<div class="flex-1 overflow-hidden flex flex-col md:flex-row">
+
+							<!-- 主编辑区 (Editor.js / 预览区) -->
+							<div class="flex-1 overflow-y-auto relative scroll-smooth bg-white" id="editor-container">
+
+								<!-- A. 预览模式显示 -->
+								<div v-if="isPreviewMode"
+									class="w-full h-full overflow-y-auto bg-white dark:bg-neutral-900">
+
+									<!-- 博客文章预览结构 -->
+									<template v-if="currentTab === 'blog'">
+										<article class="py-16 md:py-24">
+											<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+												<a href="#"
+													class="inline-flex items-center gap-2 text-neutral-500 hover:text-neutral-700 mb-8 transition-colors cursor-not-allowed">
+													<svg class="w-4 h-4" fill="none" stroke="currentColor"
+														viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round"
+															stroke-width="2" d="M15 19l-7-7 7-7"></path>
+													</svg>
+													返回 (预览)
+												</a>
+
+												<div>
+													<span
+														class="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase">
+														{{ form.category[currentLang] || '未分类' }}
+													</span>
+													<h1
+														class="text-3xl md:text-4xl font-bold mt-3 mb-6 text-neutral-900">
+														{{ form.title[currentLang] || '无标题' }}
+													</h1>
+													<div class="flex items-center gap-1 text-sm text-neutral-500 mb-8">
+														<span>{{ form.date }}</span>
+														<span>•</span>
+														<span>{{ form.read_time }} min read</span>
+													</div>
+
+													<div v-if="form.cover"
+														class="aspect-video bg-neutral-100 rounded-2xl mb-10 overflow-hidden">
+														<img :src="form.cover" class="w-full h-full object-cover">
+													</div>
+
+													<div
+														class="prose prose-neutral max-w-none text-lg leading-relaxed text-neutral-600">
+														<div v-html="renderArticleContent(form.content[currentLang])">
+														</div>
+													</div>
+												</div>
+											</div>
+										</article>
+									</template>
+
+									<!-- 媒体作品预览结构 -->
+									<template v-if="currentTab === 'media'">
+										<section class="py-10 md:py-12 bg-white min-h-screen">
+											<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+												<a href="#"
+													class="inline-flex items-center gap-2 text-neutral-500 hover:text-black mb-10 transition-colors cursor-not-allowed">
+													<svg class="w-4 h-4" fill="none" stroke="currentColor"
+														viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round"
+															stroke-width="2" d="M15 19l-7-7 7-7"></path>
+													</svg>
+													返回 (预览)
+												</a>
+
+												<div>
+													<div class="mb-8">
+														<h1
+															class="text-2xl md:text-4xl font-bold mb-4 text-neutral-900">
+															{{ form.title[currentLang] || '无标题' }}
+														</h1>
+														<div
+															class="flex items-center gap-6 text-sm text-neutral-500 border-b border-neutral-100 pb-6">
+															<span class="flex items-center gap-2">
+																<svg class="w-4 h-4 opacity-70" fill="none"
+																	stroke="currentColor" viewBox="0 0 24 24">
+																	<path stroke-linecap="round" stroke-linejoin="round"
+																		stroke-width="2"
+																		d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+																	</path>
+																</svg>
+																{{ form.date }}
+															</span>
+															<span
+																class="flex items-center gap-2 uppercase tracking-wide">
+																<svg class="w-4 h-4 opacity-70" fill="none"
+																	stroke="currentColor" viewBox="0 0 24 24">
+																	<path stroke-linecap="round" stroke-linejoin="round"
+																		stroke-width="2"
+																		d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+																	</path>
+																</svg>
+																{{ form.type[currentLang] || 'Type' }}
+															</span>
+														</div>
+													</div>
+
+													<div class="prose prose-neutral max-w-none text-neutral-600">
+														<div v-html="renderArticleContent(form.content[currentLang])">
+														</div>
+													</div>
+												</div>
+											</div>
+										</section>
+									</template>
+								</div>
+
+								<!-- B. 编辑模式显示 -->
+								<div v-show="!isPreviewMode"
+									class="editor-paper min-h-[800px] flex flex-col pt-8 md:pt-12 px-4">
+									<input v-model="form.title[currentLang]" @input="isDirty=true" type="text"
+										placeholder="输入文章标题..."
+										class="w-full leading-[1.2] md:leading-[1.3] text-3xl md:text-4xl font-bold text-slate-900 placeholder-slate-300 border-none outline-none bg-transparent py-1 px-1 mb-2 hover-bg-b5">
+
+									<textarea v-model="form.excerpt[currentLang]" @input="isDirty=true"
+										placeholder="输入简短摘要/副标题..."
+										class="w-full resize-y leading-[1.2] md:leading-[1.3] text-base md:text-lg text-slate-600 placeholder-slate-300 border-none outline-none bg-transparent resize-none py-1 px-1 hover-bg-b5"></textarea>
+
+									<div id="editorjs" class="flex-1 pt-4"></div>
+								</div>
+							</div>
+
+							<!-- 右侧属性配置栏（桌面端保持） -->
+							<div
+								class="hidden md:block w-full md:w-80 bg-white border-l border-slate-200 overflow-y-auto p-5 space-y-6 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.02)]">
+								<!-- ...属性栏内容保持之前版本... -->
+								<h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">页面属性</h3>
+
+								<!-- 封面/缩略图 -->
+								<div class="space-y-2">
+									<label
+										class="block text-xs font-bold text-slate-500 uppercase">{{ currentTab === 'blog' ? '封面图片' : '作品缩略图' }}</label>
+
+									<div
+										class="relative group aspect-video bg-slate-100 rounded-lg border-2 border-dashed border-slate-200 hover:border-slate-400 overflow-hidden transition-all">
+										<img v-if="form.cover" :src="form.cover"
+											class="absolute inset-0 w-full h-full object-cover">
+										<div
+											class="absolute inset-0 flex flex-col items-center justify-center bg-black/0 group-hover:bg-black/40 transition-all">
+											<button @click="$refs.fileInput.click()" @input="isDirty=true"
+												class="px-3 py-1 bg-white/90 text-slate-700 text-xs font-bold rounded shadow-sm opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100">
+												{{ uploadingCover ? '上传中...' : '点击上传' }}
+											</button>
+										</div>
+										<input type="file" ref="fileInput" @input="isDirty=true"
+											@change="handleCoverUpload" accept="image/*" class="hidden">
+									</div>
+
+									<div class="flex gap-1">
+										<input v-model="form.cover" type="text"
+											class="flex-1 px-2 py-1.5 text-xs border rounded bg-slate-50 text-slate-600 focus:bg-white focus:ring-1 outline-none"
+											placeholder="https://...">
+										<a v-if="form.cover" :href="form.cover" target="_blank"
+											class="px-2 py-1 bg-slate-100 border rounded hover:bg-slate-200 text-xs flex items-center justify-center">🔗</a>
+									</div>
+								</div>
+
+								<!-- 分类/类型 -->
+								<div class="space-y-2">
+									<label class="block text-xs font-bold text-slate-500 uppercase">
+										{{ currentTab === 'blog' ? '文章分类' : '作品类型' }}
+									</label>
+
+									<select v-model="tempCategorySelection" @change="handleCategoryChange"
+										class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:ring-1 focus:ring-slate-500">
+										<option value="" disabled>请选择...</option>
+										<option v-for="opt in predefinedOptions" :key="opt.val" :value="opt.val">
+											{{ opt.label[currentLang] }} ({{ opt.label['en'] }})
+										</option>
+									</select>
+
+									<div v-if="tempCategorySelection === 'custom'" class="animate-fade-in-down mt-2">
+										<input v-if="currentTab === 'blog'" v-model="form.category[currentLang]"
+											@input="isDirty=true" type="text" placeholder="输入自定义分类"
+											class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50/30 focus:ring-1 outline-none" />
+										<input v-else v-model="form.type[currentLang]" @input="isDirty=true" type="text"
+											placeholder="输入自定义类型"
+											class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50/30 focus:ring-1 outline-none" />
+									</div>
+								</div>
+
+								<!-- 基础信息 -->
+								<div class="grid grid-cols-1 gap-4">
+									<div>
+										<label
+											class="block text-xs font-bold text-slate-500 uppercase mb-1">发布日期</label>
+										<input v-model="form.date" :type="currentTab==='blog'?'date':'text'"
+											class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-slate-500">
+									</div>
+									<div class="grid grid-cols-2 gap-3">
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-500 uppercase mb-1">排序权重</label>
+											<input v-model.number="form.sort" type="number"
+												class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none">
+										</div>
+										<div v-if="currentTab === 'blog'">
+											<label
+												class="block text-xs font-bold text-slate-500 uppercase mb-1">阅读时长</label>
+											<input v-model.number="form.read_time" type="number"
+												class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none">
+										</div>
+									</div>
+								</div>
+
+								<!-- Slug -->
+								<div v-if="currentTab === 'blog'">
+									<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Slug
+										(URL)</label>
+									<input v-model="form.slug" type="text"
+										class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 outline-none">
+								</div>
+
+								<!-- 发布开关 -->
+								<div class="pt-4 border-t border-slate-200">
+									<div class="flex items-center justify-between cursor-pointer"
+										@click="form.published = !form.published">
+										<span class="text-sm font-bold text-slate-700">公开状态</span>
+										<div
+											:class="['w-11 h-6 rounded-full transition-colors relative', form.published ? 'bg-green-500' : 'bg-slate-300']">
+											<div
+												:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.published ? 'translate-x-6' : 'translate-x-1']">
+											</div>
+										</div>
+									</div>
+									<p class="text-xs text-slate-400 mt-2">
+										{{ form.published ? '当前内容已对外可见' : '当前为草稿模式，仅后台可见' }}
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- ===== Find / Replace Panel ===== -->
+						<div v-if="fr.open" class="fixed inset-0 z-[100000] flex items-start justify-center p-4 md:p-8">
+							<div class="absolute inset-0 bg-black/30" @click="fr.open=false"></div>
+
+							<div
+								class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+								<div class="h-12 px-4 flex items-center justify-between border-b border-slate-200">
+									<div class="font-bold text-slate-800 text-sm">查找 / 替换（当前语言：{{ currentLang }}）</div>
+									<button @click="fr.open=false"
+										class="p-2 rounded-lg hover:bg-slate-100 text-slate-500">
+										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+												d="M6 18L18 6M6 6l12 12"></path>
+										</svg>
+									</button>
+								</div>
+
+								<div class="p-4 space-y-3">
+									<div class="grid grid-cols-1 gap-3">
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-500 uppercase mb-1">查找</label>
+											<input v-model="fr.find"
+												class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white outline-none focus:border-slate-500"
+												placeholder="输入要查找的内容">
+										</div>
+
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-500 uppercase mb-1">替换为</label>
+											<input v-model="fr.replace"
+												class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white outline-none focus:border-slate-500"
+												placeholder="输入替换内容（可为空）">
+										</div>
+									</div>
+
+									<div class="flex flex-wrap gap-2 pt-1">
+										<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+											<input type="checkbox" v-model="fr.matchCase"
+												class="rounded border-slate-300">
+											区分大小写
+										</label>
+										<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+											<input type="checkbox" v-model="fr.useRegex"
+												class="rounded border-slate-300">
+											正则
+										</label>
+									</div>
+
+									<div class="flex flex-wrap gap-2">
+										<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+											<input type="checkbox" v-model="fr.scope.title"
+												class="rounded border-slate-300">
+											标题
+										</label>
+										<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+											<input type="checkbox" v-model="fr.scope.excerpt"
+												class="rounded border-slate-300">
+											摘要
+										</label>
+										<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+											<input type="checkbox" v-model="fr.scope.body"
+												class="rounded border-slate-300">
+											正文
+										</label>
+									</div>
+
+									<div class="flex items-center justify-between pt-2">
+										<div class="text-xs text-slate-500">
+											{{ fr.lastCount ? `已替换 ${fr.lastCount} 处` : '提示：Ctrl+F / Ctrl+H 打开' }}
+										</div>
+
+										<div class="flex items-center gap-2">
+											<button @click="fr.open=false"
+												class="px-3 py-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm">
+												取消
+											</button>
+											<button @click="applyFindReplace()"
+												class="px-4 py-2 rounded-lg bg-slate-600 text-white hover:bg-slate-700 text-sm font-semibold">
+												全部替换
+											</button>
+										</div>
+									</div>
+
+									<p v-if="fr.error" class="text-xs text-red-600">{{ fr.error }}</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- ===== Mobile Bottom Sheet Meta (< md) ===== -->
+						<div class="md:hidden fixed inset-0 z-[99999]" v-show="showMobileMeta"
+							@click="showMobileMeta=false">
+
+							<!-- mask -->
+							<div class="absolute inset-0 bg-black/40"></div>
+
+							<!-- sheet -->
+							<div @click.stop class="absolute left-0 right-0 bottom-0 bg-white rounded-t-2xl shadow-2xl border-t border-slate-200 max-h-[82vh] overflow-hidden pb-[env(safe-area-inset-bottom)]
+									   transform transition-transform duration-200 ease-out will-change-transform"
+								:class="showMobileMeta ? 'translate-y-0' : 'translate-y-full'">
+
+								<div class="h-12 px-4 flex items-center justify-between border-b border-slate-200">
+									<div class="font-bold text-slate-800 text-sm">页面属性</div>
+									<button @click="showMobileMeta=false"
+										class="p-2 rounded-lg hover:bg-slate-100 text-slate-500">
+										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+												d="M6 18L18 6M6 6l12 12"></path>
+										</svg>
+									</button>
+								</div>
+
+								<!-- 关键：重内容延迟挂载，第一次打开才渲染 -->
+								<div v-if="mobileMetaMounted"
+									class="p-4 overflow-y-auto max-h-[calc(82vh-3rem)] space-y-6">
+									<!-- 下面这段：还是你原来的属性栏内容（保持不变） -->
+
+									<!-- 封面/缩略图 -->
+									<div class="space-y-2">
+										<label class="block text-xs font-bold text-slate-500 uppercase">
+											{{ currentTab === 'blog' ? '封面图片' : '作品缩略图' }}
+										</label>
+
+										<div
+											class="relative group aspect-video bg-slate-100 rounded-lg border-2 border-dashed border-slate-200 hover:border-slate-400 overflow-hidden transition-all">
+											<img v-if="form.cover" :src="form.cover"
+												class="absolute inset-0 w-full h-full object-cover">
+											<div
+												class="absolute inset-0 flex flex-col items-center justify-center bg-black/0 group-hover:bg-black/40 transition-all">
+												<button @click="$refs.fileInput.click()" @input="isDirty=true"
+													class="px-3 py-1 bg-white/90 text-slate-700 text-xs font-bold rounded shadow-sm opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100">
+													{{ uploadingCover ? '上传中...' : '点击上传' }}
+												</button>
+											</div>
+											<input type="file" ref="fileInput" @input="isDirty=true"
+												@change="handleCoverUpload" accept="image/*" class="hidden">
+										</div>
+
+										<div class="flex gap-1">
+											<input v-model="form.cover" type="text"
+												class="flex-1 px-2 py-2 text-xs border rounded bg-slate-50 text-slate-600 focus:bg-white focus:ring-1 outline-none"
+												placeholder="https://...">
+											<a v-if="form.cover" :href="form.cover" target="_blank"
+												class="px-2 py-1 bg-slate-100 border rounded hover:bg-slate-200 text-xs flex items-center justify-center">🔗</a>
+										</div>
+									</div>
+
+									<!-- 分类/类型 -->
+									<div class="space-y-2">
+										<label class="block text-xs font-bold text-slate-500 uppercase">
+											{{ currentTab === 'blog' ? '文章分类' : '作品类型' }}
+										</label>
+
+										<select v-model="tempCategorySelection" @change="handleCategoryChange"
+											class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:ring-1 focus:ring-slate-500">
+											<option value="" disabled>请选择...</option>
+											<option v-for="opt in predefinedOptions" :key="opt.val" :value="opt.val">
+												{{ opt.label[currentLang] }} ({{ opt.label['en'] }})
+											</option>
+										</select>
+
+										<div v-if="tempCategorySelection === 'custom'"
+											class="animate-fade-in-down mt-2">
+											<input v-if="currentTab === 'blog'" v-model="form.category[currentLang]"
+												@input="isDirty=true" type="text" placeholder="输入自定义分类"
+												class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50/30 focus:ring-1 outline-none" />
+											<input v-else v-model="form.type[currentLang]" @input="isDirty=true"
+												type="text" placeholder="输入自定义类型"
+												class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50/30 focus:ring-1 outline-none" />
+										</div>
+									</div>
+
+									<!-- 基础信息 -->
+									<div class="grid grid-cols-1 gap-4">
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-500 uppercase mb-1">发布日期</label>
+											<input v-model="form.date" :type="currentTab==='blog'?'date':'text'"
+												class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-slate-500">
+										</div>
+
+										<div class="grid grid-cols-2 gap-3">
+											<div>
+												<label
+													class="block text-xs font-bold text-slate-500 uppercase mb-1">排序权重</label>
+												<input v-model.number="form.sort" type="number"
+													class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none">
+											</div>
+											<div v-if="currentTab === 'blog'">
+												<label
+													class="block text-xs font-bold text-slate-500 uppercase mb-1">阅读时长</label>
+												<input v-model.number="form.read_time" type="number"
+													class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none">
+											</div>
+										</div>
+									</div>
+
+									<!-- Slug -->
+									<div v-if="currentTab === 'blog'">
+										<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Slug
+											(URL)</label>
+										<input v-model="form.slug" type="text"
+											class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 outline-none">
+									</div>
+
+									<!-- 发布开关 -->
+									<div class="pt-4 border-t border-slate-200">
+										<div class="flex items-center justify-between cursor-pointer"
+											@click="form.published = !form.published">
+											<span class="text-sm font-bold text-slate-700">公开状态</span>
+											<div
+												:class="['w-11 h-6 rounded-full transition-colors relative', form.published ? 'bg-green-500' : 'bg-slate-300']">
+												<div
+													:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.published ? 'translate-x-6' : 'translate-x-1']">
+												</div>
+											</div>
+										</div>
+										<p class="text-xs text-slate-400 mt-2">
+											{{ form.published ? '当前内容已对外可见' : '当前为草稿模式，仅后台可见' }}
+										</p>
+									</div>
+
+									<div class="h-2"></div>
+								</div>
+
+								<!-- 未挂载前：给一个超轻占位，打开“秒开” -->
+								<div v-else class="p-6 text-center text-slate-400 text-sm">
+									加载属性面板…
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</transition>
+
+			<!-- 上传 Toast（URL + 进度条：永远在右下角显示） -->
+			<div v-if="showUploadToast"
+				class="fixed bottom-6 right-6 z-[99999] w-[360px] max-w-[92vw] bg-white border border-slate-200 shadow-lg rounded-2xl px-4 py-3 space-y-2">
+
+				<div class="flex items-center gap-2">
+					<span class="text-xs text-slate-500 shrink-0">URL：</span>
+					<span class="text-xs flex-1 truncate text-slate-700">{{ lastUploadedUrl || '（等待上传/回填）' }}</span>
+
+					<button v-if="lastUploadedUrl" @click="copyUrl(lastUploadedUrl)"
+						class="px-2 py-1 text-xs rounded-lg bg-slate-100 hover:bg-slate-200 shrink-0">
+						复制
+					</button>
+					<button v-else
+						class="px-2 py-1 text-xs rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed shrink-0">
+						复制
+					</button>
+				</div>
+
+				<div v-if="uploadState.active" class="space-y-1">
+					<div class="flex items-center justify-between text-[11px] text-slate-500">
+						<span>{{ uploadState.label || '上传中...' }}</span>
+						<span>{{ uploadState.percent }}%</span>
+					</div>
+					<div class="h-2 rounded-full bg-slate-200 overflow-hidden">
+						<div class="h-full bg-slate-600 transition-all" :style="{ width: uploadState.percent + '%' }">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				reactive,
+				computed,
+				watch,
+				onMounted,
+				onBeforeUnmount,
+				nextTick
+			} = Vue
+
+			// ================= 配置区域 =================
+			const SUPABASE_URL = "https://lwsujxnqjhfzhqkerdzo.supabase.co"
+			const SUPABASE_ANON_KEY = "sb_publishable_Nu5dkgGYkYISdTuCZB_ihw_GxNvtV1e"
+			const R2_UPLOAD_ENDPOINT = "https://r2-uploader.sqxvafilm.workers.dev/upload"
+			// ===========================================
+
+			// 预设选项 (四国语言)
+			const BLOG_CATEGORIES = [{
+					val: 'tech',
+					label: {
+						zh: '技术研究',
+						en: 'Tech',
+						ja: '技術',
+						ko: '기술'
+					}
+				},
+				{
+					val: 'industry',
+					label: {
+						zh: '行业观察',
+						en: 'Industry',
+						ja: '業界ウォッチ',
+						ko: '업계 동향'
+					}
+				},
+				{
+					val: 'essay',
+					label: {
+						zh: '随笔杂谈',
+						en: 'Essay',
+						ja: '随筆',
+						ko: '수필'
+					}
+				},
+				{
+					val: 'reflection',
+					label: {
+						zh: '思考总结',
+						en: 'Reflection',
+						ja: '振り返り',
+						ko: '회고'
+					}
+				},
+				{
+					val: 'life',
+					label: {
+						zh: '日常生活',
+						en: 'Life',
+						ja: '日常',
+						ko: '일상'
+					}
+				},
+				{
+					val: 'custom',
+					label: {
+						zh: '其他 (自定义)',
+						en: 'Other',
+						ja: 'その他',
+						ko: '기타'
+					}
+				},
+			]
+
+			const MEDIA_TYPES = [{
+					val: 'image',
+					label: {
+						zh: '图片',
+						en: 'Image',
+						ja: '写真',
+						ko: '사진'
+					}
+				},
+				{
+					val: 'video',
+					label: {
+						zh: '视频',
+						en: 'Video',
+						ja: '動画',
+						ko: '동영상'
+					}
+				},
+				{
+					val: 'design',
+					label: {
+						zh: '设计作品',
+						en: 'Design',
+						ja: 'デザイン',
+						ko: '디자인'
+					}
+				},
+				{
+					val: 'custom',
+					label: {
+						zh: '其他 (自定义)',
+						en: 'Other',
+						ja: 'その他',
+						ko: '기타'
+					}
+				},
+			]
+
+			createApp({
+				setup() {
+					const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+					// ===== 基础状态 =====
+					const session = ref(null)
+					const email = ref('')
+					const password = ref('')
+					const msg = ref('')
+					const loading = ref(false)
+
+					const currentTab = ref('blog') // 'blog' | 'media'
+					const listCache = reactive({
+						blog: [],
+						media: []
+					})
+
+					const showModal = ref(false)
+					const saving = ref(false)
+					const uploadingCover = ref(false)
+					const editId = ref(null)
+					const lastSavedTime = ref('')
+
+					const isPreviewMode = ref(false)
+
+					// 移动端 meta 面板
+					const showMobileMeta = ref(false)
+					const mobileMetaMounted = ref(false)
+					watch(showMobileMeta, (v) => {
+						if (v) mobileMetaMounted.value = true
+					})
+
+					// ===== 语言 =====
+					const langs = [{
+							code: 'zh',
+							label: '中文'
+						},
+						{
+							code: 'en',
+							label: 'English'
+						},
+						{
+							code: 'ja',
+							label: '日本語'
+						},
+						{
+							code: 'ko',
+							label: '한국어'
+						},
+					]
+					const currentLang = ref('zh')
+					const prevLang = ref('zh')
+
+					// ===== 表单 =====
+					const form = reactive({
+						sort: 0,
+						published: false,
+						date: '',
+						cover: '',
+						slug: '',
+						read_time: 5,
+						type: {
+							zh: '',
+							en: '',
+							ja: '',
+							ko: ''
+						},
+						category: {
+							zh: '',
+							en: '',
+							ja: '',
+							ko: ''
+						},
+						title: {
+							zh: '',
+							en: '',
+							ja: '',
+							ko: ''
+						},
+						excerpt: {
+							zh: '',
+							en: '',
+							ja: '',
+							ko: ''
+						},
+						content: {
+							zh: {
+								blocks: []
+							},
+							en: {
+								blocks: []
+							},
+							ja: {
+								blocks: []
+							},
+							ko: {
+								blocks: []
+							}
+						},
+					})
+
+					// ===== 每语言草稿缓存（EditorJS data）=====
+					const drafts = reactive({
+						zh: {
+							blocks: []
+						},
+						en: {
+							blocks: []
+						},
+						ja: {
+							blocks: []
+						},
+						ko: {
+							blocks: []
+						},
+					})
+
+					// ===== 脏值检测 =====
+					const isDirty = ref(false)
+					let lastSavedSnapshot = ''
+
+					function deepClone(obj) {
+						try {
+							return structuredClone(obj)
+						} catch (e) {
+							return JSON.parse(JSON.stringify(obj || {}))
+						}
+					}
+
+					function normalizeEditorData(d) {
+						if (!d || typeof d !== 'object') return {
+							blocks: []
+						}
+						if (!Array.isArray(d.blocks)) return {
+							blocks: []
+						}
+						return d
+					}
+
+					function snapshot() {
+						// 关键：对 reactive 做 deepClone，再 stringify
+						return JSON.stringify({
+							tab: currentTab.value,
+							editId: editId.value,
+							form: deepClone(form),
+							drafts: deepClone(drafts),
+						})
+					}
+
+					function recomputeDirty() {
+						isDirty.value = snapshot() !== lastSavedSnapshot
+					}
+
+					// ===== 下拉：分类/类型 =====
+					const tempCategorySelection = ref('')
+					const displayList = computed(() => listCache[currentTab.value] || [])
+					const predefinedOptions = computed(() => currentTab.value === 'blog' ? BLOG_CATEGORIES : MEDIA_TYPES)
+
+					function syncCategorySelection() {
+						const obj = currentTab.value === 'blog' ? form.category : form.type
+
+						const candidate =
+							(obj?.[currentLang.value] || '').trim() ||
+							(obj?.['zh'] || '').trim() ||
+							(langs.map(l => (obj?.[l.code] || '').trim()).find(v => v) || '')
+
+						if (!candidate) {
+							tempCategorySelection.value = '';
+							return
+						}
+
+						const found = predefinedOptions.value.find(opt => {
+							if (opt.val === candidate) return true
+							return langs.some(l => (opt.label?.[l.code] || '') === candidate)
+						})
+
+						tempCategorySelection.value = found ? found.val : 'custom'
+					}
+
+					function handleCategoryChange() {
+						const val = tempCategorySelection.value
+						if (val === 'custom') return
+
+						const opt = predefinedOptions.value.find(o => o.val === val)
+						if (!opt) return
+
+						const lang = currentLang.value
+						const picked =
+							(opt.label && (opt.label[lang] || opt.label.en || opt.label.zh)) || ''
+
+						if (currentTab.value === 'blog') {
+							form.category[lang] = picked
+						} else {
+							form.type[lang] = picked
+						}
+
+						recomputeDirty()
+					}
+
+
+					// ===== Supabase CRUD =====
+					async function login() {
+						loading.value = true
+						msg.value = ''
+						const {
+							data,
+							error
+						} = await supabase.auth.signInWithPassword({
+							email: email.value.trim(),
+							password: password.value
+						})
+						loading.value = false
+						if (error) msg.value = error.message
+						else {
+							session.value = data.session;
+							fetchList(true)
+						}
+					}
+
+					async function logout() {
+						await supabase.auth.signOut()
+						session.value = null
+						listCache.blog = []
+						listCache.media = []
+					}
+
+					async function fetchList(forceRefresh = false) {
+						if (!forceRefresh && listCache[currentTab.value].length > 0) return
+
+						const selectFields = currentTab.value === 'blog' ?
+							'id, sort, published, date, cover, title, category, read_time, slug' :
+							'id, sort, published, date, thumbnail, title, type'
+
+						const {
+							data,
+							error
+						} = await supabase
+							.from(currentTab.value)
+							.select(selectFields)
+							.order('sort', {
+								ascending: true
+							})
+							.order('date', {
+								ascending: false
+							})
+
+						if (error) {
+							alert('Error: ' + error.message);
+							return
+						}
+
+						const formatted = (data || []).map(item => {
+							if (currentTab.value === 'media') item.cover = item.thumbnail
+							return item
+						})
+						listCache[currentTab.value] = formatted
+					}
+
+					function switchTab(tab) {
+						currentTab.value = tab
+						fetchList()
+					}
+
+					async function fetchDetail(id) {
+						const {
+							data,
+							error
+						} = await supabase.from(currentTab.value).select('*').eq('id', id).single()
+						return {
+							data,
+							error
+						}
+					}
+
+					async function deleteItem(id) {
+						if (!confirm('确定删除?')) return
+						const {
+							error
+						} = await supabase.from(currentTab.value).delete().eq('id', id)
+						if (error) alert('删除失败：' + error.message)
+						else fetchList(true)
+					}
+
+
+					// ===== 上传 Toast（强制稳定显示进度条）=====
+					const lastUploadedUrl = ref('')
+					const showUploadToast = ref(false)
+
+					const uploadState = reactive({
+						active: false,
+						percent: 0,
+						label: ''
+					})
+
+					// 内部计时器：保证进度条至少显示一段时间，不会“一闪而过”
+					let __toastHideTimer = null
+					let __toastActiveOffTimer = null
+					let __toastStartedAt = 0
+					const __TOAST_MIN_ACTIVE_MS = 500 // 进度条最短展示时间
+					const __TOAST_AUTO_HIDE_MS = 1800 // 完成后自动隐藏
+
+					function __clearToastTimers() {
+						if (__toastHideTimer) clearTimeout(__toastHideTimer)
+						if (__toastActiveOffTimer) clearTimeout(__toastActiveOffTimer)
+						__toastHideTimer = null
+						__toastActiveOffTimer = null
+					}
+
+					function showToast(url = '') {
+						if (url) lastUploadedUrl.value = url
+						showUploadToast.value = true
+					}
+
+					function hideToastLater(ms = __TOAST_AUTO_HIDE_MS) {
+						__clearToastTimers()
+						__toastHideTimer = setTimeout(() => {
+							// 只有不在上传（active=false）才隐藏
+							if (!uploadState.active) showUploadToast.value = false
+						}, ms)
+					}
+
+					function setToastProgress(percent, label = '上传中...') {
+						// ✅ 每次开始上传都重置起始时间
+						if (!uploadState.active) __toastStartedAt = Date.now()
+
+						uploadState.active = true
+						uploadState.percent = Math.max(0, Math.min(100, Number(percent) || 0))
+						uploadState.label = label
+						showUploadToast.value = true
+
+						// ✅ 上传中不要让任何自动隐藏定时器干扰
+						__clearToastTimers()
+					}
+
+					function finishToast(url = '') {
+						// ✅ 完成也保持 active=true 一小段时间，让 v-if 一定能渲染出来
+						const elapsed = Date.now() - (__toastStartedAt || Date.now())
+						const wait = Math.max(0, __TOAST_MIN_ACTIVE_MS - elapsed)
+
+						if (url) lastUploadedUrl.value = url
+						showUploadToast.value = true
+
+						uploadState.active = true
+						uploadState.percent = 100
+						uploadState.label = '上传完成'
+
+						__clearToastTimers()
+
+						// 先保证最短展示，再关闭 active，再自动隐藏
+						__toastActiveOffTimer = setTimeout(() => {
+							uploadState.active = false
+							// 关闭 active 后再隐藏 toast
+							hideToastLater(__TOAST_AUTO_HIDE_MS)
+						}, wait)
+					}
+
+					// （可选）失败态：也显示进度条一会儿，不要“啥也没看到”
+					function failToast(errMsg = '上传失败') {
+						const elapsed = Date.now() - (__toastStartedAt || Date.now())
+						const wait = Math.max(0, __TOAST_MIN_ACTIVE_MS - elapsed)
+
+						showUploadToast.value = true
+						uploadState.active = true
+						uploadState.label = errMsg
+						// percent 不动也行，给个 100 更直观
+						uploadState.percent = Math.max(uploadState.percent || 0, 100)
+
+						__clearToastTimers()
+						__toastActiveOffTimer = setTimeout(() => {
+							uploadState.active = false
+							hideToastLater(2200)
+						}, wait)
+					}
+
+					// ===== 给 Editor.js 的 uploader：不要再 setTimeout 乱关 Toast =====
+					function uploadForEditor(file) {
+						const bucket = currentTab.value === "blog" ? "blog" : "media"
+						const isImage = file?.type?.startsWith("image/")
+
+						// 先亮起来
+						setToastProgress(1, isImage ? "准备图片..." : "准备上传...")
+
+						const task = (async () => {
+							let upFile = file
+
+							// 图片先压缩
+							if (isImage) {
+								setToastProgress(5, "压缩图片...")
+								upFile = await compressImageToLimit(file, {
+									maxSizeKB: 150
+								})
+							}
+
+							// 关键：用 XHR 版本拿进度
+							const url = await uploadFileToR2WithProgress(upFile, bucket, ({
+								percent
+							}) => {
+								setToastProgress(percent, isImage ? "上传图片中..." : "上传中...")
+							})
+
+							finishToast(url)
+
+							return {
+								success: 1,
+								file: {
+									url
+								}
+							}
+						})()
+
+						return task.catch((e) => {
+							failToast("上传失败")
+							throw e
+						})
+					}
+
+
+
+
+
+					async function copyUrl(url) {
+						try {
+							await navigator.clipboard.writeText(url)
+						} catch (e) {}
+					}
+
+					function loadImage(file) {
+						return new Promise((resolve, reject) => {
+							const img = new Image()
+							img.onload = () => resolve(img)
+							img.onerror = reject
+							img.src = URL.createObjectURL(file)
+						})
+					}
+
+					function canvasToBlob(canvas, type, quality) {
+						return new Promise((resolve) => canvas.toBlob(resolve, type, quality))
+					}
+
+					async function compressImageToLimit(file, {
+						maxWidth = 1280,
+						maxSizeKB = 150,
+						initialQuality = 0.85,
+						minQuality = 0.4,
+						step = 0.08
+					} = {}) {
+						if (!file?.type?.startsWith("image/")) return file;
+
+						// --- helpers (内部加，不改外部调用) ---
+						const supportsType = (type) => {
+							const c = document.createElement("canvas");
+							return c.toDataURL(type).startsWith(`data:${type}`);
+						};
+
+						const targetBytes = Math.max(1, maxSizeKB * 1024);
+
+						// 选择输出格式：优先 webp，再 jpeg（png 不支持 quality，不适合体积限制）
+						const canWebp = supportsType("image/webp");
+						const outType = canWebp ? "image/webp" : "image/jpeg";
+						const outExt = canWebp ? ".webp" : ".jpg";
+
+						// --- 1) load & resize ---
+						const img = await loadImage(file);
+						let width = img.naturalWidth || img.width;
+						let height = img.naturalHeight || img.height;
+
+						if (width > maxWidth) {
+							const r = maxWidth / width;
+							width = maxWidth;
+							height = Math.round(height * r);
+						}
+
+						const canvas = document.createElement("canvas");
+						canvas.width = width;
+						canvas.height = height;
+
+						const ctx = canvas.getContext("2d", {
+							alpha: true
+						});
+						ctx.imageSmoothingEnabled = true;
+						ctx.imageSmoothingQuality = "high"; // ✅ 画质关键
+						ctx.clearRect(0, 0, width, height);
+						ctx.drawImage(img, 0, 0, width, height);
+
+						// --- 2) find BEST quality under size (binary search) ---
+						// 在 [minQuality, initialQuality] 里找“满足体积的最高质量”
+						const findBestBlob = async () => {
+							// 先试 initialQuality，一次命中直接返回（最快）
+							let tryBlob = await canvasToBlob(canvas, outType, initialQuality);
+							if (tryBlob && tryBlob.size <= targetBytes) {
+								return {
+									blob: tryBlob,
+									quality: initialQuality
+								};
+							}
+
+							let lo = minQuality;
+							let hi = initialQuality;
+							let best = null;
+							let bestQ = minQuality;
+
+							// 迭代次数：用 step 粗略映射一下，不让它太慢
+							const iters = Math.max(6, Math.min(10, Math.ceil((hi - lo) / Math.max(0.02,
+								step / 2))));
+
+							for (let i = 0; i < iters; i++) {
+								const mid = (lo + hi) / 2;
+								const b = await canvasToBlob(canvas, outType, mid);
+								if (!b) break;
+
+								if (b.size <= targetBytes) {
+									best = b;
+									bestQ = mid;
+									lo = mid; // ✅ 尝试更高画质
+								} else {
+									hi = mid; // ❌ 太大，降低画质
+								}
+							}
+
+							// 最终如果 best 仍然没有，说明 minQuality 也压不进
+							return {
+								blob: best,
+								quality: bestQ
+							};
+						};
+
+						let {
+							blob,
+							quality
+						} = await findBestBlob();
+
+						// --- 3) 如果 minQuality 也压不进：优先“轻微降分辨率”，比把质量拉得很糊更好看 ---
+						// 降分辨率最多 3 次，每次缩小到 0.9 倍（很克制）
+						let downscaleTries = 0;
+						while ((!blob || blob.size > targetBytes) && downscaleTries < 3) {
+							downscaleTries++;
+
+							const newW = Math.max(1, Math.round(canvas.width * 0.9));
+							const newH = Math.max(1, Math.round(canvas.height * 0.9));
+
+							const tmp = document.createElement("canvas");
+							tmp.width = newW;
+							tmp.height = newH;
+
+							const tctx = tmp.getContext("2d", {
+								alpha: true
+							});
+							tctx.imageSmoothingEnabled = true;
+							tctx.imageSmoothingQuality = "high";
+							tctx.clearRect(0, 0, newW, newH);
+							tctx.drawImage(canvas, 0, 0, newW, newH);
+
+							canvas.width = newW;
+							canvas.height = newH;
+							ctx.clearRect(0, 0, newW, newH);
+							ctx.drawImage(tmp, 0, 0, newW, newH);
+
+							// 重新找一次最佳质量（上限还是 initialQuality）
+							({
+								blob,
+								quality
+							} = await findBestBlob());
+						}
+
+						// --- 4) 兜底：如果仍然没有 blob，返回原文件 ---
+						if (!blob) return file;
+
+						// --- 5) 输出文件名处理 ---
+						const newName = file.name.replace(/\.(png|webp|jpe?g)$/i, outExt);
+
+						return new File([blob], newName, {
+							type: outType
+						});
+					}
+
+
+					async function uploadFileToSupabase(file, bucketName = 'blog') {
+						const compressed = await compressImageToLimit(file, {
+							maxSizeKB: 150
+						})
+						const fileExt = (compressed.name.split('.').pop() || 'jpg').toLowerCase()
+						const fileName = `${Date.now()}_${Math.random().toString(36).slice(2, 10)}.${fileExt}`
+
+						const {
+							error
+						} = await supabase.storage.from(bucketName).upload(fileName, compressed)
+						if (error) throw error
+
+						const {
+							data
+						} = supabase.storage.from(bucketName).getPublicUrl(fileName)
+						return data.publicUrl
+					}
+
+					async function uploadFileToR2(file, bucketName = "blog") {
+						const fd = new FormData();
+						fd.append("file", file);
+
+						const res = await fetch(`${R2_UPLOAD_ENDPOINT}?bucket=${encodeURIComponent(bucketName)}`, {
+							method: "POST",
+							body: fd,
+							// （可选）鉴权：把 supabase token 带给 worker
+							// headers: { Authorization: `Bearer ${(await supabase.auth.getSession()).data.session.access_token}` }
+						});
+
+						const json = await res.json().catch(() => ({}));
+						if (!res.ok || !json?.success || !json?.url) {
+							throw new Error(json?.error || "R2 upload failed");
+						}
+						return json.url;
+					}
+
+					function uploadFileToR2WithProgress(file, bucketName = "blog", onProgress) {
+						return new Promise((resolve, reject) => {
+							const xhr = new XMLHttpRequest();
+
+							const endpoint = new URL(R2_UPLOAD_ENDPOINT); // 必须是 .../upload
+							endpoint.searchParams.set("bucket", bucketName);
+
+							const fd = new FormData();
+							fd.append("file", file);
+
+							xhr.open("POST", endpoint.toString(), true);
+							xhr.responseType = "text";
+							xhr.timeout = 1000 * 60 * 10;
+
+							// ✅ 真实上传进度（FormData 也有）
+							xhr.upload.onprogress = (e) => {
+								if (e.lengthComputable && e.total) {
+									const pct = Math.max(1, Math.min(99, Math.round((e.loaded / e.total) *
+										100)));
+									onProgress?.({
+										loaded: e.loaded,
+										total: e.total,
+										percent: pct
+									});
+								} else {
+									// 拿不到 total：慢慢假进度到 90
+									const prev = xhr.__fakePct || 1;
+									const next = Math.min(90, prev + Math.max(1, Math.round((90 - prev) *
+										0.06)));
+									xhr.__fakePct = next;
+									onProgress?.({
+										loaded: 0,
+										total: 0,
+										percent: next
+									});
+								}
+							};
+
+							xhr.onload = () => {
+								try {
+									const json = JSON.parse(xhr.responseText || "{}");
+									if (xhr.status >= 200 && xhr.status < 300 && json?.success && json
+										?.url) {
+										onProgress?.({
+											loaded: 1,
+											total: 1,
+											percent: 100
+										});
+										resolve(json.url);
+									} else {
+										reject(new Error(json?.error || `R2 upload failed (${xhr.status})`));
+									}
+								} catch (e) {
+									reject(new Error("R2 upload parse failed"));
+								}
+							};
+
+							xhr.onerror = () => reject(new Error("R2 upload network error"));
+							xhr.ontimeout = () => reject(new Error("R2 upload timeout"));
+
+							xhr.send(fd);
+						});
+					}
+
+
+
+
+
+					function ensureVideoProgressBar(videoRootEl) {
+						if (!videoRootEl) return null;
+						let bar = videoRootEl.querySelector(':scope .video-progress');
+						if (bar) return bar;
+
+						bar = document.createElement('div');
+						bar.className = 'video-progress';
+						bar.innerHTML = `
+					    <div class="video-progress__bar"><div class="video-progress__fill"></div></div>
+					    <div class="video-progress__pct">0%</div>
+					  `;
+						videoRootEl.appendChild(bar);
+						return bar;
+					}
+
+					function setVideoProgress(ctrlEl, percent, show = true) {
+						if (!ctrlEl) return
+						const bar = ctrlEl.querySelector('.video-progress')
+						if (!bar) return
+
+						const fill = bar.querySelector('.video-progress__fill')
+						const pct = bar.querySelector('.video-progress__pct')
+
+						const p = Math.max(0, Math.min(100, Number(percent) || 0))
+						bar.style.display = show ? 'flex' : 'none'
+						if (fill) fill.style.width = p + '%'
+						if (pct) pct.textContent = p + '%'
+					}
+
+
+
+
+					async function handleCoverUpload(event) {
+						const file = event.target.files?.[0];
+						if (!file) return;
+
+						uploadingCover.value = true;
+						try {
+							const bucket = currentTab.value === "blog" ? "blog" : "media";
+							const isImage = file?.type?.startsWith("image/");
+							const upFile = isImage ? await compressImageToLimit(file, {
+								maxSizeKB: 150
+							}) : file;
+
+							const url = await uploadFileToR2(upFile, bucket);
+							form.cover = url;
+							recomputeDirty();
+						} catch (e) {
+							alert("上传失败: " + (e?.message || e));
+						} finally {
+							uploadingCover.value = false;
+							event.target.value = "";
+						}
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					// ===== Media Controls (Image/Video) 注入器 =====
+					let __mediaObs = null
+
+					function getDraftBlockById(lang, id) {
+						const d = drafts?.[lang]
+						if (!d?.blocks?.length) return null
+						return d.blocks.find(b => b && (b.id === id)) || null
+					}
+
+					function getUrlFromBlock(block) {
+						if (!block?.data) return ""
+						const d = block.data
+						return String(
+							d.file?.url ||
+							d.url ||
+							d.source ||
+							d.src ||
+							""
+						).trim()
+					}
+
+
+					async function updateBlockUrlInEditor({
+						blockId,
+						url,
+						kind,
+						noRender = false
+					}) {
+						const lang = currentLang.value;
+						const nextUrl = String(url || "").trim();
+						if (!blockId || !nextUrl) return false;
+
+						// 1) 先拿“当前 drafts 里的 block”（可能没有）
+						let draftBlock = getDraftBlockById(lang, blockId);
+
+						// 2) 生成要写入的 data：如果 drafts 里没有，就从一个空对象开始
+						const next = deepClone((draftBlock && draftBlock.data) ? draftBlock.data : {});
+
+						// === 兼容 ImageTool / weekwood VideoTool ===
+						next.file = {
+							...(next.file || {}),
+							url: nextUrl
+						};
+						next.url = nextUrl;
+						next.source = nextUrl;
+						next.src = nextUrl;
+
+						if (kind === "image") {
+							if (next.caption == null) next.caption = "";
+							if (next.stretched == null) next.stretched = false;
+							if (next.withBorder == null) next.withBorder = false;
+							if (next.withBackground == null) next.withBackground = false;
+						}
+						if (kind === "video") {
+							if (next.caption == null) next.caption = "";
+							if (!next.meta) next.meta = {};
+						}
+
+						// 3) ✅ 关键：不要求 drafts 里必须先有 block，先直接 update editor（立即生效）
+						let updated = false;
+						try {
+							await editor?.blocks?.update(blockId, next);
+							updated = true;
+						} catch (e) {
+							updated = false;
+							console.warn("[updateBlockUrlInEditor] blocks.update failed:", e);
+						}
+
+						// 4) update 成功后：立刻 save 回 drafts，保证 drafts 成为真源
+						if (updated) {
+							try {
+								const saved = await editor.save();
+								drafts[lang] = normalizeEditorData(saved);
+								loadDraftToForm(lang);
+								recomputeDirty();
+								requestAnimationFrame(() => scanAndInjectAllMediaCtrls());
+								return true;
+							} catch (e) {
+								console.warn("[updateBlockUrlInEditor] save after update failed:", e);
+								// 不中断：继续走 render 兜底
+							}
+						}
+
+						// 5) update 不成功：才做 render / rebuild 兜底（更重）
+						if (!noRender) {
+							try {
+								// 用“当前 editor.save()”最稳，不依赖 drafts
+								const saved = await editor.save();
+								drafts[lang] = normalizeEditorData(saved);
+								// 把 nextUrl 强行写进 drafts 对应 block（即使 save 出来还没带上）
+								const idx = drafts[lang].blocks.findIndex(b => b?.id === blockId);
+								if (idx >= 0) {
+									drafts[lang].blocks[idx] = {
+										...drafts[lang].blocks[idx],
+										data: next
+									};
+								}
+								loadDraftToForm(lang);
+
+								await editor.render(deepClone(drafts[lang]));
+								installMediaObserver(); // render 会重建 DOM，重新装一下
+								recomputeDirty();
+								requestAnimationFrame(() => scanAndInjectAllMediaCtrls());
+								return true;
+							} catch (e) {
+								console.warn("[updateBlockUrlInEditor] render fallback failed:", e);
+								try {
+									await destroyEditor();
+								} catch (_) {}
+								await nextTick();
+								initEditor();
+								recomputeDirty();
+								requestAnimationFrame(() => scanAndInjectAllMediaCtrls());
+								return true;
+							}
+						}
+
+						// noRender=true 且 update 失败：至少把 drafts 写上（防止丢）
+						try {
+							const saved = await editor.save();
+							drafts[lang] = normalizeEditorData(saved);
+							const idx = drafts[lang].blocks.findIndex(b => b?.id === blockId);
+							if (idx >= 0) {
+								drafts[lang].blocks[idx] = {
+									...drafts[lang].blocks[idx],
+									data: next
+								};
+							}
+							loadDraftToForm(lang);
+							recomputeDirty();
+						} catch (e) {}
+
+						requestAnimationFrame(() => scanAndInjectAllMediaCtrls());
+						return false;
+					}
+
+
+
+					function createMediaCtrlEl({
+						kind,
+						url
+					}) {
+						const wrap = document.createElement('div')
+						wrap.className = 'media-ctrl'
+						wrap.innerHTML = `
+					    <input class="media-ctrl__input" type="url" placeholder="粘贴 URL…"
+					      value="${(url || '').replace(/"/g, '&quot;')}" />
+					
+					    <button class="media-ctrl__btn media-ctrl__apply" type="button">应用 URL</button>
+					    <button class="media-ctrl__btn media-ctrl__upload" type="button">${kind === 'video' ? '上传视频' : '重新上传'}</button>
+					
+					    <span class="media-ctrl__hint">
+					      ${kind === 'video' ? '上传后 URL 会自动回填到输入框' : '回车/应用写入'}
+					    </span>
+					
+					    <input class="media-ctrl__file" type="file" style="display:none" accept="${kind === 'image' ? 'image/*' : 'video/*'}" />
+					  `
+						return wrap
+					}
+
+
+
+					function findMediaRootInBlock(blockEl) {
+						// 你现在用的工具 DOM：
+						// ImageTool: .image-tool
+						// VideoTool: .video-tool
+						const img = blockEl.querySelector('.image-tool')
+						if (img) return {
+							kind: 'image',
+							root: img
+						}
+
+						const vid = blockEl.querySelector('.video-tool')
+						if (vid) return {
+							kind: 'video',
+							root: vid
+						}
+
+						return null
+					}
+
+					function injectMediaCtrlIntoBlock(blockEl) {
+						if (!blockEl) return
+
+						const info = findMediaRootInBlock(blockEl)
+						if (!info) return
+
+						const blockId = blockEl.getAttribute('data-id')
+						if (!blockId) return
+
+						const lang = currentLang.value
+
+						function getUrlFromDom(blockEl, kind) {
+							if (kind === 'image') {
+								const img = blockEl.querySelector(
+									'.image-tool img, .image-tool__image-picture img, img.image-tool__image-picture')
+								return (img?.getAttribute('src') || '').trim()
+							}
+
+							if (kind === 'video') {
+								// weekwood 自带输入框我们会用 CSS 隐藏，但 DOM 里仍可能存在
+								const input =
+									blockEl.querySelector('.video-tool input[type="url"]') ||
+									blockEl.querySelector('.video-tool input.cdx-input') ||
+									blockEl.querySelector('.video-tool input[type="text"]')
+								const v0 = (input?.value || '').trim()
+								if (v0) return v0
+
+								const source = blockEl.querySelector('.video-tool video source')
+								const v1 = (source?.getAttribute('src') || '').trim()
+								if (v1) return v1
+
+								const video = blockEl.querySelector('.video-tool video')
+								const v2 = (video?.getAttribute('src') || '').trim()
+								if (v2) return v2
+
+								return ''
+							}
+
+							return ''
+						}
+
+						// 已经有 ctrl 就只做“值同步”，不重复注入
+						const existed = blockEl.querySelector(':scope .media-ctrl')
+						if (existed) {
+							const inputEl = existed.querySelector('.media-ctrl__input')
+							const kind = existed.dataset.kind
+
+							const draftBlock = getDraftBlockById(lang, blockId)
+							let latest = getUrlFromBlock(draftBlock)
+							if (!latest) latest = getUrlFromDom(blockEl, kind)
+
+							if (inputEl && latest && inputEl.value !== latest) inputEl.value = latest
+							blockEl.dataset.mediaCtrlMounted = '1'
+							return
+						}
+
+						// 取初始 URL（draft 优先，dom 兜底）
+						const draftBlock = getDraftBlockById(lang, blockId)
+						let url = getUrlFromBlock(draftBlock)
+						if (!url) url = getUrlFromDom(blockEl, info.kind)
+
+						// 创建控件
+						const ctrl = createMediaCtrlEl({
+							kind: info.kind,
+							url
+						})
+						ctrl.dataset.blockId = blockId
+						ctrl.dataset.kind = info.kind
+
+						// 插入到媒体根里（保证“块内”，不生成额外 block）
+						try {
+							info.root.appendChild(ctrl)
+						} catch (e) {
+							const contentEl =
+								blockEl.querySelector('.ce-block__content') ||
+								blockEl.querySelector('.ce-block__content > div') ||
+								blockEl
+							contentEl.appendChild(ctrl)
+						}
+
+						// 绑定事件
+						const input = ctrl.querySelector('.media-ctrl__input')
+						const btnApply = ctrl.querySelector('.media-ctrl__apply')
+						const btnUpload = ctrl.querySelector('.media-ctrl__upload')
+						const file = ctrl.querySelector('.media-ctrl__file')
+
+						const doApply = async () => {
+							const nextUrl = (input.value || '').trim()
+							if (!nextUrl) return
+							await updateBlockUrlInEditor({
+								blockId,
+								url: nextUrl,
+								kind: info.kind,
+								noRender: false
+							})
+						}
+
+						btnApply.addEventListener('click', doApply)
+						input.addEventListener('keydown', (ev) => {
+							if (ev.key === 'Enter') {
+								ev.preventDefault()
+								doApply()
+							}
+						})
+
+						btnUpload.addEventListener('click', () => file.click())
+
+						file.addEventListener('change', async () => {
+							const f = file.files?.[0]
+							if (!f) return
+
+							const MAX_VIDEO = 20 * 1024 * 1024
+							if (info.kind === 'video' && f.size > MAX_VIDEO) {
+								alert('视频超过 20MB，无法上传。请压缩后再传（建议 H.264 + CRF 22~28）。')
+								file.value = ''
+								return
+							}
+
+							try {
+								btnUpload.disabled = true
+								btnUpload.textContent = '上传中...'
+
+								// ✅ 1) 立刻把 Toast 打开 + 进度条激活（不要等 await）
+								setToastProgress(1, info.kind === 'video' ? '上传视频中...' : '上传图片中...')
+
+								// ✅ 2) 强制让浏览器先渲染一帧（否则你会“没看到”）
+								await nextTick()
+								await new Promise(r => requestAnimationFrame(r))
+
+								const bucket = currentTab.value === "blog" ? "blog" : "media"
+								let upUrl = ''
+
+								if (info.kind === 'image') {
+									// 图片：你 fetch 没法拿真实进度，这里给用户一个稳定的假进度
+									setToastProgress(15, '上传图片中...')
+									const res = await uploadForEditor(f) // 你原来的逻辑
+									upUrl = res?.file?.url || ''
+									setToastProgress(90, '处理图片中...')
+								} else {
+									// 视频：XHR 真进度（并且 lengthComputable=false 也会有假进度）
+									const bucket = currentTab.value === "blog" ? "blog" : "media"
+
+									// ✅ 注意：不要 const，新值要写回外层 upUrl
+									upUrl = await uploadFileToR2WithProgress(f, bucket, ({
+										percent
+									}) => {
+										setToastProgress(percent, "上传视频中...")
+									})
+
+									// 这里 finish 一次就够
+									finishToast(upUrl)
+								}
+
+								if (upUrl) {
+									// ✅ 3) URL 回填到输入框
+									input.value = upUrl
+
+									// ✅ 4) 更新 drafts（不 render，避免控件丢）
+									await updateBlockUrlInEditor({
+										blockId,
+										url: upUrl,
+										kind: info.kind,
+										noRender: true
+									})
+
+									// ✅ 5) Toast 完成态
+									finishToast(upUrl)
+
+									// ✅ 6) 下一帧再扫一遍，保证控件稳定
+									requestAnimationFrame(() => scanAndInjectAllMediaCtrls())
+								} else {
+									uploadState.active = false
+									alert('上传失败：未获得 URL')
+								}
+							} catch (e) {
+								uploadState.active = false
+								alert('上传失败：' + (e?.message || e))
+							} finally {
+								btnUpload.disabled = false
+								btnUpload.textContent = info.kind === 'video' ? '上传视频' : '重新上传'
+								file.value = ''
+							}
+						})
+
+						blockEl.dataset.mediaCtrlMounted = '1'
+					}
+
+					function scanAndInjectAllMediaCtrls() {
+						const holder = document.getElementById('editorjs')
+						if (!holder) return
+						const blocks = holder.querySelectorAll('.ce-block')
+						blocks.forEach(injectMediaCtrlIntoBlock)
+					}
+
+					function installMediaObserver() {
+						const holder = document.getElementById('editorjs')
+						if (!holder) return
+
+						// 先扫一次
+						scanAndInjectAllMediaCtrls()
+
+						// 监听新增/变化（插入新 block、render、粘贴等）
+						if (__mediaObs) {
+							try {
+								__mediaObs.disconnect()
+							} catch (e) {}
+							__mediaObs = null
+						}
+
+						__mediaObs = new MutationObserver(() => {
+							// 用 rAF 合并多次变更
+							requestAnimationFrame(() => scanAndInjectAllMediaCtrls())
+						})
+						__mediaObs.observe(holder, {
+							childList: true,
+							subtree: true
+						})
+					}
+
+					function installToolbarClampForMedia() {
+						const root = document.querySelector('#editorjs');
+						const container = document.querySelector('#editor-container'); // 你外层滚动容器
+						if (!root || !container) return;
+
+						const getFocusedBlock = () => {
+							return root.querySelector(
+								'.ce-block.ce-block--focused, .ce-block.ce-block--selected, .ce-block.ce-block--focused .ce-block, .ce-block:hover'
+							);
+						};
+
+						const isMediaBlock = (blockEl) => {
+							if (!blockEl) return false;
+							return !!blockEl.querySelector('.image-tool, .video-tool');
+						};
+
+						const placeToolbar = () => {
+							const tb = document.querySelector('.ce-toolbar');
+							if (!tb) return;
+
+							const focused = getFocusedBlock();
+							if (!focused || !isMediaBlock(focused)) return;
+
+							// 计算：让 toolbar 的 top 对齐到当前 block 的上方附近（相对 editor-container 的滚动体系）
+							const cRect = container.getBoundingClientRect();
+							const bRect = focused.getBoundingClientRect();
+
+							// toolbar 目标位置：block 顶部 - 一点点偏移
+							const offset = 10; // 你想让 toolbar 离 block 顶部的距离
+							let desiredTop = (bRect.top - cRect.top) + container.scrollTop - offset;
+
+							// clamp：只做边界保护，不要“强行 8px”
+							const tbH = tb.offsetHeight || 42;
+							const minTop = 8;
+							const maxTop = container.scrollHeight - tbH - 8;
+							desiredTop = Math.max(minTop, Math.min(maxTop, desiredTop));
+
+							// 写入（强制用 px，避免被 Editor.js 写成奇怪负数）
+							tb.style.top = `${Math.round(desiredTop)}px`;
+						};
+
+						// 1) 监听 toolbar style 被 editor 改动（最关键）
+						const tb = document.querySelector('.ce-toolbar');
+						if (tb) {
+							const obs = new MutationObserver(() => requestAnimationFrame(placeToolbar));
+							obs.observe(tb, {
+								attributes: true,
+								attributeFilter: ['style']
+							});
+						}
+
+						// 2) 滚动/鼠标移动时也跟一次（避免某些情况下 toolbar 不更新）
+						container.addEventListener('scroll', () => requestAnimationFrame(placeToolbar), {
+							passive: true
+						});
+						root.addEventListener('mousemove', () => requestAnimationFrame(placeToolbar), {
+							passive: true
+						});
+						root.addEventListener('click', () => requestAnimationFrame(placeToolbar), {
+							passive: true
+						});
+
+						// 3) 首次对齐
+						requestAnimationFrame(placeToolbar);
+					}
+
+
+
+					function uninstallMediaObserver() {
+						if (__mediaObs) {
+							try {
+								__mediaObs.disconnect()
+							} catch (e) {}
+							__mediaObs = null
+						}
+					}
+
+
+					// ===== Editor.js 管理（多语言 drafts 作为唯一真源）=====
+					let editor = null
+					let __changeTimer = null
+
+					async function saveEditorToDraft(lang) {
+						if (!editor) return
+						try {
+							const saved = await editor.save()
+							drafts[lang] = normalizeEditorData(saved)
+						} catch (e) {
+							console.warn('[saveEditorToDraft] failed', e)
+						}
+					}
+
+					function loadDraftToForm(lang) {
+						form.content[lang] = normalizeEditorData(deepClone(drafts[lang]))
+					}
+
+					async function destroyEditor() {
+
+						uninstallMediaObserver()
+
+						if (!editor) return
+						try {
+							await editor.destroy()
+						} catch (e) {}
+						editor = null
+					}
+
+					function initEditor() {
+						const holder = document.getElementById('editorjs')
+						if (!holder) return
+						holder.innerHTML = ''
+
+						const data = normalizeEditorData(deepClone(drafts[currentLang.value] || {
+							blocks: []
+						}))
+
+						try {
+							editor = new EditorJS({
+								holder: 'editorjs',
+								data,
+								placeholder: '输入 "/" 呼出菜单...',
+								tools: {
+									header: {
+										class: Header,
+										config: {
+											levels: [1, 2, 3],
+											defaultLevel: 2
+										}
+									},
+									list: {
+										class: NestedList,
+										inlineToolbar: true
+									},
+									quote: Quote,
+									code: CodeTool,
+									table: Table,
+									checklist: Checklist,
+									marker: Marker,
+									underline: Underline,
+									inlineCode: InlineCode,
+									embed: {
+										class: Embed,
+										inlineToolbar: false,
+										config: {
+											services: {
+												youtube: true,
+												vimeo: true,
+												bilibili: true,
+											}
+										}
+									},
+									image: {
+										class: ImageTool,
+										config: {
+											uploader: {
+												uploadByFile: uploadForEditor,
+												uploadByUrl: async (url) => ({
+													success: 1,
+													file: {
+														url
+													}
+												}),
+											}
+										}
+									},
+									video: {
+										class: VideoTool,
+										config: {
+											uploader: {
+												uploadByFile: uploadForEditor,
+												uploadByUrl: async (url) => ({
+													success: 1,
+													file: {
+														url
+													}
+												}),
+											},
+											player: {
+												controls: true,
+												autoplay: false
+											}
+										}
+									}
+								},
+
+								onReady: () => {
+
+									if (editor?.blocks?.getBlockByIndex) {
+										editor.blocks.stretchBlock = (index, status = true) => {
+											const block = editor.blocks.getBlockByIndex(index);
+											if (block) block.stretched = !!status; // BlockAPI way
+										};
+									}
+
+									const c = document.getElementById('editor-container')
+									if (c) c.scrollTop = 0
+
+									installMediaObserver()
+									installToolbarClampForMedia()
+
+								},
+
+								onChange: () => {
+									clearTimeout(__changeTimer)
+									__changeTimer = setTimeout(async () => {
+										// 同步：editor -> drafts -> form
+										await saveEditorToDraft(currentLang.value)
+										loadDraftToForm(currentLang.value)
+										recomputeDirty()
+									}, 220)
+								},
+							})
+						} catch (e) {
+							console.error('[Editor init failed]', e)
+						}
+					}
+
+					async function handleLangSwitch(e) {
+						const newLang = e?.target?.value || currentLang.value
+						const oldLang = prevLang.value
+
+						const container = document.getElementById('editor-container')
+						const oldScrollTop = container ? container.scrollTop : 0
+
+						// 先落盘旧语言
+						if (editor && !isPreviewMode.value) {
+							await saveEditorToDraft(oldLang)
+							loadDraftToForm(oldLang)
+						}
+
+						prevLang.value = newLang
+						// 注意：v-model 已经把 currentLang 改了；这里不强行改，避免抖
+						// currentLang.value = newLang
+
+						syncCategorySelection()
+						recomputeDirty()
+
+						if (isPreviewMode.value) return
+
+						// 编辑模式：只 render 新语言 data；失败就重建
+						if (editor) {
+							const nextData = normalizeEditorData(deepClone(drafts[newLang] || {
+								blocks: []
+							}))
+							try {
+								await editor.render(nextData)
+								await editor.render(nextData)
+								installMediaObserver()
+							} catch (err) {
+								console.warn('[handleLangSwitch] render failed, rebuild', err)
+								await destroyEditor()
+								await nextTick()
+								initEditor()
+							}
+						}
+
+						nextTick(() => {
+							const c = document.getElementById('editor-container')
+							if (c) c.scrollTop = oldScrollTop
+						})
+					}
+
+					// ===== 打开编辑弹窗 =====
+					function resetFormAndDrafts() {
+						form.sort = 0
+						form.published = false
+						form.date = new Date().toISOString().split('T')[0]
+						form.cover = ''
+						form.slug = ''
+						form.read_time = 5
+
+						langs.forEach(l => {
+							form.title[l.code] = ''
+							form.excerpt[l.code] = ''
+							form.category[l.code] = ''
+							form.type[l.code] = ''
+							form.content[l.code] = {
+								blocks: []
+							}
+							drafts[l.code] = {
+								blocks: []
+							}
+						})
+					}
+
+					function copyI18n(source, target, isJson = false) {
+						if (!source) return
+
+						// 后端如果给 JSON 字符串，尽量 parse
+						if (typeof source === 'string') {
+							const s = source.trim()
+							if ((s.startsWith('{') && s.endsWith('}')) || (s.startsWith('[') && s.endsWith(']'))) {
+								try {
+									const parsed = JSON.parse(s)
+									if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) source = parsed
+								} catch (e) {}
+							}
+						}
+
+						// 普通字符串
+						if (typeof source === 'string' && !isJson) {
+							target['zh'] = source
+							return
+						}
+
+						// i18n 对象
+						langs.forEach(l => {
+							const code = l.code
+							target[code] = (source && source[code] != null) ? source[code] : (isJson ? {
+								blocks: []
+							} : '')
+						})
+					}
+
+					async function openEditModal(item) {
+						editId.value = item ? item.id : null
+						isPreviewMode.value = false
+						currentLang.value = 'zh'
+						prevLang.value = 'zh'
+						lastSavedTime.value = ''
+
+						await destroyEditor()
+						resetFormAndDrafts()
+
+						if (item) {
+							const {
+								data,
+								error
+							} = await fetchDetail(item.id)
+							if (error) {
+								alert('读取失败：' + error.message)
+							} else if (data) {
+								form.sort = data.sort
+								form.published = data.published
+								form.date = data.date
+
+								if (currentTab.value === 'blog') {
+									form.cover = data.cover || ''
+									form.slug = data.slug || ''
+									form.read_time = data.read_time || 5
+
+									copyI18n(data.title, form.title)
+									copyI18n(data.category, form.category)
+									copyI18n(data.excerpt, form.excerpt)
+									copyI18n(data.content, form.content, true)
+								} else {
+									form.cover = data.thumbnail || ''
+									copyI18n(data.title, form.title)
+									copyI18n(data.type, form.type)
+									copyI18n(data.description, form.content, true)
+								}
+
+								// 兜底：确保都是 {blocks:[]}
+								langs.forEach(l => {
+									form.content[l.code] = normalizeEditorData(form.content[l.code])
+									drafts[l.code] = normalizeEditorData(deepClone(form.content[l.code]))
+								})
+							}
+						}
+
+						syncCategorySelection()
+
+						// 建立快照
+						lastSavedSnapshot = snapshot()
+						isDirty.value = false
+
+						showModal.value = true
+						nextTick(() => {
+							const c = document.getElementById('editor-container')
+							if (c) c.scrollTop = 0
+							initEditor()
+						})
+					}
+
+					async function confirmClose() {
+						// 退出前把当前语言落盘
+						if (editor && !isPreviewMode.value) {
+							await saveEditorToDraft(currentLang.value)
+							loadDraftToForm(currentLang.value)
+						}
+						recomputeDirty()
+
+						// 你要强提示就取消注释
+						// if (isDirty.value) {
+						//   const ok = confirm('检测到未保存的修改，确定放弃并退出吗？')
+						//   if (!ok) return
+						// }
+
+						await destroyEditor()
+						showModal.value = false
+					}
+
+					// ===== 导出清洗（去重 image/video 空 url）=====
+					function exportEditorDataForPublic(d) {
+						d = normalizeEditorData(d)
+						const out = {
+							...d,
+							blocks: []
+						}
+						const seen = new Set() // `${type}|${url}`
+
+						const pushUnique = (type, data) => {
+							const url = (data?.file?.url || "").trim()
+							const key = `${type}|${url}`
+							if (url && seen.has(key)) return
+							if (url) seen.add(key)
+							out.blocks.push({
+								type,
+								data
+							})
+						}
+
+						for (const b of (d.blocks || [])) {
+							if (!b?.type) continue
+							if (b.type === 'video' || b.type === 'image') {
+								const url = (b.data?.file?.url || '').trim()
+								if (!url) continue
+								pushUnique(b.type, {
+									...b.data,
+									file: {
+										...(b.data?.file || {}),
+										url
+									}
+								})
+								continue
+							}
+							out.blocks.push(b)
+						}
+						return out
+					}
+
+					async function saveData() {
+						saving.value = true
+						const table = currentTab.value
+
+						try {
+							// 1) 当前语言 editor -> drafts
+							if (editor && !isPreviewMode.value) await saveEditorToDraft(currentLang.value)
+
+							// 2) drafts -> form.content（四语同步）
+							langs.forEach(l => loadDraftToForm(l.code))
+
+							// 3) 导出清洗
+							const exportedContent = {}
+							langs.forEach(l => {
+								const code = l.code
+								exportedContent[code] = exportEditorDataForPublic(normalizeEditorData(form
+									.content[code]))
+							})
+
+							// 4) payload
+							let payload = {
+								sort: Number(form.sort || 0),
+								published: !!form.published,
+								date: form.date,
+								title: deepClone(form.title),
+							}
+
+							if (table === 'blog') {
+								Object.assign(payload, {
+									cover: form.cover || '',
+									slug: (form.slug && String(form.slug).trim()) ? form.slug :
+										`post-${Date.now()}`,
+									read_time: Number(form.read_time || 5),
+									content: exportedContent,
+									category: deepClone(form.category),
+									excerpt: deepClone(form.excerpt),
+								})
+							} else {
+								Object.assign(payload, {
+									thumbnail: form.cover || '',
+									type: deepClone(form.type),
+									description: exportedContent,
+								})
+							}
+
+							payload = deepClone(payload)
+
+							const result = editId.value ?
+								await supabase.from(table).update(payload).eq('id', editId.value).select() :
+								await supabase.from(table).insert(payload).select()
+
+							if (result?.error) {
+								alert('保存失败：\n' + JSON.stringify(result.error, null, 2))
+								return
+							}
+
+							await fetchList(true)
+
+							lastSavedSnapshot = snapshot()
+							isDirty.value = false
+							showModal.value = false
+						} catch (e) {
+							console.error('[SAVE] throw:', e)
+							alert('保存抛异常：' + (e?.message || e))
+						} finally {
+							saving.value = false
+						}
+					}
+
+					// ===== 预览模式 =====
+					async function generatePreview() {
+						// 先落盘当前语言，再把 drafts 全同步进 form
+						if (!isPreviewMode.value && editor) {
+							await saveEditorToDraft(currentLang.value)
+							langs.forEach(l => loadDraftToForm(l.code))
+							// 预览时也用导出清洗后的 data
+							langs.forEach(l => {
+								form.content[l.code] = exportEditorDataForPublic(form.content[l.code])
+							})
+						}
+						isPreviewMode.value = true
+					}
+
+					// ===== Find / Replace（只作用“当前语言”）=====
+					const fr = reactive({
+						open: false,
+						find: '',
+						replace: '',
+						matchCase: false,
+						useRegex: false,
+						scope: {
+							title: true,
+							excerpt: true,
+							body: true
+						},
+						lastCount: 0,
+						error: ''
+					})
+
+					function openFindReplace() {
+						fr.open = true
+						fr.error = ''
+						fr.lastCount = 0
+					}
+
+					function escapeRegExp(str) {
+						return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+					}
+
+					function buildMatcher() {
+						const needle = (fr.find || '')
+						if (!needle) return null
+
+						if (fr.useRegex) {
+							try {
+								return new RegExp(needle, fr.matchCase ? 'g' : 'gi')
+							} catch (e) {
+								fr.error = '正则不合法：' + e.message;
+								return null
+							}
+						}
+						return new RegExp(escapeRegExp(needle), fr.matchCase ? 'g' : 'gi')
+					}
+
+					function replaceText(text, re) {
+						const s = String(text || '')
+						if (!s) return {
+							text: s,
+							count: 0
+						}
+						let count = 0
+						const out = s.replace(re, () => {
+							count++;
+							return fr.replace
+						})
+						return {
+							text: out,
+							count
+						}
+					}
+
+					function replaceListItems(items, re) {
+						if (!Array.isArray(items)) return {
+							items,
+							count: 0
+						}
+						let count = 0
+
+						const next = items.map(it => {
+							if (typeof it === 'string') {
+								const r = replaceText(it, re);
+								count += r.count;
+								return r.text
+							}
+							if (it && typeof it === 'object') {
+								const obj = {
+									...it
+								}
+								if (typeof obj.content === 'string') {
+									const r = replaceText(obj.content, re);
+									obj.content = r.text;
+									count += r.count
+								}
+								if (Array.isArray(obj.items)) {
+									const r2 = replaceListItems(obj.items, re);
+									obj.items = r2.items;
+									count += r2.count
+								}
+								return obj
+							}
+							return it
+						})
+
+						return {
+							items: next,
+							count
+						}
+					}
+
+					function replaceInEditorData(data, re) {
+						const d = deepClone(data || {
+							blocks: []
+						})
+						if (!d.blocks) d.blocks = []
+						let count = 0
+
+						d.blocks = d.blocks.map(b => {
+							if (!b || !b.type) return b
+							const block = deepClone(b)
+							const t = block.type
+							const bd = block.data || (block.data = {})
+
+							const rep = (key) => {
+								if (typeof bd[key] === 'string') {
+									const r = replaceText(bd[key], re)
+									bd[key] = r.text
+									count += r.count
+								}
+							}
+
+							if (t === 'header' || t === 'paragraph') rep('text')
+							else if (t === 'quote') {
+								rep('text');
+								rep('caption')
+							} else if (t === 'image' || t === 'embed' || t === 'video') rep('caption')
+							else if (t === 'code') rep('code') // 不想替换代码就删掉
+							else if (t === 'checklist' && Array.isArray(bd.items)) {
+								bd.items = bd.items.map(it => {
+									const obj = {
+										...it
+									}
+									if (typeof obj.text === 'string') {
+										const r = replaceText(obj.text, re);
+										obj.text = r.text;
+										count += r.count
+									}
+									return obj
+								})
+							} else if (t === 'table' && Array.isArray(bd.content)) {
+								bd.content = bd.content.map(row => {
+									if (!Array.isArray(row)) return row
+									return row.map(cell => {
+										const r = replaceText(cell, re)
+										count += r.count
+										return r.text
+									})
+								})
+							} else if (t === 'list' && Array.isArray(bd.items)) {
+								const r = replaceListItems(bd.items, re)
+								bd.items = r.items
+								count += r.count
+							}
+
+							block.data = bd
+							return block
+						})
+
+						return {
+							data: d,
+							count
+						}
+					}
+
+					async function applyFindReplace() {
+						fr.error = ''
+						fr.lastCount = 0
+						const re = buildMatcher()
+						if (!re) return
+
+						// 先落盘当前 editor，确保替换的是最新内容
+						if (editor && !isPreviewMode.value) {
+							await saveEditorToDraft(currentLang.value)
+							loadDraftToForm(currentLang.value)
+						}
+
+						const lang = currentLang.value
+						let total = 0
+
+						if (fr.scope.title) {
+							const r = replaceText(form.title?.[lang] || '', re)
+							form.title[lang] = r.text
+							total += r.count
+						}
+
+						if (fr.scope.excerpt && currentTab.value === 'blog') {
+							const r = replaceText(form.excerpt?.[lang] || '', re)
+							form.excerpt[lang] = r.text
+							total += r.count
+						}
+
+						if (fr.scope.body) {
+							const raw = drafts[lang] || form.content?.[lang] || {
+								blocks: []
+							}
+							const r = replaceInEditorData(raw, re)
+							drafts[lang] = normalizeEditorData(r.data)
+							loadDraftToForm(lang)
+							total += r.count
+
+							// 编辑模式：把替换后的内容 render 回 editor
+							if (editor && !isPreviewMode.value) {
+								try {
+									await editor.render(deepClone(drafts[lang]))
+								} catch (e) {
+									await destroyEditor();
+									await nextTick();
+									initEditor()
+								}
+							}
+						}
+
+						fr.lastCount = total
+						recomputeDirty()
+					}
+
+					// ===== 预览渲染器（你已有的 renderArticleContent 原样保留即可）=====
+					function renderArticleContent(contentData) {
+						if (!contentData || !contentData.blocks) return '<p class="text-neutral-400 italic">暂无内容.</p>'
+
+						let html = ''
+						const content = contentData
+
+						content.blocks.forEach((block, i) => {
+
+							// ---- inline helpers (only inside this forEach) ----
+							const esc = (s) =>
+								String(s ?? "")
+								.replace(/&/g, "&amp;")
+								.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;")
+								.replace(/"/g, "&quot;")
+								.replace(/'/g, "&#39;");
+
+							const text = (s) => {
+								let v = esc(s);
+
+								// allow basic inline tags (Editor.js common inline tools)
+								v = v
+									.replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/g, "<b>$1</b>")
+									.replace(/&lt;strong&gt;(.*?)&lt;\/strong&gt;/g,
+										"<strong>$1</strong>")
+									.replace(/&lt;i&gt;(.*?)&lt;\/i&gt;/g, "<i>$1</i>")
+									.replace(/&lt;em&gt;(.*?)&lt;\/em&gt;/g, "<em>$1</em>")
+									.replace(/&lt;u&gt;(.*?)&lt;\/u&gt;/g, "<u>$1</u>")
+									.replace(/&lt;s&gt;(.*?)&lt;\/s&gt;/g, "<s>$1</s>")
+									.replace(/&lt;br\s*\/?&gt;/g, "<br>")
+									.replace(/&amp;nbsp;/g, "&nbsp;");
+
+								return v;
+							};
+
+
+							const commonText = "text-neutral-800 dark:text-neutral-200";
+							const bodyText =
+								"text-[15.5px] sm:text-[16.5px] leading-[1.85] tracking-[0.01em]";
+							const blockGap = "mb-6";
+
+							switch (block.type) {
+								case "header": {
+									const level = Math.min(4, Math.max(2, Number(block.data?.level || 2)));
+
+									// fix #4: first heading no weird top space
+									const mt = i === 0 ? "mt-0" : (level === 2 ? "mt-10" : level === 3 ?
+										"mt-8" : "mt-6");
+
+									const hClass =
+										level === 2 ?
+										`${mt} mb-4 text-[22px] sm:text-[26px] leading-[1.25] tracking-[-0.01em] font-semibold` :
+										level === 3 ?
+										`${mt} mb-3 text-[18px] sm:text-[20px] leading-[1.35] tracking-[-0.008em] font-semibold` :
+										`${mt} mb-2 text-[16.5px] sm:text-[17px] leading-[1.45] tracking-[-0.006em] font-semibold`;
+
+									html +=
+										`<h${level} class="${commonText} ${hClass}">${text(block.data?.text)}</h${level}>`;
+									break;
+								}
+
+								case "paragraph": {
+									html +=
+										`<p class="${commonText} ${bodyText} ${blockGap}">${text(block.data?.text)}</p>`;
+									break;
+								}
+
+								case "list": {
+									const isOrdered = block.data?.style === "ordered";
+									const tag = isOrdered ? "ol" : "ul";
+
+									const listWrap =
+										"my-6 pl-6 " +
+										(isOrdered ? "list-decimal" : "list-disc") +
+										" space-y-2";
+
+									const liClass = `${commonText} ${bodyText} leading-[1.75]`;
+
+									const items = Array.isArray(block.data?.items) ? block.data.items : [];
+
+									// fix #1: handle items as string OR object (nested list tool / custom output)
+									const normalizeItemText = (it) => {
+										if (typeof it === "string") return it;
+										if (it && typeof it === "object") {
+											// common keys across list tools
+											return it.content ?? it.text ?? it.title ?? it.label ?? "";
+										}
+										return String(it ?? "");
+									};
+
+									const listItems = items
+										.map((it) => {
+											const t = normalizeItemText(it);
+											return `<li class="${liClass}">${text(t)}</li>`;
+										})
+										.join("");
+
+									html += `<${tag} class="${listWrap}">${listItems}</${tag}>`;
+									break;
+								}
+
+								case "image": {
+									const url = block.data?.file?.url ? String(block.data.file.url) : "";
+									const cap = block.data?.caption ? text(block.data.caption) : "";
+
+									if (url) {
+										html +=
+											`<figure class="my-8">` +
+											// 容器：默认 1:1，先占位，避免抖动
+											`<div class="img-skel relative w-full overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 shadow-sm bg-neutral-200 dark:bg-neutral-800" style="aspect-ratio: 1 / 1;">` +
+											// 鱼骨 shimmer
+											`<div class="skel-shimmer"></div>` +
+
+											// 图片：先透明，加载完成再显示；同时把容器 aspect-ratio 改成真实比例
+											`<img
+								              src="${esc(url)}"
+								              loading="lazy"
+								              alt="${cap || "image"}"
+								              class="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-300"
+								              onload="
+								                const w = this.naturalWidth || 1;
+								                const h = this.naturalHeight || 1;
+								                const wrap = this.closest('.img-skel');
+								                if (wrap) { wrap.style.aspectRatio = w + ' / ' + h; wrap.classList.add('is-loaded'); }
+								                this.style.opacity = 1;
+								              "
+								              onerror="
+								                const wrap = this.closest('.img-skel');
+								                if (wrap) { wrap.classList.add('is-loaded'); }
+								                this.style.opacity = 1;
+								              "
+								            />` +
+											`</div>` +
+
+											(cap ?
+												`<figcaption class="mt-3 text-center text-sm md:textbase leading-[1.6] text-neutral-500 dark:text-neutral-400">${cap}</figcaption>` :
+												"") +
+											`</figure>`;
+									}
+									break;
+								}
+
+								case "quote": {
+									const alignment =
+										block.data?.alignment === "center" ?
+										"text-center" :
+										block.data?.alignment === "right" ?
+										"text-right" :
+										"text-left";
+
+									html += `<blockquote class="my-8 ${alignment}">` +
+										`<div class="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.04] px-5 py-4">` +
+										`<div class="flex gap-4">` +
+										`<span class="text-6xl text-neutral-300 dark:text-neutral-600 font-serif leading-none h-4 -mt-1 select-none">“</span>` +
+										`<p class="${commonText} ${bodyText} leading-[1.8] italic mb-0">${text(block.data?.text)}</p>` +
+										`</div>` +
+										(block.data?.caption ?
+											`<div class="mt-2 text-[13px] text-neutral-500 dark:text-neutral-400">${text(block.data.caption)}</div>` :
+											"") +
+										`</div></blockquote>`;
+									break;
+								}
+
+								case "code": {
+									// fix #2: remove template indent introducing first-line spaces
+									// also keep code newlines exactly
+									const code = esc(block.data?.code || "");
+									html += `<div class="my-8">` +
+										`<pre class="rounded-2xl border border-black/5 dark:border-white/10 bg-neutral-50 dark:bg-neutral-900/60 overflow-x-auto p-4">` +
+										`<code class="text-[13px] sm:text-[14px] leading-[1.65] font-mono text-neutral-800 dark:text-neutral-200 whitespace-pre">${code}</code>` +
+										`</pre></div>`;
+									break;
+								}
+
+								case "embed": {
+									const src = block.data?.embed ? String(block.data.embed) : "";
+									if (src) {
+										html += `<div class="my-8">` +
+											`<div class="aspect-video w-full overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 bg-black">` +
+											`<iframe src="${esc(src)}" frameborder="0" allowfullscreen class="w-full h-full"></iframe>` +
+											`</div>` +
+											(block.data?.caption ?
+												`<div class="mt-3 text-center text-[13px] leading-[1.6] text-neutral-500 dark:text-neutral-400">${text(block.data.caption)}</div>` :
+												"") +
+											`</div>`;
+									}
+									break;
+								}
+
+								case "video": {
+									const videoUrl = block.data?.file?.url ? String(block.data.file.url) :
+										"";
+									if (videoUrl) {
+										html += `
+										<div class="my-8 flex flex-col w-full justify-center">
+										  <div class="video-wrapper w-full md:max-h-[80vh] overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 aspect-video transition-all">
+										    <video controls  preload="metadata" class="video-el w-full h-full object-contain"
+										      onloadedmetadata="this.closest('.video-wrapper').classList.remove('aspect-video')"
+										      <source src="${esc(videoUrl)}" type="video/mp4" />
+										      您的浏览器不支持 video 标签。
+										    </video>
+										  </div>
+										  ${
+										    block.data?.caption
+										      ? `<div class="mt-3 text-center text-[13px] leading-[1.6] text-neutral-500 dark:text-neutral-400">
+										           ${text(block.data.caption)}
+										         </div>`
+										      : ""
+										  }
+										</div>`;
+									}
+									break;
+								}
+
+								case "table": {
+									const rows = Array.isArray(block.data?.content) ? block.data.content : [];
+
+									let tableHtml =
+										`<div class="my-8 overflow-x-auto">` +
+										`<table class="min-w-full border-separate border-spacing-0 rounded-2xl overflow-hidden border border-black/5 dark:border-white/10">`;
+
+									rows.forEach((row, rowIndex) => {
+										tableHtml +=
+											`<tr class="${rowIndex % 2 === 0 ? "bg-white dark:bg-neutral-900" : "bg-neutral-50 dark:bg-neutral-900/60"}">`;
+										(Array.isArray(row) ? row : []).forEach((cell) => {
+											tableHtml +=
+												`<td class="align-top px-4 py-3 text-[14px] leading-[1.7] ${commonText} border-b border-black/5 dark:border-white/10">${text(cell)}</td>`;
+										});
+										tableHtml += `</tr>`;
+									});
+
+									tableHtml += `</table></div>`;
+									html += tableHtml;
+									break;
+								}
+
+								case "checklist": {
+									// fix #3: nicer checked UI
+									const items = Array.isArray(block.data?.items) ? block.data.items : [];
+
+									html += `<ul class="my-6 space-y-3">`;
+
+									items.forEach((it) => {
+										const checked = !!it?.checked;
+										const label = text(it?.text);
+
+										html +=
+											`<li class="flex items-center gap-3">` +
+											`<span class="mt-[3px] inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[6px] border border-black/15 dark:border-white/15 ` +
+											(checked ?
+												`bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-sm` :
+												`bg-white dark:bg-neutral-900`) +
+											`">` +
+											(checked ?
+												`<span class="text-[12px] flex items-center justify-center leading-none">√</span>` :
+												``) +
+											`</span>` +
+											`<span class="${commonText} ${bodyText} leading-[1.75] ${checked ? "line-through opacity-60" : ""}">${label}</span>` +
+											`</li>`;
+									});
+
+									html += `</ul>`;
+									break;
+								}
+
+								case "delimiter": {
+									html += `<hr class="my-10 border-black/10 dark:border-white/10" />`;
+									break;
+								}
+
+								default:
+									break;
+							}
+						});
+
+
+
+
+
+						// 复制结束
+
+						return html
+					}
+
+					function getI18n(obj, lang) {
+						if (!obj) return ''
+						if (typeof obj === 'string') {
+							try {
+								if (obj.trim().startsWith('{')) {
+									const parsed = JSON.parse(obj)
+									return parsed[lang] || parsed['zh'] || ''
+								}
+							} catch (e) {
+								return obj
+							}
+							return obj
+						}
+						return obj[lang] || obj['zh'] || ''
+					}
+
+					// Ctrl+A
+					// 取 Editor.js 内容（字符串或 blocks 都行，这里返回纯文本更适合“全文复制”）
+					async function getEditorPlainText() {
+						if (!editor) return ""
+						const data = await editor.save()
+						// 你也可以直接 JSON.stringify(data)，但“全文全选”更像是给你读/改的文本
+						const lines = []
+						for (const b of (data.blocks || [])) {
+							if (b.type === "paragraph" && b.data?.text) {
+								lines.push(b.data.text.replace(/<[^>]+>/g, "")) // 简单去 HTML
+							} else if (b.data?.text) {
+								lines.push(String(b.data.text).replace(/<[^>]+>/g, ""))
+							}
+						}
+						return lines.join("\n\n")
+					}
+
+					async function setEditorFromPlainText(text) {
+						if (!editor) return
+						// 简单：把纯文本按空行切成 paragraph blocks
+						const blocks = String(text || "")
+							.split(/\n\s*\n/g)
+							.map(t => t.trim())
+							.filter(Boolean)
+							.map(t => ({
+								type: "paragraph",
+								data: {
+									text: t
+								}
+							}))
+
+						await editor.render({
+							time: Date.now(),
+							blocks,
+							version: "2.30.0"
+						})
+					}
+					async function copyCurrentLangPayload() {
+						const lang = currentLang.value
+
+						const payload = {
+							tab: currentTab.value, // blog / media
+							lang,
+							title: form.title?.[lang] || "",
+							excerpt: form.excerpt?.[lang] || "",
+							// category/type 也带上（只带当前语言）
+							category: currentTab.value === "blog" ? (form.category?.[lang] || "") : undefined,
+							type: currentTab.value === "media" ? (form.type?.[lang] || "") : undefined,
+							// Editor.js 内容：建议存完整 data，复制/粘贴最稳
+							content: editor ? await editor.save() : null
+						}
+
+						const text = JSON.stringify(payload, null, 2)
+
+						// 写剪贴板（HTTPS/localhost 最稳）
+						if (navigator.clipboard?.writeText) {
+							await navigator.clipboard.writeText(text)
+						} else {
+							// fallback：用临时 textarea
+							quickSelectText(text)
+							document.execCommand("copy")
+						}
+					}
+
+					async function pasteToCurrentLangPayload() {
+						const lang = currentLang.value
+						let text = ""
+
+						if (navigator.clipboard?.readText) {
+							text = await navigator.clipboard.readText()
+						} else {
+							alert("当前环境不支持读取剪贴板（需要 https/localhost）。")
+							return
+						}
+
+						let payload
+						try {
+							payload = JSON.parse(text)
+						} catch {
+							alert("剪贴板内容不是 JSON，粘贴失败。")
+							return
+						}
+
+						// 只覆盖当前语言
+						if (typeof payload.title === "string") form.title[lang] = payload.title
+						if (typeof payload.excerpt === "string") form.excerpt[lang] = payload.excerpt
+
+						if (currentTab.value === "blog" && typeof payload.category === "string") {
+							form.category[lang] = payload.category
+						}
+						if (currentTab.value === "media" && typeof payload.type === "string") {
+							form.type[lang] = payload.type
+						}
+
+						if (payload.content && editor) {
+							// 这里用 Editor.js 的 data 直接 render
+							await editor.render(payload.content)
+						}
+
+						recomputeDirty()
+					}
+
+					function quickSelectText(text) {
+						const ta = document.createElement("textarea")
+						ta.value = text
+						ta.setAttribute("readonly", "readonly")
+						ta.style.position = "fixed"
+						ta.style.left = "-9999px"
+						ta.style.top = "0"
+						document.body.appendChild(ta)
+						ta.focus()
+						ta.select()
+						// 留一点时间让用户 Ctrl+C；也可以不移除
+						setTimeout(() => document.body.removeChild(ta), 8000)
+					}
+
+					async function selectAllArticleAsText() {
+						const lang = currentLang.value
+						const title = form.title?.[lang] || ""
+						const excerpt = form.excerpt?.[lang] || ""
+						const body = await getEditorPlainText()
+
+						const full = [title, excerpt, body].filter(Boolean).join("\n\n")
+						quickSelectText(full)
+					}
+					async function onGlobalKeydown(e) {
+						const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform)
+						const meta = isMac ? e.metaKey : e.ctrlKey
+
+						// Ctrl/⌘ + A
+						if (meta && e.key.toLowerCase() === "a") {
+							const el = document.activeElement
+							const tag = (el?.tagName || "").toLowerCase()
+
+							// 如果焦点在 input/textarea，保持浏览器默认全选（别拦）
+							if (tag === "input" || tag === "textarea") return
+
+							// 如果焦点在 Editor.js 区域（contenteditable）
+							const inEditor = el && (el.isContentEditable || el.closest?.("#editorjs"))
+							if (inEditor) {
+								e.preventDefault()
+								e.stopPropagation()
+								await selectAllArticleAsText()
+							}
+						}
+
+						// 你也可以额外做：Ctrl/⌘+Shift+C 复制当前语言 JSON
+						if (meta && e.shiftKey && e.key.toLowerCase() === "c") {
+							e.preventDefault()
+							await copyCurrentLangPayload()
+						}
+					}
+
+
+
+					// ===== mounted =====
+					onMounted(async () => {
+						const {
+							data
+						} = await supabase.auth.getSession()
+						session.value = data.session
+						if (session.value) fetchList()
+						window.addEventListener("keydown", onGlobalKeydown, true)
+					})
+
+					onBeforeUnmount(() => {
+						window.removeEventListener("keydown", onGlobalKeydown, true)
+					})
+
+
+					// ===== 对外 return =====
+					return {
+						session,
+						email,
+						password,
+						msg,
+						loading,
+						login,
+						logout,
+
+						currentTab,
+						displayList,
+						switchTab,
+						fetchList,
+
+						showModal,
+						saving,
+						uploadingCover,
+						editId,
+						form,
+
+						langs,
+						currentLang,
+						handleLangSwitch,
+
+						openEditModal,
+						confirmClose,
+						saveData,
+						deleteItem,
+
+						getI18n,
+						isPreviewMode,
+						generatePreview,
+						lastSavedTime,
+
+						tempCategorySelection,
+						predefinedOptions,
+						handleCategoryChange,
+
+						renderArticleContent,
+
+						lastUploadedUrl,
+						showUploadToast,
+						copyUrl,
+						handleCoverUpload,
+
+						isDirty,
+
+						showMobileMeta,
+						mobileMetaMounted,
+
+						fr,
+						openFindReplace,
+						applyFindReplace,
+
+						showUploadToast,
+						copyUrl,
+						uploadState,
+
+						pasteToCurrentLangPayload,
+						copyCurrentLangPayload,
+					}
+				}
+			}).mount('#app')
+		</script>
+
+		<!-- 替换所有select -->
+		<script>
+			(function() {
+				const SEL = "select:not([multiple]):not([size])"; // 跳过多选/size 下拉
+
+				const cls = {
+					wrap: "relative w-full",
+					btn: [
+						"w-full flex items-center justify-between gap-2",
+						"px-3 py-2 rounded-xl",
+						"bg-slate-50 border border-slate-200",
+						"text-sm text-slate-800",
+						"hover:bg-white hover:border-slate-300",
+						"focus:outline-none focus:ring-2 focus:ring-slate-500/30",
+						"transition",
+					].join(" "),
+					label: "truncate",
+					labelPlaceholder: "truncate text-slate-400",
+					chev: "w-4 h-4 text-slate-400 transition-transform",
+					panel: [
+						"absolute z-50 mt-2 w-full",
+						"bg-white rounded-xl shadow-lg border border-slate-200",
+						"max-h-60 overflow-auto py-1",
+						"origin-top",
+					].join(" "),
+					opt: "w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50 transition",
+					optActive: "text-slate-600 font-semibold",
+					optNormal: "text-slate-700",
+					tick: "text-slate-600",
+					hiddenSelect: "sr-only", // Tailwind 内置
+					rotate: "rotate-180",
+				};
+
+				function getSelectedLabel(select) {
+					const opt = select.selectedOptions?.[0];
+					if (!opt) return "";
+					return opt.textContent?.trim() || "";
+				}
+
+				function getPlaceholderLabel(select) {
+					// 优先找 disabled/空值 的 option 当 placeholder
+					const ph =
+						select.querySelector('option[disabled][value=""]') ||
+						select.querySelector("option[disabled]") ||
+						select.querySelector('option[value=""]');
+					return ph?.textContent?.trim() || "请选择...";
+				}
+
+				function closeAll(exceptWrap) {
+					document.querySelectorAll("[data-fsel-wrap].is-open").forEach((w) => {
+						if (w !== exceptWrap) {
+							w.classList.remove("is-open");
+							const panel = w.querySelector("[data-fsel-panel]");
+							const btn = w.querySelector("[data-fsel-btn]");
+							const chev = w.querySelector("[data-fsel-chev]");
+							if (panel) panel.classList.add("hidden");
+							if (btn) btn.setAttribute("aria-expanded", "false");
+							if (chev) chev.classList.remove(cls.rotate);
+						}
+					});
+				}
+
+				function enhanceSelect(select) {
+					if (!select || select.dataset.fselEnhanced === "1") return;
+					select.dataset.fselEnhanced = "1";
+
+					// 包一层
+					const wrap = document.createElement("div");
+					wrap.className = cls.wrap;
+					wrap.dataset.fselWrap = "1";
+
+					select.parentNode.insertBefore(wrap, select);
+					wrap.appendChild(select);
+
+					// 隐藏原生 select（但保留在 DOM）
+					select.classList.add(...cls.hiddenSelect.split(" "));
+
+					// 触发按钮
+					const btn = document.createElement("button");
+					btn.type = "button";
+					btn.className = cls.btn;
+					btn.dataset.fselBtn = "1";
+					btn.setAttribute("aria-haspopup", "listbox");
+					btn.setAttribute("aria-expanded", "false");
+
+					const label = document.createElement("span");
+					label.className = cls.label;
+					label.dataset.fselLabel = "1";
+
+					const chev = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+					chev.setAttribute("viewBox", "0 0 24 24");
+					chev.setAttribute("fill", "none");
+					chev.setAttribute("stroke", "currentColor");
+					chev.classList.add(...cls.chev.split(" "));
+					chev.dataset.fselChev = "1";
+					chev.innerHTML =
+						'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>';
+
+					btn.appendChild(label);
+					btn.appendChild(chev);
+
+					// 面板
+					const panel = document.createElement("div");
+					panel.className = cls.panel + " hidden";
+					panel.dataset.fselPanel = "1";
+					panel.setAttribute("role", "listbox");
+
+					function rebuildOptions() {
+						panel.innerHTML = "";
+
+						const placeholder = getPlaceholderLabel(select);
+						const hasValue = !!select.value;
+
+						if (!hasValue) {
+							label.className = cls.labelPlaceholder;
+							label.textContent = placeholder;
+						} else {
+							label.className = cls.label;
+							label.textContent = getSelectedLabel(select) || placeholder;
+						}
+
+						[...select.options].forEach((opt) => {
+							// 跳过 disabled placeholder 项（不让点）
+							if (opt.disabled && (opt.value === "" || opt === select.options[0])) return;
+
+							const item = document.createElement("button");
+							item.type = "button";
+							item.className = cls.opt + " " + (opt.value === select.value ? cls.optActive : cls
+								.optNormal);
+							item.textContent = opt.textContent?.trim() || opt.value;
+							item.setAttribute("role", "option");
+							item.dataset.value = opt.value;
+
+							if (opt.value === select.value) {
+								const tick = document.createElement("span");
+								tick.className = cls.tick;
+								tick.textContent = "✓";
+								item.appendChild(tick);
+							}
+
+							item.addEventListener("click", () => {
+								select.value = opt.value;
+
+								// ✅ 触发原生 change，让 v-model / 监听继续工作
+								select.dispatchEvent(new Event("change", {
+									bubbles: true
+								}));
+								select.dispatchEvent(new Event("input", {
+									bubbles: true
+								}));
+
+								// 关掉面板
+								wrap.classList.remove("is-open");
+								panel.classList.add("hidden");
+								btn.setAttribute("aria-expanded", "false");
+								chev.classList.remove(cls.rotate);
+
+								rebuildOptions();
+							});
+
+							panel.appendChild(item);
+						});
+					}
+
+					rebuildOptions();
+
+					// 点击按钮开关
+					btn.addEventListener("click", (e) => {
+						e.preventDefault();
+						const isOpen = wrap.classList.contains("is-open");
+						closeAll(wrap);
+
+						if (isOpen) {
+							wrap.classList.remove("is-open");
+							panel.classList.add("hidden");
+							btn.setAttribute("aria-expanded", "false");
+							chev.classList.remove(cls.rotate);
+						} else {
+							wrap.classList.add("is-open");
+							panel.classList.remove("hidden");
+							btn.setAttribute("aria-expanded", "true");
+							chev.classList.add(cls.rotate);
+						}
+					});
+
+					// 原生 select 被程序改值时，同步 UI
+					select.addEventListener("change", rebuildOptions);
+
+					// 插入
+					wrap.appendChild(btn);
+					wrap.appendChild(panel);
+
+					// 外部点击关闭
+					document.addEventListener("mousedown", (ev) => {
+						if (!wrap.contains(ev.target)) {
+							wrap.classList.remove("is-open");
+							panel.classList.add("hidden");
+							btn.setAttribute("aria-expanded", "false");
+							chev.classList.remove(cls.rotate);
+						}
+					});
+
+					// 监听 option 动态变化（比如你切语言、重新渲染 option）
+					const mo = new MutationObserver(rebuildOptions);
+					mo.observe(select, {
+						childList: true,
+						subtree: true,
+						attributes: true
+					});
+				}
+
+				function enhanceAll() {
+					document.querySelectorAll(SEL).forEach(enhanceSelect);
+				}
+
+				// 首次增强
+				enhanceAll();
+
+				// ✅ 如果你页面会动态插入 select（Vue 条件渲染/列表切换），自动增强新出现的
+				const pageMO = new MutationObserver(() => enhanceAll());
+				pageMO.observe(document.documentElement, {
+					childList: true,
+					subtree: true
+				});
+
+				// 暴露一个手动触发口（可选）
+				window.enhanceAllSelects = enhanceAll;
+			})();
+		</script>
+
+	</body>
+</html>

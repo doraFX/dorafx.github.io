@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Coming Soon</title>
+
+		<script src="../js/vue.global.js"></script>
+		<script src="../js/tailwindcss.3.4.17.js"></script>
+
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans:wght@100..900&display=swap"
+			rel="stylesheet">
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ['Noto Sans', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'sans-serif'],
+						},
+						animation: {
+							'fade-in-up': 'fadeInUp 1s ease-out forwards',
+							// 修改了浮动动画，让全屏图片呼吸感更自然，不穿帮
+							'breathe': 'breathe 8s ease-in-out infinite',
+						},
+						keyframes: {
+							fadeInUp: {
+								'0%': {
+									opacity: '0',
+									transform: 'translateY(20px)'
+								},
+								'100%': {
+									opacity: '1',
+									transform: 'translateY(0)'
+								},
+							},
+							breathe: {
+								'0%, 100%': {
+									transform: 'scale(1)'
+								},
+								'50%': {
+									transform: 'scale(1.02)'
+								}, // 缓慢放大5%
+							}
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+
+			body {
+				background-color: #000000;
+				color: #ffffff;
+				margin: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body class="antialiased">
+
+		<div id="app" v-cloak class="relative w-full h-screen overflow-hidden">
+			<div class="absolute inset-0 z-0">
+				<img src="../images/landing/landing.png" alt="Background"
+					class="w-full h-full object-cover animate-breathe opacity-80" />
+
+				<!-- 遮罩层：从底部向上的黑色渐变，确保底部文字清晰可见 -->
+				<div class="absolute inset-0 bg-gradient-to-t from-black via-black/0 to-transparent"></div>
+			</div>
+
+			<!-- 2. 内容层 -->
+			<!-- 2. 内容层：厚重金属渐变风格 -->
+			<div
+				class="relative z-10 w-full h-full flex flex-col justify-end pb-20 md:pb-32 items-center px-6 text-center">
+
+				<div class="animate-fade-in-up max-w-5xl mx-auto space-y-6">
+
+					<!-- 主标题 -->
+					<!-- 
+			           font-black: 最粗字体
+			           tracking-tighter: 字母挤得更紧，显得更有分量感
+			           bg-gradient-to-b: 从上到下的渐变（模拟金属光泽）
+			           drop-shadow: 微微的辉光 + 层次感
+			        -->
+					<h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase 
+			                   text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-neutral-500
+			                   drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">
+						{{ t('status') }}
+					</h1>
+
+					<!-- 副标题 -->
+					<!-- 保持一定的粗度(font-bold)，不要太细，否则撑不住上面的标题 -->
+					<p class="text-lg md:text-2xl pt-2 md:pt-4 font-bold text-neutral-400 tracking-wide drop-shadow-md">
+						{{ t('desc') }}
+					</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				onMounted
+			} = Vue
+
+			createApp({
+				setup() {
+					const currentLang = ref('zh')
+					const translations = {
+						zh: {
+							status: '应用开发中',
+							desc: '功能开发中，敬请期待。'
+						},
+						en: {
+							status: 'IN PROGRESS',
+							desc: 'Feature coming. Stay tuned.'
+						},
+						ja: {
+							status: '鋭意開発中',
+							desc: '機能開発中、乞うご期待。'
+						},
+						ko: {
+							status: '개발 진행 중',
+							desc: '기능 개발 중. 기대해 주세요.'
+						}
+					}
+
+
+					const t = (key) => translations[currentLang.value]?.[key] || translations['en'][key]
+
+					onMounted(() => {
+						const params = new URLSearchParams(window.location.search)
+						const langParam = params.get('lang')
+						if (langParam && ['zh', 'en', 'ja', 'ko'].includes(langParam)) {
+							currentLang.value = langParam
+						} else {
+							const browserLang = navigator.language.toLowerCase()
+							if (browserLang.startsWith('zh')) currentLang.value = 'zh'
+							else if (browserLang.startsWith('ja')) currentLang.value = 'ja'
+							else if (browserLang.startsWith('ko')) currentLang.value = 'ko'
+							else currentLang.value = 'en'
+						}
+					})
+
+					return {
+						t
+					}
+				}
+			}).mount('#app')
+		</script>
+	</body>
+</html>

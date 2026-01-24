@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>DoraFX Presents</title>
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<link rel="shortcut icon" href="images/logo.ico">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" /> <!-- Materialdesign icon Css-->
-		<link rel="stylesheet" type="text/css" href="css/icofont.min.css" /> <!-- Pe 7 icon Css-->
-		<link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css" /> <!-- Custom Css -->
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/all.css" />
-		<script src="js/jquery-2.2.4.min.js"></script>
+<html lang="zh-CN">
 
-		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-		<script>LA.init({id:"Jl5bi3TeBeipiIT3",ck:"Jl5bi3TeBeipiIT3",autoTrack:true,hashMode:true,screenRecord:true})</script>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>企鹅企企</title>
+		<link rel="shortcut icon" href="images/logo.ico">
+
+		<script src="js/vue.global.js"></script>
+		<script src="js/tailwindcss.3.4.17.js"></script>
+		<script src="js/supabase-js@2.js"></script>
+
+		<!-- WEB STATISTICS START-->
+		<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+		<script>
+			LA.init({
+				id: "Jl5bi3TeBeipiIT3",
+				ck: "Jl5bi3TeBeipiIT3",
+				autoTrack: true,
+				hashMode: true,
+				screenRecord: true
+			})
+		</script>
 		<script>
 			window.si = window.si || function() {
 				(window.siq = window.siq || []).push(arguments);
@@ -34,412 +40,3794 @@
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
 		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		
-		  gtag('config', 'G-4N6X53WMGZ');
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-4N6X53WMGZ');
 		</script>
-		<!-- Ptengine Tag -->
-		<script src="https://js.ptengine.com/7dpgvfrf.js"></script>
-		<!-- End Ptengine Tag -->
+		<!-- WEB STATISTICS END -->
 
-		<script src="js/portfolio.js"></script>
+		<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet">
+
+
+		<link rel="stylesheet" href="css/apple-video-player.css" />
+		<script src="js/apple-video-player.js"></script>
+		<script>
+			AppleTVLikePlayer.auto();
+		</script>
+
+		<link rel="stylesheet" href="css/style.css" />
+
+
+		<!-- <style>
+			@font-face {
+				font-family: 'Noto Sans';
+				src: url('./fonts/NotoSans.ttf') format('truetype');
+				font-weight: 100 900;
+				font-display: swap;
+			}
+
+			@font-face {
+				font-family: 'Noto Sans SC';
+				src: url('./fonts/NotoSansSC.ttf') format('truetype');
+				font-weight: 100 900;
+				font-display: swap;
+			}
+
+			@font-face {
+				font-family: 'Noto Sans JP';
+				src: url('./fonts/NotoSansJP.ttf') format('truetype');
+				font-weight: 100 900;
+				font-display: swap;
+			}
+
+			@font-face {
+				font-family: 'Noto Sans KR';
+				src: url('./fonts/NotoSansKR.ttf') format('truetype');
+				font-weight: 100 900;
+				font-display: swap;
+			}
+		</style> -->
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: [
+								'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans', 'sans-serif',
+							],
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+
 	</head>
-	<body>
-		<div id="blogPopup" class="single-linksource" style="display: none;">
-			<div onclick="closebuttonlink();" class="closebutton"><i class="fas fa-times"></i></div>
-			<div class="single-contain">
-				<p class="single-linksource-h"></p>
-				<p class="single-linksource-p"></p>
-				<div class="single-inner" style="display: none;" id="slvideo">
-					<video id="SVideo2" class="single-v" src="" poster="" height="100%" width="100%" data-ckin="default"
-						controls="" data-title=""></video>
-				</div>
-				<div class="single-inner" style="display: none;" id="SlImg">
-					<img id="SImg" src="" class="single-img">
-				</div>
-				<div class="single-inner" style="display: none;" id="SlBlog">
-					<div id="blogcontent"></div>
-				</div>
-				<p class="single-linksource-h6"></p>
-				<div class="text-center margin-t-30">
-					<a href="" class="btn btn-custom" id="btnlink1"></a>
-					<a href="" class="btn btn-custom" id="btnlink2"></a>
-					<a href="" class="btn btn-custom" id="btnlink3"></a>
-					<a href="" class="btn btn-custom" id="btnlink4"></a>
-				</div>
-			</div>
-		</div>
 
-		<!-- Start Navbar -->
-		<nav class="navbar navbar-expand-lg navbar-default navbar-custom navbar-light">
-			<div class="container"> <a class="navbar-brand logo" href="index.html"><img src="images/DoraFX.webp"
-						class="logo-common"></a>
-				<div class="navbar-header"> <button class="navbar-toggler" type="button" data-toggle="collapse"
-						data-target="#navbar-collapse-1" aria-controls="navbarSupportedContent" aria-expanded="false"
-						aria-label="Toggle navigation"><i class="fas fa-bars"></i></button> </div>
-				<div class="collapse navbar-collapse" id="navbar-collapse-1">
-					<ul class="nav navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" onclick="alert('待更新');">Resume</a></li>
-						<li class="nav-item"><a class="nav-link" href="portfolio.html">Portfolio</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-					</ul>
+	<body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
+		<div id="app" v-cloak>
+			<!-- Header Component -->
+			<header
+				class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center justify-between h-16">
+						<!-- Logo -->
+						<a @click.prevent="navigate('home')" href="#"
+							class="flex items-center gap-2 font-semibold text-lg hover:opacity-70 transition-opacity">
+							<img src="images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+							<span>{{ t('brand') }}</span>
+						</a>
+
+						<!-- Desktop Nav -->
+						<nav class="hidden md:flex items-center gap-8">
+							<!-- Home -->
+							<a @click.prevent="navigate('home')" href="#"
+								:class="[ navBase, isActive(['home']) ? navActive : navIdle]">
+								{{ t('nav.home') }}
+							</a>
+
+							<!-- Apps / App Detail -->
+							<a @click.prevent="navigate('apps')" href="#"
+								:class="[ navBase, isActive(['apps','appdetail', 'appsv2', 'app-store', 'changelog']) ? navActive : navIdle]">
+								{{ t('nav.apps') }}
+							</a>
+
+							<!-- Articles / Article Detail -->
+							<a @click.prevent="navigate('articles')" href="#"
+								:class="[ navBase, isActive(['articles','article-detail']) ? navActive : navIdle]">
+								{{ t('nav.articles') }}
+							</a>
+
+							<!-- Media / Media Detail -->
+							<a @click.prevent="navigate('media')" href="#"
+								:class="[ navBase, isActive(['media','media-detail']) ? navActive : navIdle]">
+								{{ t('nav.media') }}
+							</a>
+
+							<!-- About -->
+							<a @click.prevent="navigate('about')" href="#"
+								:class="[ navBase, isActive(['about']) ? navActive : navIdle]">
+								{{ t('nav.about') }}
+							</a>
+
+						</nav>
+
+
+						<!-- Right Actions -->
+						<div class="flex items-center gap-3">
+							<!-- Language Switcher -->
+							<div class="relative">
+								<button @click="showLangMenu = !showLangMenu"
+									class="flex items-center gap-1 px-3 py-1.5 text-sm rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+									<span>{{ currentLangLabel }}</span>
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M19 9l-7 7-7-7"></path>
+									</svg>
+								</button>
+								<div v-if="showLangMenu" @click.away="showLangMenu = false"
+									class="absolute right-0 mt-2 w-32 bg-white dark:bg-neutral-800 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-700 overflow-hidden">
+									<button v-for="lang in languages" :key="lang.code" @click="setLanguage(lang.code)"
+										class="w-full px-4 py-2 text-sm text-left hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+										:class="{ 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400': currentLang === lang.code }">
+										{{ lang.label }}
+									</button>
+								</div>
+							</div>
+
+							<!-- Theme Toggle -->
+							<button @click="toggleTheme"
+								class="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+								<svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor"
+									viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+									</path>
+								</svg>
+								<svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+									</path>
+								</svg>
+							</button>
+
+							<!-- Mobile Menu Toggle -->
+							<button @click="showMobileMenu = !showMobileMenu"
+								class="md:hidden p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M4 6h16M4 12h16M4 18h16"></path>
+								</svg>
+							</button>
+						</div>
+					</div>
 				</div>
-			</div>
-		</nav> <!-- End Navbar -->
-		<section>
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="page-title text-center">
-							<div class="row justify-content-center">
-								<div class="col-lg-9">
-									<h2>Welcome!<br>My name is<br><span>宋清鑫 Song Qingxin</span></h2>
-									<p class="text-muted">I am a CG artist studying Digital Media Art at Communication
-										University of China.<br>
-										<a href="https://www.zcool.com.cn/u/17973793">Zcool</a>&emsp;
-										<a href="https://www.behance.net/dorafx">Behance</a>&emsp;
-										<a href="https://www.ggac.com/user/118772">GGAC</a>
-									</p>
+
+				<!-- Mobile Menu -->
+				<div v-if="showMobileMenu"
+					class="md:hidden bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800">
+
+					<nav class="px-4 py-4 space-y-2">
+
+						<!-- Home -->
+						<a @click.prevent="navigate('home'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['home']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.home') }}
+						</a>
+
+						<!-- Apps / App Detail -->
+						<a @click.prevent="navigate('apps'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['apps','appdetail']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.apps') }}
+						</a>
+
+						<!-- Articles / Article Detail -->
+						<a @click.prevent="navigate('articles'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['articles','article-detail']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.articles') }}
+						</a>
+
+						<!-- Media / Media Detail -->
+						<a @click.prevent="navigate('media'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['media','media-detail']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.media') }}
+						</a>
+
+						<!-- About -->
+						<a @click.prevent="navigate('about'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['about']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.about') }}
+						</a>
+
+						<!-- Contact -->
+						<a @click.prevent="navigate('contact'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['contact']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.contact') }}
+						</a>
+
+					</nav>
+				</div>
+
+			</header>
+
+			<!-- Main Content -->
+			<main class="pt-16">
+
+				<!-- ================== Loading ================== -->
+				<Transition name="fade">
+					<div v-if="isPageLoading"
+						class="fixed inset-0 z-[100] bg-white dark:bg-neutral-950 flex items-center justify-center">
+						<div
+							class="w-8 h-8 rounded-full border-[3px] border-neutral-200 dark:border-neutral-800 border-t-neutral-800 dark:border-t-white animate-spin">
+						</div>
+					</div>
+				</Transition>
+
+				<!-- ========== HOME PAGE ========== -->
+				<template v-if="currentPage === 'home'">
+					<!-- Hero Section - DietPro Featured -->
+					<section class="relative min-h-screen flex flex-col">
+						<!-- Hero (Top Half) -->
+						<div
+							class="flex-1 relative overflow-hidden flex items-center bg-[#f8fafc] dark:bg-[#0a0a0a] transition-colors duration-300">
+							<!-- Elegant Background Elements (Glowing Orbs) -->
+							<div
+								class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[500px] h-[500px] bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none">
+							</div>
+							<div
+								class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[400px] h-[400px] bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-[80px] pointer-events-none">
+							</div>
+
+							<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-20 w-full">
+								<div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+									<!-- Left: Text Content -->
+									<div class="text-center lg:text-left animate-fade-in-up">
+										<!-- Badge & Title Section -->
+										<div class="flex flex-col items-center lg:items-start">
+
+											<!-- 标签 -->
+											<div
+												class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#F2F2F2] dark:bg-[#1C1C1E] mb-10">
+												<span class="w-1.5 h-1.5 bg-[#FF3B30] rounded-full"></span>
+												<span
+													class="text-[11px] font-bold text-neutral-900 dark:text-white tracking-wide uppercase">
+													{{ t('hero.featured') }}
+												</span>
+											</div>
+
+											<!-- 2. Logo + Title 组合 -->
+											<div
+												class="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-5 mb-6">
+												<!-- Logo Image -->
+												<div class="relative w-24 h-24 sm:w-20 sm:h-20 shrink-0 rounded-[1.2rem]
+											           shadow-xl shadow-emerald-500/20 ring-1 ring-black/5 dark:ring-white/10
+											           overflow-hidden bg-white dark:bg-neutral-900 flex items-center justify-center">
+													<img src="images/dietpro/icon.png"
+														class="w-full h-full object-contain" />
+												</div>
+												<!-- Text Title -->
+												<h1 class="text-4xl sm:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white
+											           text-center sm:text-left">
+													{{ t('hero.heroAppName') }}
+												</h1>
+											</div>
+										</div>
+
+										<!-- New Slogan with Gradient Text -->
+										<p
+											class="text-2xl sm:text-3xl pb-16 lg:pb-0 font-medium text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 mb-4 py-0.5">
+											{{ t('hero.heroAppSlogan') }}
+										</p>
+
+										<p
+											class="text-base sm:text-lg hidden lg:block text-neutral-500 dark:text-neutral-400 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed px-8 md:px-0">
+											{{ t('hero.heroAppIntro') }}
+										</p>
+
+										<!-- Dual Buttons -->
+										<div
+											class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+											<button @click="goDietPro"
+												class="min-w-[160px] px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-semibold transition-all shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/40">
+												{{ t('hero.tryNow') }}
+											</button>
+											<button @click="navigate('dietpro')"
+												class="min-w-[160px] px-8 py-4 bg-white/50 dark:bg-neutral-800/50 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 hover:bg-white dark:hover:bg-neutral-800 text-neutral-900 dark:text-white rounded-full font-medium transition-all hover:border-emerald-500/30">
+												{{ t('hero.learnMore') }}
+											</button>
+										</div>
+
+										<div
+											class="mt-8 flex items-center justify-center lg:justify-start gap-3 text-sm text-neutral-400">
+											<span class="flex items-center gap-1">
+												<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+													<path
+														d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+												</svg>
+												{{ t('hero.AppType') }}
+											</span>
+											<span
+												class="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+											<span>{{ t('hero.AppVersion') }}</span>
+										</div>
+									</div>
+
+									<!-- Right: Elegant Mockup -->
+									<div class="hidden lg:flex justify-center relative animate-fade-in-up">
+										<!-- Decorative Circle behind phone (保留背景光晕，增加氛围) -->
+										<div
+											class="absolute inset-0 bg-gradient-to-tr from-emerald-100 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-full blur-3xl transform scale-90">
+										</div>
+
+										<img src="images/dietpro/HomeMockup.png"
+											class="relative z-10 w-[600px] h-auto object-contain drop-shadow-2xl" />
+									</div>
+
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="section">
-			<div class="container">
-				<!-- SECTION FILTER ================================================== -->
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="portfolio-filter text-center">
-							<a href="#" data-filter="*" class="current waves-effect waves-success">All</a>
-							<a href="#" data-filter=".3D" class="waves-effect waves-success">3D</a>
-							<a href="#" data-filter=".2D" class="waves-effect waves-success">2D</a>
-							<a href="#" data-filter=".Video" class="waves-effect waves-success">Video</a>
-							<a href="#" data-filter=".Web" class="waves-effect waves-success">Web</a>
-						</div>
-					</div>
-				</div>
-				<div class="port portfolio-masonry m-b-30">
-					<div class="page-title text-center">
-						<div class="row justify-content-center">
-							<div class="col-lg-9">
-								<p class="text-muted">The homepage only displays a maximum of 20 works, please visit <a
-										href="portfolio.html">portfolio</a> to view all works.</p>
+						<!-- Other Apps (Bottom Half) -->
+						<div
+							class="w-full bg-white dark:bg-neutral-950 border-t border-neutral-100 dark:border-neutral-800/50 py-16 transition-colors duration-300">
+							<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+								<!-- Grid Layout: 4 columns on large screens -->
+								<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up">
+
+									<!-- keleton: 3 cards -->
+									<template v-if="appsLoading && (!homeOtherApps || homeOtherApps.length === 0)">
+										<div v-for="n in 3" :key="'home-app-skel-'+n"
+											class="bg-neutral-50 dark:bg-neutral-900/50 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-800 animate-pulse">
+											<div class="flex justify-between items-start mb-4">
+												<div
+													class="w-14 h-14 rounded-[1.2rem] bg-neutral-200 dark:bg-neutral-800">
+												</div>
+												<div class="h-5 w-14 rounded-md bg-neutral-200 dark:bg-neutral-800">
+												</div>
+											</div>
+											<div class="h-5 w-2/3 rounded bg-neutral-200 dark:bg-neutral-800 mb-3">
+											</div>
+											<div class="h-4 w-full rounded bg-neutral-200 dark:bg-neutral-800 mb-2">
+											</div>
+											<div class="h-4 w-3/4 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+										</div>
+									</template>
+
+									<!-- Real: 3 apps -->
+									<template v-else>
+										<div v-for="app in homeOtherApps" :key="'home-'+app.id"
+											@click="!app.disabled && navigate(app.page)"
+											class="group relative overflow-hidden flex flex-col p-6 bg-white dark:bg-neutral-900 rounded-[1rem] md:rounded-[1.5rem] transition-all duration-300 cursor-pointer
+											border border-neutral-200 hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:shadow-lg">
+
+
+											<!-- Logo & badge -->
+											<div class=" flex justify-between items-start mb-4">
+												<div
+													class="w-14 h-14 rounded-[1.2rem] flex items-center justify-center text-2xl shadow-sm transition-transform duration-300">
+													<img :src="app.logoUrl" alt=""
+														class="w-full h-full rounded-[1.2rem] object-contain" />
+												</div>
+
+												<div class="flex gap-2">
+													<span v-if="app.statusKey && app.statusKey !== 'apps.launched'"
+														class="px-3 py-1 rounded-full text-xs font-semibold border"
+														:class="
+													    app.statusKey === 'apps.developing'
+													      ? 'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+													      : app.statusKey === 'apps.alpha'
+													        ? 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800'
+													        : app.statusKey === 'apps.beta'
+													          ? 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+													          : ''">
+														{{ tStatus(app.statusKey) }}
+													</span>
+
+													<span v-if="app.version"
+														class="px-3 py-1 rounded-full text-xs font-semibold border bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700">
+														{{ app.version }}
+													</span>
+												</div>
+											</div>
+
+											<!-- Text -->
+											<h3
+												class="font-bold text-lg text-neutral-700 dark:text-white mb-2 transition-colors group-hover:text-neutral-900 dark:group-hover:text-neutral-400">
+												{{ pickI18n(app.name) }}
+											</h3>
+
+											<p
+												class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
+												{{ pickI18n(app.tagline) }}
+											</p>
+										</div>
+									</template>
+
+									<!-- 固定：View All -->
+									<div @click="navigate('apps')"
+										class="group flex flex-row-reverse md:flex-col items-center justify-between md:justify-center bg-white dark:bg-neutral-950 rounded-2xl p-6 cursor-pointer
+								        border border-neutral-200 hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all duration-300 hover:shadow-lg">
+										<div
+											class="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center md:mb-3 group-hover:scale-110 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 transition-all duration-300">
+											<svg class="w-6 h-6 text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors"
+												fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+											</svg>
+										</div>
+										<span
+											class="font-medium text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors ml-1 md:ml-0">
+											{{ t('hero.viewAll') }}
+										</span>
+									</div>
+								</div>
+
 							</div>
 						</div>
-					</div>
-					<div class="portfolioContainer row" id="addplace">
-						<!--在这里添加的作品-->
-					</div> <!-- end portfoliocontainer-->
-				</div> <!-- End row -->
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="text-center margin-t-30"> <a href="portfolio.html" class="btn btn-custom">More
-								works</a>
-						</div>
-					</div>
-				</div>
-			</div> <!-- end container -->
-		</section>
-		<footer class="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="text-center">
-							<a class="pb-2 display-4 mb-0 d-inline-block text-dark" href="index.html">
-								<img src="images/DoraFX.webp" class="logo-common">
-							</a>
-							<ul class="list-inline social-circle margin-t-30">
-								<li onclick="s1();" class="list-inline-item">
-									<a class="social-block">
-										<img src="images/social logo/01.svg" id="social01" alt="">
-									</a>
-								</li>
-								<li onclick="s2();" class="list-inline-item">
-									<a class="social-block">
-										<img src="images/social logo/02.svg" id="social02" alt="">
-									</a>
-								</li>
-								<li onclick="s3();" class="list-inline-item">
-									<a class="social-block">
-										<img src="images/social logo/03.svg" id="social03" alt="">
-									</a>
-								</li>
-								<li onclick="s4();" class="list-inline-item">
-									<a class="social-block wechat-block">
-										<img src="images/social logo/04.svg" id="social04" alt="">
-									</a>
-									<div class="wechat-code">
-										<div class="wechat-code-container">
-											<img src="images/social logo/wechat.webp" alt="">
+					</section>
+
+					<!-- Featured Articles Section -->
+					<section class="py-24 bg-white dark:bg-neutral-950">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex items-center justify-between mb-12">
+								<h2 class="text-3xl font-bold">{{ t('home.featuredArticles') }}</h2>
+								<a @click.prevent="navigate('articles')" href="#"
+									class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">{{
+								t('home.viewAll') }}
+									→</a>
+							</div>
+
+							<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+								<!-- Loading Skeleton (显示3个占位符) -->
+								<template v-if="isLoading">
+									<div v-for="n in 3" :key="n" class="animate-pulse">
+										<!-- 图片占位 -->
+										<div class="aspect-video bg-neutral-200 dark:bg-neutral-800 rounded-2xl mb-4">
 										</div>
-										<div class="wechat-code-arrow">
-											<svg xmlns="http://www.w3.org/2000/svg" width="895.894" height="427.5"
-												viewBox="0 0 895.894 427.5">
-												<path id="路径_2" data-name="路径 2"
-													d="M1139.02,1098a66.675,66.675,0,0,1-26.222-5.359,66.088,66.088,0,0,1-22.705-16.077L735.121,691.757A66.347,66.347,0,0,0,691.074,670.5h895.894a66.339,66.339,0,0,0-44.047,21.257l-354.973,384.807a66.193,66.193,0,0,1-35.6,20.1A67.1,67.1,0,0,1,1139.02,1098Z"
-													transform="translate(-691.074 -670.5)" fill="#f6f6f6" />
+										<!-- 分类占位 -->
+										<div class="h-3 w-20 bg-neutral-200 dark:bg-neutral-800 rounded mb-3"></div>
+										<!-- 标题占位 -->
+										<div class="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded mb-2"></div>
+										<!-- 内容占位 -->
+										<div class="h-4 w-full bg-neutral-200 dark:bg-neutral-800 rounded mb-1"></div>
+										<div class="h-4 w-2/3 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+									</div>
+								</template>
+
+								<!-- Real Content (使用 computed 的 featuredArticles) -->
+								<template v-else>
+									<article v-for="article in featuredArticles" :key="article.id"
+										@click="viewArticle(article.id)" class="group cursor-pointer">
+										<div
+											class="aspect-video bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-4 overflow-hidden">
+											<img :src="article.cover" :alt="article.title[currentLang]"
+												class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+										</div>
+										<span
+											class="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase">
+											{{ article.category[currentLang] }}
+										</span>
+										<h3
+											class="text-xl font-semibold mt-2 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+											{{ article.title[currentLang] }}
+										</h3>
+										<p class="text-neutral-600 dark:text-neutral-400 text-sm line-clamp-2">
+											{{ article.excerpt[currentLang] }}
+										</p>
+									</article>
+								</template>
+							</div>
+						</div>
+					</section>
+
+					<!-- Featured Media Section -->
+					<section class="py-24 bg-neutral-50 dark:bg-neutral-900">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex items-center justify-between mb-12">
+								<h2 class="text-3xl font-bold">{{ t('home.featuredMedia') }}</h2>
+								<a @click.prevent="navigate('media')" href="#"
+									class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">{{
+								t('home.viewAll') }}
+									→</a>
+							</div>
+
+							<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+								<!-- Loading Skeleton (显示8个占位符) -->
+								<template v-if="isLoading">
+									<div v-for="n in 8" :key="n"
+										class="aspect-square bg-neutral-200 dark:bg-neutral-800 rounded-xl animate-pulse">
+									</div>
+								</template>
+
+								<!-- Real Content (使用 computed 的 featuredMedia) -->
+								<template v-else>
+									<div v-for="item in featuredMedia" :key="item.id" @click="viewMedia(item.id)"
+										class="group cursor-pointer aspect-square bg-neutral-200 dark:bg-neutral-800 rounded-xl overflow-hidden relative">
+										<img :src="item.thumbnail" :alt="item.title[currentLang]"
+											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+										<div
+											class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+											<span class="text-white text-sm font-medium">{{ item.title[currentLang]
+											}}</span>
+										</div>
+										<div v-if="item.typeObj?.en === 'Video'"
+											class="absolute top-3 right-3 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center">
+											<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M8 5v14l11-7z" />
 											</svg>
 										</div>
 									</div>
-								</li>
-								<li onclick="s5();" class="list-inline-item">
-									<a class="social-block">
-										<img src="images/social logo/05.svg" id="social05" alt="">
-									</a>
-								</li>
-							</ul>
-							<div class="beian">
-								<div class="ICP">
-									<a href="https://beian.miit.gov.cn/">京ICP备2023030112号</a>
-								</div>
-								<div class="gap"></div>
-								<div class="Gongan">
-									<img src="images/gongan.png" alt="">
-									<a
-										href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879">京公网安备11010502053879号</a>
+								</template>
+							</div>
+						</div>
+					</section>
+
+					<!-- Contact CTA Section -->
+					<section class="py-24 bg-white dark:bg-neutral-950">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+							<h2 class="text-4xl font-bold mb-6">{{ t('home.contactTitle') }}</h2>
+							<p class="text-xl text-neutral-600 dark:text-neutral-400 mb-10">{{ t('home.contactDesc') }}
+							</p>
+							<button @click="navigate('contact')"
+								class="px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full font-medium hover:opacity-90 transition-opacity text-lg">
+								{{ t('home.contactBtn') }}
+							</button>
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== APP DETAIL CONTAINER (通用详情页容器) ========== -->
+				<template v-if="currentPage === 'appdetail'">
+					<div class="w-full h-[calc(100vh-64px)] overflow-hidden bg-white dark:bg-black">
+						<iframe :src="currentAppUrlWithParams" class="w-full h-full border-0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							title="App Detail">
+						</iframe>
+					</div>
+				</template>
+
+				<!-- ========== APPS OVERVIEW PAGE ========== -->
+				<template v-if="currentPage === 'apps'">
+					<section class="py-24">
+
+						<!-- Try New Launcher -->
+						<button @click="toggleAppsLauncher"
+							class="absolute top-20 md:top-24 right-6 z-40 group flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.18)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.96]">
+							<!-- Icon -->
+							<img src="images/Launchnext.png" alt=""
+								class="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 drop-shadow-lg glow-white transition" />
+
+							<!-- Text -->
+							<div class="flex flex-col text-left leading-tight">
+								<span class="text-sm font-semibold text-neutral-900 dark:text-white">
+									{{ t('switch.tryNewLaunchPad') }}
+								</span>
+								<span class="text-xs text-neutral-500 dark:text-neutral-400">
+									{{ t('switch.launchPadInfo') }}
+								</span>
+							</div>
+
+							<!-- Arrow -->
+							<i
+								class="fa-solid fa-chevron-right text-neutral-400 group-hover:translate-x-0.5 transition-transform"></i>
+						</button>
+
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-16">
+								<h1 class="text-4xl font-bold mb-4 animate-fade-in-up">{{ t('apps.title') }}</h1>
+								<p class="text-xl text-neutral-600 dark:text-neutral-400 animate-fade-in-up">
+									{{ t('apps.subtitle') }}
+								</p>
+							</div>
+
+							<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
+
+								<!-- Skeleton (Apps) -->
+								<template v-if="appsLoading && (!applist || applist.length === 0)">
+									<div v-for="n in 6" :key="'apps-skel-'+n"
+										class="p-8 bg-white dark:bg-neutral-900 rounded-[1rem] md:rounded-[1.5rem] border border-neutral-200 dark:border-neutral-800 animate-pulse">
+										<div class="flex justify-between items-start mb-6">
+											<div class="w-20 h-20 rounded-[1.2rem] bg-neutral-200 dark:bg-neutral-800">
+											</div>
+											<div class="h-6 w-20 rounded-full bg-neutral-200 dark:bg-neutral-800"></div>
+										</div>
+										<div class="space-y-3">
+											<div class="h-6 w-2/3 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+											<div class="h-4 w-full rounded bg-neutral-200 dark:bg-neutral-800"></div>
+											<div class="h-4 w-3/4 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+										</div>
+										<div
+											class="mt-6 pt-6 border-t border-neutral-100 dark:border-neutral-800 flex flex-wrap gap-2">
+											<div class="h-7 w-16 rounded-lg bg-neutral-200 dark:bg-neutral-800"></div>
+											<div class="h-7 w-20 rounded-lg bg-neutral-200 dark:bg-neutral-800"></div>
+										</div>
+									</div>
+								</template>
+
+								<!-- Error (Apps) -->
+								<template v-else-if="appsError">
+									<div
+										class="md:col-span-2 lg:col-span-3 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-8">
+										<div class="text-lg font-semibold mb-2">Apps 加载失败</div>
+										<div class="text-sm text-neutral-600 dark:text-neutral-400 break-all">
+											{{ appsError }}
+										</div>
+										<button @click="fetchApps(false)"
+											class="mt-5 px-5 py-2.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:opacity-90">
+											重试
+										</button>
+									</div>
+								</template>
+
+								<!-- Real Content -->
+								<template v-else>
+									<div v-for="app in applist" :key="app.id"
+										@click="!app.disabled && navigate(app.page)"
+										class="group relative overflow-hidden flex flex-col p-8 bg-white dark:bg-neutral-900 rounded-[1rem] md:rounded-[1.5rem] transition-all duration-300 cursor-pointer border border-neutral-200 hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:shadow-lg">
+
+										<!-- Header -->
+										<div class="flex justify-between items-start mb-6">
+											<!-- Logo -->
+											<div
+												class="w-20 h-20 flex rounded-[1.2rem] items-center justify-center text-4xl shadow-lg transition-transform duration-500">
+												<img :src="app.logoUrl" alt=""
+													class="w-full h-full rounded-[1.2rem] object-contain" />
+											</div>
+
+											<div class="flex gap-2">
+												<span v-if="app.statusKey && app.statusKey !== 'apps.launched'"
+													class="px-3 py-1 rounded-full text-xs font-semibold border" :class="
+												    app.statusKey === 'apps.developing'
+												      ? 'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+												      : app.statusKey === 'apps.alpha'
+												        ? 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800'
+												        : app.statusKey === 'apps.beta'
+												          ? 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+												          : ''">
+													{{ tStatus(app.statusKey) }}
+												</span>
+
+												<span v-if="app.version"
+													class="px-3 py-1 rounded-full text-xs font-semibold border bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700">
+													{{ app.version }}
+												</span>
+											</div>
+										</div>
+
+										<!-- Content -->
+										<div class="flex-1">
+											<h3
+												class="font-bold text-2xl text-neutral-900 dark:text-white mb-3 transition-colors group-hover:text-neutral-600 dark:group-hover:text-neutral-400">
+												{{ pickI18n(app.name) }}
+											</h3>
+											<p class="text-neutral-500 dark:text-neutral-400 leading-relaxed mb-6">
+												{{ pickI18n(app.tagline) }}
+											</p>
+										</div>
+
+										<!-- Footer: Platforms -->
+										<div
+											class="mt-auto flex flex-wrap gap-2 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+											<span v-for="(pf, i) in (app.platforms || [])" :key="app.id + '-pf-' + i"
+												class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-xs font-medium"
+												:class="app.disabled ? 'text-neutral-400': 'text-neutral-600 dark:text-neutral-300'">
+												<i v-if="pf.icon" :class="pf.icon" aria-hidden="true"></i>
+												<span v-else class="w-3.5 h-3.5">•</span>
+												{{ pf.label }}
+											</span>
+										</div>
+									</div>
+
+									<div v-if="appsNextCursor"
+										class="md:col-span-2 lg:col-span-3 flex justify-center pt-4">
+										<button @click="loadMoreApps"
+											class="px-6 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+											:disabled="appsLoading">
+											{{ appsLoading ? "加载中…" : "加载更多" }}
+										</button>
+									</div>
+								</template>
+							</div>
+
+
+							<!-- Update Logs Link -->
+							<div class="mt-16 text-center hidden">
+								<a @click.prevent="navigate('changelog')" href="#"
+									class="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:underline font-medium">
+									{{ t('apps.viewChangelog') }}
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M9 5l7 7-7 7">
+										</path>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== CHANGELOG PAGE ========== -->
+				<template v-if="currentPage === 'changelog'">
+					<section class="py-24">
+						<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+							<button v-if="currentApp" @click="currentPage = 'app-store'"
+								class="mb-8 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white flex items-center gap-2">
+								<i class="fa-solid fa-chevron-left text-xs"></i>
+								{{ t('changelog.back') }} {{ pickI18n(currentApp.name) }}
+							</button>
+
+							<h1 class="text-4xl font-bold mb-4">{{ t('changelog.title') }}</h1>
+							<p class="text-xl text-neutral-600 dark:text-neutral-400 mb-12">
+								{{ t('changelog.subtitle') }}
+							</p>
+
+							<div class="space-y-10">
+								<div v-for="log in filteredChangelogs" :key="log.id">
+
+									<!-- 头部：模仿 App Store 版本历史，左侧版本，右侧日期 -->
+									<div class="flex items-baseline justify-between px-1 mb-3">
+										<div class="flex items-center gap-3">
+											<h3
+												class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+												{{ log.version }}
+											</h3>
+											<span v-if="log.app"
+												class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-neutral-500 bg-neutral-100 dark:bg-neutral-800 rounded-md">
+												{{ log.app }}
+											</span>
+										</div>
+										<span class="text-sm font-medium text-neutral-400">{{ log.date }}</span>
+									</div>
+
+									<!-- 内容区域：iOS 风格的圆角矩形块 -->
+									<div class="bg-[#F2F2F7] dark:bg-[#1C1C1E] rounded-[1rem] md:rounded-[1.2rem] p-6">
+										<!-- 有更新记录 -->
+										<ul v-if="log.changes && log.changes[currentLang] && log.changes[currentLang].length > 0"
+											class="space-y-2.5">
+											<li v-for="(change, idx) in log.changes[currentLang]" :key="idx"
+												class="text-[15px] flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 leading-relaxed">
+												<span
+													class="w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-neutral-200 shrink-0"></span>
+												<span>{{ change }}</span>
+											</li>
+										</ul>
+
+										<!-- 空状态 -->
+										<div v-else
+											class="text-[14px] text-neutral-500 dark:text-neutral-400 text-center py-6">
+											{{ t('changelog.empty') }}
+										</div>
+									</div>
+
+
 								</div>
 							</div>
-							<p class="text-muted m-b-0 copyright-txt" id="copyright"></p>
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== ARTICLES LIST PAGE ========== -->
+				<template v-if="currentPage === 'articles'">
+					<section class="py-24">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h1 class="text-4xl font-bold mb-4 animate-fade-in-up">{{ t('articles.title') }}</h1>
+								<p class="text-xl text-neutral-600 dark:text-neutral-400 animate-fade-in-up">
+									{{ t('articles.subtitle') }}
+								</p>
+							</div>
+
+							<!-- Search -->
+							<div class="max-w-xl mx-auto mb-12 animate-fade-in-up">
+								<div class="relative">
+									<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400"
+										fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+									</svg>
+									<input v-model="articleSearch" type="text" :placeholder="t('articles.search')"
+										class="w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-full outline-none transition-colors">
+								</div>
+							</div>
+
+							<!-- Articles Grid -->
+							<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
+								<!-- Loading Skeleton (显示6个占位符) -->
+								<template v-if="isLoading">
+									<div v-for="n in 6" :key="n" class="animate-pulse">
+										<!-- 图片占位 -->
+										<div class="aspect-video bg-neutral-200 dark:bg-neutral-800 rounded-2xl mb-4">
+										</div>
+
+										<!-- 分类占位 -->
+										<div class="h-3 w-20 bg-neutral-200 dark:bg-neutral-800 rounded mb-3"></div>
+
+										<!-- 标题占位 -->
+										<div class="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded mb-2"></div>
+
+										<!-- 摘要占位 -->
+										<div class="h-4 w-full bg-neutral-200 dark:bg-neutral-800 rounded mb-1"></div>
+										<div class="h-4 w-2/3 bg-neutral-200 dark:bg-neutral-800 rounded mb-3"></div>
+
+										<!-- 日期占位 -->
+										<div class="h-3 w-24 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+									</div>
+								</template>
+
+								<!-- Real Content -->
+								<template v-else>
+									<article v-for="article in filteredArticles" :key="article.id"
+										@click="viewArticle(article.id)" class="group cursor-pointer">
+										<div
+											class="aspect-video bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-4 overflow-hidden">
+											<img :src="article.cover" :alt="article.title[currentLang]"
+												class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+										</div>
+										<span
+											class="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase">
+											{{ article.category[currentLang] }}
+										</span>
+										<h3
+											class="text-xl font-semibold mt-2 mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+											{{ article.title[currentLang] }}
+										</h3>
+										<p class="text-neutral-600 dark:text-neutral-400 text-sm line-clamp-2">
+											{{ article.excerpt[currentLang] }}
+										</p>
+										<time class="text-xs text-neutral-500 mt-3 block">{{ article.date }}</time>
+									</article>
+								</template>
+							</div>
+
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== ARTICLE DETAIL PAGE ========== -->
+				<template v-if="currentPage === 'article-detail'">
+					<article class="py-24">
+						<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+							<a @click.prevent="navigate('articles')" href="#"
+								class="inline-flex items-center gap-2 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 mb-8 transition-colors">
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M15 19l-7-7 7-7">
+									</path>
+								</svg>
+								{{ t('article.back') }}
+							</a>
+
+							<div v-if="currentArticle">
+								<span class="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase">{{
+								currentArticle.category[currentLang] }}</span>
+								<h1 class="text-4xl font-bold mt-3 mb-6">{{ currentArticle.title[currentLang] }}</h1>
+								<div class="flex items-center gap-1 text-sm text-neutral-500 mb-8">
+									<span>{{ currentArticle.date }}</span>
+									<span>•</span>
+									<span>{{ currentArticle.readTime }} {{ t('article.minRead') }}</span>
+								</div>
+
+								<div
+									class="aspect-video bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-10 overflow-hidden">
+									<img :src="currentArticle.cover" :alt="currentArticle.title[currentLang]"
+										class="w-full h-full object-cover">
+								</div>
+
+								<div class="prose prose-neutral dark:prose-invert max-w-none">
+									<!-- 使用 v-html 渲染解析后的 HTML -->
+									<div v-html="renderArticleContent(currentArticle.content[currentLang])"
+										class="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+									</div>
+								</div>
+							</div>
+						</div>
+					</article>
+				</template>
+
+				<!-- ========== MEDIA LIST PAGE ========== -->
+				<template v-if="currentPage === 'media'">
+					<section class="py-24">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h1 class="text-4xl font-bold mb-4 animate-fade-in-up">{{ t('media.title') }}</h1>
+								<p class="text-xl text-neutral-600 dark:text-neutral-400 animate-fade-in-up">
+									{{ t('media.subtitle') }}
+								</p>
+							</div>
+
+							<!-- Search -->
+							<div class="max-w-xl mx-auto mb-12 animate-fade-in-up">
+								<div class="relative">
+									<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400"
+										fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+									</svg>
+									<input v-model="mediaSearch" type="text" :placeholder="t('media.search')"
+										class="w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-full outline-none transition-colors">
+								</div>
+							</div>
+
+							<!-- Media Grid -->
+							<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in-up">
+								<!-- Loading Skeleton (显示8个占位符) -->
+								<template v-if="isLoading">
+									<div v-for="n in 8" :key="n"
+										class="aspect-square bg-neutral-200 dark:bg-neutral-800 rounded-xl animate-pulse">
+									</div>
+								</template>
+
+								<!-- Real Content -->
+								<template v-else>
+									<div v-for="item in filteredMedia" :key="item.id" @click="viewMedia(item.id)"
+										class="group cursor-pointer aspect-square bg-neutral-200 dark:bg-neutral-800 rounded-xl overflow-hidden relative">
+										<img :src="item.thumbnail" :alt="item.title[currentLang]"
+											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+										<div
+											class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+											<span
+												class="text-white text-sm font-medium">{{ item.title[currentLang] }}</span>
+										</div>
+										<div v-if="item.typeObj?.en === 'Video'"
+											class="absolute top-3 right-3 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center">
+											<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M8 5v14l11-7z" />
+											</svg>
+										</div>
+									</div>
+								</template>
+							</div>
+
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== MEDIA DETAIL PAGE ========== -->
+				<template v-if="currentPage === 'media-detail'">
+					<section class="py-12 bg-white dark:bg-neutral-900 min-h-screen">
+						<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+							<!-- 1. 顶部导航：返回按钮 -->
+							<a @click.prevent="navigate('media')" href="#"
+								class="inline-flex items-center gap-2 text-neutral-500 hover:text-black dark:hover:text-white mb-10 transition-colors">
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M15 19l-7-7 7-7">
+									</path>
+								</svg>
+								{{ t('media.back') }}
+							</a>
+
+							<div v-if="currentMedia">
+								<!-- 2. 头部信息：标题与元数据 (Title & Meta) -->
+								<!-- 没有任何图片干扰，纯文字信息，干净利落 -->
+								<div class="mb-8">
+									<h1 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
+										{{ currentMedia.title[currentLang] }}
+									</h1>
+									<div
+										class="flex items-center gap-6 text-sm text-neutral-500 dark:text-neutral-400 border-b border-neutral-100 dark:border-neutral-800 pb-6">
+										<span class="flex items-center gap-2">
+											<svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor"
+												viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+												</path>
+											</svg>
+											{{ currentMedia.date }}
+										</span>
+										<span class="flex items-center gap-2 uppercase tracking-wide">
+											<svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor"
+												viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+												</path>
+											</svg>
+											{{ pickI18n(currentMedia.type) }}
+
+										</span>
+									</div>
+								</div>
+
+								<!-- 3. 富文本描述 (Description) -->
+								<!-- 位于作品下方，作为补充说明 -->
+								<div class="prose prose-neutral dark:prose-invert max-w-none">
+									<div v-html="renderArticleContent(currentMedia.description[currentLang])"></div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== ABOUT PAGE (Apple-ish / IP tone) ========== -->
+				<template v-if="currentPage === 'about'">
+					<section class="relative py-20 sm:py-28 overflow-hidden">
+						<!-- Soft glow background -->
+						<div class="pointer-events-none absolute inset-0 animate-fade-in-up">
+							<div
+								class="absolute -top-40 -right-40 w-[520px] h-[520px] bg-primary-500/15 blur-[110px] rounded-full">
+							</div>
+							<div
+								class="absolute -bottom-48 -left-48 w-[560px] h-[560px] bg-emerald-400/10 blur-[120px] rounded-full">
+							</div>
+						</div>
+
+						<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative animate-fade-in-up">
+							<!-- Header -->
+							<div class="text-center mb-10 sm:mb-14">
+								<div
+									class="mx-auto w-24 h-24 sm:w-28 sm:h-28 rounded-[1rem] bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.35)] flex items-center justify-center">
+									<img src="images/logo.webp" class="w-16 h-16 rounded" />
+								</div>
+								<h1
+									class="mt-6 text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white animate-fade-in-up">
+									{{ t('about.nickname') }}
+								</h1>
+								<p
+									class="mt-6 max-w-2xl mx-auto text-base md:text-xl px-10 md:py-0 leading-relaxed text-neutral-700 dark:text-neutral-300 animate-fade-in-up">
+									{{ t('about.tagline') }}
+								</p>
+							</div>
+
+							<!-- Main cards -->
+							<div class="grid gap-6 lg:gap-8 lg:grid-cols-12 animate-fade-in-up">
+								<!-- Left: story -->
+								<div
+									class="lg:col-span-7 rounded-[1.2rem] md:rounded-[1.5rem] bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-[0_20px_70px_-40px_rgba(0,0,0,0.45)] p-6 sm:p-10">
+									<div class="flex items-center gap-3 mb-6">
+										<div
+											class="w-10 h-10 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 flex items-center justify-center">
+											<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"
+												aria-hidden="true">
+												<path
+													d="M12 2a7 7 0 00-7 7v3a7 7 0 1014 0V9a7 7 0 00-7-7zm-5 7a5 5 0 0110 0v3a5 5 0 11-10 0V9z" />
+												<path d="M7 20a1 1 0 011-1h8a1 1 0 110 2H8a1 1 0 01-1-1z" />
+											</svg>
+										</div>
+										<h2 class="text-lg md:text-xl font-semibold text-neutral-900 dark:text-white">
+											{{ t('about.sectionStoryTitle') }}
+										</h2>
+									</div>
+
+									<div
+										class="space-y-5 text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm md:text-base">
+										<p>{{ t('about.storyP1') }}</p>
+										<p>{{ t('about.storyP2') }}</p>
+
+										<!-- Principles -->
+										<div
+											class="mt-6 rounded-[0.8rem] md:rounded-[1rem] bg-neutral-50/70 dark:bg-neutral-950/40 border border-neutral-200/60 dark:border-neutral-800/60 p-6">
+											<h3
+												class="text-base md:text-xl font-semibold text-neutral-900 dark:text-white mb-3">
+												{{ t('about.principlesTitle') }}
+											</h3>
+											<ul class="space-y-2 text-sm md:text-base">
+												<li class="flex gap-3 items-center">
+													<span
+														class="mt-1 w-2 h-2 rounded-full bg-neutral-900 dark:bg-white shrink-0"></span>
+													<span>{{ t('about.principle1') }}</span>
+												</li>
+												<li class="flex gap-3 items-center">
+													<span
+														class="mt-1 w-2 h-2 rounded-full bg-neutral-900 dark:bg-white shrink-0"></span>
+													<span>{{ t('about.principle2') }}</span>
+												</li>
+												<li class="flex gap-3 items-center">
+													<span
+														class="mt-1 w-2 h-2 rounded-full bg-neutral-900 dark:bg-white shrink-0"></span>
+													<span>{{ t('about.principle3') }}</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<!-- Right: focus + skills -->
+								<div class="lg:col-span-5 space-y-6">
+									<!-- Focus -->
+									<div
+										class="rounded-[1.2rem] md:rounded-[1.5rem] bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-[0_20px_70px_-40px_rgba(0,0,0,0.45)] p-8 sm:p-9">
+										<div class="flex items-center gap-3 mb-5">
+											<div
+												class="w-10 h-10 rounded-2xl bg-primary-500/15 text-primary-600 dark:text-primary-300 flex items-center justify-center">
+												<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"
+													aria-hidden="true">
+													<path
+														d="M12 2l7 7-7 7-7-7 7-7zm0 3.4L8.4 9 12 12.6 15.6 9 12 5.4z" />
+													<path d="M5 14l7 7 7-7-2.2-2.2L12 16.6 7.2 11.8 5 14z" />
+												</svg>
+											</div>
+											<h2 class="text-xl font-semibold text-neutral-900 dark:text-white">
+												{{ t('about.sectionFocusTitle') }}
+											</h2>
+										</div>
+
+										<p class="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+											{{ t('about.focusDesc') }}
+										</p>
+									</div>
+
+									<!-- Skills (grouped chips) -->
+									<div
+										class="rounded-[1.2rem] md:rounded-[1.5rem] bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-[0_20px_70px_-40px_rgba(0,0,0,0.45)] p-8 sm:p-9">
+										<div class="flex items-center gap-3 mb-5">
+											<div
+												class="w-10 h-10 rounded-2xl bg-neutral-900/10 dark:bg-white/10 text-neutral-900 dark:text-white flex items-center justify-center">
+												<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"
+													aria-hidden="true">
+													<path
+														d="M4 7a3 3 0 013-3h10a3 3 0 013 3v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7zm3-1a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7a1 1 0 00-1-1H7z" />
+													<path d="M8 9h8v2H8V9zm0 4h6v2H8v-2z" />
+												</svg>
+											</div>
+											<h2 class="text-xl font-semibold text-neutral-900 dark:text-white">
+												{{ t('about.sectionSkillsTitle') }}
+											</h2>
+										</div>
+
+										<div class="space-y-5">
+											<div class="flex flex-wrap gap-2">
+												<span v-for="skill in skills" :key="skill"
+													class="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 rounded-full text-sm">{{ skill }}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- CTA -->
+						<div class="mt-10 sm:mt-14 text-center animate-fade-in-up">
+							<!-- Contact CTA Section -->
+							<section class="py-12">
+								<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+									<p class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 mb-10">
+										{{ t('home.contactDesc') }}
+									</p>
+									<button @click="navigate('contact')"
+										class="px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full font-medium hover:opacity-90 transition-opacity text-lg">
+										{{ t('home.contactBtn') }}
+									</button>
+								</div>
+							</section>
+						</div>
+
+					</section>
+				</template>
+
+				<!-- ========== CONTACT PAGE ========== -->
+				<template v-if="currentPage === 'contact'">
+					<section class="py-24">
+						<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in-up">
+							<div class="text-center mb-12">
+								<h1 class="text-4xl font-bold mb-4">{{ t('contact.title') }}</h1>
+								<p class="text-xl text-neutral-600 dark:text-neutral-400">{{ t('contact.subtitle') }}
+								</p>
+							</div>
+
+							<form @submit.prevent="submitContact" class="space-y-6 animate-fade-in-up">
+								<div>
+									<label class="block text-sm font-medium mb-2">{{ t('contact.name') }}</label>
+									<input type="text" v-model="contactForm.name" required
+										class="w-full px-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-xl outline-none transition-colors">
+								</div>
+								<div>
+									<label class="block text-sm font-medium mb-2">{{ t('contact.email') }}</label>
+									<input type="email" v-model="contactForm.email" required
+										class="w-full px-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-xl outline-none transition-colors">
+								</div>
+								<div>
+									<label class="block text-sm font-medium mb-2">{{ t('contact.message') }}</label>
+									<textarea v-model="contactForm.message" rows="5" required
+										class="w-full px-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-xl outline-none transition-colors resize-none"></textarea>
+								</div>
+								<button type="submit" :disabled="contactStatus === 'sending'"
+									class="w-full py-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+									:class="[
+								    contactStatus === 'sending'
+								      ? 'bg-neutral-900/60 dark:bg-white/70 text-white dark:text-neutral-900 cursor-not-allowed'
+								      : contactStatus === 'success'
+								        ? 'bg-emerald-600 text-white'
+								        : contactStatus === 'error'
+								          ? 'bg-rose-600 text-white'
+								          : 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90'
+								  ]">
+									<!-- Loading 圈 -->
+									<svg v-if="contactStatus === 'sending'" class="w-5 h-5 animate-spin text-white"
+										viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<!-- 背景轨道：淡淡的圆圈 -->
+										<circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor"
+											stroke-width="3"></circle>
+										<!-- 旋转部分：圆润的圆弧 -->
+										<path class="opacity-90" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22"
+											stroke="currentColor" stroke-width="3" stroke-linecap="round">
+										</path>
+									</svg>
+
+									<span v-if="contactStatus === 'sending'">{{ t('contact.sending') }}</span>
+									<span v-else-if="contactStatus === 'success'">{{ t('contact.sent') }}</span>
+									<span v-else>{{ t('contact.send') }}</span>
+								</button>
+
+							</form>
+
+							<div class="mt-12 pt-12 border-t border-neutral-200 dark:border-neutral-800">
+								<h3 class="text-lg font-semibold mb-4 text-center">{{ t('contact.otherWays') }}</h3>
+								<div class="flex justify-center gap-4">
+									<a href="#"
+										class="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+										<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+											<path
+												d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+										</svg>
+									</a>
+									<a href="#"
+										class="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+										<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+											<path
+												d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+										</svg>
+									</a>
+									<a href="#"
+										class="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+										<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+											<path
+												d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+										</svg>
+									</a>
+								</div>
+							</div>
+						</div>
+					</section>
+				</template>
+
+
+
+
+				<!-- ================== APP STORE PAGE ================== -->
+				<template v-if="currentPage === 'app-store'">
+					<!-- 外层容器 -->
+					<div
+						class="min-h-screen w-full bg-white dark:bg-black transition-colors duration-300 pb-20 overflow-hidden">
+
+						<!-- 背景氛围光 (优化：拉开距离，避免挤在一起) -->
+						<div class="absolute inset-0 pointer-events-none overflow-hidden">
+							<!-- 左上角光晕 -->
+							<div
+								class="absolute -top-[100px] -left-[100px] w-[500px] h-[500px] bg-primary-400/20 rounded-full blur-[120px] opacity-60 dark:opacity-30">
+							</div>
+							<!-- 右侧光晕 -->
+							<div
+								class="absolute top-0 -right-[200px] w-[600px] h-[600px] bg-emerald-400/10 rounded-full blur-[120px] opacity-60 dark:opacity-30">
+							</div>
+						</div>
+
+						<!-- ================== 1. HERO SECTION (头部) ================== -->
+						<section class="relative pt-8 pb-10 md:pt-12 md:pb-16 overflow-hidden">
+
+							<div class="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+								<!-- 顶部导航栏占位 -->
+								<div class="mb-16">
+									<a @click.prevent="currentPage='appsv2'" href="#"
+										class="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
+										<i class="fa-solid fa-chevron-left text-xs"></i>
+										<span>{{ t('appstore.back') }}</span>
+									</a>
+								</div>
+
+								<div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+
+									<!-- App Logo -->
+									<div class="relative shrink-0">
+										<div
+											class="w-28 h-28 md:w-40 md:h-40 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xlshadow-neutral-200 dark:shadow-neutral-900 border border-neutral-200/50 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+											<smartimage :src="currentApp.logoUrl" skeleton-ratio="1/1" fit="contain"
+												rounded="rounded-[1.5rem] md:rounded-[2rem]" />
+										</div>
+									</div>
+
+									<!-- App Info & Actions -->
+									<div
+										class="flex-1 w-full flex flex-col items-center md:items-start text-center md:text-left pt-2 md:pt-4">
+
+										<!-- Name -->
+										<h1
+											class="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-2 md:md-4 ">
+											{{ pickI18n(currentApp.name) }}
+										</h1>
+
+										<!-- Tagline -->
+										<p
+											class="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 mb-16 md:mb-10 max-w-lg">
+											{{ pickI18n(currentApp.tagline) }}
+										</p>
+
+										<!-- Action Buttons Group -->
+										<div
+											class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 w-full sm:w-auto">
+											<!-- Button Group 1: 平台 / 下载 / 页面入口（循环） -->
+											<template v-for="(platform, index) in currentApp.platforms" :key="index">
+												<a v-if="platform.type === 'download'" :href="platform.url || undefined"
+													:download="!!platform.url" :aria-disabled="!platform.url"
+													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full font-bold text-sm sm:text-base transition-all duration-200 shadow-lg select-none"
+													:class="platform.url ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-neutral-900/20 dark:shadow-white/10 hover:opacity-90' : 'bg-neutral-400 dark:bg-neutral-700 text-white/70 dark:text-white/50 cursor-not-allowed shadow-none pointer-events-none'">
+													<i class="fa-solid fa-download"></i>
+													<span>{{ platform.label }}{{ t('appstore.download') }}</span>
+												</a>
+
+
+												<a v-else-if="platform.type === 'page_self'" :href="platform.url"
+													target="_self"
+													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm sm:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
+													<i class="fa-solid fa-arrow-up-right-from-square text-[12px]"></i>
+													<span>{{ t('appstore.open') }}</span>
+												</a>
+
+												<a v-else-if="platform.type === 'page_blank'" :href="platform.url"
+													target="_blank" rel="noopener"
+													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm sm:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
+													<i class="fa-solid fa-arrow-up-right-from-square text-[12px]"></i>
+													<span>{{ t('appstore.open') }}</span>
+												</a>
+											</template>
+
+											<!-- Button 2: 了解详情 -->
+											<button @click="!currentApp.disabled && navigate(currentApp.page)"
+												class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold text-sm sm:text-base border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 transition-colors disabled:opacity-50"
+												:disabled="currentApp.disabled">
+												<span>{{ t('appstore.learnMore') }}</span>
+											</button>
+
+											<!-- Button 3: 分享（暂不实现） -->
+											<button
+												class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800">
+												<i class="fa-solid fa-share-nodes"></i>
+											</button>
+										</div>
+
+										<!-- Meta Info (核心信息) -->
+										<div
+											class="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-2 md:gap-x-4 gap-y-3 text-xs md:text-sm font-medium">
+
+											<!-- Platforms (优化：图标+文字) -->
+											<div class="flex items-center gap-2">
+												<span v-for="(pf, i) in (currentApp.platforms || [])"
+													:key="currentApp.id + '-pf-' + i"
+													class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+													<i v-if="pf.icon" :class="pf.icon" aria-hidden="true"></i>
+													{{ pf.label }}
+												</span>
+											</div>
+
+
+											<div class="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></div>
+
+											<!-- Version -->
+											<div class="flex items-center gap-1.5">
+												<span>{{ t('appstore.versiontext') }}{{ currentApp.version }}</span>
+											</div>
+
+											<!-- App Status -->
+
+											<div v-if="currentApp.statusKey && currentApp.statusKey !== 'apps.launched'"
+												class="flex flex-wrap items-center justify-center md:justify-start gap-x-2 md:gap-x-4 gap-y-3">
+
+												<div class="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700">
+												</div>
+
+												<!-- App Status -->
+												<span class="px-3 py-1 rounded-full text-xs font-semibold border"
+													:class="
+												    currentApp.statusKey === 'apps.developing'
+												      ? 'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+												      : currentApp.statusKey === 'apps.alpha'
+												        ? 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800'
+												        : currentApp.statusKey === 'apps.beta'
+												          ? 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+												          : ''">
+													{{ tStatus(currentApp.statusKey) }}
+												</span>
+											</div>
+
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
+						<div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+							<!-- ================== 2. SCREENSHOTS (截图) ================== -->
+							<section class="mb-12 md:mb-20">
+								<h2 class="sr-only">App Previews</h2>
+								<div class="relative -mx-5 px-5 sm:mx-0 sm:px-0">
+
+									<div v-if="currentApp?.shelf?.length"
+										class="flex gap-4 sm:gap-6 overflow-x-auto py-8 snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-0 no-scrollbar"
+										style="-webkit-overflow-scrolling: touch;">
+										<template v-for="(it, idx) in currentApp.shelf" :key="'shelf-'+idx">
+											<div v-if="it.lang === 'all' || it.lang === currentLang"
+												class="snap-start shrink-0">
+												<div
+													class="relative rounded-[1rem] md:rounded-[1.2rem] overflow-hidden border border-neutral-200 dark:border-neutral-800 w-[220px] sm:w-[280px]">
+													<SmartImage :src="resolveUrl(it.src)" skeleton-ratio="9/16"
+														fit="cover" rounded="rounded-[1rem] md:rounded-[1.2rem]"
+														img-class="w-full h-full" />
+												</div>
+											</div>
+										</template>
+									</div>
+								</div>
+							</section>
+
+							<!-- ================== 3. MAIN CONTENT GRID (主内容 + 侧栏) ================== -->
+							<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16">
+
+								<!-- LEFT COLUMN (Content) - 移动端占全宽，桌面端占8份 -->
+								<div class="lg:col-span-8 space-y-8 md:space-y-12 lg:space-y-16">
+
+									<!-- Intro -->
+									<section>
+										<h2 class="text-xl md:text-2xl font-bold mb-4 text-neutral-900 dark:text-white">
+											{{ t('appstore.intro') }}
+										</h2>
+										<div
+											class="prose prose-neutral dark:prose-invert max-w-none text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
+											<p>
+												{{ (pickI18n(currentApp?.intro) || '').trim() ? pickI18n(currentApp?.intro) : t('appstore.introEmpty') }}
+											</p>
+										</div>
+
+									</section>
+
+									<!-- Changelog -->
+									<section>
+										<div class="flex items-center justify-between mb-5">
+											<h2 class="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white">
+												{{ t('appstore.newFeature') }}
+											</h2>
+											<!-- 优化：历史记录按钮 -->
+											<button @click="openChangelog"
+												class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline cursor-pointer flex items-center gap-1">
+												{{ t('appstore.changelog') }}
+												<i class="fa-solid fa-chevron-right text-[10px]"></i>
+											</button>
+										</div>
+
+										<div
+											class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 md:p-8 border border-neutral-200 dark:border-neutral-800">
+											<div class="flex flex-wrap items-baseline justify-between gap-2 mb-4">
+												<span
+													class="font-bold text-neutral-900 dark:text-white">{{ currentApp.changelog[0].version }}</span>
+												<span
+													class="text-sm text-neutral-400">{{ currentApp.changelog[0].date }}</span>
+											</div>
+
+											<!-- 有当前语言的 changelog -->
+											<div v-if="currentApp && currentApp.changelog && currentApp.changelog.length > 0 && currentApp.changelog[0].content && currentApp.changelog[0].content[currentLang] && currentApp.changelog[0].content[currentLang].length > 0"
+												class="space-y-2">
+												<div v-for="(item, index) in currentApp.changelog[0].content[currentLang]"
+													:key="index"
+													class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+													<span
+														class=" w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-neutral-200 shrink-0"></span>
+													<span class="leading-relaxed">
+														{{ item }}
+													</span>
+												</div>
+											</div>
+
+											<!-- 空态：当前语言没有更新记录 -->
+											<div v-else
+												class="text-sm md:text-base text-neutral-500 dark:text-neutral-400 py-4">
+												{{ t('changelog.empty') }}
+											</div>
+
+
+										</div>
+									</section>
+								</div>
+
+								<!-- RIGHT COLUMN (Sidebar: Recommended) - 移动端占全宽，桌面端占4份 -->
+								<aside class="lg:col-span-4 space-y-6 md:space-y-8">
+
+									<div class="pt-0 lg:pt-8"> <!-- 修改：移动端无上边距 -->
+										<h3 class="text-base font-bold text-neutral-900 dark:text-white mb-4 md:mb-6">
+											{{ t('appstore.moreApps') }}
+										</h3>
+
+										<div class="space-y-4 md:space-y-5" v-if="appRecommend && appRecommend.length">
+
+											<div v-for="apprecommend in appRecommend" :key="apprecommend.id" class="group flex items-center gap-3 md:gap-4 p-3 md:p-0 rounded-xl md:rounded-none
+							                 md:bg-transparentcursor-pointer cursor-pointer transition-all"
+												@click="testOpenStore(apprecommend)">
+												<!-- Icon -->
+												<div
+													class="w-12 h-12 md:w-16 md:h-16 rounded-lg md:rounded-xl border border-neutral-200 dark:border-neutral-800
+							                    flex items-center justify-center text-2xl overflow-hidden shrink-0 bg-white dark:bg-neutral-900/40">
+													<smartimage :src="apprecommend.logoUrl" skeleton-ratio="1/1"
+														fit="contain" rounded="rounded-lg md:rounded-xl"
+														class="w-12 h-12 md:w-16 md:h-16" />
+												</div>
+
+												<!-- Text -->
+												<div class="flex-1 min-w-0">
+													<h4
+														class="font-semibold text-sm md:text-base text-neutral-900 dark:text-white truncate">
+														{{ pickI18n(apprecommend.name) }}
+													</h4>
+													<p
+														class="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2 md:truncate">
+														{{ pickI18n(apprecommend.tagline || apprecommend.desc || { zh:'', en:'', ja:'', ko:'' }) }}
+													</p>
+												</div>
+
+												<!-- Action -->
+												<button class="px-3 py-1 md:px-4 md:py-1.5 rounded-full
+							                       bg-neutral-100 dark:bg-neutral-800
+							                       text-neutral-900 dark:text-white
+							                       text-xs font-bold uppercase tracking-wide
+							                       group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700
+							                       transition-colors shrink-0">
+													{{ t('appstore.enter') }}
+												</button>
+											</div>
+
+										</div>
+
+										<!-- 兜底：没有推荐时 -->
+										<div v-else
+											class="text-sm text-neutral-400 text-center py-6 md:text-left md:py-0">
+											{{ t('appstore.nomoreApps') }}
+										</div>
+
+									</div>
+
+								</aside>
+
+							</div>
 						</div>
 					</div>
-				</div> <!-- end row -->
-			</div>
-		</footer> <!-- END FOOTER -->
-		<!-- JAVASCRIPTS -->
+				</template>
+
+				<!-- ========== APPS V2 (Clean Launchpad Style) ========== -->
+				<template v-if="currentPage === 'appsv2'">
+					<!-- 1. 容器： min-h-screen: 保证至少占满一屏 relative: 让内部的 absolute 背景相对于此容器定位，而不是相对于屏幕 -->
+					<section
+						class="min-h-screen relative overflow-hidden bg-neutral-50/50 dark:bg-[#050505] transition-colors duration-500">
+
+						<!-- Back to Old Apps -->
+						<button @click="toggleAppsLauncher"
+							class="absolute top-4 md:top-8 right-6 z-40 group flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/60 dark:bg-neutral-900/60 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.22)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.96]">
+							<!-- Icon -->
+							<img src="images/old.png" alt=""
+								class="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 drop-shadow-lg glow-white transition" />
+
+							<!-- Text -->
+							<div class="flex flex-col text-left leading-tight">
+								<span class="text-sm font-semibold text-neutral-900 dark:text-white">
+									{{ t('switch.backtoList') }}
+								</span>
+								<span class="text-xs text-neutral-500 dark:text-neutral-400">
+									{{ t('switch.listInfo') }}
+								</span>
+							</div>
+
+							<!-- Arrow -->
+							<i
+								class="fa-solid fa-chevron-left text-neutral-400 group-hover:-translate-x-0.5 transition-transform"></i>
+						</button>
+
+
+						<!-- 2. 背景层 (修复：从 fixed 改为 absolute，不再遮挡 Footer) -->
+						<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+
+							<!-- 顶部光晕：淡蓝色 (不再是紫色) -->
+							<div
+								class="absolute -top-[20%] -left-[10%] w-[80vw] h-[80vw] rounded-full 
+				                        bg-sky-200/20 dark:bg-sky-900/10 blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-50">
+							</div>
+
+							<!-- 底部光晕：淡青色 -->
+							<div
+								class="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] rounded-full 
+				                        bg-teal-200/20 dark:bg-teal-900/10 blur-[120px] mix-blend-multiply dark:mix-blend-screen opacity-50">
+							</div>
+
+						</div>
+
+						<!-- 3. 内容层 -->
+						<div class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+
+							<!-- 标题 -->
+							<div class="text-center mb-16 animate-fade-in-up">
+								<h1 class="text-4xl font-bold mb-4 text-neutral-900 dark:text-white tracking-tight">
+									{{ t('apps.title') }}
+								</h1>
+							</div>
+
+							<div class="max-w-xl mx-auto mb-12 animate-fade-in-up">
+								<div class="relative">
+									<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400"
+										fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+									</svg>
+
+									<input v-model="appsSearch" type="text" placeholder="搜索应用..." class="w-full pl-12 pr-4 py-3 bg-white/70 dark:bg-neutral-900/60 border border-transparent
+							             focus:border-primary-500 rounded-full outline-none transition-colors
+							             backdrop-blur-md" />
+								</div>
+
+							</div>
+
+							<!-- Loading Skeleton -->
+							<div v-if="appsLoading && (!applist || applist.length === 0)"
+								class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-12">
+								<div v-for="n in 12" :key="'v2-skel-'+n"
+									class="flex flex-col items-center space-y-4 animate-pulse">
+									<div
+										class="w-20 h-20 md:w-24 md:h-24 rounded-[1.5rem] bg-neutral-200 dark:bg-neutral-800">
+									</div>
+									<div class="h-4 w-16 rounded bg-neutral-200 dark:bg-neutral-800"></div>
+								</div>
+							</div>
+
+							<!-- Error State -->
+							<div v-else-if="appsError" class="text-center py-20">
+								<div
+									class="inline-block p-6 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+									<p class="text-neutral-600 dark:text-neutral-400 mb-4">{{ appsError }}</p>
+									<button @click="fetchApps(false)"
+										class="px-6 py-2 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium">
+										重试
+									</button>
+								</div>
+							</div>
+
+							<!-- Real Content Grid -->
+							<div v-else
+								class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-4 gap-y-12 sm:gap-y-16 animate-fade-in-up">
+
+								<div v-for="app in filteredAppsV2" :key="'v2-'+app.id"
+									@click="!app.disabled && testOpenStore(app)"
+									class="group flex flex-col items-center cursor-pointer transition-all duration-300"
+									:class="app.disabled ? 'opacity-50 grayscale' : 'hover:opacity-100'">
+
+									<!-- Icon Container -->
+									<div
+										class="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mb-5 transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110 active:scale-95">
+
+										<!-- 悬停时的投影 (更加柔和) -->
+										<div
+											class="absolute inset-4 bg-black/10 dark:bg-black/50 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2">
+										</div>
+
+										<!-- 图标本体 -->
+										<!-- 这里的 border-white/40 是为了让图标在复杂背景下更清晰 -->
+										<img :src="app.logoUrl" :alt="pickI18n(app.name)"
+											class="relative z-10 w-full h-full rounded-[1.5rem] sm:rounded-[1.9rem] object-contain shadow-sm bg-white dark:bg-neutral-800 ring-1 ring-black/5 dark:ring-white/10" />
+
+										<!-- 状态点 (开发中/测试中) -->
+										<div v-if="app.statusKey && app.statusKey !== 'apps.launched'"
+											class="absolute z-20 -top-1 -right-1 w-3.5 h-3.5 rounded-full border-[3px] border-neutral-50 dark:border-neutral-900 box-content"
+											:class="app.statusKey === 'apps.developing' ? 'bg-red-500' : 'bg-blue-500'">
+										</div>
+									</div>
+
+									<!-- App Name -->
+									<h3
+										class="w-full px-1 text-center text-sm sm:text-base font-medium text-neutral-700 dark:text-neutral-300 leading-tight line-clamp-2 group-hover:text-black dark:group-hover:text-white transition-colors">
+										{{ pickI18n(app.name) }}
+									</h3>
+
+								</div>
+
+								<!-- Load More Button -->
+								<div v-if="appsNextCursor" class="col-span-full flex justify-center pt-12">
+									<button @click="loadMoreApps"
+										class="group relative flex items-center justify-center w-14 h-14 rounded-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:scale-110 transition-all duration-300 disabled:opacity-50"
+										:disabled="appsLoading">
+										<i
+											class="fa-solid fa-plus text-neutral-400 group-hover:text-neutral-900 dark:text-neutral-500 dark:group-hover:text-white transition-colors"></i>
+									</button>
+								</div>
+
+							</div>
+						</div>
+					</section>
+				</template>
+
+
+
+
+
+				<!-- <button @click="currentPage = 'app-store';"
+					class="fixed z-50 bottom-8 right-8 px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-bold rounded-full shadow-2xl hover:scale-110 transition-transform">
+					测试商店页
+				</button>
+				<button @click="currentPage = 'appsv2';"
+					class="fixed z-50 bottom-24 right-8 px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-bold rounded-full shadow-2xl hover:scale-110 transition-transform">
+					测试APP V2
+				</button> -->
+
+
+			</main>
+
+			<!-- Footer Component -->
+			<footer class="bg-neutral-100 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div class="grid md:grid-cols-4 gap-8 md:mb-8">
+						<div class="md:col-span-2">
+							<div
+								class="flex items-center justify-center md:justify-start gap-2 font-semibold text-lg mb-4">
+								<img src="images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+								<span>{{ t('brand') }}</span>
+							</div>
+							<p class="text-neutral-600 dark:text-neutral-400 text-sm max-w-md hidden md:block">
+								{{ t('footer.desc') }}
+							</p>
+						</div>
+						<div class="hidden md:block">
+							<h4 class="font-semibold mb-4">{{ t('footer.quickLinks') }}</h4>
+							<ul class="space-y-2 text-sm">
+								<li><a @click.prevent="navigate('home')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.home') }}</a>
+								</li>
+								<li><a @click.prevent="navigate('apps')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.apps') }}</a>
+								</li>
+								<li><a @click.prevent="navigate('articles')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.articles') }}</a>
+								</li>
+								<li><a @click.prevent="navigate('media')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.media') }}</a>
+								</li>
+							</ul>
+						</div>
+						<div class="hidden md:block">
+							<h4 class="font-semibold mb-4">{{ t('footer.connect') }}</h4>
+							<ul class="space-y-2 text-sm">
+								<li><a @click.prevent="navigate('about')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.about') }}</a>
+								</li>
+								<li><a @click.prevent="navigate('contact')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
+									t('nav.contact') }}</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="pt-8 md:border-t border-neutral-200 dark:border-neutral-800">
+						<div
+							class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-neutral-500">
+							<p>© 2026 {{ t('about.nickname') }}. All rights reserved.</p>
+							<div class="flex flex-col md:flex-row items-center gap-4 text-xs md:text-sm">
+								<a href="https://beian.miit.gov.cn/"
+									class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+									<div class="">
+										<span>京ICP备2023030112号</span>
+									</div>
+								</a>
+								<a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879"
+									class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+									<div class="flex items-center gap-1">
+										<img src="images/gongan.png" class="w-4 h-4" />
+										<span>京公网安备11010502053879号</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+		</div>
 
 		<script>
-			$(document).ready(function() {
-				// 定义开关变量和最大显示数量
-				// 当 limitSwitch = 1 时，仅显示 maxItems 个作品；当 limitSwitch = 0 时，显示全部作品
-				let limitSwitch = 1; // 1 开启限制，0 关闭限制
-				let maxItems = 20; // 当开启限制时，仅显示 20 个作品
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted,
+				watch,
+				nextTick,
+			} = Vue
 
-				// 全局保存 JSON 数据，后续点击时可直接查找对应作品信息
-				let portfolioData = [];
-
-				/**
-				 * 加载 JSON 数据并生成作品卡片
-				 * 数据从 js/portfolio.json 加载后先按 id 降序排序，
-				 * 再将推荐项目和非推荐项目分别筛选后，推荐项目排在前面。
-				 * 生成的卡片 HTML 格式如下：
-				 *
-				 * 推荐项目：
-				 * <div class="col-lg-4 {category} recommended personal" id="workid{ID}" style="position: relative; left: 0px; top: 0px;">
-				 *   <a class="portfolio-link">
-				 *     <div class="portfolio-box">
-				 *       <div class="portfolio-box-img">
-				 *         <img src="{cover}" class="img-fluid" alt="member-image">
-				 *       </div>
-				 *       <div class="portfolio-box-detail">
-				 *         <p>{category}</p>
-				 *         <h4>{title}</h4>
-				 *       </div>
-				 *     </div>
-				 *   </a>
-				 *   <div class="recommend">
-				 *     <div class="recommend-inner">
-				 *       <div class="recommend-inner-icon">
-				 *         <img src="images/recommend.svg" alt="">
-				 *       </div>
-				 *       <div class="recommend-text">Recommended</div>
-				 *     </div>
-				 *   </div>
-				 * </div>
-				 *
-				 * 非推荐项目（不含后面的 <div class="recommend"> 块）。
-				 */
-				function loadPortfolio() {
-					$.getJSON("js/portfolio.json", function(data) {
-							// 保存数据到全局变量
-							portfolioData = data;
-
-							// 按 id 降序排序（id 较大排在前面）
-							const sortedData = data.slice().sort(function(a, b) {
-								return b.id - a.id;
-							});
-
-							// 筛选推荐和非推荐项目
-							let recommendedItems = sortedData.filter(item => item.recommend === true);
-							let nonRecommendedItems = sortedData.filter(item => !item.recommend);
-
-							// 合并时推荐项目放在前面
-							let mergedItems = recommendedItems.concat(nonRecommendedItems);
-
-							// 根据 limitSwitch 判断是否限制显示作品数量
-							let itemsToShow = (limitSwitch === 1) ? mergedItems.slice(0, maxItems) : mergedItems;
-
-							// 遍历每个作品，生成 HTML 卡片
-							itemsToShow.forEach(function(item) {
-								// 计算外层 div 的 class
-								// 始终包含 personal 与 category，如果推荐则再加 recommended
-								let classes = item.category + " personal";
-								if (item.recommend) {
-									classes += " recommended";
-								}
-
-								// 处理封面图片：若 media.poster 有值则使用，否则使用默认图片
-								let cover = "images/default.webp";
-								if (item.media && item.media.poster && item.media.poster.trim() !== "") {
-									cover = item.media.poster;
-								}
-
-								// 生成作品卡片 HTML
-								let cardHTML =
-									`<div class="col-lg-4 ${classes}" id="workid${item.id}" style="position: relative; left: 0px; top: 0px;">`;
-								cardHTML += `<a class="portfolio-link">`;
-								cardHTML += `<div class="portfolio-box">`;
-								cardHTML += `<div class="portfolio-box-img">`;
-								cardHTML += `<img src="${cover}" class="img-fluid" alt="member-image">`;
-								cardHTML += `</div>`;
-								cardHTML += `<div class="portfolio-box-detail">`;
-								cardHTML += `<p>${item.category}</p>`;
-								cardHTML += `<h4>${item.title}</h4>`;
-								cardHTML += `</div>`;
-								cardHTML += `</div>`;
-								cardHTML += `</a>`;
-								// 如果为推荐项目，则添加额外的推荐标识块
-								if (item.recommend) {
-									cardHTML += `<div class="recommend">`;
-									cardHTML += `<div class="recommend-inner">`;
-									cardHTML += `<div class="recommend-inner-icon">`;
-									cardHTML += `<img src="images/recommend.svg" alt="">`;
-									cardHTML += `</div>`;
-									cardHTML += `<div class="recommend-text">Recommended</div>`;
-									cardHTML += `</div>`;
-									cardHTML += `</div>`;
-								}
-								cardHTML += `</div>`;
-
-								// 将生成的卡片追加到 #addplace 容器中
-								$("#addplace").append(cardHTML);
-							});
-						})
-						.fail(function() {
-							console.error("Error loading portfolio JSON");
-						});
+			// Translations
+			const translations = {
+				zh: {
+					brand: "企鹅企企",
+					nav: {
+						home: "首页",
+						apps: "应用",
+						articles: "随笔",
+						media: "作品",
+						about: "关于",
+						contact: "联系"
+					},
+					hero: {
+						featured: "内测中",
+						heroAppName: "Diet Pro",
+						heroAppSlogan: "科学记录，健康瘦身",
+						heroAppIntro: "AI 驱动的健康减重助手，让每一顿和每一步都有依据。",
+						learnMore: "了解详情",
+						tryNow: "现在体验",
+						AppType: "Web App",
+						AppVersion: "版本：v0.2",
+						moreApps: "更多应用",
+						viewAll: "查看全部"
+					},
+					home: {
+						featuredArticles: "精选随笔",
+						featuredMedia: "推荐作品",
+						viewAll: "查看全部",
+						contactTitle: "想要合作？",
+						contactDesc: "无论是项目合作还是简单交流，都欢迎与我联系",
+						contactBtn: "联系我"
+					},
+					apps: {
+						title: "我的应用",
+						subtitle: "用心打造的每一款产品",
+						comingSoon: "即将推出",
+						viewChangelog: "查看更新日志",
+						status: {
+							developing: "开发中",
+							alpha: "内测中",
+							beta: "公测中"
+						}
+					},
+					changelog: {
+						back: "返回",
+						title: "更新日志",
+						subtitle: "应用的版本更新记录",
+						empty: "暂无当前语言的更新记录"
+					},
+					articles: {
+						title: "个人随笔",
+						subtitle: "分享我的思考与见解",
+						search: "搜索文章..."
+					},
+					article: {
+						back: "返回文章列表",
+						minRead: "分钟阅读"
+					},
+					media: {
+						title: "媒体作品",
+						subtitle: "数字影像作品集",
+						search: "搜索作品...",
+						back: "返回作品列表"
+					},
+					about: {
+						nickname: "企鹅企企",
+						tagline: "我喜欢做有用的小东西，把创意变成可以长期使用的产品。",
+						sectionStoryTitle: "关于我",
+						storyP1: "我同时从事开发与数字艺术相关工作，关注技术如何服务于创作与表达。",
+						storyP2: "当前更侧重通过工具与系统的方式，优化创作与工作流程，提高效率与稳定性。",
+						principlesTitle: "关注重点",
+						principle1: "工具应明确解决实际问题",
+						principle2: "交互克制、顺畅，减少不必要的干扰",
+						principle3: "在持续使用中逐步完善",
+						sectionFocusTitle: "目前在做什么",
+						focusDesc: "专注 Web 应用与产品体验，更多是在工作和学习中，为数字艺术和内容创作开发实用的小工具。",
+						sectionSkillsTitle: "技能掌握",
+						contactMe: "联系我"
+					},
+					contact: {
+						title: "联系我",
+						subtitle: "期待与您的交流",
+						name: "姓名",
+						email: "邮箱",
+						message: "内容",
+						send: "发送消息",
+						sending: "发送中…",
+						sent: "已发送",
+						sendFailed: "发送失败",
+						fillAll: "请完整填写姓名 / 邮箱 / 内容",
+						otherWays: "其他联系方式"
+					},
+					appstore: {
+						back: "返回应用启动台",
+						download: "平台下载",
+						open: "打开链接",
+						learnMore: "了解详情",
+						intro: "简介",
+						newFeature: "新功能",
+						changelog: "版本历史记录",
+						moreApps: "推荐应用",
+						enter: "查看",
+						nomoreApps: "暂无推荐应用",
+						versiontext: "版本：",
+						introEmpty: "暂无当前语言的简介"
+					},
+					switch: {
+						tryNewLaunchPad: " 尝试新版启动台 ",
+						launchPadInfo: " 网格 · 更轻量 ",
+						backtoList: " 返回旧版应用列表 ",
+						listInfo: " 卡片 · 详情视图 "
+					},
+					footer: {
+						desc: "独立开发者，专注于数字媒体与应用开发。",
+						quickLinks: "快速链接",
+						connect: "联系方式"
+					},
+					loadFailed: {
+						desc: "无法从服务器获取内容，请刷新页面或更换网络重试。",
+						refresh: "刷新页面"
+					}
+				},
+				en: {
+					brand: "Penguin 77",
+					nav: {
+						home: "Home",
+						apps: "Apps",
+						articles: "Articles",
+						media: "Media",
+						about: "About",
+						contact: "Contact"
+					},
+					hero: {
+						featured: "Beta Testing",
+						learnMore: "Learn More",
+						tryNow: "Try Now",
+						AppType: "Web App",
+						AppVersion: "Version: v0.2",
+						moreApps: "More Apps",
+						viewAll: "View All",
+						heroAppName: "Diet Pro",
+						heroAppSlogan: "Scientific Tracking, Healthy Weight Loss",
+						heroAppIntro: "AI-powered healthy weight loss assistant, giving every meal and every step a solid basis."
+					},
+					home: {
+						featuredArticles: "Featured Articles",
+						featuredMedia: "Featured Media",
+						viewAll: "View All",
+						contactTitle: "Want to collaborate?",
+						contactDesc: "Whether for project collaboration or just a chat, feel free to reach out",
+						contactBtn: "Contact Me"
+					},
+					apps: {
+						title: "My Apps",
+						subtitle: "Products crafted with care",
+						comingSoon: "Coming Soon",
+						viewChangelog: "View Changelog",
+						status: {
+							developing: "In Development",
+							alpha: "Alpha",
+							beta: "Beta"
+						}
+					},
+					changelog: {
+						back: "Back to",
+						title: "Changelog",
+						subtitle: "Version update history for apps",
+						empty: "No update records for the current language."
+					},
+					articles: {
+						title: "Articles",
+						subtitle: "Sharing my thoughts and insights",
+						search: "Search articles..."
+					},
+					article: {
+						back: "Back to Articles",
+						minRead: "min read"
+					},
+					media: {
+						title: "Media Works",
+						subtitle: "Digital media portfolio",
+						search: "Search works...",
+						back: "Back to Gallery"
+					},
+					about: {
+						nickname: "Penguin QiQi",
+						contactMe: "Contact Me",
+						tagline: "I enjoy creating useful little things, turning ideas into products that can be used long-term.",
+						sectionStoryTitle: "About Me",
+						storyP1: "I work concurrently in development and digital art, focusing on how technology can serve creation and expression.",
+						storyP2: "Currently, I place more emphasis on optimizing creative and work processes through tools and systems, aiming to improve efficiency and stability.",
+						principlesTitle: "My Focus",
+						principle1: "Tools should clearly solve real-world problems.",
+						principle2: "Restrained and smooth interaction, minimizing unnecessary distractions.",
+						principle3: "Continuous refinement through sustained use.",
+						sectionFocusTitle: "Currently Working On",
+						focusDesc: "Focused on web applications and product experience, primarily developing practical small tools for digital art and content creation within my own work and studies.",
+						sectionSkillsTitle: "Skills"
+					},
+					contact: {
+						title: "Contact",
+						subtitle: "Looking forward to hearing from you",
+						name: "Your Name",
+						email: "Email Address",
+						message: "Message",
+						send: "Send Message",
+						otherWays: "Other Ways to Connect",
+						sending: "Sending...",
+						sent: "Sent",
+						sendFailed: "Send Failed",
+						fillAll: "Please complete Name / Email / Content"
+					},
+					appstore: {
+						back: "Back to Launchpad",
+						download: " Download",
+						open: "Open Link",
+						learnMore: "Learn More",
+						intro: "Overview",
+						newFeature: "What's New",
+						changelog: "Version History",
+						moreApps: "Recommended Apps",
+						enter: "View",
+						nomoreApps: "No Recommended Apps",
+						versiontext: "Version:",
+						introEmpty: "No introduction available for the current language."
+					},
+					switch: {
+						tryNewLaunchPad: "Try the New Launchpad",
+						launchPadInfo: "Grid · Lightweight",
+						backtoList: "Back to Classic App List",
+						listInfo: "Cards · Detailed View"
+					},
+					footer: {
+						desc: "Independent developer focused on digital media and application development.",
+						quickLinks: "Quick Links",
+						connect: "Connect"
+					},
+					loadFailed: {
+						desc: "Failed to load content. Please refresh the page or try another network.",
+						refresh: "Refresh page"
+					}
+				},
+				ja: {
+					brand: "ペンギン企企",
+					nav: {
+						home: "ホーム",
+						apps: "アプリ",
+						articles: "記事",
+						media: "メディア",
+						about: "紹介",
+						contact: "連絡"
+					},
+					hero: {
+						featured: "おすすめ",
+						learnMore: "詳細を見る",
+						moreApps: "その他のアプリ",
+						viewAll: "すべて見る",
+						heroAppName: "Diet Pro",
+						heroAppSlogan: "科学的な記録、健康的に痩身",
+						heroAppIntro: "AI駆動の健康減量アシスタント、食事ごと、一歩ごとに根拠をつける。",
+						tryNow: "今すぐ体験",
+						AppType: "Web App",
+						AppVersion: "バージョン：v0.2"
+					},
+					home: {
+						featuredArticles: "注目の記事",
+						featuredMedia: "おすすめ作品",
+						viewAll: "すべて見る",
+						contactTitle: "コラボレーションしませんか？",
+						contactDesc: "プロジェクトの協力や気軽な交流、お気軽にご連絡ください",
+						contactBtn: "連絡する"
+					},
+					apps: {
+						title: "マイアプリ",
+						subtitle: "心を込めて作った製品",
+						comingSoon: "近日公開",
+						viewChangelog: "更新履歴を見る",
+						status: {
+							developing: "開発中",
+							alpha: "アルファ",
+							beta: "ベータ"
+						}
+					},
+					changelog: {
+						back: "戻る",
+						title: "更新履歴",
+						subtitle: "アプリのバージョン更新記録",
+						empty: "現在の言語の更新履歴はありません"
+					},
+					articles: {
+						title: "記事",
+						subtitle: "考えと洞察を共有",
+						search: "記事を検索..."
+					},
+					article: {
+						back: "記事一覧に戻る",
+						minRead: "分で読める"
+					},
+					media: {
+						title: "メディア作品",
+						subtitle: "デジタルメディアポートフォリオ",
+						search: "作品を検索...",
+						back: "ギャラリーに戻る"
+					},
+					about: {
+						nickname: "ペンギン企企",
+						contactMe: "連絡する",
+						tagline: "私は、実用的な小さなものを作り、アイデアを長期に使えるプロダクトに変えるのが好きです。",
+						sectionStoryTitle: "私について",
+						storyP1: "開発とデジタルアートの仕事を両立しており、技術がどのように創作と表現に役立つかを重視しています。",
+						storyP2: "現在は、ツールとシステムを通じて、創作とワークフローを最適化し、効率と安定性を高めることに重点を置いています。 5. 重視していること",
+						principlesTitle: "重視していること",
+						principle1: "ツールは、明確に実際の問題を解決すべきです。",
+						principle2: "控えめで滑らかなインタラクション。不必要な干渉を減らします。",
+						principle3: "持続的な使用を通じて、段階的に完成させていきます。",
+						sectionFocusTitle: "現在取り組んでいること",
+						focusDesc: "Webアプリケーションとプロダクト体験に専念し、主に仕事や学習の中で、デジタルアートやコンテンツ制作のための実用的な小さなツールを開発しています。",
+						sectionSkillsTitle: "スキル"
+					},
+					contact: {
+						title: "連絡",
+						subtitle: "ご連絡をお待ちしています",
+						name: "お名前",
+						email: "メールアドレス",
+						message: "メッセージ",
+						send: "送信",
+						otherWays: "その他の連絡方法",
+						sending: "送信中…",
+						sent: "送信済み",
+						sendFailed: "送信失敗",
+						fillAll: "名前・メールアドレス・内容を全てご記入ください"
+					},
+					appstore: {
+						back: "きどうだい に もどる",
+						download: " でダウンロード",
+						open: "リンクを開く",
+						learnMore: "詳細を見る",
+						intro: "概要",
+						newFeature: "新機能",
+						changelog: "バージョン履歴",
+						moreApps: "おすすめアプリ",
+						enter: "見る",
+						nomoreApps: "おすすめアプリはありません",
+						versiontext: "バージョン：",
+						introEmpty: "この言語での説明はまだありません。"
+					},
+					switch: {
+						tryNewLaunchPad: "新しい起動台を試す",
+						launchPadInfo: "グリッド・軽量",
+						backtoList: "従来のアプリ一覧に戻る",
+						listInfo: "カード・詳細表示"
+					},
+					footer: {
+						desc: "デジタルメディアとアプリケーション開発に注力するインディペンデントデベロッパー。",
+						quickLinks: "クイックリンク",
+						connect: "連絡"
+					},
+					loadFailed: {
+						desc: "サーバーから内容を取得できません。ページを更新するか、ネットワークを変更してください。",
+						refresh: "ページを更新"
+					}
+				},
+				ko: {
+					brand: "펭귄 치치",
+					nav: {
+						home: "홈",
+						apps: "앱",
+						articles: "글",
+						media: "미디어",
+						about: "소개",
+						contact: "연락처"
+					},
+					hero: {
+						featured: "추천",
+						learnMore: "자세히 보기",
+						moreApps: "더 많은 앱",
+						viewAll: "전체 보기",
+						heroAppName: "Diet Pro",
+						heroAppSlogan: "과학적 기록, 건강한 체중 감량",
+						heroAppIntro: "AI 기반 건강 체중 감량 어시스턴트, 매 식사와 매 걸음에 근거를 부여합니다.",
+						tryNow: "지금 체험하기",
+						AppType: "Web App",
+						AppVersion: "버전: v0.2"
+					},
+					home: {
+						featuredArticles: "추천 글",
+						featuredMedia: "추천 작품",
+						viewAll: "전체 보기",
+						contactTitle: "협업하고 싶으신가요?",
+						contactDesc: "프로젝트 협업이든 가벼운 대화든 언제든지 연락주세요",
+						contactBtn: "연락하기"
+					},
+					apps: {
+						title: "내 앱",
+						subtitle: "정성을 담아 만든 제품들",
+						comingSoon: "곧 출시",
+						viewChangelog: "업데이트 기록 보기",
+						status: {
+							developing: "개발 중",
+							alpha: "알파",
+							beta: "베타"
+						}
+					},
+					changelog: {
+						back: "뒤로",
+						title: "업데이트 기록",
+						subtitle: "앱 버전 업데이트 기록",
+						empty: "현재 언어에 대한 업데이트 기록이 없습니다"
+					},
+					articles: {
+						title: "글",
+						subtitle: "생각과 통찰 공유",
+						search: "글 검색..."
+					},
+					article: {
+						back: "글 목록으로",
+						minRead: "분 읽기"
+					},
+					media: {
+						title: "미디어 작품",
+						subtitle: "디지털 미디어 포트폴리오",
+						search: "작품 검색...",
+						back: "갤러리로 돌아가기"
+					},
+					about: {
+						nickname: "펭귄 치치",
+						contactMe: "연락하기",
+						tagline: "저는 유용한 작은 것들을 만드는 것, 즉 아이디어를 오랫동안 사용할 수 있는 제품으로 바꾸는 것을 좋아합니다.",
+						sectionStoryTitle: "저에 대해",
+						storyP1: "저는 개발과 디지털 아트 작업을 병행하며, 기술이 창작과 표현에 어떻게 기여할 수 있는지에 관심을 갖고 있습니다.",
+						storyP2: "현재는 도구와 시스템 방식을 통해 창작과 업무 흐름을 최적화하여 효율성과 안정성을 높이는 데 더 중점을 두고 있습니다.",
+						principlesTitle: "관심 초점",
+						principle1: "도구는 분명하게 실질적인 문제를 해결해야 합니다.",
+						principle2: "절제되고 매끄러운 상호작용, 불필요한 방해 요소를 줄입니다.",
+						principle3: "지속적인 사용 속에서 점차적으로 완성해 나갑니다.",
+						sectionFocusTitle: "현재 진행 중인 작업",
+						focusDesc: "웹 애플리케이션과 제품 경험에 집중하고 있으며, 주로 업무와 학습 과정 속에서 디지털 아트와 콘텐츠 제작을 위한 실용적인 소도구들을 개발하고 있습니다.",
+						sectionSkillsTitle: "기술 습득"
+					},
+					appstore: {
+						back: "런치패드로 돌아가기",
+						download: "에서 다운로드",
+						open: "링크 열기",
+						learnMore: "자세히 보기",
+						intro: "개요",
+						newFeature: "새로운 기능",
+						changelog: "버전 기록",
+						moreApps: "추천 앱",
+						enter: "보기",
+						nomoreApps: "추천 앱이 없습니다",
+						versiontext: "버전:",
+						introEmpty: "이 언어로 된 설명이 아직 없습니다."
+					},
+					switch: {
+						tryNewLaunchPad: "새로운 런치패드 사용해보기",
+						launchPadInfo: "그리드 · 가볍게",
+						backtoList: "기존 앱 목록으로 돌아가기",
+						listInfo: "카드 · 상세 보기"
+					},
+					contact: {
+						title: "연락처",
+						subtitle: "연락을 기다리고 있습니다",
+						name: "이름",
+						email: "이메일 주소",
+						message: "메시지",
+						send: "보내기",
+						otherWays: "다른 연락 방법",
+						sending: "전송 중…",
+						sent: "전송됨",
+						sendFailed: "전송 실패",
+						fillAll: "이름 / 이메일 / 내용을 모두 작성해 주세요"
+					},
+					footer: {
+						desc: "디지털 미디어와 애플리케이션 개발에 집중하는 독립 개발자.",
+						quickLinks: "빠른 링크",
+						connect: "연결"
+					},
+					loadFailed: {
+						desc: "서버에서 콘텐츠를 불러올 수 없습니다. 페이지를 새로고침하거나 네트워크를 변경해 주세요.",
+						refresh: "페이지 새로고침"
+					}
 				}
+			}
 
-				// 调用加载函数
-				loadPortfolio();
+			const smartimage = {
+				props: {
+					src: {
+						type: String,
+						default: ""
+					},
 
-				/**
-				 * 为作品卡片绑定点击事件
-				 * 点击时直接从所在元素的 id 属性（格式 "workidXX"）中提取作品 id，
-				 * 然后调用 openWork(id) 根据 JSON 数据填充统一的弹出层。
-				 */
-				$("#addplace").on("click", ".portfolio-link", function() {
-					// 获取最近父元素的 id，例如 "workid36"
-					let parentId = $(this).closest("div[id^='workid']").attr("id");
-					// 去掉 "workid" 前缀，得到作品 id
-					let id = parentId.replace("workid", "");
-					openWork(id);
-				});
+					// ✅ 当图片内容更新但 src 不变时，用它强制触发重载
+					cacheKey: {
+						type: [String, Number],
+						default: ""
+					},
 
-				/**
-				 * 打开统一弹出层，填充作品详细信息
-				 * 根据作品 id 从 portfolioData 中查找对应记录，
-				 * 将 title 填充到 .single-linksource-h，
-				 * 将 description 填充到 .single-linksource-p，
-				 * 将 links 数组依次填充到 btnlink1~btnlink4（有多少链接显示多少按钮），
-				 * 如果媒体类型为 video，则显示视频预览区域，并设置视频元素 (#SVideo2) 的 src 与 poster。
-				 */
-				function openWork(id) {
-					// 查找作品记录（注意数值转换）
-					let work = portfolioData.find(item => Number(item.id) === Number(id));
-					if (!work) {
-						console.error("Work with id " + id + " not found.");
-						return;
+					skeletonRatio: {
+						type: String,
+						default: "9/16"
+					},
+					fit: {
+						type: String,
+						default: "cover"
+					},
+					lazy: {
+						type: Boolean,
+						default: true
+					},
+					rounded: {
+						type: String,
+						default: ""
+					},
+					imgClass: {
+						type: String,
+						default: ""
+					},
+				},
+
+				data() {
+					return {
+						loading: true,
+						ratio: this.skeletonRatio,
+					};
+				},
+
+				watch: {
+					// ✅ src 变化就回骨架
+					src() {
+						this.loading = true;
+						this.ratio = this.skeletonRatio;
+					},
+					// ✅ cacheKey 变化也回骨架（解决“URL没变但图片更新了”）
+					cacheKey() {
+						this.loading = true;
+						this.ratio = this.skeletonRatio;
+					},
+				},
+
+				methods: {
+					onLoad(e) {
+						const img = e.target;
+						const w = img.naturalWidth || 0;
+						const h = img.naturalHeight || 0;
+						if (w && h) this.ratio = `${w} / ${h}`;
+						this.loading = false;
+					},
+					onError() {
+						this.loading = false;
+					},
+				},
+
+				template: `
+			    <div
+			      class="relative overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+			      :class="rounded"
+			      :style="{ aspectRatio: ratio }"
+			    >
+			      <div v-if="loading" class="absolute inset-0 skeleton"></div>
+			
+			      <img
+			        v-if="src"
+			        :key="String(cacheKey) + '|' + src"
+			        :src="src"
+			        :loading="lazy ? 'lazy' : 'eager'"
+			        @load="onLoad"
+			        @error="onError"
+			        class="w-full h-full transition-opacity duration-300"
+			        :class="[imgClass, loading ? 'opacity-0' : 'opacity-100']"
+			        :style="{ objectFit: fit }"
+			      />
+			    </div>
+			  `,
+			};
+
+
+
+			createApp({
+				components: {
+					smartimage,
+				},
+				setup() {
+					// State
+					const currentPage = ref('home')
+					const currentLang = ref('zh')
+					const isDark = ref(false)
+					const showLangMenu = ref(false)
+					const showMobileMenu = ref(false)
+					const articleSearch = ref('')
+					const mediaSearch = ref('')
+					const appsSearch = ref("")
+					const currentArticleId = ref(null)
+					const currentMediaId = ref(null)
+					const contactForm = ref({
+						name: '',
+						email: '',
+						message: ''
+					})
+
+					const isActive = (pages) => {
+						return pages.includes(currentPage.value);
+					};
+					const navBase = "text-sm font-medium transition-colors";
+					const navActive = "text-primary-600 dark:text-primary-400";
+					const navIdle = "hover:text-primary-600 dark:hover:text-primary-400";
+					const navActiveMobile = "bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400"
+					const navIdleMobile = "hover:bg-neutral-100 dark:hover:bg-neutral-800"
+
+					const contactStatus = ref("idle") // idle | sending | success | error
+					const contactHint = ref("") // 显示提示文字（走 i18n）
+					let contactResetTimer = null
+
+					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
+					const isLoading = ref(true) // 默认为 true，一开始就显示 Loading
+
+					// 1. 新增状态
+					const currentAppUrl = ref('')
+
+					// 2. 计算属性：给 URL 加上当前的主题和语言参数，传给子页面
+					const currentAppUrlWithParams = computed(() => {
+						if (!currentAppUrl.value) return ''
+						// 拼接参数：根据当前的主题和语言状态，传给子页面
+						const theme = isDark.value ? 'dark' : 'light'
+						// 这里加个时间戳 t 强制刷新 iframe (可选)，或者只传 theme/lang
+						return `${currentAppUrl.value}?theme=${theme}&lang=${currentLang.value}`
+					})
+
+					// 3. 修改 navigate 方法
+					const navigate = (page) => {
+						// 站内“普通页面”名单：这些不走 appdetail
+						const normalPages = new Set([
+							'home', 'about', 'apps', 'media', 'media-detail',
+							'articles', 'article-detail', 'contact', 'dashboard',
+							'appdetail'
+						]);
+
+						// 1) 站内普通页面
+						if (normalPages.has(page)) {
+							currentPage.value = page;
+							currentAppUrl.value = '';
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth'
+							});
+							return;
+						}
+
+						// 2) 如果传进来就是完整 URL（https://...），直接塞 iframe
+						if (typeof page === 'string' && /^https?:\/\//.test(page)) {
+							currentAppUrl.value = page;
+							currentPage.value = 'appdetail';
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth'
+							});
+							return;
+						}
+
+						// 3) 如果传进来已经是 apps/xxx.html 这种路径，也直接用
+						if (typeof page === 'string' && page.includes('/') && page.endsWith('.html')) {
+							currentAppUrl.value = page;
+							currentPage.value = 'appdetail';
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth'
+							});
+							return;
+						}
+
+						// 4) 默认：把它当 app slug：dietpro -> apps/dietpro.html
+						const slug = String(page || '').trim();
+						if (slug) {
+							currentAppUrl.value = `apps/${slug}.html`;
+							currentPage.value = 'appdetail';
+						} else {
+							currentPage.value = 'home';
+							currentAppUrl.value = '';
+						}
+
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						});
+					};
+
+
+					// Languages
+					const languages = [{
+							code: 'zh',
+							label: '中文'
+						},
+						{
+							code: 'en',
+							label: 'English'
+						},
+						{
+							code: 'ja',
+							label: '日本語'
+						},
+						{
+							code: 'ko',
+							label: '한국어'
+						}
+					]
+
+					// Computed
+					const currentLangLabel = computed(() => {
+						const lang = languages.find(l => l.code === currentLang.value)
+						return lang ? lang.label : '中文'
+					})
+
+					const featuredArticles = computed(() => articles.value.slice(0, 3))
+					const featuredMedia = computed(() => mediaItems.value.slice(0, 8))
+
+					const filteredArticles = computed(() => {
+						if (!articleSearch.value) return articles.value
+						const search = articleSearch.value.toLowerCase()
+						return articles.value.filter(a =>
+							a.title[currentLang.value].toLowerCase().includes(search) ||
+							a.category[currentLang.value].toLowerCase().includes(search)
+						)
+					})
+
+					const filteredMedia = computed(() => {
+						if (!mediaSearch.value) return mediaItems.value
+						const search = mediaSearch.value.toLowerCase()
+						return mediaItems.value.filter(m =>
+							m.title[currentLang.value].toLowerCase().includes(search)
+						)
+					})
+
+					const currentArticle = computed(() => {
+						return articles.value.find(a => a.id === currentArticleId.value)
+					})
+
+					const currentMedia = computed(() => {
+						return mediaItems.value.find(m => m.id === currentMediaId.value)
+					})
+
+					// Methods
+					const t = (key) => {
+						const keys = key.split('.')
+						let value = translations[currentLang.value]
+						for (const k of keys) {
+							value = value?.[k]
+						}
+						return value || key
 					}
 
-					// 显示统一弹出层（这里保持使用 .single-linksource 类）
-					$(".single-linksource").show();
+					const pickI18n = (val) => {
+						if (val == null) return ''
 
-					// 填充标题和描述
-					$(".single-linksource-h").html(work.title);
-					$(".single-linksource-p").html(work.description);
+						// 1) JSON 字符串：'{"zh":"视频/Vlog","en":"Video"...}'
+						if (typeof val === 'string') {
+							const s = val.trim()
+							if ((s.startsWith('{') && s.endsWith('}')) || (s.startsWith('[') && s.endsWith(']'))) {
+								try {
+									const obj = JSON.parse(s)
+									if (obj && typeof obj === 'object') {
+										return obj[currentLang.value] ?? obj.zh ?? Object.values(obj)[0] ?? ''
+									}
+								} catch (e) {
+									// 不是合法 JSON 就当普通字符串
+								}
+							}
+							// 2) 普通字符串：'video' / 'image' / '视频/Vlog'
+							return val
+						}
 
-					// 清空所有链接按钮，并隐藏
-					$("#btnlink1, #btnlink2, #btnlink3, #btnlink4").hide().html("");
+						// 3) 对象：{ zh:'视频/Vlog', en:'Video', ... }
+						if (typeof val === 'object') {
+							return val[currentLang.value] ?? val.zh ?? Object.values(val)[0] ?? ''
+						}
+						return String(val)
+					}
 
-					// 遍历 links 数组，最多填充 4 个按钮
-					if (work.links && work.links.length > 0) {
-						work.links.forEach(function(link, index) {
-							if (index < 4) {
-								$("#btnlink" + (index + 1))
-									.html(link.name)
-									.attr("href", link.url)
-									.show();
+					const tStatus = (statusKey) => {
+						const s = String(statusKey || "").trim();
+
+						// 只处理 apps.xxx 这一类
+						const m = /^apps\.(.+)$/.exec(s);
+						if (!m) return t(s); // 不是这种格式就按原样走 t()
+
+						// apps.developing -> apps.status.developing
+						const mapped = `apps.status.${m[1]}`;
+						const val = t(mapped);
+
+						// 如果没配翻译，兜底回原 key 的翻译（比如你还保留了 apps.developing 的老写法）
+						return val !== mapped ? val : t(s);
+					};
+
+
+					// （可选但强烈建议）给「视频角标」判断也兼容新结构
+					const isVideoType = (val) => {
+						const text = pickI18n(val).toLowerCase()
+						return text.includes('video') || text.includes('vlog') || text.includes('视频')
+					}
+
+
+
+
+					const viewArticle = (id) => {
+						currentArticleId.value = id
+						currentPage.value = 'article-detail'
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						})
+					}
+
+					const viewMedia = (id) => {
+						currentMediaId.value = id
+						currentPage.value = 'media-detail'
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						})
+					}
+
+					const setLanguage = (lang) => {
+						currentLang.value = lang
+						showLangMenu.value = false
+						document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang === 'en' ? 'en' : lang ===
+							'ja' ? 'ja' : 'ko'
+					}
+
+					const toggleTheme = () => {
+						isDark.value = !isDark.value
+						document.documentElement.classList.toggle('dark', isDark.value)
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					const submitContact = async () => {
+						// 1) 防重复点击
+						if (contactStatus.value === "sending") return
+
+						// 2) 一按就进入发送中（你要的行为）
+						contactStatus.value = "sending"
+						contactHint.value = ""
+						clearTimeout(contactResetTimer)
+
+						try {
+							if (!supabase) throw new Error("Supabase not initialized")
+
+							const payload = {
+								name: (contactForm.value.name || "").trim(),
+								email: (contactForm.value.email || "").trim(),
+								message: (contactForm.value.message || "").trim(),
+								user_id: (await supabase.auth.getUser()).data?.user?.id ?? null,
+							}
+
+							// 3) 校验：校验失败也当作“失败状态”展示
+							if (!payload.name || !payload.email || !payload.message) {
+								contactStatus.value = "error"
+								// 选一种：
+								// A) 你要求“失败就提示发送失败”：
+								contactHint.value = t("contact.sendFailed")
+
+								// B) 更合理：提示未填完整（推荐）
+								// contactHint.value = t("contact.fillAll")
+
+								contactResetTimer = setTimeout(() => {
+									contactStatus.value = "idle"
+									contactHint.value = ""
+								}, 1800)
+								return
+							}
+
+							const {
+								error
+							} = await supabase.from("contact_messages").insert(payload)
+							if (error) throw error
+
+							// 4) 成功
+							contactStatus.value = "success"
+							contactHint.value = ""
+							contactForm.value = {
+								name: "",
+								email: "",
+								message: ""
+							}
+
+							contactResetTimer = setTimeout(() => {
+								contactStatus.value = "idle"
+								contactHint.value = ""
+							}, 1000)
+						} catch (err) {
+							console.error("[contact] submit failed:", err)
+
+							// 5) 失败
+							contactStatus.value = "error"
+							contactHint.value = t("contact.sendFailed")
+
+							contactResetTimer = setTimeout(() => {
+								contactStatus.value = "idle"
+								contactHint.value = ""
+							}, 1800)
+						}
+					}
+
+
+
+
+
+
+
+
+
+					const scrollContainer = ref(null)
+					const currentPhoneIndex = ref(0)
+
+					const handleScroll = (e) => {
+						const container = e.target
+						const scrollLeft = container.scrollLeft
+						const cardWidth = container.clientWidth
+						// 计算当前是第几张图 (四舍五入)
+						currentPhoneIndex.value = Math.round(scrollLeft / cardWidth)
+					}
+
+					const scrollToPhone = (index) => {
+						if (scrollContainer.value) {
+							const cardWidth = scrollContainer.value.clientWidth
+							scrollContainer.value.scrollTo({
+								left: index * cardWidth, // 简化计算，大致滚动到对应位置
+								behavior: 'smooth'
+							})
+						}
+					}
+
+
+
+
+
+					// ========= Cloudflare (applist) =========
+					const API_BASE = "https://applist.sqxvafilm.workers.dev";
+					const GET_TOKEN = "ahVh=3f0w>.j?RGkssi7TQ+w*zbkRCrBw-).faM4%:YhjQxd5Fi*4a.]~de3Jj~,";
+
+					// apps list state
+					const appsLoading = ref(true);
+					const appsError = ref("");
+					const appsRows = ref([]); // 规范化后的 applist
+					const appsNextCursor = ref(null);
+
+					// （如果你未来要做 apps 页搜索/筛选，可保留）
+					const appsQ = ref("");
+					const filterStatus = ref("enabled"); // enabled | disabled | all
+
+					function authHeaders() {
+						return {
+							Authorization: `Bearer ${GET_TOKEN}`
+						};
+					}
+
+					// 安全 JSON 解析
+					function safeParseJson(s, fallback) {
+						try {
+							return JSON.parse(s);
+						} catch {
+							return fallback;
+						}
+					}
+
+					function toBool(v) {
+						return v === true || v === 1 || v === "1" || v === "true";
+					}
+
+					function toI18nObject(val, fallbackText = "") {
+						// 目标：输出 { zh,en,ja,ko }
+						if (val == null) return {
+							zh: fallbackText,
+							en: fallbackText,
+							ja: fallbackText,
+							ko: fallbackText
+						};
+
+						// 已经是对象
+						if (typeof val === "object") {
+							const zh = val.zh ?? fallbackText;
+							const en = val.en ?? zh ?? fallbackText;
+							const ja = val.ja ?? zh ?? fallbackText;
+							const ko = val.ko ?? zh ?? fallbackText;
+							return {
+								zh,
+								en,
+								ja,
+								ko
+							};
+						}
+
+						// 字符串：可能是 JSON，也可能是普通文本
+						if (typeof val === "string") {
+							const s = val.trim();
+							if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith("[") && s.endsWith("]"))) {
+								const obj = safeParseJson(s, null);
+								if (obj && typeof obj === "object" && !Array.isArray(obj)) {
+									const zh = obj.zh ?? fallbackText;
+									const en = obj.en ?? zh ?? fallbackText;
+									const ja = obj.ja ?? zh ?? fallbackText;
+									const ko = obj.ko ?? zh ?? fallbackText;
+									return {
+										zh,
+										en,
+										ja,
+										ko
+									};
+								}
+							}
+							// 普通字符串：当作中文兜底，其它语言跟随 zh
+							return {
+								zh: s,
+								en: s,
+								ja: s,
+								ko: s
+							};
+						}
+
+						// 其它类型
+						const s = String(val);
+						return {
+							zh: s,
+							en: s,
+							ja: s,
+							ko: s
+						};
+					}
+
+					function parsePlatforms(val) {
+						// 目标：输出数组，比如 ["web","ios","android"]
+						if (val == null) return [];
+						if (Array.isArray(val)) return val;
+
+						if (typeof val === "string") {
+							const s = val.trim();
+							// 可能是 JSON 数组
+							if (s.startsWith("[") && s.endsWith("]")) {
+								const arr = safeParseJson(s, []);
+								return Array.isArray(arr) ? arr : [];
+							}
+							// 可能是逗号分隔
+							if (s.includes(",")) return s.split(",").map(x => x.trim()).filter(Boolean);
+							// 单个字符串
+							return s ? [s] : [];
+						}
+
+						return [String(val)];
+					}
+
+					function mapD1RowToApp(row) {
+						const id = String(row.id ?? "");
+						const page = String(row.page ?? row.route ?? row.slug ?? id);
+						const accent = String(row.accent ?? row.accent_color ?? row.color ?? "");
+
+						const logoUrl = String(row.logoUrl ?? row.logo_url ?? row.logo ?? row.icon ?? "");
+						const version = row.version == null ? "" : String(row.version);
+						const disabled = toBool(row.disabled);
+
+						const statusKey = String(
+							row.status_key ||
+							row.status_text_key ||
+							row.statusTextKey ||
+							row.status_text ||
+							(disabled ? "apps.developing" : "apps.launched")
+						);
+
+						const name = toI18nObject(row.name_i18n ?? row.name ?? row.title ?? "", "");
+						const tagline = toI18nObject(row.tagline_i18n ?? row.tagline ?? row.subtitle ?? "", "");
+						const platforms = parsePlatforms(row.platforms);
+
+						// ====== 新增：商店内容字段（向后兼容） ======
+						const intro = toI18nObject(row.intro ?? row.intro_i18n ?? "", ""); // i18n object
+
+						const shelf = parseShelf(row.shelf ?? row.screenshots ?? row.carousel ?? null); // array
+						const changelog = parseChangelog(row.changelog ?? row.log ?? row.update_log ?? null); // array
+
+						return {
+							id,
+							page,
+							accent,
+							logoUrl,
+							version,
+							disabled,
+							statusKey,
+							name,
+							tagline,
+							platforms,
+
+							// new fields
+							intro,
+							shelf,
+							changelog,
+
+							// 可选：把原始 row 附着，方便你调试/以后扩展（不想要就删）
+							_raw: row,
+						};
+					}
+
+					// 从 Cloudflare 拉 applist（带分页 cursor）
+					async function fetchApps(isLoadMore = false) {
+						appsLoading.value = true;
+						appsError.value = "";
+
+						try {
+							const p = new URLSearchParams({
+								limit: "50"
+							});
+							if (appsQ.value) p.set("q", appsQ.value);
+							if (filterStatus.value === "enabled") p.set("onlyEnabled", "1");
+							if (isLoadMore && appsNextCursor.value) p.set("cursor", appsNextCursor.value);
+
+							const res = await fetch(`${API_BASE}/api/apps?${p.toString()}`, {
+								method: "GET",
+								headers: authHeaders(),
+							});
+
+							if (!res.ok) {
+								const text = await res.text().catch(() => "");
+								throw new Error(`fetch apps failed: ${res.status} ${res.statusText} ${text}`.trim());
+							}
+
+							const data = await res.json();
+
+							let items = (data.items || []).map(mapD1RowToApp);
+							console.log("[applist normalized]", JSON.parse(JSON.stringify(items)));
+
+							// 这里如果你还要支持 “只看 disabled”
+							if (filterStatus.value === "disabled") {
+								items = items.filter(i => i.disabled === true);
+							}
+
+							appsRows.value = isLoadMore ? [...appsRows.value, ...items] : items;
+							appsNextCursor.value = data.next_cursor || null;
+
+						} catch (e) {
+							appsError.value = e?.message || String(e);
+							console.error("[apps] load failed:", e);
+						} finally {
+							appsLoading.value = false;
+						}
+					}
+
+					function loadMoreApps() {
+						if (!appsNextCursor.value || appsLoading.value) return;
+						fetchApps(true);
+					}
+
+					const applist = computed(() => appsRows.value || []);
+
+					// Home 下半区：除 dietpro 外最多 3 个（按你的 id）
+					const homeOtherApps = computed(() => {
+						return applist.value.filter(a => a.id !== "dietpro").slice(0, 3);
+					});
+
+					// ===== helpers (建议放同文件里，靠近 map 函数) =====
+
+					function safeJsonParse(v, fallback) {
+						if (v == null) return fallback;
+						if (typeof v === "object") return v; // already parsed
+						const s = String(v).trim();
+						if (!s) return fallback;
+						try {
+							return JSON.parse(s);
+						} catch {
+							return fallback;
+						}
+					}
+
+					// shelf: [{src,ratio,lang,title}]
+					function parseShelf(v) {
+						const arr = safeJsonParse(v, []);
+						if (!Array.isArray(arr)) return [];
+						return arr
+							.map(x => ({
+								src: String(x?.src ?? x?.url ?? "").trim(),
+								ratio: String(x?.ratio ?? "").trim(),
+								lang: String(x?.lang ?? "all").trim(),
+								title: String(x?.title ?? "").trim(),
+							}))
+							.filter(x => x.src);
+					}
+
+					// changelog: [{version,date,important,content:{zh/en/ja/ko:[]}}]
+					function parseChangelog(v) {
+						const arr = safeJsonParse(v, []);
+						if (!Array.isArray(arr)) return [];
+						return arr.map(x => ({
+							version: String(x?.version ?? "").trim(),
+							date: String(x?.date ?? "").trim(),
+							important: !!x?.important,
+							content: normalizeLogContent(x?.content),
+						}));
+					}
+
+					function normalizeLogContent(c) {
+						const out = {
+							zh: [],
+							en: [],
+							ja: [],
+							ko: []
+						};
+						const obj = (c && typeof c === "object") ? c : safeJsonParse(c, {});
+						["zh", "en", "ja", "ko"].forEach(k => {
+							const v = obj?.[k];
+							if (Array.isArray(v)) out[k] = v.map(s => String(s)).filter(Boolean);
+							else if (typeof v === "string") out[k] = v.split("\n").map(s => s.trim()).filter(
+								Boolean);
+							else out[k] = [];
+						});
+						return out;
+					}
+
+
+
+
+
+					// ========= Supabase (blog/media only) =========
+					const SUPABASE_URL = "https://lwsujxnqjhfzhqkerdzo.supabase.co";
+					const SUPABASE_ANON_KEY = "sb_publishable_Nu5dkgGYkYISdTuCZB_ihw_GxNvtV1e";
+
+					// 只创建一次
+					const supabase = window.supabase?.createClient?.(SUPABASE_URL, SUPABASE_ANON_KEY) || null;
+
+					// blog/media：先空数组，加载后再填充
+					const articles = ref([]);
+					const mediaItems = ref([]);
+
+					/** ========== 1) 会话级数据缓存：同一 tab 生命周期内只拉一次 ========== */
+					const dataCache =
+						window.__DATA_CACHE__ ||
+						(window.__DATA_CACHE__ = (() => {
+							const map = new Map(); // key -> value
+							const pending = new Map(); // key -> Promise
+							return {
+								async wrap(key, loader) {
+									if (map.has(key)) return map.get(key);
+									if (pending.has(key)) return pending.get(key);
+
+									const p = (async () => {
+										const val = await loader();
+										map.set(key, val);
+										pending.delete(key);
+										return val;
+									})().catch((e) => {
+										pending.delete(key);
+										throw e;
+									});
+
+									pending.set(key, p);
+									return p;
+								},
+								clear() {
+									map.clear();
+									pending.clear();
+								}
+							};
+						})());
+
+					/** ========== 2) 会话级图片缓存：同一 tab 内每张图只下载一次（blob 本地化） ========== */
+					const imageCache =
+						window.__IMAGE_CACHE__ ||
+						(window.__IMAGE_CACHE__ = (() => {
+							const map = new Map(); // originalUrl -> objectUrl (blob:)
+							const pending = new Map(); // originalUrl -> Promise
+
+							function clear() {
+								for (const objUrl of map.values()) URL.revokeObjectURL(objUrl);
+								map.clear();
+								pending.clear();
+							}
+
+							// 刷新/关闭页面释放 blob url（刷新也会天然清空，但释放更干净）
+							window.addEventListener("beforeunload", clear);
+
+							async function toObjectUrl(originalUrl) {
+								if (!originalUrl) return originalUrl;
+								if (originalUrl.startsWith("blob:")) return originalUrl;
+								if (map.has(originalUrl)) return map.get(originalUrl);
+								if (pending.has(originalUrl)) return pending.get(originalUrl);
+
+								const p = (async () => {
+									// cache: "force-cache" 只是一点点加成，核心是 blob 本地化
+									const res = await fetch(originalUrl, {
+										cache: "force-cache"
+									});
+									const blob = await res.blob();
+									const objUrl = URL.createObjectURL(blob);
+									map.set(originalUrl, objUrl);
+									pending.delete(originalUrl);
+									return objUrl;
+								})().catch((e) => {
+									pending.delete(originalUrl);
+									throw e;
+								});
+
+								pending.set(originalUrl, p);
+								return p;
+							}
+
+							return {
+								toObjectUrl,
+								clear
+							};
+						})());
+
+					/** ========== 3) Supabase 拉取：只会被 dataCache 包一层 ========== */
+					async function fetchBlogAndMediaFromSupabase() {
+						if (!supabase) throw new Error("Supabase not initialized (window.supabase missing)");
+
+						return dataCache.wrap("supabase:blog+media:v2", async () => {
+							const {
+								data: blogData,
+								error: blogErr
+							} = await supabase
+								.from("blog")
+								.select("*")
+								.eq("published", true)
+								.order("sort", {
+									ascending: true
+								})
+								.order("id", {
+									ascending: false
+								});
+							if (blogErr) throw blogErr;
+
+							const {
+								data: mediaData,
+								error: mediaErr
+							} = await supabase
+								.from("media")
+								.select("*")
+								.eq("published", true)
+								.order("sort", {
+									ascending: true
+								})
+								.order("id", {
+									ascending: false
+								});
+							if (mediaErr) throw mediaErr;
+
+							return {
+								blog: blogData || [],
+								media: mediaData || []
+							};
+						});
+					}
+
+					/** ========== 4) normalize：修复 ...r，并把图片字段转成 blob 本地 URL ========== */
+					/* 下面两个字段名请按你表结构改：
+					   - blog: cover / hero / image 之类
+					   - media: thumbnail / cover / url 之类
+					   你不确定就先用 cover、thumbnail（不对也不会报错，只是不会缓存图片）
+					*/
+					async function normalizeBlog(rows) {
+						return Promise.all((rows || []).map(async (r) => ({
+							...r, // ✅ 这里一定要 ...r，不能写 .r
+							readTime: r.readTime ?? r.read_time ?? 0,
+							cover: r.cover ? await imageCache.toObjectUrl(r.cover) : r.cover,
+						})));
+					}
+
+					async function normalizeMedia(rows) {
+						return Promise.all((rows || []).map(async (r) => {
+							// 1) type 标准化：string -> object
+							let typeObj = null;
+							if (r.type) {
+								if (typeof r.type === "object") {
+									typeObj = r.type;
+								} else if (typeof r.type === "string") {
+									try {
+										typeObj = JSON.parse(r.type);
+									} catch {
+										typeObj = null;
+									}
+								}
+							}
+
+							return {
+								...r,
+								// ✅ 给你一个新字段，避免覆盖原字段（也可以直接覆盖 r.type，看你喜好）
+								typeObj,
+
+								// 2) 缩略图缓存保持不变
+								thumbnail: r.thumbnail ? await imageCache.toObjectUrl(r.thumbnail) :
+									r.thumbnail,
+							};
+						}));
+					}
+
+
+					/** ========== 5) load：一次加载，切页只复用内存 ========== */
+					async function loadBlogAndMedia(opts = {}) {
+						const {
+							forceReload = false
+						} = opts;
+
+						isLoading.value = true;
+						try {
+							if (forceReload) {
+								dataCache.clear();
+								imageCache.clear();
+							}
+
+							const remote = await fetchBlogAndMediaFromSupabase();
+							articles.value = await normalizeBlog(remote.blog);
+							mediaItems.value = await normalizeMedia(remote.media);
+
+							console.log("[content] blog/media loaded (cached: data + images)");
+						} catch (err) {
+							console.warn("[content] supabase failed, fallback to local.json", err);
+
+							const local = await fetchLocalBackup();
+							// local.json 里也可能有图片链接，一样做 blob 缓存
+							articles.value = await normalizeBlog(local.blog || []);
+							mediaItems.value = await normalizeMedia(local.media || []);
+						} finally {
+							isLoading.value = false
+							isPageLoading.value = false
+						}
+					}
+
+
+
+
+
+
+
+
+
+
+					const skills = ['UI/UX Design', 'AI', 'Vue.js', 'JavaScript', 'HTML', 'CSS', 'Adobe', 'Cinema 4D',
+						'Redshift'
+					]
+
+					// === 新增：Editor.js JSON 转 HTML 解析器 ===
+					const renderArticleContent = (content) => {
+						// 1. 容错处理：如果是空或者 undefined
+						if (!content) return '';
+
+						// 2. 兼容旧数据：如果是纯字符串（不是 Editor.js 的 JSON 对象），直接返回
+						if (typeof content === 'string') return content;
+
+						// 3. 检查是否有 blocks 数组
+						if (!content.blocks || !Array.isArray(content.blocks)) return '';
+
+						// 4. 遍历 Blocks 生成 HTML
+						let html = '';
+
+
+						content.blocks.forEach((block, i) => {
+
+							// ---- inline helpers (only inside this forEach) ----
+							const esc = (s) =>
+								String(s ?? "")
+								.replace(/&/g, "&amp;")
+								.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;")
+								.replace(/"/g, "&quot;")
+								.replace(/'/g, "&#39;");
+
+							const text = (s) => {
+								let v = esc(s);
+
+								// allow basic inline tags (Editor.js common inline tools)
+								v = v
+									.replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/g, "<b>$1</b>")
+									.replace(/&lt;strong&gt;(.*?)&lt;\/strong&gt;/g,
+										"<strong>$1</strong>")
+									.replace(/&lt;i&gt;(.*?)&lt;\/i&gt;/g, "<i>$1</i>")
+									.replace(/&lt;em&gt;(.*?)&lt;\/em&gt;/g, "<em>$1</em>")
+									.replace(/&lt;u&gt;(.*?)&lt;\/u&gt;/g, "<u>$1</u>")
+									.replace(/&lt;s&gt;(.*?)&lt;\/s&gt;/g, "<s>$1</s>")
+									.replace(/&lt;br\s*\/?&gt;/g, "<br>")
+									.replace(/&amp;nbsp;/g, "&nbsp;");
+
+								return v;
+							};
+
+
+							const commonText = "text-neutral-800 dark:text-neutral-200";
+							const bodyText =
+								"text-[15.5px] sm:text-[16.5px] leading-[1.85] tracking-[0.01em]";
+							const blockGap = "mb-6";
+
+							switch (block.type) {
+								case "header": {
+									const level = Math.min(4, Math.max(2, Number(block.data?.level || 2)));
+
+									// fix #4: first heading no weird top space
+									const mt = i === 0 ? "mt-0" : (level === 2 ? "mt-10" : level === 3 ?
+										"mt-8" : "mt-6");
+
+									const hClass =
+										level === 2 ?
+										`${mt} mb-4 text-[22px] sm:text-[26px] leading-[1.25] tracking-[-0.01em] font-semibold` :
+										level === 3 ?
+										`${mt} mb-3 text-[18px] sm:text-[20px] leading-[1.35] tracking-[-0.008em] font-semibold` :
+										`${mt} mb-2 text-[16.5px] sm:text-[17px] leading-[1.45] tracking-[-0.006em] font-semibold`;
+
+									html +=
+										`<h${level} class="${commonText} ${hClass}">${text(block.data?.text)}</h${level}>`;
+									break;
+								}
+
+								case "paragraph": {
+									html +=
+										`<p class="${commonText} ${bodyText} ${blockGap}">${text(block.data?.text)}</p>`;
+									break;
+								}
+
+								case "list": {
+									const isOrdered = block.data?.style === "ordered";
+									const tag = isOrdered ? "ol" : "ul";
+
+									const listWrap =
+										"my-6 pl-6 " +
+										(isOrdered ? "list-decimal" : "list-disc") +
+										" space-y-2";
+
+									const liClass = `${commonText} ${bodyText} leading-[1.75]`;
+
+									const items = Array.isArray(block.data?.items) ? block.data.items : [];
+
+									// fix #1: handle items as string OR object (nested list tool / custom output)
+									const normalizeItemText = (it) => {
+										if (typeof it === "string") return it;
+										if (it && typeof it === "object") {
+											// common keys across list tools
+											return it.content ?? it.text ?? it.title ?? it.label ?? "";
+										}
+										return String(it ?? "");
+									};
+
+									const listItems = items
+										.map((it) => {
+											const t = normalizeItemText(it);
+											return `<li class="${liClass}">${text(t)}</li>`;
+										})
+										.join("");
+
+									html += `<${tag} class="${listWrap}">${listItems}</${tag}>`;
+									break;
+								}
+
+								case "image": {
+									const url = block.data?.file?.url ? String(block.data.file.url) : "";
+									const cap = block.data?.caption ? text(block.data.caption) : "";
+
+									if (url) {
+										html +=
+											`<figure class="my-8">` +
+											// 容器：默认 1:1，先占位，避免抖动
+											`<div class="img-skel relative w-full overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 shadow-sm bg-neutral-200 dark:bg-neutral-800" style="aspect-ratio: 1 / 1;">` +
+											// 鱼骨 shimmer
+											`<div class="skel-shimmer"></div>` +
+
+											// 图片：先透明，加载完成再显示；同时把容器 aspect-ratio 改成真实比例
+											`<img
+								              src="${esc(url)}"
+								              loading="lazy"
+								              alt="${cap || "image"}"
+								              class="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-300"
+								              onload="
+								                const w = this.naturalWidth || 1;
+								                const h = this.naturalHeight || 1;
+								                const wrap = this.closest('.img-skel');
+								                if (wrap) { wrap.style.aspectRatio = w + ' / ' + h; wrap.classList.add('is-loaded'); }
+								                this.style.opacity = 1;
+								              "
+								              onerror="
+								                const wrap = this.closest('.img-skel');
+								                if (wrap) { wrap.classList.add('is-loaded'); }
+								                this.style.opacity = 1;
+								              "
+								            />` +
+											`</div>` +
+
+											(cap ?
+												`<figcaption class="mt-3 text-center text-sm md:textbase leading-[1.6] text-neutral-500 dark:text-neutral-400">${cap}</figcaption>` :
+												"") +
+											`</figure>`;
+									}
+									break;
+								}
+
+								case "quote": {
+									const alignment =
+										block.data?.alignment === "center" ?
+										"text-center" :
+										block.data?.alignment === "right" ?
+										"text-right" :
+										"text-left";
+
+									html += `<blockquote class="my-8 ${alignment}">` +
+										`<div class="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.04] px-5 py-4">` +
+										`<div class="flex gap-4">` +
+										`<span class="text-6xl text-neutral-300 dark:text-neutral-600 font-serif leading-none h-4 -mt-1 select-none">“</span>` +
+										`<p class="${commonText} ${bodyText} leading-[1.8] italic mb-0">${text(block.data?.text)}</p>` +
+										`</div>` +
+										(block.data?.caption ?
+											`<div class="mt-2 text-[13px] text-neutral-500 dark:text-neutral-400">${text(block.data.caption)}</div>` :
+											"") +
+										`</div></blockquote>`;
+									break;
+								}
+
+								case "code": {
+									// fix #2: remove template indent introducing first-line spaces
+									// also keep code newlines exactly
+									const code = esc(block.data?.code || "");
+									html += `<div class="my-8">` +
+										`<pre class="rounded-2xl border border-black/5 dark:border-white/10 bg-neutral-50 dark:bg-neutral-900/60 overflow-x-auto p-4">` +
+										`<code class="text-[13px] sm:text-[14px] leading-[1.65] font-mono text-neutral-800 dark:text-neutral-200 whitespace-pre">${code}</code>` +
+										`</pre></div>`;
+									break;
+								}
+
+								case "embed": {
+									const src = block.data?.embed ? String(block.data.embed) : "";
+									if (src) {
+										html += `<div class="my-8">` +
+											`<div class="aspect-video w-full overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 bg-black">` +
+											`<iframe src="${esc(src)}" frameborder="0" allowfullscreen class="w-full h-full"></iframe>` +
+											`</div>` +
+											(block.data?.caption ?
+												`<div class="mt-3 text-center text-[13px] leading-[1.6] text-neutral-500 dark:text-neutral-400">${text(block.data.caption)}</div>` :
+												"") +
+											`</div>`;
+									}
+									break;
+								}
+
+								case "video": {
+									const videoUrl = block.data?.file?.url ? String(block.data.file.url) :
+										"";
+									if (videoUrl) {
+										html += `
+										<div class="my-8 flex flex-col w-full justify-center">
+										  <div class="video-wrapper w-full md:max-h-[80vh] overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 aspect-video transition-all">
+										    <video controls  preload="metadata" class="video-el w-full h-full object-contain"
+										      onloadedmetadata="this.closest('.video-wrapper').classList.remove('aspect-video')"
+										      <source src="${esc(videoUrl)}" type="video/mp4" />
+										      您的浏览器不支持 video 标签。
+										    </video>
+										  </div>
+										  ${
+										    block.data?.caption
+										      ? `<div class="mt-3 text-center text-[13px] leading-[1.6] text-neutral-500 dark:text-neutral-400">
+										           ${text(block.data.caption)}
+										         </div>`
+										      : ""
+										  }
+										</div>`;
+									}
+									break;
+								}
+
+								case "table": {
+									const rows = Array.isArray(block.data?.content) ? block.data.content :
+								[];
+
+									let tableHtml =
+										`<div class="my-8 overflow-x-auto">` +
+										`<table class="min-w-full border-separate border-spacing-0 rounded-2xl overflow-hidden border border-black/5 dark:border-white/10">`;
+
+									rows.forEach((row, rowIndex) => {
+										tableHtml +=
+											`<tr class="${rowIndex % 2 === 0 ? "bg-white dark:bg-neutral-900" : "bg-neutral-50 dark:bg-neutral-900/60"}">`;
+										(Array.isArray(row) ? row : []).forEach((cell) => {
+											tableHtml +=
+												`<td class="align-top px-4 py-3 text-[14px] leading-[1.7] ${commonText} border-b border-black/5 dark:border-white/10">${text(cell)}</td>`;
+										});
+										tableHtml += `</tr>`;
+									});
+
+									tableHtml += `</table></div>`;
+									html += tableHtml;
+									break;
+								}
+
+								case "checklist": {
+									// fix #3: nicer checked UI
+									const items = Array.isArray(block.data?.items) ? block.data.items : [];
+
+									html += `<ul class="my-6 space-y-3">`;
+
+									items.forEach((it) => {
+										const checked = !!it?.checked;
+										const label = text(it?.text);
+
+										html +=
+											`<li class="flex items-center gap-3">` +
+											`<span class="mt-[3px] inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[6px] border border-black/15 dark:border-white/15 ` +
+											(checked ?
+												`bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-sm` :
+												`bg-white dark:bg-neutral-900`) +
+											`">` +
+											(checked ?
+												`<span class="text-[12px] flex items-center justify-center leading-none">√</span>` :
+												``) +
+											`</span>` +
+											`<span class="${commonText} ${bodyText} leading-[1.75] ${checked ? "line-through opacity-60" : ""}">${label}</span>` +
+											`</li>`;
+									});
+
+									html += `</ul>`;
+									break;
+								}
+
+								case "delimiter": {
+									html += `<hr class="my-10 border-black/10 dark:border-white/10" />`;
+									break;
+								}
+
+								default:
+									break;
 							}
 						});
+
+
+
+
+						return html;
 					}
 
-					// 根据媒体类型处理预览区域
-					if (work.media && work.media.type.toLowerCase() === "video") {
-						// 如果是视频，显示视频区域
-						$("#slvideo").show();
-						$("#SlImg").hide();
-						$("#SlBlog").hide();
-						$("#SVideo2")
-							.attr("src", work.media.url)
-							.attr("poster", work.media.poster);
-						// 如果存在图片预览元素，则移除
-					} else if (work.media && work.media.type.toLowerCase() === "image") {
-						// 如果是图片，隐藏视频区域
-						$("#slvideo").hide();
-						$("#SlImg").show();
-						$("#SlBlog").hide();
-						$("#SImg").attr("src", work.media.url);
-					} else if (work.media && work.media.type.toLowerCase() === "blog") {
-						// 如果是博文，隐藏视频区域并将内容加载到 #popupMedia
-						$("#slvideo").hide();
-						$("#SlImg").hide();
-						$("#SlBlog").show();
-						$("#blogcontent").html(work.content || "");
-					} else {
-						// 其他情况，清空媒体区域
-						$("#slvideo").hide();
-						$("#SlImg").hide();
-						$("#SlBlog").hide();
+
+
+
+
+
+
+					// 测试部分
+					// ✅ 测试阶段：一个函数解决「进入商店 + 生成推荐」
+					function testOpenStore(appOrId) {
+						const list = Array.isArray(applist?.value) ? applist.value : (applist || []);
+
+						// 兼容：传 app 对象 或 id
+						const app =
+							(appOrId && typeof appOrId === "object") ?
+							appOrId :
+							list.find(x => x.id === appOrId);
+
+						// 找不到：也能进 app-store
+						if (!app) {
+							currentApp.value = null;
+							appRecommend.value = [];
+							currentPage.value = "app-store";
+							window.scrollTo(0, 0);
+							return;
+						}
+
+						// 1) 传参到 app-store
+						currentApp.value = app;
+						currentPage.value = "app-store";
+						window.scrollTo(0, 0);
+
+						// 2) 生成推荐：排除自己 -> 打乱 -> 取最多 4 个
+						const pool = list.filter(x => x && x.id !== app.id && !x.disabled);
+
+						// Fisher-Yates shuffle
+						const shuffled = pool.slice();
+						for (let i = shuffled.length - 1; i > 0; i--) {
+							const j = Math.floor(Math.random() * (i + 1));
+							[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+						}
+
+						appRecommend.value = shuffled.slice(0, 4);
 					}
 
-				}
+					const currentApp = ref(null);
+					const appRecommend = ref([]);
 
-				/**
-				 * 关闭弹出层函数
-				 * 隐藏 .single-linksource 后清空标题、描述、媒体和链接区域
-				 */
-				function closeBlog() {
-					$(".single-linksource").fadeOut(function() {
-						$(".single-linksource-h").empty();
-						$(".single-linksource-p").empty();
-						$("#slvideo").hide();
-						$("#SVideo2").attr("src", "").attr("poster", "");
-						$("#popupLinks").empty();
+					function openChangelog() {
+						currentPage.value = 'changelog'
+						window.scrollTo(0, 0)
+					}
+
+					const filteredChangelogs = computed(() => {
+						const app = currentApp.value
+						if (!app || !Array.isArray(app.changelog)) return []
+
+						return app.changelog.map((log, idx) => ({
+							id: log.id || `${app.id}-${idx}`,
+							appName: pickI18n(app.name),
+							version: log.version,
+							date: log.date,
+							changes: log.content || {} // 直接对齐模板里的 log.changes[currentLang]
+						}))
+					})
+
+					const resolveUrl = (u) => !u ? '' : (
+						u.startsWith('http') ?
+						u :
+						`${API_BASE}/file/${String(u).replace(/^\//,'')}`
+					);
+
+					const filteredAppsV2 = computed(() => {
+						const list = Array.isArray(applist.value) ? applist.value : [];
+						const q = (appsSearch.value || "").trim().toLowerCase();
+						if (!q) return list;
+
+						return list.filter(app => {
+							const name = (pickI18n(app.name) || "").toLowerCase();
+							const tagline = (pickI18n(app.tagline || app.desc || {
+								zh: '',
+								en: '',
+								ja: '',
+								ko: ''
+							}) || "").toLowerCase();
+							const id = (app.id || "").toLowerCase();
+							return name.includes(q) || tagline.includes(q) || id.includes(q);
+						});
 					});
+
+
+					function toggleAppsLauncher() {
+						currentPage.value = (currentPage.value === 'apps') ? 'appsv2' : 'apps'
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						})
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					// Lifecycle
+					onMounted(async () => {
+						if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+							isDark.value = true
+							document.documentElement.classList.add("dark")
+						}
+
+						await nextTick()
+						isPageLoading.value = false
+
+						// 先拉 Cloudflare applist
+						await fetchApps(false);
+
+						// 再拉 supabase 的 blog/media
+						await loadBlogAndMedia()
+					})
+
+					return {
+						currentPage,
+						currentLang,
+						isDark,
+						showLangMenu,
+						showMobileMenu,
+						articleSearch,
+						mediaSearch,
+						contactForm,
+						isActive,
+						navBase,
+						navActive,
+						navIdle,
+						navActiveMobile,
+						navIdleMobile,
+						languages,
+						currentLangLabel,
+						featuredArticles,
+						featuredMedia,
+						filteredArticles,
+						filteredMedia,
+						currentArticle,
+						currentMedia,
+						t,
+						tStatus,
+						applist,
+						homeOtherApps,
+						currentAppUrl,
+						currentAppUrlWithParams,
+						navigate,
+						viewArticle,
+						viewMedia,
+						setLanguage,
+						toggleTheme,
+						submitContact,
+						contactStatus,
+						contactHint,
+						scrollContainer,
+						currentPhoneIndex,
+						handleScroll,
+						scrollToPhone,
+						articles,
+						mediaItems,
+						isPageLoading,
+						isLoading,
+						skills,
+						renderArticleContent,
+						pickI18n,
+						isVideoType,
+						appsLoading,
+						appsError,
+						appsNextCursor,
+						appsRows,
+						appsQ,
+						filterStatus,
+						fetchApps,
+						loadMoreApps,
+
+
+
+
+
+
+
+
+						// 测试
+						testOpenStore,
+						currentApp,
+						appRecommend,
+						openChangelog,
+						filteredChangelogs,
+						resolveUrl,
+						appsSearch,
+						filteredAppsV2,
+						toggleAppsLauncher
+					}
+				},
+				methods: {
+					goDietPro: function() {
+						window.open("https://dietpro.dorafx.top", "_blank", "noopener,noreferrer");
+					}
 				}
-
-				// 暴露关闭函数到全局，方便 HTML 中调用
-				window.closeBlog = closeBlog;
-			});
-		</script>
-
-		<script src="js/bootstrap.min.js"></script> <!-- isotope filter plugin -->
-		<script src="js/isotope.pkgd.min.js"></script>
-		<script src="js/portfolio-filter.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/social.js"></script>
-		<script type="text/javascript">
-			var date = new Date();
-			var year = date.getFullYear();
-			copyright = " © " + year + " DoraFX";
-			$("#copyright").html(copyright);
+			}).mount('#app')
 		</script>
 	</body>
+
 </html>

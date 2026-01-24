@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Peel Corner - Attach to Any Div (Test)</title>
+
+		<style>
+			:root {
+				/* === 1. 颜色配置 === */
+				--bg-page: #ffffff;
+				--bg-peel: linear-gradient(135deg, #fffff0 0%, #fff9c4 100%);
+				--shadow-peel: -5px 5px 15px rgba(0, 0, 0, 0.15);
+				--text-color: #333333;
+
+				/* === 2. 尺寸配置 === */
+				--size-idle: 50px;
+				/* 状态一 */
+				--size-open: 140px;
+				/* 状态二 */
+				--size-active: 155px;
+				/* 状态三 */
+
+				/* === 3. 动画曲线 === */
+				--ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				-webkit-tap-highlight-color: transparent;
+			}
+
+			body {
+				background: var(--bg-page);
+				font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+				min-height: 100vh;
+				display: grid;
+				place-items: center;
+				padding: 28px;
+				color: #111;
+			}
+
+			/* ============ 测试布局 ============ */
+			.grid {
+				width: min(1100px, 100%);
+				display: grid;
+				grid-template-columns: repeat(12, 1fr);
+				gap: 18px;
+			}
+
+			.card {
+				background: #f9f9f9;
+				border: 1px solid #eee;
+				border-radius: 18px;
+				padding: 18px;
+				min-height: 260px;
+				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+			}
+
+			.card h2 {
+				font-size: 16px;
+				margin-bottom: 6px;
+				letter-spacing: 0.2px;
+			}
+
+			.card p {
+				font-size: 13px;
+				color: #666;
+				line-height: 1.6;
+			}
+
+			.span-6 {
+				grid-column: span 6;
+			}
+
+			.span-4 {
+				grid-column: span 4;
+			}
+
+			.span-8 {
+				grid-column: span 8;
+			}
+
+			@media (max-width: 900px) {
+
+				.span-6,
+				.span-4,
+				.span-8 {
+					grid-column: span 12;
+				}
+			}
+
+			/* 隐藏 checkbox（每个卡片一套） */
+			.toggle-state {
+				display: none;
+			}
+
+			/* 简单的状态切换显示 */
+			.view-v1,
+			.view-v2 {
+				display: none;
+			}
+
+			.toggle-state:not(:checked)~.content .view-v1 {
+				display: block;
+			}
+
+			.toggle-state:checked~.content .view-v2 {
+				display: block;
+			}
+
+			/* =====================================================
+       ✅ 关键：让任意 div 右上角可挂折页
+       用法：容器加 .peel-host，折页 label 放进容器即可
+       ===================================================== */
+			.peel-host {
+				position: relative;
+				/* 绝对定位参照 */
+				overflow: hidden;
+				/* 不让折页溢出；想露出去就改 visible */
+			}
+
+			.peel-host>.peel-corner {
+				position: absolute;
+				top: 0;
+				right: 0;
+				z-index: 50;
+				cursor: pointer;
+				user-select: none;
+
+				width: var(--size-idle);
+				height: var(--size-idle);
+
+				transition: width 0.4s var(--ease-bounce), height 0.4s var(--ease-bounce);
+			}
+
+			/* 折页本体 */
+			.peel-host>.peel-corner .peel-shape {
+				position: absolute;
+				inset: 0;
+				background: var(--bg-peel);
+				border-bottom-left-radius: 100%;
+				box-shadow: var(--shadow-peel);
+				pointer-events: none;
+			}
+
+			.peel-host>.peel-corner .peel-shape::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				border-bottom-left-radius: 100%;
+				background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, transparent 60%);
+			}
+
+			/* 内容容器（图标 + 文字） */
+			.peel-host>.peel-corner .widget-position {
+				position: absolute;
+				top: 0;
+				right: 0;
+				z-index: 2;
+				opacity: 1;
+				transform: scale(0.45) rotate(15deg);
+				transition: all 0.3s var(--ease-bounce);
+			}
+
+			.peel-host>.peel-corner .widget-content {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				right: 2rem;
+				top: 4rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.peel-host>.peel-corner .widget-icon {
+				width: 40px;
+				height: 40px;
+				border-radius: 10px;
+				margin-bottom: 6px;
+				object-fit: cover;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			.peel-host>.peel-corner .widget-text {
+				font-size: 12px;
+				transform: scale(0);
+				font-weight: 700;
+				color: var(--text-color);
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				transition: all 0.3s var(--ease-bounce);
+			}
+
+			/* 动态切换内容逻辑 (V1 <-> V2) */
+			.show-v1,
+			.show-v2 {
+				display: none;
+			}
+
+			.toggle-state:not(:checked)~.peel-corner .show-v2 {
+				display: block;
+			}
+
+			.toggle-state:checked~.peel-corner .show-v1 {
+				display: block;
+			}
+
+			/* =========================================
+       只写两个 @media：电脑/手机，分界 600px
+       ========================================= */
+
+			/* 🖥️ 电脑端 (>= 600px)：hover 展开 */
+			@media (min-width: 600px) {
+				.peel-host>.peel-corner:hover {
+					width: var(--size-open);
+					height: var(--size-open);
+				}
+
+				.peel-host>.peel-corner:hover .widget-position {
+					transform: scale(1) rotate(15deg);
+				}
+
+				.peel-host>.peel-corner:hover .widget-text {
+					transform: scale(1);
+				}
+
+				/* 桌面按压态（可选，体验更爽） */
+				.peel-host>.peel-corner:active {
+					width: var(--size-active);
+					height: var(--size-active);
+					transition-duration: 0.1s;
+				}
+
+				.peel-host>.peel-corner:active .widget-content {
+					transform: scale(0.92);
+					transition-duration: 0.1s;
+				}
+			}
+
+			/* 📱 手机端 (< 600px)：JS 控制 is-open / is-active，整体缩 25% */
+			@media (max-width: 599px) {
+				:root {
+					--m-scale: 0.75;
+				}
+
+				/* 状态一：收起 */
+				.peel-host>.peel-corner {
+					width: calc(var(--size-idle) * var(--m-scale));
+					height: calc(var(--size-idle) * var(--m-scale));
+				}
+
+				/* 状态二：展开 */
+				.peel-host>.peel-corner.is-open {
+					width: calc(var(--size-open) * var(--m-scale));
+					height: calc(var(--size-open) * var(--m-scale));
+				}
+
+				/* 状态三：按压 */
+				.peel-host>.peel-corner.is-active {
+					width: calc(var(--size-active) * var(--m-scale));
+					height: calc(var(--size-active) * var(--m-scale));
+					transition-duration: 0.1s;
+				}
+
+				/* 内容整体缩放（图标+文字一起小 25%） */
+				.peel-host>.peel-corner .widget-position {
+					transform: scale(calc(0.45 * var(--m-scale))) rotate(15deg);
+				}
+
+				.peel-host>.peel-corner.is-open .widget-position {
+					transform: scale(var(--m-scale)) rotate(15deg);
+				}
+
+				/* 文字显示/隐藏 */
+				.peel-host>.peel-corner .widget-text {
+					transform: scale(0);
+				}
+
+				.peel-host>.peel-corner.is-open .widget-text {
+					transform: scale(1);
+				}
+
+				/* 内容位置同步缩放 */
+				.peel-host>.peel-corner .widget-content {
+					right: calc(2rem);
+					top: calc(4rem);
+				}
+
+				/* 按压反馈 */
+				.peel-host>.peel-corner.is-active .widget-content {
+					transform: scale(0.92);
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="grid">
+			<!-- 卡片 A：独立 toggle -->
+			<div class="card peel-host span-6" id="cardA">
+				<input class="toggle-state" type="checkbox" id="toggle-a" />
+
+				<label class="peel-corner" for="toggle-a" aria-label="Toggle A">
+					<span class="peel-shape"></span>
+
+					<span class="widget-position">
+						<span class="widget-content">
+							<img src="https://picsum.photos/id/10/100/100" class="widget-icon show-v2" alt="Go V2" />
+							<img src="https://picsum.photos/id/20/100/100" class="widget-icon show-v1"
+								alt="Back Home" />
+							<span class="widget-text show-v2">Switch</span>
+							<span class="widget-text show-v1">Back</span>
+						</span>
+					</span>
+				</label>
+
+				<div class="content">
+					<div class="view-v1">
+						<h2>卡片 A · 状态 V1</h2>
+						<p>这个折页挂在「任意 div」右上角：只要 div 加 <code>.peel-host</code>，折页 label 放进去就行。</p>
+					</div>
+					<div class="view-v2">
+						<h2>卡片 A · 状态 V2</h2>
+						<p>切换成功 ✅（checkbox 控制内容）。手机端自动演示节奏 + t3 回收逻辑见 JS。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 卡片 B：独立 toggle -->
+			<div class="card peel-host span-6" id="cardB">
+				<input class="toggle-state" type="checkbox" id="toggle-b" />
+
+				<label class="peel-corner" for="toggle-b" aria-label="Toggle B">
+					<span class="peel-shape"></span>
+
+					<span class="widget-position">
+						<span class="widget-content">
+							<img src="https://picsum.photos/id/30/100/100" class="widget-icon show-v2" alt="Go V2" />
+							<img src="https://picsum.photos/id/40/100/100" class="widget-icon show-v1"
+								alt="Back Home" />
+							<span class="widget-text show-v2">Next</span>
+							<span class="widget-text show-v1">Home</span>
+						</span>
+					</span>
+				</label>
+
+				<div class="content">
+					<div class="view-v1">
+						<h2>卡片 B · 状态 V1</h2>
+						<p>这是第二个容器，证明可以同时挂多个折角，各自独立计时、独立控制。</p>
+					</div>
+					<div class="view-v2">
+						<h2>卡片 B · 状态 V2</h2>
+						<p>你可以把这套用在作品卡片、应用卡片、任意模块右上角。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 额外测试：不同尺寸容器 -->
+			<div class="card peel-host span-4" id="cardC" style="min-height: 200px;">
+				<input class="toggle-state" type="checkbox" id="toggle-c" />
+				<label class="peel-corner" for="toggle-c" aria-label="Toggle C">
+					<span class="peel-shape"></span>
+					<span class="widget-position">
+						<span class="widget-content">
+							<img src="https://picsum.photos/id/50/100/100" class="widget-icon show-v2" alt="" />
+							<img src="https://picsum.photos/id/60/100/100" class="widget-icon show-v1" alt="" />
+							<span class="widget-text show-v2">Go</span>
+							<span class="widget-text show-v1">Back</span>
+						</span>
+					</span>
+				</label>
+
+				<div class="content">
+					<div class="view-v1">
+						<h2>小卡片 · V1</h2>
+						<p>容器更小也能挂。</p>
+					</div>
+					<div class="view-v2">
+						<h2>小卡片 · V2</h2>
+						<p>OK ✅</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="card span-8" style="background:#fff;border:1px dashed #e5e5e5;">
+				<h2>对照区（无折角）</h2>
+				<p>这个卡片没有 <code>.peel-host</code>，也没有折角组件。</p>
+			</div>
+		</div>
+
+		<script>
+			(function() {
+				// ✅ 用分辨率做手机判定（与 600px 分界一致）
+				const isMobile = window.matchMedia && window.matchMedia("(max-width: 599px)").matches;
+				if (!isMobile) return;
+
+				// 让页面多个折角各自独立工作
+				const corners = document.querySelectorAll(".peel-host > .peel-corner");
+				if (!corners.length) return;
+
+				// ========== 配置 ==========
+				const OPEN_AFTER = 3000; // 初始无操作：多久后自动展开（状态二）
+				const CLOSE_AFTER = 1500; // 初始展开后：多久后自动收起（回状态一）
+				const T3_AFTER = 300; // 交互后：多久无操作自动回状态一（t3）
+
+				corners.forEach((corner) => {
+					// 每个 corner 自己的计时器与状态
+					let t1 = null,
+						t2 = null,
+						t3 = null;
+					let touched = false;
+
+					function clearTimers() {
+						clearTimeout(t1);
+						clearTimeout(t2);
+						clearTimeout(t3);
+						t1 = t2 = t3 = null;
+					}
+
+					function toIdle() {
+						corner.classList.remove("is-open");
+						corner.classList.remove("is-active");
+					}
+
+					function toOpen() {
+						corner.classList.add("is-open");
+						corner.classList.remove("is-active");
+					}
+
+					function toActive() {
+						corner.classList.add("is-active");
+					}
+
+					function startAutoSequence() {
+						clearTimers();
+						toIdle();
+
+						t1 = setTimeout(() => {
+							if (touched) return;
+							toOpen();
+
+							t2 = setTimeout(() => {
+								if (touched) return;
+								toIdle();
+							}, CLOSE_AFTER);
+						}, OPEN_AFTER);
+					}
+
+					function scheduleReturnToIdle() {
+						clearTimeout(t3);
+						t3 = setTimeout(() => {
+							toIdle();
+						}, T3_AFTER);
+					}
+
+					function onDown() {
+						touched = true;
+						clearTimers();
+						toOpen();
+						toActive();
+					}
+
+					function onUp() {
+						corner.classList.remove("is-active");
+						scheduleReturnToIdle();
+					}
+
+					function onClick() {
+						touched = true;
+						toOpen();
+						scheduleReturnToIdle();
+					}
+
+					// 初始化
+					startAutoSequence();
+
+					corner.addEventListener("pointerdown", onDown, {
+						passive: true
+					});
+					corner.addEventListener("pointerup", onUp, {
+						passive: true
+					});
+					corner.addEventListener("pointercancel", onUp, {
+						passive: true
+					});
+					corner.addEventListener("click", onClick);
+				});
+			})();
+		</script>
+	</body>
+</html>

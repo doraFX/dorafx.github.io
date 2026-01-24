@@ -1,0 +1,2708 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>企鹅企企应用管理</title>
+
+		<script src="js/tailwindcss.3.4.17.js"></script>
+		<script src="js/vue.global.js"></script>
+		<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+
+		<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+				background-color: #F5F5F7;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			::-webkit-scrollbar {
+				width: 6px;
+				height: 6px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: #cbd5e1;
+				border-radius: 3px;
+			}
+
+			.fade-enter-active,
+			.fade-leave-active {
+				transition: opacity 0.2s ease;
+			}
+
+			.fade-enter-from,
+			.fade-leave-to {
+				opacity: 0;
+			}
+
+			.slide-up-enter-active,
+			.slide-up-leave-active {
+				transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			.slide-up-enter-from,
+			.slide-up-leave-to {
+				transform: translateY(20px);
+				opacity: 0;
+			}
+
+			.apple-input:focus {
+				outline: none;
+				box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.18);
+				border-color: #0071e3;
+			}
+
+			/* 卡片 hover：更自然（轻抬 + 轻微阴影 + 柔和描边） */
+			.app-card {
+				transition: all 0.5s;
+			}
+
+			.app-card:hover {
+				filter: saturate(1.02);
+				transform: scale(1.05);
+			}
+
+			.sortable-ghost {
+				opacity: 0.35;
+			}
+
+			.sortable-chosen {
+				transform: scale(1.03);
+			}
+
+			.sortable-drag {
+				cursor: grabbing;
+			}
+		</style>
+	</head>
+
+	<body class="text-[#1d1d1f]">
+		<div id="app" class="min-h-screen pb-20">
+
+			<!-- 顶部导航栏 (毛玻璃) -->
+			<header class="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-200/80">
+				<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<img src="images/logo.webp" class="w-8 h-8" alt="" />
+						<h1 class="text-xl font-semibold tracking-tight text-gray-900">企鹅企企应用管理</h1>
+					</div>
+
+					<div class="flex items-center gap-4">
+						<!-- 搜索框 -->
+						<div class="relative hidden sm:block group">
+							<i
+								class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+							<input v-model="q" @keydown.enter="reload()" placeholder="搜索"
+								class="pl-9 pr-4 py-1.5 w-48 focus:w-64 bg-gray-100/50 hover:bg-gray-100 focus:bg-white border border-transparent focus:border-blue-500 rounded-lg text-sm transition-all duration-300 outline-none apple-input">
+						</div>
+
+						<!-- 新建按钮 -->
+						<button @click="openCreate()"
+							class="bg-[#0071e3] hover:bg-[#0077ED] text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-sm transition-all active:scale-95 flex items-center gap-1.5">
+							<i class="fa-solid fa-plus text-xs"></i> 新建 App
+						</button>
+
+						<button @click="reload()"
+							class="w-8 h-8 rounded-full hover:bg-gray-200 flex items-center justify-center text-gray-500 transition"
+							title="刷新">
+							<i class="fa-solid fa-rotate-right" :class="{'animate-spin': loading}"></i>
+						</button>
+					</div>
+				</div>
+			</header>
+
+			<!-- 主内容 -->
+			<main class="max-w-7xl mx-auto px-6 py-10">
+
+				<!-- 状态过滤器 (Segmented Control 风格) -->
+				<div class="flex justify-center mb-10">
+					<div class="bg-gray-200/60 p-1 rounded-lg inline-flex relative">
+						<button v-for="status in ['all', 'enabled', 'disabled']" :key="status"
+							@click="filterStatus = status; reload()"
+							class="px-6 py-1.5 text-xs font-medium rounded-[6px] transition-all relative z-10 capitalize"
+							:class="filterStatus === status ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-gray-700'">
+							{{ status === 'all' ? '全部应用' : (status === 'enabled' ? '已上架' : '已停用') }}
+						</button>
+					</div>
+				</div>
+
+				<!-- Loading -->
+				<div v-if="loading && rows.length === 0" class="flex justify-center py-20">
+					<div class="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-[#0071e3]"></div>
+				</div>
+
+				<!-- Grid 列表 -->
+				<div v-else ref="gridEl"
+					class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+
+
+					<!-- 卡片 Item -->
+					<div v-for="app in rows" :key="app.id" :data-id="app.id" @click="dragging ? null : openEdit(app)"
+						class="app-card group py-4 rounded-2xl flex flex-col items-center cursor-pointer" role="button"
+						tabindex="0" @keydown.enter.prevent="openEdit(app)" @keydown.space.prevent="openEdit(app)">
+
+						<!-- App Icon (iOS 风格圆角) -->
+						<div
+							class="relative w-[120px] h-[120px] mb-4 bg-white rounded-[26px] shadow-sm border border-gray-100 overflow-hidden ring-1 ring-black/[0.02] group-hover:ring-black/[0.06] transition">
+							<img v-if="app.logo_url" :src="withBust(app.logo_url, app._logoBust || 0)"
+								class="w-full h-full object-cover" loading="lazy" />
+							<div v-else
+								class="w-full h-full flex items-center justify-center bg-gray-50 text-gray-300 text-3xl">
+								<i class="fa-solid fa-cube"></i>
+							</div>
+
+							<!-- 状态遮罩 -->
+							<div v-if="app.disabled"
+								class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
+								<span
+									class="text-white text-xs font-bold border border-white/50 px-2 py-1 rounded-full">停用</span>
+							</div>
+						</div>
+
+						<!-- 文本信息 -->
+						<div class="text-center w-full px-2">
+							<h3 class="text-[15px] font-semibold text-gray-900 truncate leading-tight mb-1">
+								{{ pickLang(app.name_i18n) || '未命名' }}
+							</h3>
+							<p class="text-[13px] text-gray-500 truncate mb-1.5">
+								{{ pickLang(app.tagline_i18n) || app.page }}
+							</p>
+						</div>
+					</div>
+
+					<!-- Create New Card -->
+					<div @click="openCreate()"
+						class="no-drag app-card group flex flex-col items-center justify-center h-[200px] cursor-pointer opacity-70 hover:opacity-100">
+						<div
+							class="w-[120px] h-[120px] mb-4 rounded-[26px] border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 group-hover:border-[#0071e3] group-hover:text-[#0071e3] transition">
+							<i class="fa-solid fa-plus text-3xl"></i>
+						</div>
+						<span class="text-sm font-medium text-gray-500 group-hover:text-[#0071e3]">新建 App</span>
+					</div>
+				</div>
+
+				<!-- Load More -->
+				<div v-if="nextCursor" class="mt-12 text-center">
+					<button @click="loadMore()" class="text-[#0071e3] text-sm hover:underline disabled:opacity-50"
+						:disabled="loading">
+						{{ loading ? '载入中...' : '显示更多' }}
+					</button>
+				</div>
+			</main>
+
+			<!-- 编辑/新建 模态框 -->
+			<div v-if="modal.open" class="fixed inset-0 z-50 flex items-center justify-center sm:p-6"
+				@click.self="closeModal()">
+				<div class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity"></div>
+
+				<!-- 弹窗主体 -->
+				<div
+					class="relative bg-[#F5F5F7] sm:rounded-2xl shadow-2xl w-full md:min-w-[90vw] 2xl:max-w-[calc(100vw-600px)] xl:max-w-[calc(100vw-400px)] lg:max-w-[calc(100vw-200px)] h-full sm:h-[85vh] flex flex-col overflow-hidden animate-slide-up">
+
+					<!-- 头部 -->
+					<div
+						class="bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0 z-10">
+						<div class="flex items-center gap-4">
+							<!-- 图标上传区域 (小) -->
+							<div class="relative w-12 h-12 rounded-[10px] bg-gray-100 border border-gray-200 overflow-hidden cursor-pointer group hover:opacity-80 transition"
+								@click="triggerUpload">
+								<img v-if="form.logo_url" :src="withBust(form.logo_url, logoBust)"
+									class="w-full h-full object-cover">
+								<div v-else
+									class="w-full h-full flex items-center justify-center text-gray-300 text-sm"><i
+										class="fa-solid fa-camera"></i></div>
+								<div v-if="uploading"
+									class="absolute inset-0 bg-black/50 flex items-center justify-center">
+									<i class="fa-solid fa-spinner animate-spin text-white text-xs"></i>
+								</div>
+							</div>
+							<input type="file" ref="fileInput" accept="image/*" class="hidden"
+								@change="handleFileChange">
+
+							<div>
+								<h2 class="text-lg font-bold text-gray-900">
+									{{ modal.mode === 'create' ? '新建应用' : pickLang(form.name_i18n) || '编辑应用' }}
+								</h2>
+								<p class="text-xs text-gray-500 ">{{ form.id || '自动生成 ID' }}</p>
+							</div>
+						</div>
+
+						<div class="flex gap-3 items-center">
+							<!-- ✅ 删除按钮：只在编辑态出现 -->
+							<button v-if="modal.mode === 'edit'" @click="removeRow()"
+								class="text-red-600 text-sm font-semibold hover:opacity-70 transition">
+								删除
+							</button>
+
+							<button @click="closeModal()"
+								class="text-[#0071e3] text-sm font-medium hover:opacity-70 transition">
+								取消
+							</button>
+
+							<button @click="save()" :disabled="saving"
+								class="bg-[#0071e3] hover:bg-[#0077ED] text-white px-5 py-1.5 rounded-full text-sm font-medium shadow-sm disabled:opacity-50 transition">
+								{{ saving ? '储存中...' : '完成' }}
+							</button>
+						</div>
+
+					</div>
+
+					<!-- 内容区域 (Tabs) -->
+					<!-- 内容区域：两栏（左编辑 / 右预览） -->
+					<div class="flex-1 min-h-0 overflow-hidden">
+						<div class="h-full min-h-0 grid grid-cols-1 lg:grid-cols-12">
+
+
+							<!-- ================= 左栏：编辑 ================= -->
+							<div
+								class="lg:col-span-6 min-h-0 h-full flex flex-col border-r border-gray-200/70 bg-[#F5F5F7]">
+
+								<!-- Tab 导航（左） -->
+								<div
+									class="px-6 pt-4 pb-0 bg-[#F5F5F7] border-b border-gray-200 flex gap-6 text-sm font-medium text-gray-500 shrink-0">
+									<button v-for="tab in ['general', 'i18n', 'store', 'platforms']" :key="tab"
+										@click="activeTab = tab" class="pb-3 border-b-2 transition-colors capitalize"
+										:class="activeTab === tab ? 'text-gray-900 border-[#0071e3]' : 'border-transparent hover:text-gray-700'">
+										{{ tabName(tab) }}
+									</button>
+								</div>
+
+								<!-- 左侧内容滚动区 -->
+								<div class="flex-1 overflow-y-auto p-6 scroll-smooth">
+
+									<!-- ================= TAB 1: General Info ================= -->
+									<div v-show="activeTab === 'general'" class="space-y-6 max-w-2xl mx-auto">
+										<div
+											class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50 space-y-5">
+											<h3 class="text-base font-semibold text-gray-900 mb-2">基本信息</h3>
+
+											<div class="grid grid-cols-2 gap-5">
+												<input-field label="应用ID" v-model="form.id"
+													placeholder="例如: diet-pro"></input-field>
+
+												<div>
+													<label
+														class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+														页面路径
+													</label>
+													<input v-model="form.page" placeholder="例如: apps/app.html"
+														class="apple-input bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg block w-full px-3 py-2.5 outline-none" />
+												</div>
+											</div>
+
+											<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+												<div>
+													<label
+														class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+														主题色
+													</label>
+													<tailwind-color-picker
+														v-model="form.accent"></tailwind-color-picker>
+													<p class="mt-1 text-[10px] text-gray-400">
+														只存色系名（例如：indigo / blue / gray），预览固定用 500 阶
+													</p>
+												</div>
+
+												<input-field label="版本号" v-model="form.version" placeholder="例如: 2.1.0"
+													note="可选：用于前台显示 / 卡片标签"></input-field>
+
+												<div class="sm:col-span-1">
+													<label
+														class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">开发阶段</label>
+													<apple-select v-model="form.status_key"
+														:options="statusOptions"></apple-select>
+													<p class="mt-1 text-[10px] text-gray-400">用于前台显示开发阶段 & 颜色点</p>
+												</div>
+
+												<div class="sm:col-span-1">
+													<label
+														class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+														Logo URL（只读）
+													</label>
+
+													<div class="flex items-stretch gap-2">
+														<input :value="logoUrlPreview" readonly
+															class="apple-input flex-1 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg px-3 py-2.5 outline-none" />
+														<button type="button" @click="copyText(logoUrlPreview)"
+															class="shrink-0 px-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-sm text-gray-700 transition active:scale-95"
+															title="复制链接">
+															<i class="fa-regular fa-copy"></i>
+														</button>
+													</div>
+
+													<p class="mt-1 text-[10px] text-gray-400">仅展示当前图标的可访问 URL（不可手动修改）
+													</p>
+												</div>
+											</div>
+
+											<div
+												class="flex items-center justify-between pt-2 border-t border-gray-100 mt-2">
+												<div>
+													<span class="text-sm font-medium text-gray-900">上架状态</span>
+													<p class="text-xs text-gray-500">关闭后应用将在前台隐藏</p>
+												</div>
+												<label class="relative inline-flex items-center cursor-pointer">
+													<input type="checkbox" class="sr-only peer"
+														:checked="!form.disabled"
+														@change="form.disabled = $event.target.checked ? 0 : 1">
+													<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer
+														peer-checked:after:translate-x-full peer-checked:after:border-white
+														after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+														after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all
+														peer-checked:bg-[#34C759]">
+													</div>
+												</label>
+											</div>
+										</div>
+
+										<!-- 你原来的“详情预览”（可保留，左侧仍显示） -->
+										<div v-if="modal.mode === 'edit'"
+											class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center justify-between mb-4">
+												<h3 class="text-base font-semibold text-gray-900">详情预览</h3>
+
+												<div v-if="i18nMissingCount > 0"
+													class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100 text-xs font-medium">
+													<i class="fa-solid fa-triangle-exclamation text-[11px]"></i>
+													<span>多语言未完善：{{ i18nMissingCount }}</span>
+												</div>
+
+												<div v-else
+													class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-100 text-xs font-medium">
+													<i class="fa-solid fa-circle-check text-[11px]"></i>
+													<span>多语言已完善</span>
+												</div>
+											</div>
+
+											<div class="flex items-center gap-4">
+												<div
+													class="w-14 h-14 rounded-[14px] bg-gray-100 border border-gray-200 overflow-hidden shrink-0">
+													<img v-if="form.logo_url" :src="withBust(form.logo_url, logoBust)"
+														class="w-full h-full object-cover" />
+													<div v-else
+														class="w-full h-full flex items-center justify-center text-gray-300">
+														<i class="fa-solid fa-cube text-lg"></i>
+													</div>
+												</div>
+
+												<div class="min-w-0 flex-1">
+													<div v-if="pickLang(form.name_i18n)"
+														class="text-[15px] font-semibold text-gray-900 truncate">
+														{{ pickLang(form.name_i18n) }}
+													</div>
+													<div v-else class="text-[15px] font-semibold text-gray-400">未填写应用名称
+													</div>
+
+													<div v-if="pickLang(form.tagline_i18n)"
+														class="text-[13px] text-gray-500 truncate mt-0.5">
+														{{ pickLang(form.tagline_i18n) }}
+													</div>
+													<div v-else class="text-[13px] text-gray-400 mt-0.5">未填写标语</div>
+
+													<div class="mt-2 flex flex-wrap items-center gap-2">
+														<span v-if="form.version"
+															class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-600">
+															<i class="fa-solid fa-tag text-[10px] text-gray-400"></i>
+															{{ form.version }}
+														</span>
+
+														<span v-if="statusLabel"
+															class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-600">
+															<i class="fa-solid fa-flask text-[10px] text-gray-400"></i>
+															{{ statusLabel }}
+														</span>
+
+														<span v-if="form.disabled"
+															class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-red-50 text-red-700 border border-red-100">
+															<i class="fa-solid fa-ban text-[10px]"></i> 停用
+														</span>
+														<span v-else
+															class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-green-50 text-green-700 border border-green-100">
+															<i class="fa-solid fa-circle-check text-[10px]"></i> 上架中
+														</span>
+													</div>
+												</div>
+											</div>
+
+											<div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+												<div v-if="form.page"
+													class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+													<div
+														class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold">
+														页面路径</div>
+													<div class="text-[13px]  text-gray-800 mt-0.5 break-all">
+														{{ form.page }}
+													</div>
+												</div>
+
+												<div v-if="parsedPlatforms && parsedPlatforms.length"
+													class="sm:col-span-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+													<div
+														class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-2">
+														Platforms</div>
+													<div class="flex flex-wrap gap-2">
+														<div v-for="(p, i) in parsedPlatforms" :key="i"
+															class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white border border-gray-200 text-xs text-gray-700">
+															<i v-if="p.icon" :class="p.icon" class="text-gray-400"></i>
+															<span v-if="p.label"
+																class="font-medium">{{ p.label }}</span>
+															<span v-if="p.url"
+																class="text-gray-400 truncate max-w-[240px]">{{ p.url }}</span>
+														</div>
+													</div>
+												</div>
+
+												<div v-if="parsedPlatforms && parsedPlatforms.length === 0"
+													class="sm:col-span-2 bg-gray-50 border border-dashed border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-400 text-center">
+													暂无平台配置
+												</div>
+
+												<div
+													class="sm:col-span-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+													<div
+														class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-2">
+														多语言翻译</div>
+
+													<div class="space-y-2">
+														<div v-for="l in ['zh','en','ja','ko']" :key="l"
+															class="bg-white border border-gray-200 rounded-lg px-3 py-2.5">
+															<div class="flex items-center justify-between">
+																<div class="text-[12px] font-semibold text-gray-800">
+																	{{ ({ zh:'中文', en:'English', ja:'日本語', ko:'한국어' }[l] || l) }}
+																</div>
+
+																<span
+																	class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold"
+																	:class="i18nOk(l) ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-orange-50 text-orange-700 border border-orange-100'">
+																	<i :class="i18nOk(l) ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation'"
+																		class="text-[11px]"></i>
+																	{{ i18nOk(l) ? 'OK' : '缺' }}
+																</span>
+															</div>
+
+															<div class="mt-1 text-[12px] text-gray-600">
+																名称：
+																<span
+																	:class="i18nName[l] ? 'text-gray-900' : 'text-gray-400'">
+																	{{ i18nName[l] || '未填' }}
+																</span>
+															</div>
+
+															<div class="mt-0.5 text-[12px] text-gray-600">
+																标语：
+																<span
+																	:class="i18nTagline[l] ? 'text-gray-900' : 'text-gray-400'">
+																	{{ i18nTagline[l] || '未填' }}
+																</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<!-- ================= TAB 2: Localization ================= -->
+									<div v-show="activeTab === 'i18n'" class="space-y-6 max-w-2xl mx-auto">
+										<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center gap-2 mb-6">
+												<button v-for="lang in ['zh','en','ja','ko']" :key="lang"
+													@click="editLang = lang"
+													class="px-3 py-1 text-xs font-semibold rounded uppercase transition-colors"
+													:class="editLang === lang ? 'bg-[#0071e3] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'">
+													{{ ({ zh:'中文', en:'English', ja:'日本語', ko:'한국어' }[lang] || lang) }}
+												</button>
+											</div>
+
+											<div class="space-y-5 animate-fade-in">
+												<input-field :label="`应用名称 (${editLang.toUpperCase()})`"
+													v-model="i18nName[editLang]" placeholder="App Name"></input-field>
+
+												<div>
+													<label
+														class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+														简短标语 ({{editLang.toUpperCase()}})
+													</label>
+													<textarea v-model="i18nTagline[editLang]" rows="3"
+														class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-200 focus:ring-[#0071e3] focus:border-[#0071e3] p-2.5 resize-none apple-input"
+														placeholder="一句话描述应用..."></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- ================= TAB 3: Store Content ================= -->
+									<div v-show="activeTab === 'store'" class="space-y-6 max-w-4xl mx-auto">
+
+										<!-- Intro -->
+										<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center justify-between">
+												<h3 class="text-base font-semibold text-gray-900">长介绍 Intro</h3>
+												<span class="text-xs text-gray-400">用于 App Store 详情页</span>
+											</div>
+
+											<div class="mt-4 flex items-center gap-2">
+												<button v-for="lang in ['zh','en','ja','ko']" :key="'intro-'+lang"
+													@click="storeEditLang = lang"
+													class="px-3 py-1 text-xs font-semibold rounded uppercase transition-colors"
+													:class="storeEditLang === lang ? 'bg-[#0071e3] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'">
+													{{ ({ zh:'中文', en:'English', ja:'日本語', ko:'한국어' }[lang] || lang) }}
+												</button>
+											</div>
+
+											<div class="mt-4">
+												<label
+													class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+													Intro ({{storeEditLang.toUpperCase()}})
+												</label>
+												<textarea v-model="introI18n[storeEditLang]" rows="6"
+													class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-200 p-3 resize-none apple-input"
+													placeholder="写一段更完整的应用介绍..."></textarea>
+												<p class="mt-2 text-[11px] text-gray-400">建议 80~200 字。前台可直接作为详情页正文。</p>
+											</div>
+										</div>
+
+										<!-- Shelf -->
+										<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center justify-between">
+												<h3 class="text-base font-semibold text-gray-900">轮播图 Shelf</h3>
+
+												<div class="flex items-center gap-2">
+													<button type="button" @click="triggerShelfUpload()"
+														class="text-[#0071e3] text-sm font-medium flex items-center gap-1 hover:opacity-70">
+														<i class="fa-solid fa-upload"></i> 上传图片
+													</button>
+
+													<button type="button" @click="addShelfItem()"
+														class="text-[#0071e3] text-sm font-medium flex items-center gap-1 hover:opacity-70">
+														<i class="fa-solid fa-plus-circle"></i> 添加空项
+													</button>
+
+													<input type="file" ref="shelfInput" accept="image/*" class="hidden"
+														@change="handleShelfFileChange">
+												</div>
+											</div>
+
+											<div v-if="shelfItems.length === 0"
+												class="mt-4 text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300 text-gray-400 text-sm">
+												暂无轮播图
+											</div>
+
+											<div v-else class="mt-4 space-y-3">
+												<div v-for="(it, idx) in shelfItems" :key="'shelf-'+idx"
+													class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+													<div class="flex items-start gap-4">
+
+														<div
+															class="relative w-28 h-20 rounded-lg bg-white border border-gray-200 overflow-hidden shrink-0 group">
+															<img v-if="it.src" :src="resolveUrl(it.src)"
+																class="w-full h-full object-cover" />
+															<div v-else
+																class="w-full h-full flex items-center justify-center text-gray-300 text-xs">
+																No Image</div>
+
+															<button type="button" @click="triggerShelfReplace(idx)"
+																class="absolute inset-x-1 bottom-1 px-2 py-1 rounded-md text-[11px]
+																bg-black/55 text-white opacity-0 group-hover:opacity-100 transition
+																flex items-center justify-center gap-1">
+																<i class="fa-solid fa-rotate"></i> 更换
+															</button>
+
+															<div v-if="shelfUploading && shelfUploadingIndex === idx"
+																class="absolute inset-0 bg-black/45 flex items-center justify-center">
+																<i
+																	class="fa-solid fa-spinner animate-spin text-white text-xs"></i>
+															</div>
+														</div>
+
+														<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+															<div class="sm:col-span-2">
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">
+																	图片路径（自动上传到 apps/&lt;id&gt;/shelf/）
+																</label>
+
+																<div class="flex items-stretch gap-2">
+																	<input :value="it.src || ''" readonly
+																		placeholder="请点击 上传图片 / 更换"
+																		class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none" />
+																	<button type="button" @click="copyText(it.src)"
+																		class="shrink-0 px-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-sm text-gray-700 transition active:scale-95"
+																		title="复制 Key">
+																		<i class="fa-regular fa-copy"></i>
+																	</button>
+																</div>
+
+																<div v-if="it.src" class="mt-2">
+																	<label
+																		class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">
+																		访问 URL（只读）
+																	</label>
+																	<div class="flex items-stretch gap-2">
+																		<input :value="resolveUrl(it.src)" readonly
+																			class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none" />
+																		<button type="button"
+																			@click="copyText(resolveUrl(it.src))"
+																			class="shrink-0 px-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-sm text-gray-700 transition active:scale-95"
+																			title="复制链接">
+																			<i class="fa-regular fa-copy"></i>
+																		</button>
+																	</div>
+																</div>
+															</div>
+
+															<div>
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">比例</label>
+																<input v-model="it.ratio"
+																	placeholder="9:16 / 16:9 / 1:1"
+																	class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none">
+															</div>
+
+															<div>
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">语言</label>
+																<apple-select v-model="it.lang" :options="[
+																	{value:'all', label:'通用 (all)'},
+																	{value:'zh', label:'中文 (zh)'},
+																	{value:'en', label:'English (en)'},
+																	{value:'ja', label:'日本語 (ja)'},
+																	{value:'ko', label:'한국어 (ko)'}
+																]"></apple-select>
+															</div>
+
+															<div class="sm:col-span-2">
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">标题</label>
+																<input v-model="it.title" placeholder="例如：首页总览 / 记录页"
+																	class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none">
+															</div>
+
+															<div
+																class="sm:col-span-2 flex items-center justify-between pt-1">
+																<button type="button" @click="moveShelf(idx, -1)"
+																	class="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1">
+																	<i class="fa-solid fa-chevron-up"></i> 上移
+																</button>
+																<button type="button" @click="moveShelf(idx, 1)"
+																	class="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1">
+																	<i class="fa-solid fa-chevron-down"></i> 下移
+																</button>
+
+																<div class="flex items-center gap-3">
+																	<button v-if="it.src" type="button"
+																		@click="removeShelfFile(idx)"
+																		class="text-xs text-gray-600 hover:text-gray-800 flex items-center gap-1">
+																		<i class="fa-regular fa-circle-xmark"></i> 删除文件
+																	</button>
+
+																	<button type="button" @click="removeShelfItem(idx)"
+																		class="text-xs text-red-600 hover:opacity-70 flex items-center gap-1">
+																		<i class="fa-solid fa-trash"></i> 删除条目
+																	</button>
+																</div>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<p class="mt-3 text-[11px] text-gray-400">
+												上传后会自动存到 <span class="font-mono">apps/&lt;id&gt;/shelf/</span>，并只保存
+												key（相对路径），前台统一用 resolveUrl 访问。
+											</p>
+										</div>
+
+										<!-- Changelog -->
+										<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center justify-between">
+												<h3 class="text-base font-semibold text-gray-900">更新日志 Changelog</h3>
+												<button type="button" @click="addChangelog()"
+													class="text-[#0071e3] text-sm font-medium flex items-center gap-1 hover:opacity-70">
+													<i class="fa-solid fa-plus-circle"></i> 添加版本
+												</button>
+											</div>
+
+											<div v-if="changelogItems.length === 0"
+												class="mt-4 text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300 text-gray-400 text-sm">
+												暂无更新日志
+											</div>
+
+											<div v-else class="mt-4 space-y-4">
+												<div v-for="(log, idx) in changelogItems" :key="'log-'+idx"
+													class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+													<div class="flex items-start justify-between gap-4">
+														<div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
+															<div>
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">版本号</label>
+																<input v-model="log.version" placeholder="2.1.0"
+																	class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none">
+															</div>
+
+															<div>
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">日期</label>
+																<input v-model="log.date" placeholder="2026-01-21"
+																	class="w-full bg-white border border-gray-200 text-sm rounded-lg px-3 py-2 apple-input outline-none">
+															</div>
+
+															<div>
+																<label
+																	class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">重要更新</label>
+																<label
+																	class="relative inline-flex items-center cursor-pointer">
+																	<input type="checkbox" v-model="log.important"
+																		class="sr-only peer" />
+																	<div class="w-11 h-6 bg-gray-200 rounded-full peer
+															             peer-checked:bg-[#0071e3]
+															             transition-colors duration-200
+															             after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+															             after:w-5 after:h-5 after:bg-white after:rounded-full
+															             after:transition-transform after:duration-200
+															             peer-checked:after:translate-x-full">
+																	</div>
+																</label>
+															</div>
+
+
+															<div class="sm:col-span-3">
+																<div class="flex items-center gap-2 mb-2">
+																	<span
+																		class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">内容</span>
+																	<div class="flex items-center gap-1">
+																		<button v-for="lang in ['zh','en','ja','ko']"
+																			:key="'loglang-'+idx+'-'+lang"
+																			@click="log.editLang = lang"
+																			class="px-2 py-0.5 text-[11px] font-semibold rounded transition-colors"
+																			:class="(log.editLang||'zh') === lang ? 'bg-[#0071e3] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'">
+																			{{ lang.toUpperCase() }}
+																		</button>
+																	</div>
+																</div>
+
+																<textarea v-model="log.content[(log.editLang||'zh')]"
+																	rows="4"
+																	class="block w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 p-3 resize-none apple-input"
+																	placeholder="每行一个更新点，例如：&#10;新增 xxx&#10;优化 xxx"></textarea>
+
+																<p class="mt-2 text-[11px] text-gray-400">
+																	建议：每行一个要点。保存时会按行拆成数组。</p>
+															</div>
+														</div>
+
+														<div class="shrink-0 flex flex-col gap-2">
+															<button type="button" @click="moveChangelog(idx, -1)"
+																class="w-9 h-9 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-600">
+																<i class="fa-solid fa-chevron-up text-xs"></i>
+															</button>
+															<button type="button" @click="moveChangelog(idx, 1)"
+																class="w-9 h-9 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-600">
+																<i class="fa-solid fa-chevron-down text-xs"></i>
+															</button>
+															<button type="button" @click="removeChangelog(idx)"
+																class="w-9 h-9 rounded-lg border border-gray-200 bg-white hover:bg-red-50 text-red-600">
+																<i class="fa-solid fa-trash text-xs"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+									<!-- ================= TAB 4: Platforms Manager ================= -->
+									<div v-show="activeTab === 'platforms'" class="max-w-3xl mx-auto">
+										<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200/50">
+											<div class="flex items-center justify-between mb-4">
+												<h3 class="text-base font-semibold text-gray-900">运行平台</h3>
+
+												<div class="relative" ref="platformMenuRoot">
+													<button type="button" @click.stop="togglePlatformMenu()"
+														class="text-[#0071e3] text-sm font-medium flex items-center gap-1 hover:opacity-70">
+														<i class="fa-solid fa-plus-circle"></i> 添加平台
+														<i class="fa-solid fa-chevron-down text-[10px] ml-1 transition"
+															:class="platformMenuOpen ? 'rotate-180' : ''"></i>
+													</button>
+
+													<div v-if="platformMenuOpen"
+														class="absolute right-0 top-full mt-2 w-44 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-20 py-1">
+														<button type="button" v-for="(cfg, key) in platformPresets"
+															:key="key"
+															@click.stop="addPlatform(key); closePlatformMenu()"
+															class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-left">
+															<i :class="cfg.icon"
+																class="text-gray-400 w-4 text-center"></i>
+															{{ cfg.label }}
+														</button>
+
+														<div class="border-t border-gray-100 my-1"></div>
+
+														<button type="button"
+															@click.stop="addPlatform('custom'); closePlatformMenu()"
+															class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer text-left">
+															自定义...
+														</button>
+													</div>
+												</div>
+
+											</div>
+
+											<div v-if="parsedPlatforms.length === 0"
+												class="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300 text-gray-400 text-sm">
+												暂无配置平台
+											</div>
+
+											<div v-else class="space-y-3">
+												<div v-for="(item, idx) in parsedPlatforms" :key="idx"
+													class="flex gap-3 items-start bg-gray-50 p-3 rounded-lg border border-gray-200 group">
+													<div
+														class="w-10 h-10 shrink-0 bg-white rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 text-lg">
+														<i :class="item.icon"></i>
+													</div>
+
+													<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+														<input v-model="item.label" placeholder="平台名称 (e.g. App Store)"
+															class="bg-white border border-gray-200 text-xs rounded px-2 py-1.5 focus:border-[#0071e3] outline-none apple-input">
+														<input v-model="item.icon" placeholder="FontAwesome Class"
+															class="bg-white border border-gray-200 text-xs rounded px-2 py-1.5 focus:border-[#0071e3] outline-none  text-gray-500 apple-input">
+
+														<div class="sm:col-span-2">
+															<label
+																class="block text-[11px] font-semibold text-gray-500 mb-1 uppercase tracking-wide">链接类型</label>
+															<apple-select v-model="item.type"
+																:options="platformLinkTypeOptions"
+																placeholder="选择类型..."></apple-select>
+															<p class="mt-1 text-[10px] text-gray-400">
+																下载链接：用于下载；页面：用于打开站内/站外页面（本页或新窗口）。</p>
+														</div>
+
+														<input v-model="item.url" placeholder="下载链接 (URL)"
+															class="sm:col-span-2 bg-white border border-gray-200 text-xs rounded px-2 py-1.5 focus:border-[#0071e3] outline-none apple-input">
+													</div>
+
+													<button @click="removePlatform(idx)"
+														class="text-gray-400 hover:text-red-500 p-1 transition"
+														title="移除">
+														<i class="fa-solid fa-minus-circle"></i>
+													</button>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<!-- ================= 右栏：App Store 预览（不依赖 currentApp） ================= -->
+							<div class="lg:col-span-6 h-full min-h-0 bg-white relative flex flex-col">
+
+								<!-- 右侧顶部条：语言切换（复用 editLang/storeEditLang） -->
+								<div
+									class="sticky top-0 z-10 bg-white/85 backdrop-blur border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+									<div class="flex items-center gap-2">
+										<span class="text-sm font-semibold text-gray-900">预览</span>
+										<span class="text-xs text-gray-400">（App Store 页面结构）</span>
+									</div>
+
+									<div class="flex items-center gap-2">
+										<span class="text-xs text-gray-400">语言</span>
+										<div class="bg-gray-100 p-1 rounded-lg inline-flex">
+											<button v-for="l in ['zh','en','ja','ko']" :key="'pv-'+l"
+												@click="editLang = l; storeEditLang = l"
+												class="px-2.5 py-1 text-[11px] font-semibold rounded-md transition"
+												:class="editLang === l ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'">
+												{{ l.toUpperCase() }}
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<!-- 预览内容滚动区 -->
+								<div class="flex-1 min-h-0 overflow-y-auto">
+
+									<div class="relative min-h-screen w-full bg-white pb-16 overflow-hidden">
+
+										<!-- 背景氛围光 -->
+										<div class="absolute inset-0 pointer-events-none overflow-hidden">
+											<div
+												class="absolute -top-[100px] -left-[100px] w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-[120px] opacity-60">
+											</div>
+											<div
+												class="absolute top-0 -right-[200px] w-[600px] h-[600px] bg-emerald-400/10 rounded-full blur-[120px] opacity-60">
+											</div>
+										</div>
+
+										<!-- HERO -->
+										<section class="relative pt-8 pb-10 md:pt-12 md:pb-16 overflow-hidden">
+											<div class="relative max-w-3xl mx-auto px-6">
+
+												<div class="mb-10">
+													<div
+														class="inline-flex items-center gap-2 text-sm font-medium text-neutral-400 select-none">
+														<i class="fa-solid fa-chevron-left text-xs"></i>
+														<span>返回应用列表</span>
+													</div>
+												</div>
+
+												<div
+													class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+
+													<!-- Logo -->
+													<div class="relative shrink-0">
+														<div
+															class="w-28 h-28 md:w-36 md:h-36 rounded-[1.5rem] overflow-hidden shadow-xl border border-neutral-200/60 bg-white">
+															<img v-if="form.logo_url"
+																:src="withBust(form.logo_url, logoBust)"
+																class="w-full h-full object-contain" />
+															<div v-else
+																class="w-full h-full flex items-center justify-center text-neutral-300 text-3xl">
+																<i class="fa-solid fa-cube"></i>
+															</div>
+														</div>
+													</div>
+
+													<!-- Info -->
+													<div
+														class="flex-1 w-full flex flex-col items-center md:items-start text-center md:text-left pt-1">
+														<h1
+															class="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
+															{{ (i18nName && i18nName[editLang]) || pickLang(form.name_i18n) || '未填写应用名称' }}
+														</h1>
+
+														<p class="text-base md:text-lg text-neutral-500 mb-8 max-w-lg">
+															{{ (i18nTagline && i18nTagline[editLang]) || pickLang(form.tagline_i18n) || '未填写标语' }}
+														</p>
+
+														<!-- Buttons：平台按钮（按 type） -->
+														<div
+															class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 w-full sm:w-auto">
+															<template
+																v-for="(platform, index) in (parsedPlatforms || [])"
+																:key="'pvpf-'+index">
+
+																<a v-if="(platform.type || 'download') === 'download'"
+																	:href="platform.url || '#'"
+																	class="flex sm:flex-none min-w-[160px] h-11 items-center justify-center gap-2 px-5 rounded-full bg-neutral-900 text-white font-bold text-sm shadow-lg shadow-neutral-900/20"
+																	:class="!platform.url ? 'opacity-40 pointer-events-none' : ''">
+																	<i class="fa-solid fa-download"></i>
+																	<span>{{ (platform.label || '平台') }}下载</span>
+																</a>
+
+																<a v-else-if="platform.type === 'page_self'"
+																	:href="platform.url || '#'" target="_self"
+																	class="flex sm:flex-none min-w-[120px] h-11 items-center justify-center gap-2 px-5 rounded-full bg-neutral-900 text-white font-bold text-sm shadow-lg shadow-neutral-900/20"
+																	:class="!platform.url ? 'opacity-40 pointer-events-none' : ''">
+																	<i
+																		class="fa-solid fa-arrow-up-right-from-square text-[12px]"></i>
+																	<span>打开链接</span>
+																</a>
+
+																<a v-else-if="platform.type === 'page_blank'"
+																	:href="platform.url || '#'" target="_blank"
+																	rel="noopener"
+																	class="flex sm:flex-none min-w-[120px] h-11 items-center justify-center gap-2 px-5 rounded-full bg-neutral-900 text-white font-bold text-sm shadow-lg shadow-neutral-900/20"
+																	:class="!platform.url ? 'opacity-40 pointer-events-none' : ''">
+																	<i
+																		class="fa-solid fa-up-right-from-square text-[12px]"></i>
+																	<span>打开链接</span>
+																</a>
+
+															</template>
+
+															<!-- 占位：了解详情 / 分享 -->
+															<button
+																class="flex sm:flex-none min-w-[120px] h-11 items-center justify-center gap-2 px-5 rounded-full bg-neutral-100 text-neutral-900 font-semibold text-sm border border-transparent opacity-70"
+																disabled>
+																<span>了解详情</span>
+															</button>
+
+															<button
+																class="shrink-0 w-11 h-11 rounded-full flex items-center justify-center bg-neutral-50 text-neutral-600 border border-neutral-200 opacity-70"
+																disabled>
+																<i class="fa-solid fa-share-nodes"></i>
+															</button>
+														</div>
+
+														<!-- Meta -->
+														<div
+															class="mt-6 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-3 text-xs font-medium">
+															<div class="flex items-center gap-2 flex-wrap">
+																<span v-for="(pf, i) in (parsedPlatforms || [])"
+																	:key="'pvtag-'+i"
+																	class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-neutral-100 text-neutral-600">
+																	<i v-if="pf.icon" :class="pf.icon"
+																		aria-hidden="true"></i>
+																	{{ pf.label || 'Platform' }}
+																</span>
+															</div>
+
+															<div class="w-1 h-1 rounded-full bg-neutral-300"></div>
+
+															<div class="flex items-center gap-1.5">
+																<span>版本：{{ form.version || '—' }}</span>
+															</div>
+
+															<div v-if="form.status_key && form.status_key !== 'apps.launched'"
+																class="flex items-center gap-2">
+																<div class="w-1 h-1 rounded-full bg-neutral-300"></div>
+																<span
+																	class="px-3 py-1 rounded-full text-xs font-semibold border bg-neutral-50 text-neutral-700 border-neutral-200">
+																	{{ String(form.status_key)
+																		.replace(/^apps\.developing$/, '开发中')
+																		.replace(/^apps\.alpha$/, '内测中')
+																		.replace(/^apps\.beta$/, '公测中')
+																	}}
+																</span>
+															</div>
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+										</section>
+
+										<div class="max-w-3xl mx-auto px-6">
+
+											<!-- SCREENSHOTS -->
+											<section class="mb-10">
+												<h2 class="sr-only">App Previews</h2>
+
+												<div v-if="shelfItems && shelfItems.length"
+													class="flex gap-4 overflow-x-auto py-4 snap-x snap-mandatory no-scrollbar"
+													style="-webkit-overflow-scrolling: touch;">
+													<template v-for="(it, idx) in shelfItems" :key="'pvshelf-'+idx">
+														<div v-if="(it.lang === 'all' || it.lang === editLang) && it.src"
+															class="snap-start shrink-0">
+															<div
+																class="relative rounded-[1rem] overflow-hidden border border-neutral-200 w-[220px] bg-white">
+																<img :src="resolveUrl(it.src)"
+																	class="w-full h-full object-cover" />
+															</div>
+														</div>
+													</template>
+												</div>
+
+												<div v-else
+													class="text-sm text-neutral-400 py-6 text-center bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl">
+													暂无截图（请在 Store → 轮播图 Shelf 上传）
+												</div>
+											</section>
+
+											<!-- MAIN CONTENT -->
+											<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+												<!-- LEFT -->
+												<div class="lg:col-span-8 space-y-8">
+													<!-- Intro -->
+													<section>
+														<h2 class="text-xl font-bold mb-3 text-neutral-900">简介</h2>
+														<div
+															class="text-base text-neutral-600 leading-relaxed whitespace-pre-line">
+															{{ (introI18n && (introI18n[editLang] || introI18n[storeEditLang])) || '未填写 Intro（请在 Store → Intro 填写）' }}
+														</div>
+													</section>
+
+													<!-- Changelog -->
+													<section>
+														<div class="flex items-center justify-between mb-4">
+															<h2 class="text-xl font-bold text-neutral-900">新功能</h2>
+															<div
+																class="text-sm text-blue-600 flex items-center gap-1 select-none opacity-60">
+																版本历史记录 <i
+																	class="fa-solid fa-chevron-right text-[10px]"></i>
+															</div>
+														</div>
+
+														<div
+															class="bg-neutral-50 rounded-2xl p-6 border border-neutral-200">
+															<div v-if="changelogItems && changelogItems.length"
+																class="space-y-3">
+																<div
+																	class="flex flex-wrap items-baseline justify-between gap-2">
+																	<span class="font-bold text-neutral-900">
+																		{{ changelogItems[0].version || '—' }}
+																	</span>
+																	<span class="text-sm text-neutral-400">
+																		{{ changelogItems[0].date || '—' }}
+																	</span>
+																</div>
+
+																<div class="space-y-2"
+																	v-if="changelogItems[0].content && (changelogItems[0].content[editLang] || changelogItems[0].content[storeEditLang])">
+																	<div v-for="(line, i) in String(changelogItems[0].content[editLang] || changelogItems[0].content[storeEditLang] || '')
+																		.split('\n').map(s=>s.trim()).filter(Boolean)" :key="'pvline-'+i"
+																		class="flex items-start gap-3 text-neutral-700 text-sm">
+																		<span
+																			class="mt-2 w-1.5 h-1.5 rounded-full bg-neutral-900 shrink-0"></span>
+																		<span class="leading-relaxed">{{ line }}</span>
+																	</div>
+																</div>
+
+																<div v-else class="text-sm text-neutral-400">
+																	当前语言暂无更新内容（请在 Store → Changelog 填写）
+																</div>
+															</div>
+
+															<div v-else class="text-sm text-neutral-400">
+																暂无更新日志（请在 Store → Changelog 添加版本）
+															</div>
+														</div>
+													</section>
+												</div>
+
+												<!-- RIGHT -->
+												<aside class="lg:col-span-4 space-y-4">
+													<div class="pt-0 lg:pt-8">
+														<h3 class="text-base font-bold text-neutral-900 mb-4">更多应用</h3>
+														<div class="text-sm text-neutral-400">
+															管理页预览不加载推荐列表（前台由 appRecommend 决定）
+														</div>
+													</div>
+												</aside>
+
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+				</div>
+			</div>
+
+			<!-- Notification Toast -->
+			<div v-if="toast.show" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100]">
+				<div
+					class="bg-white/90 backdrop-blur shadow-xl border border-gray-200 rounded-full px-6 py-2.5 flex items-center gap-3 animate-fade-in-down">
+					<i
+						:class="toast.type === 'error' ? 'fa-solid fa-circle-xmark text-red-500' : 'fa-solid fa-circle-check text-[#34C759]'"></i>
+					<span class="text-sm font-medium text-gray-800">{{ toast.msg }}</span>
+				</div>
+			</div>
+
+		</div>
+
+		<script>
+			const {
+				createApp,
+				reactive,
+				ref,
+				computed,
+				onMounted,
+				watch,
+				nextTick
+			} = Vue;
+
+			// ====== 配置 ======
+			const API_BASE = "https://applist.sqxvafilm.workers.dev";
+			const ADMIN_TOKEN = "8f3a9c2d-7e4a-4c1a-b1b2";
+			// =================
+
+			// 通用输入组件
+			const InputField = {
+				props: ['label', 'modelValue', 'placeholder', 'required', 'note', 'class'],
+				emits: ['update:modelValue'],
+				template: `
+					<div :class="$props.class">
+						<label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+							{{ label }} <span v-if="required" class="text-red-500">*</span>
+						</label>
+						<input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
+							:placeholder="placeholder"
+							class="apple-input bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-[#0071e3] focus:border-[#0071e3] block w-full p-2.5 transition-shadow" />
+						<p v-if="note" class="mt-1 text-[10px] text-gray-400">{{ note }}</p>
+					</div>
+				`
+			};
+
+			const AppleSelect = {
+				props: {
+					modelValue: {
+						type: String,
+						default: ""
+					},
+					options: {
+						type: Array,
+						default: () => []
+					},
+					placeholder: {
+						type: String,
+						default: "请选择..."
+					}
+				},
+				emits: ["update:modelValue"],
+				setup(props, {
+					emit
+				}) {
+					const open = ref(false);
+					const root = ref(null);
+
+					const selected = computed(() => props.options.find(o => o.value === props.modelValue) || null);
+
+					const labelText = computed(() => {
+						if (selected.value) return selected.value.label;
+						return props.placeholder;
+					});
+
+					function toggle() {
+						open.value = !open.value;
+					}
+
+					function close() {
+						open.value = false;
+					}
+
+					function pick(opt) {
+						emit("update:modelValue", opt.value);
+						open.value = false;
+					}
+
+					function onDocDown(e) {
+						if (!open.value) return;
+						const el = root.value;
+						if (!el) return;
+						if (!el.contains(e.target)) open.value = false;
+					}
+
+					function onKey(e) {
+						if (e.key === "Escape") open.value = false;
+					}
+
+					onMounted(() => {
+						document.addEventListener("mousedown", onDocDown, true);
+						document.addEventListener("keydown", onKey, true);
+					});
+
+					Vue.onBeforeUnmount(() => {
+						document.removeEventListener("mousedown", onDocDown, true);
+						document.removeEventListener("keydown", onKey, true);
+					});
+
+					return {
+						open,
+						root,
+						selected,
+						labelText,
+						toggle,
+						close,
+						pick
+					};
+				},
+				template: `
+					<div ref="root" class="relative">
+						<button type="button"
+							@click="toggle"
+							class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg px-3 py-2.5
+								flex items-center justify-between gap-3 apple-input transition hover:bg-white focus:bg-white"
+							:aria-expanded="open ? 'true' : 'false'">
+							<span class="truncate" :class="selected ? 'text-gray-900' : 'text-gray-400'">
+								{{ labelText }}
+							</span>
+							<i class="fa-solid fa-chevron-down text-gray-400 text-xs transition"
+								:class="open ? 'rotate-180' : ''"></i>
+						</button>
+			
+						<transition name="fade">
+							<div v-if="open"
+								class="absolute z-30 mt-2 w-full bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+								<div class="py-1 max-h-56 overflow-auto">
+									<button v-for="opt in options" :key="opt.value" type="button"
+										@click="pick(opt)"
+										class="w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-gray-50 transition"
+										:class="opt.value === modelValue ? 'bg-gray-50' : ''">
+										<span class="truncate flex-1 text-gray-800">{{ opt.label }}</span>
+										<i v-if="opt.value === modelValue" class="fa-solid fa-check text-[#0071e3] text-xs"></i>
+									</button>
+								</div>
+							</div>
+						</transition>
+					</div>
+				`
+			};
+
+			const TailwindColorPicker = {
+				props: {
+					modelValue: {
+						type: String,
+						default: ""
+					}, // e.g. "indigo" (只存色系名)
+				},
+				emits: ["update:modelValue"],
+				setup(props, {
+					emit
+				}) {
+					const open = ref(false);
+					const root = ref(null);
+					const q = ref("");
+
+					// ✅ 只存这些色系名（你列出来的）
+					const COLOR_NAMES = [
+						"red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky",
+						"blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose",
+						"slate", "gray", "zinc", "neutral", "stone"
+					];
+
+					// 预览用的固定亮度（不入库）
+					const PREVIEW_SHADE = "500";
+
+					const value = computed(() => String(props.modelValue || "").trim()); // current color name
+					const isEmpty = computed(() => !value.value);
+
+					const displayText = computed(() => (value.value ? value.value : "请选择主题色..."));
+
+					const allTokens = computed(() => COLOR_NAMES.slice());
+
+					const filteredTokens = computed(() => {
+						const kw = String(q.value || "").trim().toLowerCase();
+						if (!kw) return allTokens.value;
+						return allTokens.value.filter(t => t.includes(kw));
+					});
+
+					function pick(token) {
+						emit("update:modelValue", token); // ✅ 只存 token（例如 "red"）
+						open.value = false;
+					}
+
+					function clear() {
+						emit("update:modelValue", "");
+						open.value = false;
+					}
+
+					function toggle() {
+						open.value = !open.value;
+					}
+
+					function onDocDown(e) {
+						if (!open.value) return;
+						const el = root.value;
+						if (!el) return;
+						if (!el.contains(e.target)) open.value = false;
+					}
+
+					function onKey(e) {
+						if (e.key === "Escape") open.value = false;
+					}
+
+					onMounted(() => {
+						document.addEventListener("mousedown", onDocDown, true);
+						document.addEventListener("keydown", onKey, true);
+					});
+					Vue.onBeforeUnmount(() => {
+						document.removeEventListener("mousedown", onDocDown, true);
+						document.removeEventListener("keydown", onKey, true);
+					});
+
+					// ✅ 色块预览 class：bg-red-500（但存的是 red）
+					const swatchClass = computed(() => {
+						return value.value ? `bg-${value.value}-${PREVIEW_SHADE}` : "bg-gray-200";
+					});
+
+					return {
+						root,
+						open,
+						q,
+						value,
+						isEmpty,
+						displayText,
+						filteredTokens,
+						toggle,
+						pick,
+						clear,
+						swatchClass,
+						PREVIEW_SHADE,
+					};
+				},
+				template: `
+			    <div ref="root" class="relative">
+			      <button type="button"
+			        @click="toggle"
+			        class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg px-3 py-2.5
+			               flex items-center justify-between gap-3 apple-input transition hover:bg-white focus:bg-white"
+			        :aria-expanded="open ? 'true' : 'false'">
+			        <div class="flex items-center gap-2 min-w-0">
+			          <span class="inline-flex w-4 h-4 rounded-full ring-1 ring-black/10" :class="swatchClass"></span>
+			          <span class="truncate" :class="isEmpty ? 'text-gray-400' : 'text-gray-900'">{{ displayText }}</span>
+			        </div>
+			        <i class="fa-solid fa-chevron-down text-gray-400 text-xs transition" :class="open ? 'rotate-180' : ''"></i>
+			      </button>
+			
+			      <transition name="fade">
+			        <div v-if="open"
+			          class="absolute z-40 mt-2 w-full bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+			
+			          <div class="p-3 border-b border-gray-100">
+			            <div class="flex items-center gap-2">
+			              <div class="relative flex-1">
+			                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+			                <input v-model="q" placeholder="搜索：blue / indigo / gray..."
+			                  class="w-full pl-8 pr-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg apple-input outline-none" />
+			              </div>
+			              <button type="button" @click="clear"
+			                class="px-3 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-sm text-gray-700 transition active:scale-95">
+			                清空
+			              </button>
+			            </div>
+			          </div>
+			
+			          <div class="max-h-72 overflow-auto p-2">
+			            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+			              <button v-for="token in filteredTokens" :key="token" type="button"
+			                @click="pick(token)"
+			                class="flex items-center gap-2 px-2 py-2 rounded-lg text-left hover:bg-gray-50 transition"
+			                :class="token === value ? 'bg-gray-50' : ''">
+			
+			                <span class="inline-flex w-4 h-4 rounded-full ring-1 ring-black/10"
+			                  :class="'bg-' + token + '-' + PREVIEW_SHADE"></span>
+			
+			                <span class="text-xs font-medium text-gray-800 truncate flex-1">{{ token }}</span>
+			                <i v-if="token === value" class="fa-solid fa-check text-[#0071e3] text-xs"></i>
+			              </button>
+			            </div>
+			
+			            <div v-if="filteredTokens.length === 0" class="text-center py-10 text-sm text-gray-400">
+			              没找到匹配颜色
+			            </div>
+			          </div>
+			        </div>
+			      </transition>
+			    </div>
+			  `
+			};
+
+
+
+			createApp({
+				components: {
+					InputField,
+					AppleSelect,
+					InputField,
+					AppleSelect,
+					TailwindColorPicker
+				},
+				setup() {
+					const rows = ref([]);
+					const loading = ref(false);
+					const saving = ref(false);
+					const uploading = ref(false);
+					const q = ref("");
+					const filterStatus = ref('all');
+					const nextCursor = ref(null);
+					const fileInput = ref(null);
+
+					const shelfInput = ref(null);
+
+					// shelf 上传状态
+					const shelfUploading = ref(false);
+					const shelfUploadingIndex = ref(-1);
+
+					// replace 用：记录要替换哪个 idx（-1 表示“新增一张”）
+					const shelfReplaceIndex = ref(-1);
+
+
+
+
+
+
+
+
+
+
+					const gridEl = ref(null);
+					let sortable = null;
+					const dragging = ref(false);
+
+					// 把当前 rows 的顺序写回数据库
+					async function persistOrder() {
+						// 只对真实 app 排序（排除 no-drag / 没有 id 的）
+						const order = rows.value
+							.filter(r => r && r.id)
+							.map((r, idx) => ({
+								id: r.id,
+								sort: idx
+							}));
+
+						const res = await fetch(`${API_BASE}/api/apps/reorder`, {
+							method: "POST",
+							headers: {
+								...authHeaders(),
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								order
+							}),
+						});
+
+						const out = await res.json().catch(() => ({}));
+						if (!res.ok) throw new Error(out?.error || "保存排序失败");
+					}
+
+					// 初始化/重建 Sortable（每次 reload 后 rows 变化也能用）
+					function initSortable() {
+						if (!gridEl.value || typeof Sortable === "undefined") return;
+
+						// 已经存在就销毁重建，避免重复绑定
+						if (sortable) {
+							sortable.destroy();
+							sortable = null;
+						}
+
+						sortable = Sortable.create(gridEl.value, {
+							animation: 180,
+							easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+							ghostClass: "sortable-ghost",
+							chosenClass: "sortable-chosen",
+							dragClass: "sortable-drag",
+
+							// ✅ 长按拖拽（移动端友好）
+							delay: 250,
+							delayOnTouchOnly: true,
+							touchStartThreshold: 6,
+
+							// 不让“新建卡片”参与排序
+							filter: ".no-drag",
+							preventOnFilter: true,
+
+							// 以 data-id 识别
+							dataIdAttr: "data-id",
+
+							onStart() {
+								dragging.value = true;
+							},
+
+							async onEnd(evt) {
+								// 1) 先把前端数组顺序同步
+								const oldIndex = evt.oldIndex;
+								const newIndex = evt.newIndex;
+
+								if (oldIndex == null || newIndex == null || oldIndex === newIndex) {
+									dragging.value = false;
+									return;
+								}
+
+								// 注意：grid 里还有 no-drag 卡片，会影响 index
+								// 所以我们用 DOM 顺序重建 rows（更稳）
+								const ids = sortable.toArray(); // 只包含可拖拽 item 的 data-id
+
+								const map = new Map(rows.value.filter(r => r && r.id).map(r => [String(r.id),
+									r
+								]));
+								const reordered = ids.map(id => map.get(String(id))).filter(Boolean);
+
+								rows.value = reordered;
+
+								// 2) 写回数据库
+								try {
+									await persistOrder();
+									showToast("ok", "排序已保存");
+								} catch (e) {
+									showToast("error", e?.message || String(e));
+									// 失败就回滚：重新拉一次（最简单粗暴但可靠）
+									await fetchApps(false);
+								} finally {
+									// 防止拖拽结束立刻触发 click
+									setTimeout(() => (dragging.value = false), 0);
+								}
+							},
+						});
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					// ✅ 修复：你原来这里写了 const loadMore = ''，导致 @click="loadMore()" 直接炸
+					const loadMore = async () => {
+						if (loading.value) return;
+						await fetchApps(true);
+					};
+
+					// Modal States
+					const modal = reactive({
+						open: false,
+						mode: 'create'
+					});
+					const activeTab = ref('general');
+					const editLang = ref('zh');
+
+					// 开发阶段选项（用于 AppleSelect）
+					const statusOptions = [{
+							value: "apps.developing",
+							label: "开发中 (Dev)"
+						},
+						{
+							value: "apps.alpha",
+							label: "内测 (Alpha)"
+						},
+						{
+							value: "apps.beta",
+							label: "公测 (Beta)"
+						},
+						{
+							value: "apps.launched",
+							label: "正式发布 (Launched)"
+						}
+					];
+
+					// Platform Presets
+					const platformPresets = {
+						ios: {
+							label: 'iOS',
+							icon: 'fa-brands fa-app-store-ios',
+							type: 'page_blank'
+						},
+						appleWatch: {
+							label: 'Apple Watch',
+							icon: 'fa-brands fa-app-store-ios',
+							type: 'page_blank'
+						},
+						mac: {
+							label: 'MacOS',
+							icon: 'fa-brands fa-apple',
+							type: 'page_blank'
+						},
+						web: {
+							label: 'Web',
+							icon: 'fa-solid fa-globe',
+							type: 'page_blank'
+						},
+						win: {
+							label: 'Windows',
+							icon: 'fa-brands fa-windows',
+							type: 'page_blank'
+						},
+						linux: {
+							label: 'Linux',
+							icon: 'fa-brands fa-linux',
+							type: 'page_blank'
+						},
+						apk: {
+							label: 'Android',
+							icon: 'fa-brands fa-android',
+							type: 'page_blank'
+						},
+						HyperOS: {
+							label: 'HyperOS',
+							icon: 'fa-solid fa-watch',
+							type: 'page_blank'
+						}
+					};
+
+					const platformLinkTypeOptions = [{
+							value: "download",
+							label: "下载链接"
+						},
+						{
+							value: "page_self",
+							label: "页面（本页面打开）"
+						},
+						{
+							value: "page_blank",
+							label: "页面（新窗口打开）"
+						},
+					];
+
+					function urlPlaceholderByType(type) {
+						const t = String(type || "download");
+						if (t === "page_self") return "页面地址（本页打开）";
+						if (t === "page_blank") return "页面地址（新窗口）";
+						return "下载链接 (URL) ";
+					}
+
+					const platformMenuOpen = ref(false);
+					const platformMenuRoot = ref(null);
+
+					function togglePlatformMenu() {
+						platformMenuOpen.value = !platformMenuOpen.value;
+					}
+
+					function closePlatformMenu() {
+						platformMenuOpen.value = false;
+					}
+
+					// 点外部关闭
+					function onDocDown(e) {
+						if (!platformMenuOpen.value) return;
+						const el = platformMenuRoot.value;
+						if (!el) return;
+						if (!el.contains(e.target)) platformMenuOpen.value = false;
+					}
+
+					onMounted(() => {
+						document.addEventListener("mousedown", onDocDown, true);
+					});
+					Vue.onBeforeUnmount(() => {
+						document.removeEventListener("mousedown", onDocDown, true);
+					});
+
+
+					// Form Data
+					const form = reactive({
+						id: "",
+						page: "",
+						accent: "",
+						logo_url: "",
+						version: "",
+						disabled: 0,
+						status_key: "apps.developing",
+						name_i18n: "",
+						tagline_i18n: "",
+						intro: "",
+						shelf: "",
+						changelog: ""
+					});
+
+
+
+
+					const i18nName = reactive({
+						zh: '',
+						en: '',
+						ja: '',
+						ko: ''
+					});
+					const i18nTagline = reactive({
+						zh: '',
+						en: '',
+						ja: '',
+						ko: ''
+					});
+					const parsedPlatforms = ref([]);
+
+					const storeEditLang = ref("zh");
+
+					const introI18n = reactive({
+						zh: "",
+						en: "",
+						ja: "",
+						ko: ""
+					});
+
+					const shelfItems = ref([]);
+					// item: { src:"", ratio:"9:16", lang:"all", title:"" }
+
+					const changelogItems = ref([]);
+					// item: { version:"", date:"", important:false, content:{zh:[],en:[],ja:[],ko:[]}, editLang:"zh" }
+
+
+					const toast = reactive({
+						show: false,
+						type: "ok",
+						msg: ""
+					});
+					const showToast = (type, msg) => {
+						toast.type = type;
+						toast.msg = msg;
+						toast.show = true;
+						setTimeout(() => toast.show = false, 2600);
+					};
+
+					const authHeaders = () => ({
+						"Authorization": `Bearer ${ADMIN_TOKEN}`
+					});
+
+					// Image Processing (Resize & Compress)
+					async function resizeImage(file, maxWidth, maxHeight) {
+						// ===== helpers =====
+						const readImage = (f) =>
+							new Promise((resolve, reject) => {
+								const img = new Image();
+								const url = URL.createObjectURL(f);
+								img.onload = () => {
+									URL.revokeObjectURL(url);
+									resolve(img);
+								};
+								img.onerror = (e) => {
+									URL.revokeObjectURL(url);
+									reject(e);
+								};
+								img.src = url;
+							});
+
+						const canvasToBlob = (canvas, type, quality) =>
+							new Promise((resolve) => {
+								canvas.toBlob((b) => resolve(b), type, quality);
+							});
+
+						const supportsType = (type) => {
+							const c = document.createElement("canvas");
+							return c.toDataURL(type).startsWith(`data:${type}`);
+						};
+
+						// ===== 1) load image =====
+						const img = await readImage(file);
+
+						let srcW = img.naturalWidth || img.width;
+						let srcH = img.naturalHeight || img.height;
+
+						// 如果图片小于目标尺寸，直接返回原文件（但注意：如果你仍想压体积，就把这段删掉）
+						if (srcW <= maxWidth && srcH <= maxHeight) {
+							return file;
+						}
+
+						// ===== 2) compute target size (keep ratio) =====
+						const ratio = Math.min(maxWidth / srcW, maxHeight / srcH);
+						const dstW = Math.max(1, Math.round(srcW * ratio));
+						const dstH = Math.max(1, Math.round(srcH * ratio));
+
+						// ===== 3) high-quality resize =====
+						const canvas = document.createElement("canvas");
+						canvas.width = dstW;
+						canvas.height = dstH;
+						const ctx = canvas.getContext("2d", {
+							alpha: true
+						});
+
+						// 高质量插值（关键）
+						ctx.imageSmoothingEnabled = true;
+						ctx.imageSmoothingQuality = "high";
+
+						// 轻微去锯齿：先清空再绘制
+						ctx.clearRect(0, 0, dstW, dstH);
+						ctx.drawImage(img, 0, 0, dstW, dstH);
+
+						// ===== 4) choose best output format =====
+						// 照片/复杂图：webp/jpg 体积远小于 png；图标/纯色：png 才有优势
+						// 这里默认先 webp，再 jpeg，最后 png
+						const canWebp = supportsType("image/webp");
+						const canJpeg = supportsType("image/jpeg");
+
+						// ===== 5) target size control (quality search) =====
+						// 目标体积：按“最长边”粗略估计一个合理范围（你也可以改更激进）
+						const maxSide = Math.max(dstW, dstH);
+						const targetBytes =
+							maxSide <= 512 ? 80 * 1024 :
+							maxSide <= 1024 ? 180 * 1024 :
+							maxSide <= 1600 ? 320 * 1024 :
+							520 * 1024;
+
+						// 如果原图就是 png 且很像图标（透明/纯色），png 可能更合适
+						const isLikelyIcon =
+							(file.type === "image/png") && (maxSide <= 512);
+
+						// 选一个首选类型
+						let outType;
+						if (!isLikelyIcon && canWebp) outType = "image/webp";
+						else if (!isLikelyIcon && canJpeg) outType = "image/jpeg";
+						else outType = "image/png";
+
+						// PNG 不支持 quality，这里直接输出
+						if (outType === "image/png") {
+							const blob = await canvasToBlob(canvas, "image/png");
+							if (!blob) throw new Error("Canvas conversion failed");
+							return blob;
+						}
+
+						// webp/jpeg：二分法找最小体积但尽量高画质
+						let lo = 0.55;
+						let hi = 0.95;
+						let best = null;
+
+						for (let i = 0; i < 7; i++) {
+							const q = (lo + hi) / 2;
+							const blob = await canvasToBlob(canvas, outType, q);
+							if (!blob) break;
+
+							// 满足体积就尝试更高画质；否则降低画质
+							if (blob.size <= targetBytes) {
+								best = blob;
+								lo = q; // 提高画质
+							} else {
+								hi = q; // 降低画质
+							}
+						}
+
+						// 如果怎么都压不下去，就拿最后一次结果（或回退到较保守质量）
+						if (!best) {
+							best = await canvasToBlob(canvas, outType, 0.75);
+						}
+
+						// 最后兜底
+						if (!best) throw new Error("Canvas conversion failed");
+						return best;
+					}
+
+
+					// File Upload Logic
+					const triggerUpload = () => {
+						if (fileInput.value) fileInput.value.click();
+					};
+
+					async function handleFileChange(e) {
+						const file = e.target.files[0];
+						if (!file) return;
+
+						const slug = String(form.id || "").trim();
+						if (!slug) return showToast("error", "请先填写应用ID，再上传图标");
+
+						// 只允许安全字符，避免出现 ../ 之类的路径问题
+						const safeSlug = slug
+							.toLowerCase()
+							.replace(/[^a-z0-9-_]/g, "-")
+							.replace(/-+/g, "-")
+							.replace(/^-|-$/g, "");
+
+						const key = `images/apps/${safeSlug}/icon.png`;
+
+						uploading.value = true;
+						try {
+							const processedBlob = await resizeImage(file, 288, 288);
+							const res = await fetch(`${API_BASE}/api/file/${key}`, {
+								method: "PUT",
+								headers: {
+									...authHeaders(),
+									"Content-Type": "image/png"
+								},
+								body: processedBlob
+							});
+							if (!res.ok) throw new Error("Upload Error");
+
+							form.logo_url = resolveUrl(key);
+
+							bumpLogoBust();
+
+							const i = rows.value.findIndex(r => r.id === form.id);
+							if (i >= 0) {
+								rows.value[i].logo_url = key;
+								rows.value[i]._logoBust = logoBust.value; // 给列表单独用也行
+							}
+							showToast("ok", "图标更新成功");
+						} catch (err) {
+							showToast("error", "上传失败: " + (err?.message || err));
+						} finally {
+							uploading.value = false;
+							e.target.value = '';
+						}
+					}
+
+					// ===== Shelf Upload Logic =====
+
+					// 点击“上传图片”：新增一条并上传
+					function triggerShelfUpload() {
+						const slug = String(form.id || "").trim();
+						if (!slug) return showToast("error", "请先填写应用ID，再上传轮播图");
+
+						shelfReplaceIndex.value = -1; // 表示新增
+						if (shelfInput.value) shelfInput.value.click();
+					}
+
+					// 点击“更换”：替换指定 idx
+					function triggerShelfReplace(idx) {
+						const slug = String(form.id || "").trim();
+						if (!slug) return showToast("error", "请先填写应用ID，再更换轮播图");
+
+						shelfReplaceIndex.value = idx;
+						if (shelfInput.value) shelfInput.value.click();
+					}
+
+					// 生成一个稳定安全的 appId
+					function getSafeAppId() {
+						const slug = String(form.id || "").trim();
+						return slug
+							.toLowerCase()
+							.replace(/[^a-z0-9-_]/g, "-")
+							.replace(/-+/g, "-")
+							.replace(/^-|-$/g, "");
+					}
+
+					// 生成文件名：shelf-20260121-235959-xxxx.webp
+					function genShelfFileName(ext = "webp") {
+						const d = new Date();
+						const pad = (n) => String(n).padStart(2, "0");
+						const stamp =
+							d.getFullYear() +
+							pad(d.getMonth() + 1) +
+							pad(d.getDate()) +
+							"-" +
+							pad(d.getHours()) +
+							pad(d.getMinutes()) +
+							pad(d.getSeconds());
+						const rnd = Math.random().toString(16).slice(2, 6);
+						return `shelf-${stamp}-${rnd}.${ext}`;
+					}
+
+					// 把图片压成 webp（更适合轮播图；你也可以改成 png/jpg）
+					async function imageToWebp(file, maxW = 1920, maxH = 1920, quality = 0.86) {
+						return new Promise((resolve, reject) => {
+							const img = new Image();
+							img.src = URL.createObjectURL(file);
+							img.onload = () => {
+								let w = img.width,
+									h = img.height;
+
+								const ratio = Math.min(maxW / w, maxH / h, 1);
+								w = Math.round(w * ratio);
+								h = Math.round(h * ratio);
+
+								const canvas = document.createElement("canvas");
+								canvas.width = w;
+								canvas.height = h;
+								const ctx = canvas.getContext("2d");
+								ctx.drawImage(img, 0, 0, w, h);
+
+								canvas.toBlob((blob) => {
+									if (!blob) return reject(new Error(
+										"WebP conversion failed"));
+									resolve(blob);
+								}, "image/webp", quality);
+							};
+							img.onerror = reject;
+						});
+					}
+
+					async function handleShelfFileChange(e) {
+						const file = e.target.files?.[0];
+						if (!file) return;
+
+						const appId = getSafeAppId();
+						if (!appId) {
+							e.target.value = "";
+							return showToast("error", "请先填写应用ID，再上传轮播图");
+						}
+
+						// 如果是替换：用当前 idx；否则新增
+						let idx = shelfReplaceIndex.value;
+
+						// 替换但 idx 不合法：当新增
+						if (idx < 0 || idx >= shelfItems.value.length) idx = -1;
+
+						// ✅ 先确保有 item
+						if (idx === -1) {
+							shelfItems.value.push({
+								src: "",
+								ratio: "9:16",
+								lang: "all",
+								title: ""
+							});
+							idx = shelfItems.value.length - 1;
+						}
+
+						shelfUploading.value = true;
+						shelfUploadingIndex.value = idx;
+
+						try {
+							const blob = await imageToWebp(file, 1920, 1920, 0.86);
+							const filename = genShelfFileName("webp");
+
+							// ✅ 你要求的路径：apps/<id>/shelf/<file>
+							const key = `apps/${appId}/shelf/${filename}`;
+
+							const res = await fetch(`${API_BASE}/api/file/${key}`, {
+								method: "PUT",
+								headers: {
+									...authHeaders(),
+									"Content-Type": "image/webp"
+								},
+								body: blob
+							});
+
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok) throw new Error(out?.error || "上传失败");
+
+							// ✅ 只存 key（相对路径），前台用 resolveUrl(key)
+							shelfItems.value[idx].src = key;
+
+							showToast("ok", "轮播图上传成功");
+						} catch (err) {
+							showToast("error", "上传失败: " + (err?.message || err));
+						} finally {
+							shelfUploading.value = false;
+							shelfUploadingIndex.value = -1;
+							shelfReplaceIndex.value = -1;
+							e.target.value = "";
+						}
+					}
+
+					// 可选：删除 R2 上的文件（需要后端支持 DELETE /api/file/<key>）
+					async function removeShelfFile(idx) {
+						const it = shelfItems.value[idx];
+						if (!it?.src) return;
+
+						if (!confirm("确定删除该图片文件吗？（会从存储中删除，不可恢复）")) return;
+
+						try {
+							const res = await fetch(`${API_BASE}/api/file/${it.src}`, {
+								method: "DELETE",
+								headers: {
+									...authHeaders()
+								}
+							});
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok) throw new Error(out?.error || "删除失败");
+
+							it.src = "";
+							showToast("ok", "文件已删除");
+						} catch (e) {
+							showToast("error", e?.message || String(e));
+						}
+					}
+
+
+					// Data Handling
+					async function fetchApps(isLoadMore = false) {
+						loading.value = true;
+						try {
+							const p = new URLSearchParams({
+								limit: 20
+							});
+							if (q.value) p.set("q", q.value);
+							if (filterStatus.value === 'enabled') p.set("onlyEnabled", "1");
+							if (isLoadMore && nextCursor.value) p.set("cursor", nextCursor.value);
+
+							const res = await fetch(`${API_BASE}/api/apps?${p}`, {
+								headers: authHeaders()
+							});
+							const data = await res.json();
+
+							let items = data.items || [];
+							if (filterStatus.value === 'disabled') items = items.filter(i => String(i.disabled) ===
+								"1");
+
+							rows.value = isLoadMore ? [...rows.value, ...items] : items;
+							nextCursor.value = data.next_cursor || null;
+
+							await nextTick();
+							initSortable();
+						} catch (e) {
+							showToast("error", e?.message || String(e));
+						} finally {
+							loading.value = false;
+						}
+					}
+
+					function reload() {
+						nextCursor.value = null;
+						fetchApps(false);
+					}
+
+					// Modal Logic
+					function openCreate() {
+						modal.mode = "create";
+						modal.open = true;
+						activeTab.value = "general";
+						editLang.value = "zh";
+
+						Object.assign(form, {
+							id: "",
+							page: "",
+							accent: "",
+							logo_url: "",
+							version: "",
+							disabled: 0,
+							status_key: "apps.developing",
+							name_i18n: "",
+							tagline_i18n: "",
+							intro: "",
+							shelf: "",
+							changelog: ""
+						});
+
+						["zh", "en", "ja", "ko"].forEach(k => {
+							i18nName[k] = "";
+							i18nTagline[k] = "";
+						});
+						parsedPlatforms.value = [];
+
+						// store tab data reset
+						["zh", "en", "ja", "ko"].forEach(k => introI18n[k] = "");
+						shelfItems.value = [];
+						changelogItems.value = [];
+						storeEditLang.value = "zh";
+
+					}
+
+
+					function openEdit(row) {
+						modal.mode = 'edit';
+						modal.open = true;
+						activeTab.value = 'general';
+						editLang.value = 'zh';
+
+						Object.assign(form, {
+							id: row.id,
+							page: row.page || "",
+							accent: row.accent,
+							logo_url: row.logo_url,
+							version: row.version,
+							disabled: row.disabled || 0,
+							status_key: row.status_key || "apps.developing",
+							name_i18n: row.name_i18n || "",
+							tagline_i18n: row.tagline_i18n || "",
+							intro: row.intro || "",
+							shelf: row.shelf || "",
+							changelog: row.changelog || ""
+						});
+
+
+						const n = safeParse(row.name_i18n);
+						const t = safeParse(row.tagline_i18n);
+						['zh', 'en', 'ja', 'ko'].forEach(k => {
+							i18nName[k] = n[k] || '';
+							i18nTagline[k] = t[k] || '';
+						});
+
+						const plats = parsePlatforms(row.platforms);
+						parsedPlatforms.value = (Array.isArray(plats) ? plats : []).map(p => ({
+							label: p?.label || "",
+							icon: p?.icon || "fa-solid fa-link",
+							url: p?.url || "",
+							type: p?.type || "download", // ✅ 兼容旧数据
+						}));
+
+
+						// ===== Store fields =====
+						const introObj = typeof row.intro === "string" ? safeParse(row.intro) : (row.intro || {});
+						["zh", "en", "ja", "ko"].forEach(k => introI18n[k] = introObj?.[k] || "");
+
+						const shelfArr = typeof row.shelf === "string" ? safeParse(row.shelf) : (row.shelf || []);
+						shelfItems.value = Array.isArray(shelfArr) ? shelfArr.map(x => ({
+							src: x?.src || "",
+							ratio: x?.ratio || "9:16",
+							lang: x?.lang || "all",
+							title: x?.title || ""
+						})) : [];
+
+						const logsArr = typeof row.changelog === "string" ? safeParse(row.changelog) : (row.changelog ||
+							[]);
+						changelogItems.value = Array.isArray(logsArr) ? logsArr.map(x => ({
+							version: x?.version || "",
+							date: x?.date || "",
+							important: !!x?.important,
+							content: normalizeLogContent(x?.content),
+							editLang: "zh",
+						})) : [];
+
+						storeEditLang.value = "zh";
+
+
+						pagePathTouched.value = false;
+					}
+
+					function closeModal() {
+						modal.open = false;
+					}
+
+					// Platform Logic
+					function addPlatform(type) {
+						const make = (base) => ({
+							label: base?.label || "New Platform",
+							icon: base?.icon || "fa-solid fa-link",
+							url: "",
+							type: base?.type || "download", // ✅ 默认：下载链接
+						});
+
+						if (type === "custom") {
+							parsedPlatforms.value.push(make({}));
+						} else {
+							const p = platformPresets[type] || {};
+							parsedPlatforms.value.push(make(p));
+						}
+					}
+
+
+					function removePlatform(idx) {
+						parsedPlatforms.value.splice(idx, 1);
+					}
+
+					async function save() {
+						if (!String(form.id || "").trim()) return showToast("error", "应用ID（Slug）必填");
+						if (!String(form.page || "").trim()) return showToast("error", "页面路径必填");
+
+						saving.value = true;
+						try {
+							form.name_i18n = JSON.stringify(i18nName);
+							form.tagline_i18n = JSON.stringify(i18nTagline);
+
+							// intro -> json string
+							form.intro = JSON.stringify(introI18n);
+
+							// shelf -> json string
+							form.shelf = JSON.stringify(shelfItems.value.map(x => ({
+								src: String(x.src || "").trim(),
+								ratio: String(x.ratio || "").trim(),
+								lang: String(x.lang || "all").trim(),
+								title: String(x.title || "").trim(),
+							})).filter(x => x.src));
+
+							// changelog -> json string（把 textarea 的多行转数组）
+							const logs = changelogItems.value.map(x => {
+								const content = normalizeLogContent(x.content);
+								// 如果某语言 content 被用户当 textarea 编辑成 string，这里也兜底
+								return {
+									version: String(x.version || "").trim(),
+									date: String(x.date || "").trim(),
+									important: !!x.important,
+									content,
+								};
+							}).filter(x => x.version || x.date || Object.values(x.content).some(arr => arr
+								.length));
+
+							form.changelog = JSON.stringify(logs);
+
+
+							const payload = {
+								...form,
+								name_i18n: form.name_i18n,
+								tagline_i18n: form.tagline_i18n,
+								platforms: JSON.stringify(
+									(parsedPlatforms.value || []).map(p => ({
+										label: String(p?.label || "").trim(),
+										icon: String(p?.icon || "").trim(),
+										url: String(p?.url || "").trim(),
+										type: String(p?.type || "download").trim(),
+									})).filter(p => p.label || p.url)
+								)
+
+							};
+
+							const isEdit = modal.mode === "edit";
+							const url = isEdit ?
+								`${API_BASE}/api/apps/${encodeURIComponent(form.id)}` :
+								`${API_BASE}/api/apps`;
+							const method = isEdit ? "PUT" : "POST";
+
+							const res = await fetch(url, {
+								method,
+								headers: {
+									...authHeaders(),
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify(payload)
+							});
+
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok) throw new Error(out?.error || "保存失败");
+
+							showToast("ok", "保存成功");
+							modal.open = false;
+							reload();
+						} catch (e) {
+							showToast("error", e?.message || String(e));
+						} finally {
+							saving.value = false;
+						}
+					}
+
+					function addShelfItem() {
+						shelfItems.value.push({
+							src: "",
+							ratio: "9:16",
+							lang: "all",
+							title: ""
+						});
+					}
+
+					function removeShelfItem(idx) {
+						shelfItems.value.splice(idx, 1);
+					}
+
+					function moveShelf(idx, dir) {
+						const a = shelfItems.value;
+						const j = idx + dir;
+						if (j < 0 || j >= a.length) return;
+						const t = a[idx];
+						a[idx] = a[j];
+						a[j] = t;
+					}
+
+					function addChangelog() {
+						changelogItems.value.unshift({
+							version: "",
+							date: "",
+							important: false,
+							content: {
+								zh: [],
+								en: [],
+								ja: [],
+								ko: []
+							},
+							editLang: "zh",
+						});
+					}
+
+					function removeChangelog(idx) {
+						changelogItems.value.splice(idx, 1);
+					}
+
+					function moveChangelog(idx, dir) {
+						const a = changelogItems.value;
+						const j = idx + dir;
+						if (j < 0 || j >= a.length) return;
+						const t = a[idx];
+						a[idx] = a[j];
+						a[j] = t;
+					}
+
+
+
+					async function removeRow() {
+						if (!confirm("确定要删除吗？不可恢复")) return;
+						try {
+							await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
+								method: "DELETE",
+								headers: authHeaders()
+							});
+							showToast("ok", "已删除");
+							modal.open = false;
+							reload();
+						} catch (e) {
+							showToast("error", e?.message || String(e));
+						}
+					}
+
+					// Utils
+					const safeParse = (s) => {
+						try {
+							return JSON.parse(s || '{}')
+						} catch {
+							return {}
+						}
+					};
+					const parsePlatforms = (s) => {
+						try {
+							const r = JSON.parse(s);
+							return Array.isArray(r) ? r : (r ? [r] : [])
+						} catch {
+							return []
+						}
+					};
+					const pickLang = (obj) => {
+						const o = typeof obj === 'string' ? safeParse(obj) : (obj || {});
+						return o.zh || o.en || Object.values(o)[0] || '';
+					};
+					const resolveUrl = (u) => !u ? '' : (u.startsWith('http') ? u :
+						`${API_BASE}/file/${String(u).replace(/^\//,'')}`);
+					const tabName = (t) => ({
+						general: '基本信息',
+						i18n: '多语言设置',
+						store: '商店内容',
+						platforms: '下载平台'
+					} [t] || t);
+
+					const logoBust = ref(0);
+					const bumpLogoBust = () => (logoBust.value = Date.now());
+
+					// 给“key 或 url”生成最终 img src（带 ?v=...）
+					const withBust = (u, bust) => {
+						const url = resolveUrl(u);
+						if (!url) return '';
+						const sep = url.includes('?') ? '&' : '?';
+						return bust ? `${url}${sep}v=${bust}` : url;
+					};
+
+
+
+					// 状态点颜色：更稳（包含 alpha / beta / developing / launched）
+					const getStatusColorDot = (k) => {
+						const s = String(k || '');
+						if (s.includes('launched')) return 'bg-[#34C759]';
+						if (s.includes('beta')) return 'bg-orange-400';
+						if (s.includes('alpha')) return 'bg-indigo-400';
+						if (s.includes('develop')) return 'bg-gray-400';
+						return 'bg-gray-400';
+					};
+
+					const statusLabel = computed(() => {
+						const hit = statusOptions.find(o => o.value === form.status_key);
+						return hit ? hit.label : "";
+					});
+
+					const i18nMissingCount = computed(() => {
+						const langs = ['zh', 'en', 'ja', 'ko'];
+						let miss = 0;
+						langs.forEach(l => {
+							if (!String(i18nName[l] || '').trim()) miss++;
+							if (!String(i18nTagline[l] || '').trim()) miss++;
+						});
+						return miss; // 0 = 全部完善
+					});
+
+					const pagePathTouched = ref(false);
+
+					watch(() => form.page_path, (v) => {
+						// 只要用户手动改过，就不再自动覆盖
+						if (v !== undefined && v !== null) pagePathTouched.value = true;
+					});
+
+					watch(() => form.page, (slug) => {
+						const s = String(slug || "").trim();
+						if (!pagePathTouched.value) {
+							form.page_path = s ? `images/${s}.html` : "";
+						}
+					});
+
+
+					// Logo URL 预览：把 form.logo_url 变成可访问 URL（没有就为空）
+					const logoUrlPreview = computed(() => {
+						return form.logo_url ? resolveUrl(form.logo_url) : "";
+					});
+
+					// 复制工具
+					async function copyText(text) {
+						const t = String(text || "");
+						if (!t) return showToast("error", "没有可复制的内容");
+						try {
+							if (navigator.clipboard?.writeText) {
+								await navigator.clipboard.writeText(t);
+							} else {
+								const ta = document.createElement("textarea");
+								ta.value = t;
+								ta.style.position = "fixed";
+								ta.style.left = "-9999px";
+								document.body.appendChild(ta);
+								ta.select();
+								document.execCommand("copy");
+								document.body.removeChild(ta);
+							}
+							showToast("ok", "已复制");
+						} catch (e) {
+							showToast("error", "复制失败");
+						}
+					}
+
+					// i18n 是否完善：该语言的 name + tagline 都有内容才算 OK
+					function i18nOk(lang) {
+						const n = String(i18nName[lang] || "").trim();
+						const t = String(i18nTagline[lang] || "").trim();
+						return !!(n && t);
+					}
+
+					function normalizeLogContent(c) {
+						const out = {
+							zh: [],
+							en: [],
+							ja: [],
+							ko: []
+						};
+						const obj = (c && typeof c === "object") ? c : {};
+						["zh", "en", "ja", "ko"].forEach(k => {
+							const v = obj[k];
+							if (Array.isArray(v)) out[k] = v.filter(Boolean).map(s => String(s));
+							else if (typeof v === "string") out[k] = v.split("\n").map(s => s.trim()).filter(
+								Boolean);
+							else out[k] = [];
+						});
+						return out;
+					}
+
+
+
+
+					onMounted(() => reload());
+
+					return {
+						rows,
+						loading,
+						saving,
+						uploading,
+						q,
+						filterStatus,
+						nextCursor,
+						toast,
+						modal,
+						form,
+						activeTab,
+						editLang,
+						i18nName,
+						i18nTagline,
+						parsedPlatforms,
+						platformPresets,
+						statusOptions,
+						fileInput,
+						triggerUpload,
+						handleFileChange,
+						reload,
+						loadMore,
+						openCreate,
+						openEdit,
+						closeModal,
+						save,
+						removeRow,
+						addPlatform,
+						removePlatform,
+						pickLang,
+						resolveUrl,
+						tabName,
+						getStatusColorDot,
+						statusLabel,
+						i18nMissingCount,
+						logoUrlPreview,
+						copyText,
+						i18nOk,
+						pagePathTouched,
+						platformMenuOpen,
+						platformMenuRoot,
+						togglePlatformMenu,
+						closePlatformMenu,
+						gridEl,
+						dragging,
+						storeEditLang,
+						introI18n,
+						shelfItems,
+						changelogItems,
+						addShelfItem,
+						removeShelfItem,
+						moveShelf,
+						addChangelog,
+						removeChangelog,
+						moveChangelog,
+						normalizeLogContent,
+						shelfInput,
+						shelfUploading,
+						shelfUploadingIndex,
+						triggerShelfUpload,
+						triggerShelfReplace,
+						handleShelfFileChange,
+						removeShelfFile,
+						platformLinkTypeOptions,
+						urlPlaceholderByType,
+						logoBust,
+						bumpLogoBust,
+						withBust,
+					};
+				}
+			}).mount("#app");
+		</script>
+	</body>
+</html>

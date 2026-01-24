@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>MC指令快捷工具 - Create Your World</title>
+
+		<!-- 核心依赖 -->
+		<script src="../js/vue.global.js"></script>
+		<script src="../js/tailwindcss.3.4.17.js"></script>
+
+		<!-- 字体资源 -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Press+Start+2P&display=swap"
+			rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+		<!-- Tailwind 配置 -->
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontSize: {
+							'xxs': ['0.625rem', {
+								lineHeight: '0.875rem'
+							}], // 10px
+							'xxxs': ['0.5rem', {
+								lineHeight: '0.75rem'
+							}], // 8px
+							'micro': ['0.375rem', {
+								lineHeight: '0.5rem'
+							}], // 6px
+							'nano': ['0.25rem', {
+								lineHeight: '0.375rem'
+							}], // 4px
+						},
+
+						fontFamily: {
+							sans: ['"Noto Sans SC"', 'sans-serif'],
+							pixel: ['"Press Start 2P"', 'cursive'],
+						},
+						colors: {
+							mc: {
+								bg: '#121212', // 深层矿洞黑
+								surface: '#2C2C2C', // 深板岩灰
+								border: '#111111', // 边框黑
+								green: '#3C8527', // 经典草方块绿
+								green_light: '#52A536',
+								dirt: '#8B5F36', // 泥土褐
+								stone: '#7D7D7D', // 石头灰
+								red: '#AA0000', // 红石红
+								gold: '#FFAA00', // 金锭黄
+								diamond: '#55FFFF', // 钻石蓝
+							}
+						},
+						backgroundImage: {
+							'dirt-pattern': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMUMxQzFDIi8+PHBhdGggZmlsbD0iIzIyMjIyMiIgZD0iTTAgMGgxNnYxNkgwek0xNiAxNmgxNnYxNkgxNnoiLz48L3N2Zz4=')",
+							'bedrock-pattern': "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMTAxMDEwIi8+PHBhdGggZmlsbD0iIzE4MTgxOCIgZD0iTTAgMGgzMnYzMkgwek0zMiAzMmgzMnYzMkgzMnoiLz48L3N2Zz4=')",
+						}
+					}
+				}
+			}
+		</script>
+
+		<style>
+			@font-face {
+				font-family: "Minecraft AE";
+				src: url("../fonts/MinecraftAE.ttf");
+			}
+
+			* {
+				font-family: "Minecraft AE";
+			}
+
+			/* 全局基础样式 */
+			[v-cloak] {
+				display: none;
+			}
+
+			body {
+				background-color: #121212;
+				color: #E0E0E0;
+				overflow-x: hidden;
+			}
+
+			/* 滚动条美化 */
+			::-webkit-scrollbar {
+				width: 10px;
+				background: #121212;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: #555;
+				border: 2px solid #121212;
+			}
+
+			::-webkit-scrollbar-thumb:hover {
+				background: #777;
+			}
+
+			/* -----------------------------------------------------------
+           MC 风格核心组件
+        ----------------------------------------------------------- */
+
+			/* 1. 经典 MC 按钮 */
+			.btn-mc {
+				position: relative;
+				font-weight: 700;
+				text-transform: uppercase;
+				color: #ffffff;
+				text-shadow: 2px 2px 0px #000000;
+				border: 2px solid #000000;
+				cursor: pointer;
+				transition: none;
+				/* MC不需要平滑过渡 */
+				user-select: none;
+
+				/* 立体光照效果 */
+				box-shadow:
+					inset -4px -4px 0px 0px rgba(0, 0, 0, 0.5),
+					inset 4px 4px 0px 0px rgba(255, 255, 255, 0.2),
+					0px 4px 0px 0px rgba(0, 0, 0, 0.5);
+				/* 外部阴影模拟厚度 */
+			}
+
+			.btn-mc:active {
+				box-shadow:
+					inset 4px 4px 0px 0px rgba(0, 0, 0, 0.5),
+					0px 0px 0px 0px rgba(0, 0, 0, 0);
+				transform: translateY(4px);
+			}
+
+			/* 按钮变种：绿色 (主按钮) */
+			.btn-mc-green {
+				background-color: #3C8527;
+			}
+
+			.btn-mc-green:hover {
+				background-color: #4CA832;
+			}
+
+			/* 按钮变种：灰色 (次要按钮) */
+			.btn-mc-gray {
+				background-color: #4A4A4A;
+			}
+
+			.btn-mc-gray:hover {
+				background-color: #5A5A5A;
+			}
+
+			/* 2. MC 风格面板 (Panel) */
+			.mc-panel {
+				background-color: #C6C6C6;
+				/* 物品栏灰 */
+				border: 4px solid #000000;
+				position: relative;
+				box-shadow:
+					inset 4px 4px 0px 0px #FFFFFF,
+					inset -4px -4px 0px 0px #555555;
+			}
+
+			.mc-panel-dark {
+				background-color: #2C2C2C;
+				border: 4px solid #000000;
+				box-shadow:
+					inset 4px 4px 0px 0px #4A4A4A,
+					inset -4px -4px 0px 0px #111111;
+			}
+
+			/* 3. 图片容器 (Image Holder) */
+			/* 按照要求：用户后期替换图片，此处设置好位置和边框 */
+			.mc-image-frame {
+				background-color: #000;
+				border: 4px solid #222;
+				padding: 8px;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+				transition: transform 0.3s ease;
+			}
+
+			.mc-image-frame:hover {
+				transform: scale(1.02);
+				border-color: #4ade80;
+				/* 悬停变绿 */
+			}
+
+			.mc-image-frame img {
+				width: 100%;
+				height: auto;
+				display: block;
+				image-rendering: pixelated;
+				/* 如果是像素图会更清晰 */
+			}
+
+			/* 4. 标题装饰线 */
+			.mc-divider {
+				height: 4px;
+				background-color: #333;
+				border-bottom: 2px solid #555;
+				margin: 2rem 0;
+				position: relative;
+			}
+
+			.mc-divider::after {
+				content: '';
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				width: 40px;
+				height: 12px;
+				background-color: #3C8527;
+				border: 2px solid #000;
+			}
+
+			/* -----------------------------------------------------------
+           动画效果
+        ----------------------------------------------------------- */
+
+			/* Splash Text 动画 (闪烁+缩放) */
+			@keyframes splash-anim {
+				0% {
+					transform: scale(1) rotate(-20deg);
+				}
+
+				50% {
+					transform: scale(1.05) rotate(-20deg);
+				}
+
+				100% {
+					transform: scale(1) rotate(-20deg);
+				}
+			}
+
+			.splash-text {
+				animation: splash-anim 0.6s infinite alternate;
+				color: #FFFF55;
+				text-shadow: 2px 2px 0px #3F3F00;
+				/* font-family: 'Press Start 2P', cursive; */
+				position: absolute;
+				z-index: 20;
+				white-space: nowrap;
+				pointer-events: none;
+			}
+
+			/* 浮动动画 */
+			@keyframes float-y {
+
+				0%,
+				100% {
+					transform: translateY(0);
+				}
+
+				50% {
+					transform: translateY(-10px);
+				}
+			}
+
+			.animate-float {
+				animation: float-y 4s ease-in-out infinite;
+			}
+		</style>
+	</head>
+	<body class="font-sans antialiased selection:bg-mc-green selection:text-white">
+
+		<div id="app" v-cloak>
+
+			<!-- === 1. 首屏页 === -->
+			<header
+				class="relative w-full h-screen min-h-[700px] flex flex-col items-center justify-center bg-bedrock-pattern overflow-hidden">
+
+				<!-- 背景暗化与装饰 -->
+				<div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-mc-bg z-0"></div>
+
+				<!-- 装饰性方块粒子 (Vue 渲染) -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-20">
+					<div v-for="n in 10" :key="n"
+						class="absolute w-8 h-8 bg-white/10 border border-white/20 animate-float" :style="{ 
+                        left: Math.random() * 100 + '%', 
+                        top: Math.random() * 100 + '%', 
+                        animationDelay: Math.random() * 5 + 's',
+                        transform: `scale(${0.5 + Math.random()})` 
+                     }">
+					</div>
+				</div>
+
+				<!-- 主内容容器 -->
+				<div class="relative z-10 flex flex-col items-center text-center space-y-8 px-4">
+					<!-- 1.1 版本号 -->
+					<div
+						class="inline-block px-4 py-1 mb-4 md:mb-2 bg-black/60 border-2 border-mc-green transform cursor-pointer">
+						<span class="font-pixel text-xs md:text-sm">
+							VERSION 1.32
+						</span>
+					</div>
+					<!-- 1.2 名称 & Splash Text -->
+					<div class="relative mt-4 mb-8">
+						<!-- 主标题 -->
+						<h1
+							class="text-4xl md:text-8xl pb-10 md:pd-5 font-black text-white tracking-tighter drop-shadow-[0_10px_0_rgba(0,0,0,1)] uppercase">
+							<span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
+								MC指令快捷工具
+							</span>
+						</h1>
+						<!-- 1.3 动态 Splash Text -->
+						<div
+							class="splash-text text-xxxs md:text-base right-[-15%] top-[45%] md:right-[-10%] md:top-[65%]">
+							{{ currentSplash }}
+						</div>
+					</div>
+					<!-- 1.4 下载按钮 -->
+					<div class="flex flex-col md:flex-row gap-6 mt-8">
+						<button
+							class="btn-mc btn-mc-green px-10 py-5 text-base md:text-xl flex items-center gap-3 group">
+							<i class="ri-download-line"></i>
+							立即下载
+						</button>
+					</div>
+					<p class="text-gray-500 text-sm mt-4">适用于 Android 5.0+</p>
+				</div>
+
+				<!-- 底部过渡 -->
+				<div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-mc-bg to-transparent z-10"></div>
+			</header>
+
+
+			<!-- === 2. 卖点页 === -->
+			<main class="w-full bg-mc-bg relative z-20">
+
+				<!-- 2.1 核心一句话卖点 (Hero 补充) -->
+				<section class="py-20 px-6 text-center max-w-4xl mx-auto border-b border-white/5">
+					<h2 class="text-2xl md:text-4xl font-bold text-white mb-6 leading-relaxed">
+						为<span class="text-mc-green mx-2">Minecraft</span>玩家而生的指令生成器
+					</h2>
+					<h2 class="text-2xl md:text-4xl font-bold text-white mb-6 leading-relaxed">让复杂指令一键完成</h2>
+					<p class="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto">
+						无需记忆语法，不再手敲坐标，专注创造本身。
+					</p>
+				</section>
+
+
+				<!-- 2.2 产品核心卖点 (高效生成) - 图右文左 (大图展示) -->
+				<!-- 这里开始使用 Z 型布局交替 -->
+				<section class="py-24 border-b border-white/5 bg-[#161616]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 文 -->
+						<div class="order-2 lg:order-1">
+							<div class="mb-4 flex items-center gap-2">
+								<div class="w-8 h-8 bg-mc-green border-2 border-black flex items-center justify-center">
+									<i class="ri-flashlight-fill text-white"></i>
+								</div>
+								<h3 class="text-mc-green font-pixel text-sm">EFFICIENCY</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								高效生成 Minecraft 常用指令
+							</h2>
+							<ul class="space-y-4 text-gray-300 text-lg">
+								<li class="flex items-start gap-3">
+									<i class="ri-checkbox-fill text-mc-green mt-1"></i>
+									<span>覆盖 <strong class="text-white">Fill / TP / Clone / Locate</strong> 等高频场景</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-checkbox-fill text-mc-green mt-1"></i>
+									<span>所有指令 <strong class="text-white">实时预览，一键复制</strong>，即用即走</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-checkbox-fill text-mc-green mt-1"></i>
+									<span>避免手动输入出错，大幅提升操作效率</span>
+								</li>
+							</ul>
+						</div>
+
+						<!-- 图 (用户自定义) -->
+						<div class="order-1 lg:order-2 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-[4/3] relative group">
+								<!-- 占位图：用户替换 src -->
+								<img src="../images/mctools/001.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.3 可视化坐标编辑 - 图左文右 -->
+				<section class="py-24 border-b border-white/5 bg-[#121212]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 图 -->
+						<div class="order-1 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-[4/3] relative">
+								<img src="../images/mctools/002.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+						<!-- 文 -->
+						<div class="order-2">
+							<div class="mb-4 flex items-center gap-2">
+								<div class="w-8 h-8 bg-mc-gold border-2 border-black flex items-center justify-center">
+									<i class="ri-map-pin-range-fill text-white"></i>
+								</div>
+								<h3 class="text-mc-gold font-pixel text-sm">COORDINATES</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								可视化坐标编辑，告别心算
+							</h2>
+							<ul class="space-y-4 text-gray-300 text-lg">
+								<li class="flex items-start gap-3">
+									<i class="ri-compass-3-fill text-mc-gold mt-1"></i>
+									<span><strong class="text-white">起始 / 结束坐标</strong> 独立调节面板</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-compass-3-fill text-mc-gold mt-1"></i>
+									<span>支持 坐标偏移、一键应用</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-compass-3-fill text-mc-gold mt-1"></i>
+									<span>X / Y / Z 轴可单独开启 <strong class="text-white">起止同步</strong></span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-compass-3-fill text-mc-gold mt-1"></i>
+									<span>支持 <strong class="text-white">以玩家为中心</strong>（~ 坐标）</span>
+								</li>
+							</ul>
+							<div class="mt-6 p-4 bg-mc-surface border-l-4 border-mc-gold text-sm text-gray-400">
+								特别适合大型建筑、批量填充、地图制作
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.4 Fill 指令智能计算 - 图右文左 -->
+				<section class="py-24 border-b border-white/5 bg-[#161616]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 文 -->
+						<div class="order-2 lg:order-1">
+							<div class="mb-4 flex items-center gap-2">
+								<div class="w-8 h-8 bg-mc-red border-2 border-black flex items-center justify-center">
+									<i class="ri-calculator-fill text-white"></i>
+								</div>
+								<h3 class="text-mc-red font-pixel text-sm">CALCULATOR</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								Fill 指令智能计算
+							</h2>
+							<p class="text-lg text-gray-400 mb-6">
+								不用再担心填充范围过大导致游戏崩溃。
+							</p>
+							<ul class="space-y-4 text-gray-300 text-lg">
+								<li class="flex items-start gap-3">
+									<i class="ri-spam-3-fill text-mc-red mt-1"></i>
+									<span>自动计算 <strong class="text-white">填充区域方块总数</strong></span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-spam-3-fill text-mc-red mt-1"></i>
+									<span>实时更新，避免误填、炸图</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-spam-3-fill text-mc-red mt-1"></i>
+									<span>精确控制范围，适合红石、建筑党、地图作者</span>
+								</li>
+							</ul>
+						</div>
+
+						<!-- 图 -->
+						<div class="order-1 lg:order-2 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-[4/3] relative">
+								<img src="../images/mctools/003.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.5 TP 坐标收藏系统 - 图左文右 -->
+				<section class="py-24 border-b border-white/5 bg-[#121212]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 图 -->
+						<div class="order-1 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-[4/3] relative">
+								<img src="../images/mctools/004.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+						<!-- 文 -->
+						<div class="order-2">
+							<div class="mb-4 flex items-center gap-2">
+								<div
+									class="w-8 h-8 bg-mc-diamond border-2 border-black flex items-center justify-center">
+									<i class="ri-star-fill text-black"></i>
+								</div>
+								<h3 class="text-mc-diamond font-pixel text-sm">FAVORITES</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								TP 坐标收藏系统
+							</h2>
+							<ul class="space-y-4 text-gray-300 text-lg">
+								<li class="flex items-start gap-3">
+									<i class="ri-bookmark-3-fill text-mc-diamond mt-1"></i>
+									<span>常用坐标 <strong class="text-white">一键收藏</strong></span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-bookmark-3-fill text-mc-diamond mt-1"></i>
+									<span>点击即复制，随时传送</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-bookmark-3-fill text-mc-diamond mt-1"></i>
+									<span><strong class="text-white">本地保存</strong>，无需登录、无需联网</span>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.6 内置常用指令库 - 图右文左 -->
+				<section class="py-24 border-b border-white/5 bg-[#161616]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 文 -->
+						<div class="order-2 lg:order-1">
+							<div class="mb-4 flex items-center gap-2">
+								<div
+									class="w-8 h-8 bg-purple-600 border-2 border-black flex items-center justify-center">
+									<i class="ri-book-read-fill text-white"></i>
+								</div>
+								<h3 class="text-purple-400 font-pixel text-sm">LIBRARY</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								内置常用指令库
+							</h2>
+							<div class="grid grid-cols-2 gap-4 mb-6">
+								<div
+									class="p-3 bg-mc-surface border border-black text-sm text-gray-300 flex items-center gap-2">
+									<i class="ri-delete-bin-line"></i> 清除掉落物
+								</div>
+								<div
+									class="p-3 bg-mc-surface border border-black text-sm text-gray-300 flex items-center gap-2">
+									<i class="ri-sun-line"></i> 天气控制
+								</div>
+								<div
+									class="p-3 bg-mc-surface border border-black text-sm text-gray-300 flex items-center gap-2">
+									<i class="ri-time-line"></i> 时间切换
+								</div>
+								<div
+									class="p-3 bg-mc-surface border border-black text-sm text-gray-300 flex items-center gap-2">
+									<i class="ri-gamepad-line"></i> 模式 & 难度
+								</div>
+							</div>
+							<p class="text-gray-400 italic">
+								“新手不查 Wiki，老玩家不浪费时间。”
+							</p>
+						</div>
+
+						<!-- 图 -->
+						<div class="order-1 lg:order-2 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-[4/3] relative">
+								<img src="../images/mctools/005.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.7 圆形 / 结构辅助工具 - 图左文右 -->
+				<section class="py-24 border-b border-white/5 bg-[#121212]">
+					<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+						<!-- 图 -->
+						<div class="order-1 w-full flex justify-center">
+							<div class="mc-image-frame w-full max-w-md aspect-square relative">
+								<img src="../images/mctools/006.png" class="w-full h-full object-cover">
+							</div>
+						</div>
+
+						<!-- 文 -->
+						<div class="order-2">
+							<div class="mb-4 flex items-center gap-2">
+								<div class="w-8 h-8 bg-blue-500 border-2 border-black flex items-center justify-center">
+									<i class="ri-shape-fill text-white"></i>
+								</div>
+								<h3 class="text-blue-400 font-pixel text-sm">ADVANCED</h3>
+							</div>
+							<h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+								圆形 / 结构辅助工具
+							</h2>
+							<p class="text-lg text-gray-400 mb-6">
+								进阶玩法，为创作型玩家准备的效率工具。
+							</p>
+							<ul class="space-y-4 text-gray-300 text-lg">
+								<li class="flex items-start gap-3">
+									<i class="ri-donut-chart-fill text-blue-500 mt-1"></i>
+									<span><strong class="text-white">圆形生成器</strong>，支持尺寸、比例锁定、缩放</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<i class="ri-building-4-fill text-blue-500 mt-1"></i>
+									<span>辅助生成复杂结构指令</span>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.8 & 2.9 隐私与设备优化 (并排卡片) -->
+				<section class="py-20 px-6 bg-dirt-pattern">
+					<div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+
+						<!-- 隐私卡片 -->
+						<div
+							class="mc-panel-dark p-8 flex flex-col items-start hover:-translate-y-2 transition-transform duration-300">
+							<div
+								class="w-12 h-12 mb-6 bg-black border-2 border-white flex items-center justify-center rounded-none">
+								<i class="ri-shield-keyhole-fill text-2xl text-white"></i>
+							</div>
+							<h3 class="text-2xl font-bold text-white mb-4">重视隐私，纯本地运行</h3>
+							<ul class="space-y-2 text-gray-400">
+								<li>• 不收集账号信息</li>
+								<li>• 收藏与配置全部 <strong>本地存储</strong></li>
+								<li>• 无需登录，不上传游戏数据</li>
+							</ul>
+						</div>
+
+						<!-- 安卓优化卡片 -->
+						<div
+							class="mc-panel-dark p-8 flex flex-col items-start hover:-translate-y-2 transition-transform duration-300">
+							<div
+								class="w-12 h-12 mb-6 bg-black border-2 border-mc-green flex items-center justify-center rounded-none">
+								<i class="ri-android-fill text-2xl text-mc-green"></i>
+							</div>
+							<h3 class="text-2xl font-bold text-white mb-4">专为安卓设备优化</h3>
+							<ul class="space-y-2 text-gray-400">
+								<li>• 适配手机和平板</li>
+								<li>• 低版本 Android 也可运行</li>
+								<li>• 操作简单，单手即可完成</li>
+							</ul>
+						</div>
+
+					</div>
+				</section>
+
+
+				<!-- 2.10 使用场景卖点 (竖五栏) -->
+				<section class="py-24 bg-[#1a1a1a] border-t border-white/5">
+					<div class="max-w-7xl mx-auto px-6">
+						<h2 class="text-center text-3xl font-bold text-white mb-16">WHO IS THIS FOR?</h2>
+
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+
+							<!-- 栏 1 -->
+							<div class="flex flex-col items-center text-center group">
+								<div
+									class="w-16 h-16 bg-mc-surface border-4 border-black mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+									<img src="../images/mctools/icon01.png" alt="" />
+								</div>
+								<h4 class="text-lg font-bold text-white mb-2">建筑党</h4>
+								<p class="text-sm text-gray-500">快速 Fill <br>大体量结构</p>
+							</div>
+
+							<!-- 栏 2 -->
+							<div class="flex flex-col items-center text-center group">
+								<div
+									class="w-16 h-16 bg-mc-surface border-4 border-black mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+									<img src="../images/mctools/icon02.png" alt="" />
+								</div>
+								<h4 class="text-lg font-bold text-white mb-2">红石玩家</h4>
+								<p class="text-sm text-gray-500">精确控制区域<br>与复制</p>
+							</div>
+
+							<!-- 栏 3 -->
+							<div class="flex flex-col items-center text-center group">
+								<div
+									class="w-16 h-16 bg-mc-surface border-4 border-black mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+									<img src="../images/mctools/icon03.png" alt="" />
+								</div>
+								<h4 class="text-lg font-bold text-white mb-2">地图作者</h4>
+								<p class="text-sm text-gray-500">Locate / Clone<br>批量编辑</p>
+							</div>
+
+							<!-- 栏 4 -->
+							<div class="flex flex-col items-center text-center group">
+								<div
+									class="w-16 h-16 bg-mc-surface border-4 border-black mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+									<img src="../images/mctools/icon04.png" alt="" />
+								</div>
+								<h4 class="text-lg font-bold text-white mb-2">生存 & 创造</h4>
+								<p class="text-sm text-gray-500">日常指令<br>随用随走</p>
+							</div>
+
+							<!-- 栏 5 -->
+							<div class="flex flex-col items-center text-center group">
+								<div
+									class="w-16 h-16 bg-mc-surface border-4 border-black mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
+									<img src="../images/mctools/icon05.png" alt="" />
+								</div>
+								<h4 class="text-lg font-bold text-white mb-2">学习者</h4>
+								<p class="text-sm text-gray-500">边用边学<br>不再死记语法</p>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+			</main>
+
+
+			<!-- ==============================================================
+             3. 软著 (Soft Copyright)
+        ============================================================== -->
+			<section class="py-16 md:py-36 bg-black border-t border-gray-900">
+				<div class="max-w-2xl mx-auto px-6 text-center">
+					<div class="mc-panel-dark p-6 inline-block">
+						<div class="flex items-center gap-4 justify-center">
+							<div class="w-9 h-9">
+								<img src="../images/mctools/award.png" alt="" />
+							</div>
+							<div class="text-left">
+								<div class="text-lg uppercase">软著登记号：</div>
+								<div class="text-lg text-white">2023SR0925952</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<!-- ==============================================================
+             4. 结尾 CTA (Call to Action)
+        ============================================================== -->
+			<footer class="relative py-32 text-center overflow-hidden">
+				<!-- 背景 -->
+				<div class="absolute inset-0 bg-mc-green-light z-0">
+					<div class="absolute inset-0 bg-black/40"></div>
+					<!-- 网格纹理 -->
+					<div class="absolute inset-0"
+						style="background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 40px 40px;">
+					</div>
+				</div>
+
+				<div class="relative flex items-center flex-col z-10 px-6 max-w-4xl mx-auto">
+					<h2 class="text-3xl md:text-5xl font-black text-white mb-8 drop-shadow-md">
+						让指令成为工具，而不是负担。
+					</h2>
+					<p class="text-xl text-gray-200 mb-12">
+						现在就用 MC 指令快捷工具，专注你的创造世界。
+					</p>
+					<div class="flex flex-col md:flex-row gap-6 mt-8">
+						<button
+							class="btn-mc btn-mc-green px-10 py-5 text-base md:text-xl flex items-center gap-3 group">
+							<i class="ri-download-line"></i>
+							立即下载
+						</button>
+					</div>
+				</div>
+			</footer>
+
+		</div>
+
+		<!-- Vue 逻辑 -->
+		<script>
+			const {
+				createApp,
+				ref,
+				onMounted
+			} = Vue;
+
+			createApp({
+				setup() {
+					// 1. 内置 Splash Text 数组
+					const splashTexts = [
+						"No mods needed!",
+						"Creeper? Aw man!",
+						"100% Organic!",
+						"Also try Terraria!",
+						"Built for Builders!",
+						"/kill @e[type=bug]",
+						"Redstone Ready!",
+						"Diamonds inside!",
+						"Keep Inventory: true"
+					];
+
+					const currentSplash = ref("");
+
+					onMounted(() => {
+						// 每次加载随机选取一个
+						const randomIndex = Math.floor(Math.random() * splashTexts.length);
+						currentSplash.value = splashTexts[randomIndex];
+					});
+
+					return {
+						currentSplash
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>

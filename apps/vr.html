@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+		<title>Spatial Viewer</title>
+
+		<!-- Tailwind CSS -->
+		<script src="../js/tailwindcss.3.4.17.js"></script>
+		<!-- Vue.js 3 -->
+		<script src="../js/vue.global.js"></script>
+		<!-- ✅ A-Frame -->
+		<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+		<style>
+			/* ===== Apple-TV-like Control Styles (Top: progress+volume, Bottom: transport) ===== */
+
+			.atvp {
+				position: relative;
+				width: 100%;
+				height: auto;
+				/* 适配视频原有高度 */
+				overflow: hidden;
+				user-select: none;
+				-webkit-user-select: none;
+				border-radius: 1rem;
+				background-color: #000;
+			}
+
+			/* 如果你要完全玻璃感（用 vision-glass），把上面 background-color 改 transparent */
+
+			/* 视频本体（如果你实际不展示 video，这段也无害） */
+			.atvp video {
+				display: block;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+
+			/* 闲置状态：隐藏鼠标 */
+			.atvp.is-idle {
+				cursor: none;
+			}
+
+			.atvp__overlay {
+				inset: 0;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				pointer-events: none;
+				z-index: 10;
+			}
+
+			.atvp__chrome {
+				inset: 0;
+				opacity: 1;
+				transition: opacity .35s ease;
+				pointer-events: none;
+				display: flex;
+				flex-direction: column;
+			}
+
+			/* 闲置时隐藏 UI */
+			.atvp.is-idle .atvp__chrome,
+			.atvp.is-idle .atvp__scrim {
+				opacity: 1;
+			}
+
+			/* ===== 顶部控制栏：进度条 + 音量 + 全屏（你要的“上方”） ===== */
+			.atvp__top {
+				padding: 10px 22px 0 22px;
+				box-sizing: border-box;
+
+				display: flex;
+				align-items: center;
+				gap: 12px;
+
+				pointer-events: auto;
+			}
+
+			.atvp__time {
+				font-size: 13px;
+				color: #eee;
+				font-weight: 500;
+				font-variant-numeric: tabular-nums;
+				white-space: nowrap;
+			}
+
+			/* 进度条 */
+			.atvp__progress-container {
+				flex: 1;
+				height: 5px;
+				background: rgba(255, 255, 255, 0.30);
+				border-radius: 3px;
+				cursor: pointer;
+				position: relative;
+				transition: height 0.2s;
+			}
+
+			.atvp__progress-container:hover {
+				height: 8px;
+			}
+
+			.atvp__progress-fill {
+				height: 100%;
+				background: #fff;
+				width: 0%;
+				border-radius: 3px;
+				position: relative;
+			}
+
+			/* 进度条圆点 (Hover时显示) */
+			.atvp__progress-fill::after {
+				content: '';
+				position: absolute;
+				right: -6px;
+				top: 50%;
+				transform: translateY(-50%) scale(0);
+				width: 14px;
+				height: 14px;
+				background: #fff;
+				border-radius: 50%;
+				transition: transform 0.2s;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			}
+
+			.atvp__progress-container:hover .atvp__progress-fill::after {
+				transform: translateY(-50%) scale(1);
+			}
+
+			/* 右侧区域 (音量 + 全屏) */
+			.atvp__right-actions {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				margin-left: 6px;
+			}
+
+			.atvp__volume-box {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.atvp__icon-sm {
+				width: 20px;
+				height: 20px;
+				fill: #fff;
+			}
+
+			.atvp__vol-slider {
+				flex: 1;
+				width: 80px;
+				height: 4px;
+				-webkit-appearance: none;
+				background: rgba(255, 255, 255, 0.30);
+				border-radius: 2px;
+				outline: none;
+				cursor: pointer;
+			}
+
+			.atvp__vol-slider::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				width: 10px;
+				height: 10px;
+				background: #fff;
+				border-radius: 50%;
+			}
+
+			/* 全屏按钮 & 音量按钮（复用） */
+			.atvp__fs-btn {
+				background: none;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				opacity: 0.9;
+				transition: opacity 0.2s;
+			}
+
+			.atvp__fs-btn:hover {
+				opacity: 1;
+			}
+
+			/* ===== 底部中间控制区：快退 / 播放 / 快进（你要的“下方”） ===== */
+			.atvp__center {
+				height: 100%;
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 40px;
+				pointer-events: auto;
+			}
+
+			.atvp__center--bottom {
+				height: auto;
+				padding-top: 14px;
+				padding-bottom: 10px;
+			}
+
+			.atvp__btn {
+				appearance: none;
+				border: none;
+				outline: none;
+				cursor: pointer;
+
+				background: rgba(20, 20, 20, 0.40);
+				color: #fff;
+				border-radius: 50%;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				backdrop-filter: blur(40px);
+				-webkit-backdrop-filter: blur(40px);
+
+				transition: transform 0.2s ease, background 0.2s;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			}
+
+			.atvp__btn:hover {
+				transform: scale(1.1);
+				background: rgba(40, 40, 40, 0.60);
+			}
+
+			.atvp__btn:active {
+				transform: scale(0.95);
+			}
+
+			.atvp__btn svg {
+				fill: currentColor;
+				display: block;
+			}
+
+			/* 侧边按钮 */
+			.atvp__btn--side {
+				width: 50px;
+				height: 50px;
+			}
+
+			.atvp__btn--side svg {
+				width: 22px;
+				height: 22px;
+			}
+
+			/* 主按钮 */
+			.atvp__btn--main {
+				width: 60px;
+				height: 60px;
+			}
+
+			.atvp__btn--main svg {
+				width: 24px;
+				height: 24px;
+			}
+
+			/* ===== 移动端适配 ===== */
+			@media (max-width: 600px) {
+				.atvp__center {
+					gap: 20px;
+				}
+
+				.atvp__btn--main {
+					width: 60px;
+					height: 60px;
+				}
+
+				.atvp__btn--side {
+					width: 40px;
+					height: 40px;
+				}
+
+				.atvp__btn--main svg {
+					width: 26px;
+					height: 26px;
+				}
+
+				.atvp__btn--side svg {
+					width: 18px;
+					height: 18px;
+				}
+
+				.atvp__top {
+					padding: 14px 14px 0 14px;
+				}
+
+				.atvp__vol-slider {
+					width: 56px;
+				}
+
+				.atvp__time {
+					font-size: 11px;
+				}
+			}
+
+			/* 彻底干掉 Safari/Chrome 的原生 controls 残影（如果 video 真显示的话） */
+			.atvp video::-webkit-media-controls {
+				display: none !important;
+			}
+
+			.atvp video::-webkit-media-controls-enclosure {
+				display: none !important;
+			}
+
+			/* ===== 三态显示控制（修复：暂停也能调进度/音量/快进快退） ===== */
+
+			/* 默认：都可交互 */
+			.atvp__top,
+			.atvp__btn--side,
+			.atvp__btn--main {
+				pointer-events: auto;
+			}
+
+			/* 未播放：只弱化侧边按钮（但仍可用），顶部仍可调 */
+			.atvp.is-unplayed .atvp__btn--side {
+				opacity: .65;
+			}
+
+			/* 暂停：顶部和侧边都可用（只是更淡一点） */
+			.atvp.is-paused .atvp__top,
+			.atvp.is-paused .atvp__btn--side {
+				opacity: .95;
+				pointer-events: auto;
+			}
+
+			/* 播放：正常 */
+			.atvp.is-playing .atvp__top,
+			.atvp.is-playing .atvp__btn--side {
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			/* 防止 unplayed 时 scrim 让你感觉“有控件”（保留一点暗角） */
+			.atvp.is-unplayed .atvp__scrim {
+				opacity: 0.9;
+			}
+		</style>
+
+		<style>
+			:root {
+				--font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+			}
+
+			body {
+				font-family: var(--font-stack);
+				background-color: #000;
+				color: #fff;
+				overflow: hidden;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			.vision-glass {
+				background: rgba(30, 30, 32, 0.60);
+				backdrop-filter: saturate(180%) blur(40px);
+				-webkit-backdrop-filter: saturate(180%) blur(40px);
+				border: 1px solid rgba(255, 255, 255, 0.12);
+				box-shadow:
+					0 20px 50px rgba(0, 0, 0, 0.5),
+					inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+			}
+
+			.ornament {
+				transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+
+			.vision-btn {
+				transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+				position: relative;
+				overflow: hidden;
+			}
+
+			.vision-btn:hover {
+				background: rgba(255, 255, 255, 0.2);
+				transform: scale(1.05);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			}
+
+			.vision-btn:active {
+				transform: scale(0.96);
+				background: rgba(255, 255, 255, 0.25);
+			}
+
+			/* Track */
+			.progress-range::-webkit-slider-runnable-track {
+				height: 6px;
+				border-radius: 999px;
+				background: linear-gradient(to right,
+						#ffffff 0%,
+						#ffffff var(--progress),
+						rgba(255, 255, 255, 0.25) var(--progress),
+						rgba(255, 255, 255, 0.25) 100%);
+			}
+
+			/* Thumb */
+			.progress-range::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				height: 18px;
+				width: 18px;
+				border-radius: 50%;
+				background: #fff;
+				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+				margin-top: -6px;
+				transition: transform 0.2s;
+			}
+
+			.progress-range::-webkit-slider-thumb:hover {
+				transform: scale(1.2);
+			}
+
+			.fade-enter-active,
+			.fade-leave-active {
+				transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+
+			.fade-enter-from,
+			.fade-leave-to {
+				opacity: 0;
+				transform: scale(0.95);
+			}
+
+			.slide-up-enter-active,
+			.slide-up-leave-active {
+				transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+
+			.slide-up-enter-from,
+			.slide-up-leave-to {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
+			.slide-down-enter-active,
+			.slide-down-leave-active {
+				transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+
+			.slide-down-enter-from,
+			.slide-down-leave-to {
+				opacity: 0;
+				transform: translateY(-20px);
+			}
+
+			/* ✅ 让 A-Frame canvas 全屏并置底 */
+			a-scene,
+			canvas {
+				width: 100% !important;
+				height: 100% !important;
+				display: block;
+			}
+		</style>
+	</head>
+
+	<body class="bg-black">
+		<div id="app" class="relative w-full h-screen overflow-hidden select-none">
+
+			<div class="absolute inset-0 z-0">
+				<a-scene embedded renderer="colorManagement: true; physicallyCorrectLights: true;"
+					vr-mode-ui="enabled: true" device-orientation-permission-ui="enabled: true">
+					<a-assets>
+						<video id="v360" playsinline webkit-playsinline crossorigin="anonymous" loop
+							preload="auto"></video>
+						<img id="img360" crossorigin="anonymous" />
+					</a-assets>
+
+					<a-entity position="0 1.6 0">
+						<a-camera id="cam" wasd-controls-enabled="false"
+							look-controls="enabled: true; touchEnabled: true; mouseEnabled: true"></a-camera>
+					</a-entity>
+
+					<!-- 默认都隐藏，等媒体 ready 再显示 -->
+					<a-sky id="photoSphere" visible="false" rotation="0 -90 0"></a-sky>
+					<a-videosphere id="videoSphere" visible="false" rotation="0 -90 0"></a-videosphere>
+				</a-scene>
+			</div>
+
+
+			<!-- Layer 2: VisionOS UI Layer -->
+			<div class="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
+
+				<!-- STATE A: Landing -->
+				<transition name="fade">
+					<div v-if="viewState === 'landing'" class="pointer-events-auto">
+						<div
+							class="vision-glass rounded-[40px] w-[520px] max-w-[90vw] p-10 pt-16 flex flex-col items-center text-center">
+							<div class="w-20 h-20 rounded-full shadow-inner flex items-center justify-center mb-6">
+								<img src="../images/VRviewer/logo.png"
+									class="w-full h-full text-white drop-shadow-md rounded-2xl border border-white/10">
+							</div>
+
+							<h1 class="text-3xl font-semibold text-white mb-12 tracking-tight">VR 播放器</h1>
+
+							<button @click="triggerUpload"
+								class="vision-btn rounded-full bg-white text-black px-8 py-3 text-[15px] font-medium hover:bg-white/90 mb-4 w-full max-w-[200px]">
+								打开媒体文件
+							</button>
+							<p class="text-white/30 text-xs">支持常见图片与视频格式</p>
+
+							<input type="file" ref="fileInput" class="hidden" accept="image/*,video/*"
+								@change="handleFileChange">
+						</div>
+					</div>
+				</transition>
+
+				<!-- STATE B: Immersive -->
+				<transition name="slide-down">
+					<div v-if="viewState === 'immersive'" class="absolute top-6 pointer-events-auto">
+						<div
+							class="vision-glass rounded-full px-2 py-2 flex items-center gap-4 ornament hover:bg-white/10">
+							<button @click="resetView"
+								class="vision-btn w-8 h-8 rounded-full flex items-center justify-center text-white/80 bg-white/5 hover:bg-white/20"
+								title="关闭/返回">
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
+									viewBox="0 0 24 24">
+									<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+							</button>
+
+							<div class="flex flex-col">
+								<span
+									class="text-[13px] font-medium text-white/90 max-w-[160px] truncate leading-none">{{ fileName }}</span>
+								<span class="text-[10px] font-semibold text-white/50 mt-0.5 uppercase">
+									{{ (mediaType === 'video' ? '视频' : mediaType === 'image' ? '图片' : '媒体') }}360°</span>
+							</div>
+
+							<div class="w-8"></div>
+						</div>
+					</div>
+				</transition>
+
+				<!-- Video Controls (ATVP overlay controller, not wrapping the video) -->
+				<transition name="slide-up">
+					<div v-if="viewState === 'immersive' && mediaType === 'video'"
+						class="absolute bottom-10 pointer-events-auto">
+						<div class="atvp vision-glass rounded-[32px] px-6 py-4 gap-3 w-[min(90vw,600px)] ornament">
+							<div class="atvp__overlay">
+								<div class="atvp__chrome">
+
+									<div class="atvp__top">
+										<span class="atvp__time" data-el="current">0:00</span>
+										<div class="atvp__progress-container" data-el="progress">
+											<div class="atvp__progress-fill" data-el="fill"></div>
+										</div>
+										<span class="atvp__time" data-el="duration">0:00</span>
+										<div class="atvp__right-actions">
+											<div class="atvp__volume-box">
+												<button class="atvp__fs-btn" data-act="mute" aria-label="toggle mute">
+													<div class="atvp__icon-sm" data-el="volIcon"></div>
+												</button>
+												<input type="range" min="0" max="1" step="0.01" class="atvp__vol-slider"
+													data-el="vol">
+											</div>
+										</div>
+									</div>
+
+									<div class="atvp__center atvp__center--bottom">
+										<button class="atvp__btn atvp__btn--side" data-act="rewind" title="-15s">
+											<div class="atvp__sideIcon" data-el="rewIcon"></div>
+										</button>
+
+										<button class="atvp__btn atvp__btn--main" data-act="toggle" title="Play/Pause">
+											<!-- icon injected by JS -->
+										</button>
+
+										<button class="atvp__btn atvp__btn--side" data-act="forward" title="+15s">
+											<div class="atvp__sideIcon" data-el="fwdIcon"></div>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</transition>
+
+
+				<!-- Image Hint -->
+				<transition name="fade">
+					<div v-if="viewState === 'immersive' && mediaType === 'image'"
+						class="absolute bottom-10 px-4 py-2 vision-glass rounded-full pointer-events-auto">
+						<p class="text-xs text-white/60 font-medium">拖动画面浏览</p>
+					</div>
+				</transition>
+
+			</div>
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				computed
+			} = Vue;
+
+			createApp({
+				setup() {
+					const viewState = ref('landing'); // 'landing' | 'immersive'
+					const mediaType = ref('image'); // 'image' | 'video'
+					const fileName = ref('');
+					const mediaSrc = ref('');
+					const isPlaying = ref(false);
+					const progress = ref(0);
+
+					const fileInput = ref(null);
+					const isScrubbing = ref(false);
+
+					// ✅ A-Frame assets DOM
+					const getVideoEl = () => document.getElementById('v360');
+					const getImgEl = () => document.getElementById('img360');
+
+					// Time labels (optional)
+					const curTimeLabel = ref('0:00');
+					const durLeftLabel = ref('-0:00');
+
+					const fmt = (s) => {
+						s = Math.max(0, Math.floor(s || 0));
+						const m = Math.floor(s / 60);
+						const r = s % 60;
+						return `${m}:${String(r).padStart(2, '0')}`;
+					};
+
+					const updateTimeUI = () => {
+						const v = getVideoEl();
+						if (!v || !isFinite(v.duration) || v.duration <= 0) return;
+						curTimeLabel.value = fmt(v.currentTime);
+						durLeftLabel.value = '-' + fmt(Math.max(0, v.duration - v.currentTime));
+						progress.value = Math.round((v.currentTime / v.duration) * 100);
+
+						const range = document.querySelector('.progress-range');
+						if (range) {
+							range.style.setProperty('--progress', `${progress.value}%`);
+						}
+					};
+
+					const bindVideoEvents = () => {
+						const v = getVideoEl();
+						if (!v) return;
+
+						// 防止重复绑定
+						if (v.__boundForUI) return;
+						v.__boundForUI = true;
+
+						v.addEventListener('loadedmetadata', updateTimeUI);
+						v.addEventListener('timeupdate', updateTimeUI);
+						v.addEventListener('durationchange', updateTimeUI);
+						v.addEventListener('seeked', updateTimeUI);
+
+						v.addEventListener('pause', () => {
+							isPlaying.value = false;
+						});
+						v.addEventListener('play', () => {
+							isPlaying.value = true;
+						});
+
+						// 兜底：有些浏览器 canplay 才拿得到 duration
+						v.addEventListener('canplay', updateTimeUI);
+					};
+
+					const atvp = {
+						root: null,
+						ui: {},
+						idleTimer: null,
+						isDragging: false,
+						hasEverPlayed: false,
+						lastVolume: 0.5,
+						IDLE_MS: 1000,
+						SKIP_SEC: 10,
+					};
+
+					// 你给的那套 SVG（只保留用得到的：play/pause/volume icons/fullscreen）
+					const ATVP_ICONS = {
+						play: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="96.69 30.35 93.5 97.51" fill="#ffffff"><path d="M113.428 127.863c2.588 0 5.03-.733 8.448-2.686l60.302-35.01c4.883-2.88 8.008-6.103 8.008-11.084 0-4.98-3.125-8.203-8.008-11.035l-60.302-35.01c-3.418-2.002-5.86-2.685-8.448-2.685-5.566 0-10.742 4.248-10.742 11.67v74.17c0 7.422 5.176 11.67 10.742 11.67Z"/></svg>`,
+						pause: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="104.23 34.94 74.91 88.23" fill="#ffffff"><path d="M113.411 123.175h12.94c6.103 0 9.13-3.027 9.13-9.13V44.073c0-5.86-3.027-8.936-9.13-9.131h-12.94c-6.103 0-9.18 3.027-9.18 9.13v69.971c-.146 6.104 2.881 9.131 9.18 9.131Zm43.604 0h12.939c6.104 0 9.18-3.027 9.18-9.13V44.073c0-5.86-3.076-9.131-9.18-9.131h-12.94c-6.103 0-9.18 3.027-9.18 9.13v69.971c0 6.104 2.93 9.131 9.18 9.131Z"/></svg>`,
+						back10: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="84.21 19.76 99.61 109.08" fill="#ffffff"><path d="M84.205 79.035c0 27.246 22.608 49.804 49.805 49.804 27.246 0 49.805-22.558 49.805-49.804 0-24.024-17.53-44.385-40.381-48.877v-6.934c0-3.467-2.393-4.395-5.03-2.49l-15.576 10.888c-2.246 1.563-2.295 3.907 0 5.518l15.528 10.938c2.685 1.953 5.078 1.025 5.078-2.49v-6.934c18.457 4.199 32.031 20.605 32.031 40.38 0 23.047-18.408 41.504-41.455 41.504-23.047 0-41.553-18.457-41.504-41.503.049-13.868 6.787-26.124 17.188-33.545 2.002-1.514 2.636-3.809 1.416-5.86-1.221-2.002-3.907-2.539-6.055-.879-12.549 9.131-20.85 23.877-20.85 40.284Zm61.866 20.556c8.105 0 13.427-7.666 13.427-19.385 0-11.816-5.322-19.58-13.427-19.58-8.106 0-13.428 7.764-13.428 19.58 0 11.72 5.322 19.385 13.428 19.385Zm-25.44-.586c1.904 0 3.125-1.318 3.125-3.369V64.923c0-2.392-1.27-3.906-3.467-3.906-1.318 0-2.246.44-4.052 1.611l-6.739 4.541c-1.074.782-1.611 1.66-1.611 2.832 0 1.612 1.27 2.979 2.832 2.979.928 0 1.367-.195 2.344-.879l4.54-3.32v26.855c0 2.002 1.173 3.37 3.028 3.37Zm25.44-5.322c-4.297 0-7.08-5.127-7.08-13.477 0-8.496 2.734-13.671 7.08-13.671 4.345 0 7.03 5.126 7.03 13.671 0 8.35-2.734 13.477-7.03 13.477Z"/></svg>`,
+						forward10: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="84.21 19.78 99.61 109.06" fill="#ffffff"><path d="M84.205 79.035c0 27.246 22.608 49.804 49.805 49.804 27.246 0 49.805-22.558 49.805-49.804 0-16.407-8.301-31.153-20.85-40.284-2.148-1.66-4.834-1.123-6.055.88-1.22 2.05-.586 4.345 1.416 5.859 10.4 7.421 17.139 19.677 17.188 33.545.049 23.046-18.457 41.503-41.504 41.503-23.047 0-41.455-18.457-41.455-41.503 0-19.776 13.574-36.182 32.031-40.381v6.982c0 3.467 2.393 4.395 5.078 2.49L145.24 37.19c2.198-1.514 2.247-3.858 0-5.469l-15.527-10.937c-2.734-1.954-5.127-1.026-5.127 2.49v6.885c-22.851 4.492-40.38 24.853-40.38 48.877Zm61.621 20.556c8.106 0 13.428-7.666 13.428-19.385 0-11.816-5.322-19.58-13.428-19.58-8.105 0-13.427 7.764-13.427 19.58 0 11.72 5.322 19.385 13.427 19.385Zm-25.44-.586c1.905 0 3.126-1.318 3.126-3.369V64.923c0-2.392-1.27-3.906-3.467-3.906-1.318 0-2.246.44-4.053 1.611l-6.738 4.541c-1.074.782-1.611 1.66-1.611 2.832 0 1.612 1.27 2.979 2.832 2.979.928 0 1.367-.195 2.344-.879l4.54-3.32v26.855c0 2.002 1.172 3.37 3.028 3.37Zm25.44-5.322c-4.296 0-7.08-5.127-7.08-13.477 0-8.496 2.735-13.671 7.08-13.671 4.346 0 7.032 5.126 7.032 13.671 0 8.35-2.735 13.477-7.032 13.477Z"/></svg>`,
+						volumeNone: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g id="Volume"><path id="0" data-name="0" d="M2,16H5.889l5.295,4.332A.5.5,0,0,0,12,19.945V4.055a.5.5,0,0,0-.817-.387L5.889,8H2A1,1,0,0,0,1,9v6A1,1,0,0,0,2,16Z" /><path id="1" data-name="1" opacity="0.3" d="M18,12a5.989,5.989,0,0,0-2.287-4.713L14.284,8.716a4,4,0,0,1,0,6.568l1.429,1.429A5.989,5.989,0,0,0,18,12Z" /><path id="2" data-name="2" opacity="0.3" d="M23,12a10.974,10.974,0,0,1-3.738,8.262l-1.418-1.418a9,9,0,0,0,0-13.689l1.418-1.418A10.974,10.974,0,0,1,23,12Z" /></g></svg>`,
+						volumeMid: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g id="Volume"><path id="0" data-name="0" d="M2,16H5.889l5.295,4.332A.5.5,0,0,0,12,19.945V4.055a.5.5,0,0,0-.817-.387L5.889,8H2A1,1,0,0,0,1,9v6A1,1,0,0,0,2,16Z" /><path id="1" data-name="1"  d="M18,12a5.989,5.989,0,0,0-2.287-4.713L14.284,8.716a4,4,0,0,1,0,6.568l1.429,1.429A5.989,5.989,0,0,0,18,12Z" /><path id="2" data-name="2" opacity="0.3" d="M23,12a10.974,10.974,0,0,1-3.738,8.262l-1.418-1.418a9,9,0,0,0,0-13.689l1.418-1.418A10.974,10.974,0,0,1,23,12Z" /></g></svg>`,
+						volumeHigh: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g id="Volume"><path id="0" data-name="0" d="M2,16H5.889l5.295,4.332A.5.5,0,0,0,12,19.945V4.055a.5.5,0,0,0-.817-.387L5.889,8H2A1,1,0,0,0,1,9v6A1,1,0,0,0,2,16Z" /><path id="1" data-name="1" d="M18,12a5.989,5.989,0,0,0-2.287-4.713L14.284,8.716a4,4,0,0,1,0,6.568l1.429,1.429A5.989,5.989,0,0,0,18,12Z" /><path id="2" data-name="2" d="M23,12a10.974,10.974,0,0,1-3.738,8.262l-1.418-1.418a9,9,0,0,0,0-13.689l1.418-1.418A10.974,10.974,0,0,1,23,12Z" /></g></svg>`,
+						muted: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M5.88889 16.0001H2C1.44772 16.0001 1 15.5524 1 15.0001V9.00007C1 8.44778 1.44772 8.00007 2 8.00007H5.88889L11.1834 3.66821C11.3971 3.49335 11.7121 3.52485 11.887 3.73857C11.9601 3.8279 12 3.93977 12 4.05519V19.9449C12 20.2211 11.7761 20.4449 11.5 20.4449C11.3846 20.4449 11.2727 20.405 11.1834 20.3319L5.88889 16.0001ZM20.4142 12.0001L23.9497 15.5356L22.5355 16.9498L19 13.4143L15.4645 16.9498L14.0503 15.5356L17.5858 12.0001L14.0503 8.46454L15.4645 7.05032L19 10.5859L22.5355 7.05032L23.9497 8.46454L20.4142 12.0001Z"></path></svg>`,
+						fullscreen: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M8 3V5H4V9H2V3H8ZM2 21V15H4V19H8V21H2ZM22 21H16V19H20V15H22V21ZM22 9H20V5H16V3H22V9Z"></path></svg>`,
+						exitFullscreen: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M18 7H22V9H16V3H18V7ZM8 9H2V7H6V3H8V9ZM18 17V21H16V15H22V17H18ZM8 15V21H6V17H2V15H8Z"></path></svg>`,
+					};
+
+					const pickVolIcon = (v) => {
+						if (v <= 0.0001) return ATVP_ICONS.muted;
+						if (v <= 0.2) return ATVP_ICONS.volumeNone;
+						if (v <= 0.6) return ATVP_ICONS.volumeMid;
+						return ATVP_ICONS.volumeHigh;
+					};
+
+					const fmtTime = (s) => {
+						if (!s || isNaN(s)) return "0:00";
+						const m = Math.floor(s / 60);
+						const sec = Math.floor(s % 60);
+						return `${m}:${sec < 10 ? "0" : ""}${sec}`;
+					};
+
+					const wakeUI = () => {
+						if (!atvp.root) return;
+						atvp.root.classList.remove("is-idle");
+						clearTimeout(atvp.idleTimer);
+						if (atvp.root.classList.contains("is-playing")) {
+							atvp.idleTimer = setTimeout(() => {
+								if (atvp.root.classList.contains("is-playing")) atvp.root.classList.add(
+									"is-idle");
+							}, atvp.IDLE_MS);
+						}
+					};
+
+					const syncStateClass = () => {
+						const v = getVideoEl();
+						if (!v || !atvp.root) return;
+
+						const paused = v.paused;
+						const playing = !paused && !v.ended;
+						const isUnplayed = !atvp.hasEverPlayed && v.currentTime <= 0.01;
+
+						atvp.root.classList.toggle("is-unplayed", isUnplayed);
+						atvp.root.classList.toggle("is-playing", !isUnplayed && playing);
+						atvp.root.classList.toggle("is-paused", !isUnplayed && !playing);
+
+						// 主按钮 icon
+						atvp.ui.mainBtn.innerHTML = paused ? ATVP_ICONS.play : ATVP_ICONS.pause;
+
+						clearTimeout(atvp.idleTimer);
+						atvp.root.classList.remove("is-idle");
+						if (!isUnplayed && playing) wakeUI();
+					};
+
+					const renderProgress = () => {
+						const v = getVideoEl();
+						if (!v || !atvp.ui.fill) return;
+						if (!v.duration || isNaN(v.duration)) return;
+
+						const p = (v.currentTime / v.duration) * 100;
+						atvp.ui.fill.style.width = `${p}%`;
+						atvp.ui.current.innerText = fmtTime(v.currentTime);
+						atvp.ui.duration.innerText = fmtTime(v.duration);
+					};
+
+					const toggleMute = () => {
+						const v = getVideoEl();
+						if (!v) return;
+						const cur = Number(v.volume || 0);
+
+						if (cur > 0.0001) {
+							atvp.lastVolume = cur;
+							v.volume = 0;
+						} else {
+							v.volume = Math.max(0.05, Number(atvp.lastVolume) || 0.5);
+						}
+						updateVolumeUI(true);
+						wakeUI();
+					};
+
+					const setRangeFill = (el, value01) => {
+						const p = Math.max(0, Math.min(1, value01));
+						const pct = (p * 100).toFixed(2);
+						el.style.background = `linear-gradient(to right,
+					    rgba(255,255,255,1) 0%,
+					    rgba(255,255,255,1) ${pct}%,
+					    rgba(255,255,255,0.3) ${pct}%,
+					    rgba(255,255,255,0.3) 100%)`;
+					};
+
+					const updateVolumeUI = (force = false) => {
+						const v = getVideoEl();
+						if (!v) return;
+
+						const vol = Math.max(0, Math.min(1, Number(v.volume || 0)));
+						if (vol > 0.0001) atvp.lastVolume = vol;
+
+						if (atvp.ui.vol) {
+							if (force || Number(atvp.ui.vol.value) !== vol) atvp.ui.vol.value = String(vol);
+							setRangeFill(atvp.ui.vol, vol);
+						}
+
+						if (atvp.ui.volIcon) atvp.ui.volIcon.innerHTML = pickVolIcon(vol);
+					};
+
+					const seekByClientX = (clientX) => {
+						const v = getVideoEl();
+						if (!v || !v.duration || isNaN(v.duration)) return;
+						const rect = atvp.ui.progress.getBoundingClientRect();
+						const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+						v.currentTime = pos * v.duration;
+						renderProgress();
+					};
+
+					const toggleFullscreen = async () => {
+						const el = atvp.root;
+						if (!el) return;
+						try {
+							if (!document.fullscreenElement) await el.requestFullscreen();
+							else await document.exitFullscreen();
+						} catch (e) {}
+					};
+
+					const initATVPController = () => {
+						const v = getVideoEl();
+						const root = document.querySelector(".atvp");
+						if (!v || !root) return;
+
+						// 防重复
+						if (root.__atvpInited) return;
+						root.__atvpInited = true;
+
+						atvp.root = root;
+
+						atvp.ui = {
+							mainBtn: root.querySelector('[data-act="toggle"]'),
+							progress: root.querySelector('[data-el="progress"]'),
+							fill: root.querySelector('[data-el="fill"]'),
+							current: root.querySelector('[data-el="current"]'),
+							duration: root.querySelector('[data-el="duration"]'),
+							vol: root.querySelector('[data-el="vol"]'),
+							volIcon: root.querySelector('[data-el="volIcon"]'),
+
+							// ✅ 新增：前15/后15 icon 容器
+							rewIcon: root.querySelector('[data-el="rewIcon"]'),
+							fwdIcon: root.querySelector('[data-el="fwdIcon"]'),
+						};
+
+						// 初始图标：主按钮
+						if (atvp.ui.mainBtn) atvp.ui.mainBtn.innerHTML = ATVP_ICONS.play;
+
+						// ✅ 注入前/后 15 秒 SVG（你图标变量名叫 back10/forward10，但无所谓）
+						// 建议用 currentColor，避免 fill="#ffffff" 在某些情况下被覆盖
+						const toCurrentColor = (svg) => svg.replaceAll('fill="#ffffff"', 'fill="currentColor"');
+						if (atvp.ui.rewIcon) atvp.ui.rewIcon.innerHTML = toCurrentColor(ATVP_ICONS.back10);
+						if (atvp.ui.fwdIcon) atvp.ui.fwdIcon.innerHTML = toCurrentColor(ATVP_ICONS.forward10);
+
+						updateVolumeUI(true);
+
+						// --- click actions ---
+						root.addEventListener("click", (e) => {
+							wakeUI();
+							const btn = e.target.closest?.("[data-act]");
+							if (!btn) return;
+
+							const act = btn.dataset.act;
+							if (act === "toggle") {
+								// ✅ 用户点击播放 = 用户手势，允许解静音
+								v.muted = false;
+								if (v.volume <= 0.001) v.volume = Math.max(0.05, atvp.lastVolume || 0.6);
+
+								v.paused ? v.play() : v.pause();
+							} else if (act === "rewind") {
+								v.currentTime = Math.max(0, v.currentTime - atvp.SKIP_SEC);
+								renderProgress();
+							} else if (act === "forward") {
+								v.currentTime = Math.min(v.duration || Infinity, v.currentTime + atvp
+									.SKIP_SEC);
+								renderProgress();
+							} else if (act === "mute") {
+								toggleMute();
+							}
+						});
+
+						// --- volume slider ---
+						atvp.ui.vol?.addEventListener("click", (e) => e.stopPropagation());
+						atvp.ui.vol?.addEventListener("input", (e) => {
+							const val = Math.max(0, Math.min(1, Number(e.target.value)));
+							v.volume = val;
+							updateVolumeUI(true);
+							wakeUI();
+						});
+
+						v.addEventListener("volumechange", () => updateVolumeUI(true));
+
+						// --- progress drag ---
+						atvp.ui.progress?.addEventListener("pointerdown", (e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							atvp.isDragging = true;
+							atvp.ui.progress.setPointerCapture?.(e.pointerId);
+							seekByClientX(e.clientX);
+						});
+						atvp.ui.progress?.addEventListener("pointermove", (e) => {
+							if (!atvp.isDragging) return;
+							e.preventDefault();
+							e.stopPropagation();
+							seekByClientX(e.clientX);
+						});
+						const endDrag = () => (atvp.isDragging = false);
+						atvp.ui.progress?.addEventListener("pointerup", endDrag);
+						atvp.ui.progress?.addEventListener("pointercancel", endDrag);
+						atvp.ui.progress?.addEventListener("lostpointercapture", endDrag);
+
+						// --- video state ---
+						v.addEventListener("play", () => {
+							atvp.hasEverPlayed = true;
+							syncStateClass();
+						});
+						v.addEventListener("pause", syncStateClass);
+						v.addEventListener("ended", syncStateClass);
+						v.addEventListener("timeupdate", () => {
+							if (!atvp.isDragging) renderProgress();
+						});
+						v.addEventListener("loadedmetadata", () => {
+							renderProgress();
+							updateVolumeUI(true);
+						});
+						v.addEventListener("canplay", () => {
+							renderProgress();
+							updateVolumeUI(true);
+						});
+
+						// idle hide
+						const wake = () => wakeUI();
+						root.addEventListener("pointermove", wake);
+						root.addEventListener("pointerdown", wake);
+
+						// 初次同步
+						syncStateClass();
+						renderProgress();
+						updateVolumeUI(true);
+					};
+
+
+					const requestMotionPermission = async () => {
+						try {
+							// iOS 13+ 需要显式请求
+							if (typeof DeviceOrientationEvent !== "undefined" &&
+								typeof DeviceOrientationEvent.requestPermission === "function") {
+								const res = await DeviceOrientationEvent.requestPermission();
+								console.log("DeviceOrientation permission:", res);
+								return res === "granted";
+							}
+							// Android/其他浏览器通常不需要
+							return true;
+						} catch (e) {
+							console.warn("Motion permission error:", e);
+							return false;
+						}
+					};
+
+					const enableGyroLookControls = () => {
+						const cam = document.querySelector("#cam");
+						if (!cam) return;
+						// 重新写入一次 look-controls，确保生效
+						cam.setAttribute("look-controls", "enabled: true; touchEnabled: true; mouseEnabled: true");
+					};
+
+
+
+					const triggerUpload = async () => {
+						// ✅ 必须在用户点击里触发
+						await requestMotionPermission();
+						enableGyroLookControls();
+
+						fileInput.value && fileInput.value.click();
+					};
+
+
+					const getPhotoSphere = () => document.getElementById('photoSphere');
+					const getVideoSphere = () => document.getElementById('videoSphere');
+
+					function hideSpheres() {
+						const ps = getPhotoSphere();
+						const vs = getVideoSphere();
+						if (ps) ps.setAttribute('visible', 'false');
+						if (vs) vs.setAttribute('visible', 'false');
+						// 也顺便把 src 清掉，避免 A-Frame 继续尝试上传旧纹理
+						if (ps) ps.removeAttribute('src');
+						if (vs) vs.removeAttribute('src');
+					}
+
+					const handleFileChange = (event) => {
+						const file = event.target.files?.[0];
+						if (!file) return;
+
+						fileName.value = file.name;
+
+						// cleanup old blob
+						if (mediaSrc.value) URL.revokeObjectURL(mediaSrc.value);
+						mediaSrc.value = URL.createObjectURL(file);
+
+						// 先隐藏两个球体，避免“上一帧纹理”干扰
+						hideSpheres();
+
+						// 切状态（UI）
+						viewState.value = 'immersive';
+
+						// 分类型处理：等 ready 再给 sphere src + visible
+						if (file.type.startsWith('video')) {
+							mediaType.value = 'video';
+							isPlaying.value = false;
+
+							const v = getVideoEl();
+							const vs = getVideoSphere();
+							if (!v || !vs) return;
+
+							// 重置 video
+							v.pause();
+							v.currentTime = 0;
+							v.src = mediaSrc.value;
+							v.muted = false; // ✅ 允许有声音
+							v.volume = 0.6;
+							v.playsInline = true;
+							v.load();
+
+							bindVideoEvents();
+							updateTimeUI();
+
+							setTimeout(() => initATVPController(), 0);
+
+							// ✅ 等到 video 真正有尺寸（loadeddata / canplay）再挂到 videosphere
+							const onReady = () => {
+								v.removeEventListener('loadeddata', onReady);
+								v.removeEventListener('canplay', onReady);
+
+								// 这时 videoWidth/videoHeight 不为 0，纹理不会再报 “no video / 0 size”
+								vs.setAttribute('src', '#v360');
+								vs.setAttribute('visible', 'true');
+							};
+
+							v.addEventListener('loadeddata', onReady, {
+								once: true
+							});
+							v.addEventListener('canplay', onReady, {
+								once: true
+							});
+
+						} else {
+							mediaType.value = 'image';
+
+							const img = getImgEl();
+							const ps = getPhotoSphere();
+							if (!img || !ps) return;
+
+							// ✅ 等图片 onload 再挂到 sky
+							img.onload = () => {
+								ps.setAttribute('src', '#img360');
+								ps.setAttribute('visible', 'true');
+							};
+							img.onerror = () => {
+								console.warn('image failed to load');
+							};
+
+							img.src = mediaSrc.value;
+						}
+					};
+
+					const resetView = () => {
+						// Hide spheres & clear src
+						hideSpheres();
+
+						// stop video
+						const v = getVideoEl();
+						if (v) {
+							v.pause();
+							v.removeAttribute('src');
+							v.load();
+						}
+
+						viewState.value = 'landing';
+
+						setTimeout(() => {
+							if (mediaSrc.value) URL.revokeObjectURL(mediaSrc.value);
+							mediaSrc.value = '';
+							fileName.value = '';
+							isPlaying.value = false;
+							progress.value = 0;
+
+							// 清空 input，保证同一个文件可以再次选中触发 change
+							if (fileInput.value) fileInput.value.value = '';
+						}, 300);
+					};
+
+
+					// ✅ 真正控制 360 视频播放/暂停
+					const togglePlay = async () => {
+						const v = getVideoEl();
+						if (!v) return;
+
+						if (v.paused) {
+							try {
+								await v.play();
+								isPlaying.value = true;
+							} catch (e) {
+								console.warn('play blocked:', e);
+							}
+						} else {
+							v.pause();
+							isPlaying.value = false;
+						}
+					};
+
+					const seekByProgress = () => {
+						const v = getVideoEl();
+						if (!v || !isFinite(v.duration) || v.duration <= 0) return;
+						v.currentTime = (progress.value / 100) * v.duration;
+						updateTimeUI();
+					};
+
+					const skip = (delta) => {
+						const v = getVideoEl();
+						if (!v || !isFinite(v.duration) || v.duration <= 0) return;
+						v.currentTime = Math.min(v.duration, Math.max(0, v.currentTime + delta));
+						updateTimeUI();
+					};
+
+					return {
+						viewState,
+						mediaType,
+						fileName,
+						mediaSrc,
+						isPlaying,
+						progress,
+						fileInput,
+						triggerUpload,
+						handleFileChange,
+						resetView,
+						togglePlay,
+						seekByProgress,
+						skip,
+						curTimeLabel,
+						durLeftLabel,
+						isScrubbing
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
