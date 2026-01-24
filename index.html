@@ -2476,7 +2476,7 @@
 						default: ""
 					},
 
-					// ✅ 当图片内容更新但 src 不变时，用它强制触发重载
+					//  当图片内容更新但 src 不变时，用它强制触发重载
 					cacheKey: {
 						type: [String, Number],
 						default: ""
@@ -2512,12 +2512,12 @@
 				},
 
 				watch: {
-					// ✅ src 变化就回骨架
+					//  src 变化就回骨架
 					src() {
 						this.loading = true;
 						this.ratio = this.skeletonRatio;
 					},
-					// ✅ cacheKey 变化也回骨架（解决“URL没变但图片更新了”）
+					//  cacheKey 变化也回骨架（解决“URL没变但图片更新了”）
 					cacheKey() {
 						this.loading = true;
 						this.ratio = this.skeletonRatio;
@@ -2684,122 +2684,138 @@
 					}
 
 					async function applyRoute() {
+						// 每次路由切换，先进入“整页转圈”
+						isPageLoading.value = true;
+
 						const {
 							path,
 							query
 						} = parseHash();
 
-						// 支持 #xxx?...&lang=zh|en|ja|ko
+						// 支持 #xxx?.&lang=zh|en|ja|ko
 						if (query.lang && ['zh', 'en', 'ja', 'ko'].includes(String(query.lang))) {
 							try {
 								setLanguage(String(query.lang));
 							} catch (e) {}
 						}
 
-						// 统一滚顶（你原来各处都在滚顶）
 						const scrollTop = () => window.scrollTo({
 							top: 0,
 							behavior: "smooth"
 						});
 
-						switch (path) {
-							case "home":
-								currentPage.value = "home";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+						// 是否需要“阻塞转圈直到内容到位”
+						const needBlockLoading =
+							(path === "store" || path === "appv2") ||
+							(path === "articles" && String(query.id || query.slug || "").trim()) ||
+							(path === "media" && String(query.id || "").trim());
 
-							case "about":
-								currentPage.value = "about";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+						try {
+							switch (path) {
+								case "home":
+									currentPage.value = "home";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
 
-							case "contact":
-								currentPage.value = "contact";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+								case "about":
+									currentPage.value = "about";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
 
-							case "appv1":
-								currentPage.value = "apps";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+								case "contact":
+									currentPage.value = "contact";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
 
-							case "launchpad":
-								currentPage.value = "appsv2";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+								case "appv1":
+									currentPage.value = "apps";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
 
-								// ① app iframe 详情页
-							case "app": {
-								const name = (query.name || "").trim();
-								currentPage.value = "appdetail";
-								currentAppUrl.value = name ? `apps/${name}.html` : "";
-								scrollTop();
-								break;
-							}
+								case "launchpad":
+									currentPage.value = "appsv2";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
 
-							// ② 应用商店详情页（你也可以把 store 作为别名）
-							case "store":
-							case "appv2": {
-								const name = (query.name || "").trim();
-								// 等 applist 有数据后再打开（避免刷新直达时 currentApp 为空）
-								if (!applist.value?.length) await fetchApps(false);
-								testOpenStore(name); // 你已有：进 app-store + 生成推荐 :contentReference[oaicite:2]{index=2}
-								scrollTop();
-								break;
-							}
-
-							case "changelog": {
-								const name = (query.name || "").trim();
-								if (!applist.value?.length) await fetchApps(false);
-								if (name) testOpenStore(name, {
-									syncHash: false
-								}); // ✅ 只为了设 currentApp，不改 hash
-								currentPage.value = "changelog";
-								scrollTop();
-								break;
-							}
-
-							// ③ 博客：列表 / 详情
-							case "articles": {
-								const key = (query.id || query.slug || "").trim();
-								if (key) {
-									await ensureArticleByKey(key);
-									currentArticleId.value = key;
-									currentPage.value = "article-detail";
-								} else {
-									currentPage.value = "articles";
+									// app iframe 详情页（你没要求阻塞它，所以这里不强制转圈等 iframe）
+								case "app": {
+									const name = (query.name || "").trim();
+									currentPage.value = "appdetail";
+									currentAppUrl.value = name ? `apps/${name}.html` : "";
+									scrollTop();
+									break;
 								}
-								scrollTop();
-								break;
-							}
 
-							// ④ 作品：列表 / 详情
-							case "media": {
-								const id = (query.id || "").trim();
-								if (id) {
-									await ensureMediaById(id);
-									currentMediaId.value = id;
-									currentPage.value = "media-detail";
-								} else {
-									currentPage.value = "media";
+								//  应用商店详情：一直转圈直到 applist + currentApp 就绪
+								case "store":
+								case "appv2": {
+									const name = (query.name || "").trim();
+									if (!applist.value?.length) await fetchApps(false);
+									testOpenStore(name); // 你原本就这么写的 :contentReference[oaicite:3]{index=3}
+									scrollTop();
+									break;
 								}
-								scrollTop();
-								break;
-							}
 
-							default:
-								currentPage.value = "home";
-								currentAppUrl.value = "";
-								scrollTop();
-								break;
+								case "changelog": {
+									const name = (query.name || "").trim();
+									if (!applist.value?.length) await fetchApps(false);
+									if (name) testOpenStore(name, {
+										syncHash: false
+									});
+									currentPage.value = "changelog";
+									scrollTop();
+									break;
+								}
+
+								//  文章：有 id/slug 就“阻塞转圈直到 ensureArticleByKey 完成”
+								case "articles": {
+									const key = (query.id || query.slug || "").trim();
+									if (key) {
+										await ensureArticleByKey(key);
+										currentArticleId.value = key;
+										currentPage.value = "article-detail";
+									} else {
+										currentPage.value = "articles";
+									}
+									scrollTop();
+									break;
+								}
+
+								//  作品：有 id 就“阻塞转圈直到 ensureMediaById 完成”
+								case "media": {
+									const id = (query.id || "").trim();
+									if (id) {
+										await ensureMediaById(id);
+										currentMediaId.value = id;
+										currentPage.value = "media-detail";
+									} else {
+										currentPage.value = "media";
+									}
+									scrollTop();
+									break;
+								}
+
+								default:
+									currentPage.value = "home";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
+							}
+						} finally {
+							// 非阻塞页面：路由一设好就停转圈（不等数据）
+							// 阻塞页面：等上面 await 的内容完成后再停转圈
+							if (!needBlockLoading) {
+								// 给 Vue 一帧时间把页面切过去，避免闪一下
+								await nextTick();
+							}
+							isPageLoading.value = false;
 						}
 					}
-
 
 					// Languages
 					const languages = [{
@@ -3536,7 +3552,7 @@
 						const k = String(key ?? "").trim();
 						if (!k) return null;
 
-						// ✅ 用同一把“key”去命中：slug 优先，其次 id
+						//  用同一把“key”去命中：slug 优先，其次 id
 						const matchKey = (a) => {
 							const s = a?.slug ? String(a.slug) : "";
 							const id = a?.id != null ? String(a.id) : "";
@@ -3550,13 +3566,13 @@
 						// 2) 再去拉单条（你原本就是这么做的）
 						if (!supabase) return null;
 
-						// ✅ 兼容：传的是纯数字 id / 或 post-xxxx slug
+						//  兼容：传的是纯数字 id / 或 post-xxxx slug
 						let row = null;
 
 						if (k.startsWith("post-")) {
 							row = await fetchBlogBySlug(k);
 						} else if (/^\d+$/.test(k)) {
-							// ✅ 关键：纯数字优先当成 slug 的尾号
+							//  关键：纯数字优先当成 slug 的尾号
 							row = await fetchBlogBySlug(`post-${k}`);
 							// 如果你 blog 表确实也可能用数字做 id，再兜底查一次
 							if (!row) row = await fetchBlogById(Number(k));
@@ -3566,7 +3582,7 @@
 						}
 						if (!row) return null;
 
-						// 3) ✅ upsert：如果列表里已经有同 slug 或同 id，就替换；否则插入
+						// 3)  upsert：如果列表里已经有同 slug 或同 id，就替换；否则插入
 						const idx = articles.value.findIndex(a => {
 							const s = a?.slug ? String(a.slug) : "";
 							const id = a?.id != null ? String(a.id) : "";
@@ -3585,7 +3601,7 @@
 						const key = String(id ?? "").trim();
 						if (!key) return null;
 
-						// ✅ 统一转 string，避免 9 vs "9" 命中失败
+						//  统一转 string，避免 9 vs "9" 命中失败
 						const hit = mediaItems.value.find(m => String(m.id) === key);
 						if (hit) return hit;
 
@@ -3594,7 +3610,7 @@
 						const row = await fetchMediaById(key);
 						if (!row) return null;
 
-						// ✅ upsert：已有同 id 就替换；没有才插入，彻底杜绝重复
+						//  upsert：已有同 id 就替换；没有才插入，彻底杜绝重复
 						const idx = mediaItems.value.findIndex(m => String(m.id) === String(row.id));
 						if (idx >= 0) mediaItems.value.splice(idx, 1, row);
 						else mediaItems.value.unshift(row);
@@ -3612,7 +3628,7 @@
 					*/
 					async function normalizeBlog(rows) {
 						return Promise.all((rows || []).map(async (r) => ({
-							...r, // ✅ 这里一定要 ...r，不能写 .r
+							...r, //  这里一定要 ...r，不能写 .r
 							readTime: r.readTime ?? r.read_time ?? 0,
 							cover: r.cover ? await imageCache.toObjectUrl(r.cover) : r.cover,
 						})));
@@ -3636,7 +3652,7 @@
 
 							return {
 								...r,
-								// ✅ 给你一个新字段，避免覆盖原字段（也可以直接覆盖 r.type，看你喜好）
+								//  给你一个新字段，避免覆盖原字段（也可以直接覆盖 r.type，看你喜好）
 								typeObj,
 
 								// 2) 缩略图缓存保持不变
@@ -3989,7 +4005,7 @@
 
 
 					// 测试部分
-					// ✅ 测试阶段：一个函数解决「进入商店 + 生成推荐」
+					//  测试阶段：一个函数解决「进入商店 + 生成推荐」
 					function testOpenStore(appOrId, {
 						syncHash = true
 					} = {}) {
@@ -4173,33 +4189,22 @@
 
 					// Lifecycle
 					onMounted(async () => {
-
-						// navigator.share 仅在 HTTPS 或 localhost 下可用
-						if (navigator.share) {
-							canNativeShare.value = true;
-						}
+						if (navigator.share) canNativeShare.value = true;
 
 						if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-							isDark.value = true
-							document.documentElement.classList.add("dark")
+							isDark.value = true;
+							document.documentElement.classList.add("dark");
 						}
 
-						await nextTick()
-						isPageLoading.value = false
+						await nextTick();
 
-						// 先拉 Cloudflare applist
-						await fetchApps(false);
+						// 后台预加载：不阻塞页面（深链需要的内容会在 applyRoute 里按需 await）
+						fetchApps(false).catch(() => {});
+						loadBlogAndMedia().catch(() => {});
 
-						// 再拉 supabase 的 blog/media
-						await loadBlogAndMedia()
-
-						await fetchApps(false);
-						await loadBlogAndMedia();
-
-						// 先执行一次：支持用户直接打开某个 hash 链接
+						// 先按 hash 路由走一遍（applyRoute 内部会决定是否需要“转圈阻塞”）
 						await applyRoute();
 
-						// 监听 hash 变化：支持点击/复制链接跳转
 						window.addEventListener("hashchange", applyRoute);
 					})
 
