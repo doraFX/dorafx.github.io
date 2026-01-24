@@ -41,6 +41,7 @@
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
+
 			function gtag() {
 				dataLayer.push(arguments);
 			}
@@ -3165,19 +3166,21 @@
 								if (pending.has(originalUrl)) return pending.get(originalUrl);
 
 								const p = (async () => {
-									// cache: "force-cache" 只是一点点加成，核心是 blob 本地化
-									const res = await fetch(originalUrl, {
-										cache: "force-cache"
-									});
-									const blob = await res.blob();
-									const objUrl = URL.createObjectURL(blob);
-									map.set(originalUrl, objUrl);
-									pending.delete(originalUrl);
-									return objUrl;
-								})().catch((e) => {
-									pending.delete(originalUrl);
-									throw e;
-								});
+									try {
+										const res = await fetch(originalUrl, {
+											cache: "force-cache"
+										});
+										if (!res.ok) return originalUrl; // 失败就退回原图
+										const blob = await res.blob();
+										const objUrl = URL.createObjectURL(blob);
+										map.set(originalUrl, objUrl);
+										return objUrl;
+									} catch (e) {
+										return originalUrl; // 国内图片不通也不影响数据
+									} finally {
+										pending.delete(originalUrl);
+									}
+								})();
 
 								pending.set(originalUrl, p);
 								return p;
