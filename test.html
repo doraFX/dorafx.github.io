@@ -1,497 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Peel Corner - Attach to Any Div (Test)</title>
-
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Share Poster</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap"
+			rel="stylesheet">
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ['Noto Sans SC', 'system-ui', 'sans-serif'], // 无衬线字体
+							serif: ['Noto Serif SC', 'Georgia', 'serif'], // 衬线字体
+							mono: ['Monaco', 'Consolas', 'monospace'], // 等宽字体
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
 		<style>
-			:root {
-				/* === 1. 颜色配置 === */
-				--bg-page: #ffffff;
-				--bg-peel: linear-gradient(135deg, #fffff0 0%, #fff9c4 100%);
-				--shadow-peel: -5px 5px 15px rgba(0, 0, 0, 0.15);
-				--text-color: #333333;
-
-				/* === 2. 尺寸配置 === */
-				--size-idle: 50px;
-				/* 状态一 */
-				--size-open: 140px;
-				/* 状态二 */
-				--size-active: 155px;
-				/* 状态三 */
-
-				/* === 3. 动画曲线 === */
-				--ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-			}
-
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				-webkit-tap-highlight-color: transparent;
-			}
-
-			body {
-				background: var(--bg-page);
-				font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-				min-height: 100vh;
-				display: grid;
-				place-items: center;
-				padding: 28px;
-				color: #111;
-			}
-
-			/* ============ 测试布局 ============ */
-			.grid {
-				width: min(1100px, 100%);
-				display: grid;
-				grid-template-columns: repeat(12, 1fr);
-				gap: 18px;
-			}
-
-			.card {
-				background: #f9f9f9;
-				border: 1px solid #eee;
-				border-radius: 18px;
-				padding: 18px;
-				min-height: 260px;
-				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
-			}
-
-			.card h2 {
-				font-size: 16px;
-				margin-bottom: 6px;
-				letter-spacing: 0.2px;
-			}
-
-			.card p {
-				font-size: 13px;
-				color: #666;
-				line-height: 1.6;
-			}
-
-			.span-6 {
-				grid-column: span 6;
-			}
-
-			.span-4 {
-				grid-column: span 4;
-			}
-
-			.span-8 {
-				grid-column: span 8;
-			}
-
-			@media (max-width: 900px) {
-
-				.span-6,
-				.span-4,
-				.span-8 {
-					grid-column: span 12;
-				}
-			}
-
-			/* 隐藏 checkbox（每个卡片一套） */
-			.toggle-state {
-				display: none;
-			}
-
-			/* 简单的状态切换显示 */
-			.view-v1,
-			.view-v2 {
-				display: none;
-			}
-
-			.toggle-state:not(:checked)~.content .view-v1 {
-				display: block;
-			}
-
-			.toggle-state:checked~.content .view-v2 {
-				display: block;
-			}
-
-			/* =====================================================
-       ✅ 关键：让任意 div 右上角可挂折页
-       用法：容器加 .peel-host，折页 label 放进容器即可
-       ===================================================== */
-			.peel-host {
-				position: relative;
-				/* 绝对定位参照 */
-				overflow: hidden;
-				/* 不让折页溢出；想露出去就改 visible */
-			}
-
-			.peel-host>.peel-corner {
-				position: absolute;
-				top: 0;
-				right: 0;
-				z-index: 50;
-				cursor: pointer;
-				user-select: none;
-
-				width: var(--size-idle);
-				height: var(--size-idle);
-
-				transition: width 0.4s var(--ease-bounce), height 0.4s var(--ease-bounce);
-			}
-
-			/* 折页本体 */
-			.peel-host>.peel-corner .peel-shape {
-				position: absolute;
-				inset: 0;
-				background: var(--bg-peel);
-				border-bottom-left-radius: 100%;
-				box-shadow: var(--shadow-peel);
-				pointer-events: none;
-			}
-
-			.peel-host>.peel-corner .peel-shape::after {
-				content: "";
-				position: absolute;
-				inset: 0;
-				border-bottom-left-radius: 100%;
-				background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, transparent 60%);
-			}
-
-			/* 内容容器（图标 + 文字） */
-			.peel-host>.peel-corner .widget-position {
-				position: absolute;
-				top: 0;
-				right: 0;
-				z-index: 2;
-				opacity: 1;
-				transform: scale(0.45) rotate(15deg);
-				transition: all 0.3s var(--ease-bounce);
-			}
-
-			.peel-host>.peel-corner .widget-content {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				right: 2rem;
-				top: 4rem;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.peel-host>.peel-corner .widget-icon {
-				width: 40px;
-				height: 40px;
-				border-radius: 10px;
-				margin-bottom: 6px;
-				object-fit: cover;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			}
-
-			.peel-host>.peel-corner .widget-text {
-				font-size: 12px;
-				transform: scale(0);
-				font-weight: 700;
-				color: var(--text-color);
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-				transition: all 0.3s var(--ease-bounce);
-			}
-
-			/* 动态切换内容逻辑 (V1 <-> V2) */
-			.show-v1,
-			.show-v2 {
-				display: none;
-			}
-
-			.toggle-state:not(:checked)~.peel-corner .show-v2 {
-				display: block;
-			}
-
-			.toggle-state:checked~.peel-corner .show-v1 {
-				display: block;
-			}
-
-			/* =========================================
-       只写两个 @media：电脑/手机，分界 600px
-       ========================================= */
-
-			/* 🖥️ 电脑端 (>= 600px)：hover 展开 */
-			@media (min-width: 600px) {
-				.peel-host>.peel-corner:hover {
-					width: var(--size-open);
-					height: var(--size-open);
-				}
-
-				.peel-host>.peel-corner:hover .widget-position {
-					transform: scale(1) rotate(15deg);
-				}
-
-				.peel-host>.peel-corner:hover .widget-text {
-					transform: scale(1);
-				}
-
-				/* 桌面按压态（可选，体验更爽） */
-				.peel-host>.peel-corner:active {
-					width: var(--size-active);
-					height: var(--size-active);
-					transition-duration: 0.1s;
-				}
-
-				.peel-host>.peel-corner:active .widget-content {
-					transform: scale(0.92);
-					transition-duration: 0.1s;
-				}
-			}
-
-			/* 📱 手机端 (< 600px)：JS 控制 is-open / is-active，整体缩 25% */
-			@media (max-width: 599px) {
-				:root {
-					--m-scale: 0.75;
-				}
-
-				/* 状态一：收起 */
-				.peel-host>.peel-corner {
-					width: calc(var(--size-idle) * var(--m-scale));
-					height: calc(var(--size-idle) * var(--m-scale));
-				}
-
-				/* 状态二：展开 */
-				.peel-host>.peel-corner.is-open {
-					width: calc(var(--size-open) * var(--m-scale));
-					height: calc(var(--size-open) * var(--m-scale));
-				}
-
-				/* 状态三：按压 */
-				.peel-host>.peel-corner.is-active {
-					width: calc(var(--size-active) * var(--m-scale));
-					height: calc(var(--size-active) * var(--m-scale));
-					transition-duration: 0.1s;
-				}
-
-				/* 内容整体缩放（图标+文字一起小 25%） */
-				.peel-host>.peel-corner .widget-position {
-					transform: scale(calc(0.45 * var(--m-scale))) rotate(15deg);
-				}
-
-				.peel-host>.peel-corner.is-open .widget-position {
-					transform: scale(var(--m-scale)) rotate(15deg);
-				}
-
-				/* 文字显示/隐藏 */
-				.peel-host>.peel-corner .widget-text {
-					transform: scale(0);
-				}
-
-				.peel-host>.peel-corner.is-open .widget-text {
-					transform: scale(1);
-				}
-
-				/* 内容位置同步缩放 */
-				.peel-host>.peel-corner .widget-content {
-					right: calc(2rem);
-					top: calc(4rem);
-				}
-
-				/* 按压反馈 */
-				.peel-host>.peel-corner.is-active .widget-content {
-					transform: scale(0.92);
-				}
+			.multi-gradient-bg {
+				background-image:
+					radial-gradient(1600px circle at 15% 8%, rgba(92, 160, 241, 0.1) 0%, transparent 100%),
+					radial-gradient(900px circle at 85% 18%, rgba(65, 247, 123, 0.05) 0%, transparent 100%),
+					radial-gradient(1500px circle at 50% 120%, rgba(148, 163, 184, 0.3) 0%, transparent 100%),
+					linear-gradient(180deg, rgba(238, 242, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
 			}
 		</style>
 	</head>
 
-	<body>
-		<div class="grid">
-			<!-- 卡片 A：独立 toggle -->
-			<div class="card peel-host span-6" id="cardA">
-				<input class="toggle-state" type="checkbox" id="toggle-a" />
+	<body class="m-0 p-0 bg-black">
+		<!-- 固定宽度，高度自适应 -->
+		<div class="w-[1080px] h-auto relative overflow-hidden bg-white">
 
-				<label class="peel-corner" for="toggle-a" aria-label="Toggle A">
-					<span class="peel-shape"></span>
-
-					<span class="widget-position">
-						<span class="widget-content">
-							<img src="https://picsum.photos/id/10/100/100" class="widget-icon show-v2" alt="Go V2" />
-							<img src="https://picsum.photos/id/20/100/100" class="widget-icon show-v1"
-								alt="Back Home" />
-							<span class="widget-text show-v2">Switch</span>
-							<span class="widget-text show-v1">Back</span>
-						</span>
-					</span>
-				</label>
-
-				<div class="content">
-					<div class="view-v1">
-						<h2>卡片 A · 状态 V1</h2>
-						<p>这个折页挂在「任意 div」右上角：只要 div 加 <code>.peel-host</code>，折页 label 放进去就行。</p>
-					</div>
-					<div class="view-v2">
-						<h2>卡片 A · 状态 V2</h2>
-						<p>切换成功 ✅（checkbox 控制内容）。手机端自动演示节奏 + t3 回收逻辑见 JS。</p>
-					</div>
-				</div>
+			<!-- ===== 有存在感的气氛渐变背景 ===== -->
+			<div class="absolute inset-0 multi-gradient-bg">
 			</div>
 
-			<!-- 卡片 B：独立 toggle -->
-			<div class="card peel-host span-6" id="cardB">
-				<input class="toggle-state" type="checkbox" id="toggle-b" />
+			<!-- 内容 -->
+			<div class="relative p-[56px]">
+				<!-- Glass 主卡片 -->
+				<div class="bg-white/80 backdrop-blur-xl
+	               border border-neutral-200/80
+	               shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
 
-				<label class="peel-corner" for="toggle-b" aria-label="Toggle B">
-					<span class="peel-shape"></span>
+					<!-- 内边框 -->
+					<div class="border border-neutral-200/70 m-[16px]">
+						<div class="px-[60px] pt-[80px] pb-[40px] flex flex-col gap-[56px]">
 
-					<span class="widget-position">
-						<span class="widget-content">
-							<img src="https://picsum.photos/id/30/100/100" class="widget-icon show-v2" alt="Go V2" />
-							<img src="https://picsum.photos/id/40/100/100" class="widget-icon show-v1"
-								alt="Back Home" />
-							<span class="widget-text show-v2">Next</span>
-							<span class="widget-text show-v1">Home</span>
-						</span>
-					</span>
-				</label>
+							<!-- 顶部分享语 -->
+							<div class="text-left text-[36px] text-neutral-500 font-sans">
+								我觉得这篇不错，分享给你 ~
+							</div>
 
-				<div class="content">
-					<div class="view-v1">
-						<h2>卡片 B · 状态 V1</h2>
-						<p>这是第二个容器，证明可以同时挂多个折角，各自独立计时、独立控制。</p>
-					</div>
-					<div class="view-v2">
-						<h2>卡片 B · 状态 V2</h2>
-						<p>你可以把这套用在作品卡片、应用卡片、任意模块右上角。</p>
+							<!-- 标题 -->
+							<div class="text-left text-[80px] leading-[1.14]
+	                     font-extrabold text-neutral-900 font-serif">
+								为什么我一个乳糖不耐受的人，还是会反复买沃集鲜4.0牛奶
+							</div>
+
+							<!-- 简介 -->
+							<div class="max-w-[880px] text-left text-[42px] leading-[1.75]
+	                     text-neutral-700 font-medium">
+								记录一次关于“胜利瞬间”的镜头实验：用节奏、构图与氛围把情绪推到最亮的一秒。
+								不是口味问题，而是身体不太配合。只要喝了奶，最慢半天，快的话一个小时左右，
+								肠胃就会开始有反应。
+							</div>
+
+							<!-- 二维码区域 -->
+							<div class="flex items-center justify-between gap-[48px] mt-[240px]">
+								<!-- 左侧文字 -->
+								<div class="flex flex-col justify-center text-left gap-1">
+									<div class="text-[32px] text-neutral-600 leading-[1.3]">
+										长按扫描二维码
+									</div>
+									<div class="mt-[6px] text-[32px] text-neutral-600 leading-[1.3]">
+										查看文章
+									</div>
+								</div>
+
+								<!-- 右侧二维码 -->
+								<div class="bg-white/95 backdrop-blur-md
+	                       border border-neutral-200/80
+	                       rounded-xl
+	                       shadow-[0_18px_50px_rgba(0,0,0,0.1)]
+	                       p-[10px]">
+
+									<div
+										class="w-[120px] h-[120px] bg-white rounded-lg flex items-center justify-center">
+										<div class="w-[120px] h-[120px] bg-black">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 底部小字 -->
+							<div class="flex items-center justify-between text-[24px] font-medium text-neutral-400">
+								<div>© 企鹅企企</div>
+								<div>https://dorafx.top</div>
+							</div>
+
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<!-- 额外测试：不同尺寸容器 -->
-			<div class="card peel-host span-4" id="cardC" style="min-height: 200px;">
-				<input class="toggle-state" type="checkbox" id="toggle-c" />
-				<label class="peel-corner" for="toggle-c" aria-label="Toggle C">
-					<span class="peel-shape"></span>
-					<span class="widget-position">
-						<span class="widget-content">
-							<img src="https://picsum.photos/id/50/100/100" class="widget-icon show-v2" alt="" />
-							<img src="https://picsum.photos/id/60/100/100" class="widget-icon show-v1" alt="" />
-							<span class="widget-text show-v2">Go</span>
-							<span class="widget-text show-v1">Back</span>
-						</span>
-					</span>
-				</label>
-
-				<div class="content">
-					<div class="view-v1">
-						<h2>小卡片 · V1</h2>
-						<p>容器更小也能挂。</p>
-					</div>
-					<div class="view-v2">
-						<h2>小卡片 · V2</h2>
-						<p>OK ✅</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="card span-8" style="background:#fff;border:1px dashed #e5e5e5;">
-				<h2>对照区（无折角）</h2>
-				<p>这个卡片没有 <code>.peel-host</code>，也没有折角组件。</p>
 			</div>
 		</div>
-
-		<script>
-			(function() {
-				// ✅ 用分辨率做手机判定（与 600px 分界一致）
-				const isMobile = window.matchMedia && window.matchMedia("(max-width: 599px)").matches;
-				if (!isMobile) return;
-
-				// 让页面多个折角各自独立工作
-				const corners = document.querySelectorAll(".peel-host > .peel-corner");
-				if (!corners.length) return;
-
-				// ========== 配置 ==========
-				const OPEN_AFTER = 3000; // 初始无操作：多久后自动展开（状态二）
-				const CLOSE_AFTER = 1500; // 初始展开后：多久后自动收起（回状态一）
-				const T3_AFTER = 300; // 交互后：多久无操作自动回状态一（t3）
-
-				corners.forEach((corner) => {
-					// 每个 corner 自己的计时器与状态
-					let t1 = null,
-						t2 = null,
-						t3 = null;
-					let touched = false;
-
-					function clearTimers() {
-						clearTimeout(t1);
-						clearTimeout(t2);
-						clearTimeout(t3);
-						t1 = t2 = t3 = null;
-					}
-
-					function toIdle() {
-						corner.classList.remove("is-open");
-						corner.classList.remove("is-active");
-					}
-
-					function toOpen() {
-						corner.classList.add("is-open");
-						corner.classList.remove("is-active");
-					}
-
-					function toActive() {
-						corner.classList.add("is-active");
-					}
-
-					function startAutoSequence() {
-						clearTimers();
-						toIdle();
-
-						t1 = setTimeout(() => {
-							if (touched) return;
-							toOpen();
-
-							t2 = setTimeout(() => {
-								if (touched) return;
-								toIdle();
-							}, CLOSE_AFTER);
-						}, OPEN_AFTER);
-					}
-
-					function scheduleReturnToIdle() {
-						clearTimeout(t3);
-						t3 = setTimeout(() => {
-							toIdle();
-						}, T3_AFTER);
-					}
-
-					function onDown() {
-						touched = true;
-						clearTimers();
-						toOpen();
-						toActive();
-					}
-
-					function onUp() {
-						corner.classList.remove("is-active");
-						scheduleReturnToIdle();
-					}
-
-					function onClick() {
-						touched = true;
-						toOpen();
-						scheduleReturnToIdle();
-					}
-
-					// 初始化
-					startAutoSequence();
-
-					corner.addEventListener("pointerdown", onDown, {
-						passive: true
-					});
-					corner.addEventListener("pointerup", onUp, {
-						passive: true
-					});
-					corner.addEventListener("pointercancel", onUp, {
-						passive: true
-					});
-					corner.addEventListener("click", onClick);
-				});
-			})();
-		</script>
 	</body>
+
+
+
 </html>
