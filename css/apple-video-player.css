@@ -23,7 +23,7 @@
 
 /* 闲置状态：隐藏鼠标 */
 .atvp.is-idle {
-	cursor: none;
+	/* cursor: none; */
 }
 
 /* 遮罩层容器 */
@@ -35,6 +35,7 @@
 	justify-content: space-between;
 	pointer-events: none;
 	z-index: 10;
+	transition: opacity 0.5s ease;
 }
 
 /* 渐变背景 (Scrim) - 模拟 Apple TV 上下暗角 */
@@ -59,7 +60,8 @@
 
 /* 闲置时隐藏 UI (0.5s 动画) */
 .atvp.is-idle .atvp__chrome,
-.atvp.is-idle .atvp__scrim {
+.atvp.is-idle .atvp__scrim,
+.atvp.is-idle .atvp__overlay {
 	opacity: 0;
 }
 
@@ -255,7 +257,7 @@
 		width: 60px;
 		height: 60px;
 	}
-	
+
 	.atvp__btn--main svg {
 		width: 24px;
 		height: 24px;
@@ -265,7 +267,7 @@
 		width: 40px;
 		height: 40px;
 	}
-	
+
 	.atvp__btn--side svg {
 		width: 18px;
 		height: 18px;
