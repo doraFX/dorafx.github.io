@@ -494,6 +494,14 @@
 			this.container.classList.remove("is-idle");
 			clearTimeout(this._idleTimer);
 
+			// ✅ 关键：唤醒时把 chrome 恢复
+			if (this.ui && this.ui.chrome) {
+				this.ui.chrome.style.opacity = "";
+				this.ui.chrome.style.pointerEvents = "";
+				this.ui.chrome.style.transform = "";
+				this.ui.chrome.style.transition = "";
+			}
+
 			const playing = !this.video.paused && !this.video.ended && this.video.currentTime > 0;
 			if (this.container.classList.contains("is-playing") || playing) this._armIdle();
 		}
@@ -501,8 +509,18 @@
 		_armIdle() {
 			clearTimeout(this._idleTimer);
 			this._idleTimer = setTimeout(() => {
-				if (this.container.classList.contains("is-playing")) {
-					this.container.classList.add("is-idle");
+				// 只有播放中才进入 idle
+				const playing = !this.video.paused && !this.video.ended && this.video.currentTime > 0;
+				if (!playing) return;
+
+				this.container.classList.add("is-idle");
+
+				// ✅ 关键：不用等 CSS，直接把整套 chrome（含进度条/音量条/播放键）彻底隐藏
+				if (this.ui && this.ui.chrome) {
+					this.ui.chrome.style.opacity = "0";
+					this.ui.chrome.style.pointerEvents = "none";
+					this.ui.chrome.style.transform = "translateY(10px)";
+					this.ui.chrome.style.transition = "opacity 220ms ease, transform 220ms ease";
 				}
 			}, this.IDLE_MS);
 		}
@@ -544,6 +562,12 @@
 		_animateFullscreenPre(entering) {
 			if (!this._canAnimate(this.container)) return;
 			this.container.classList.remove("is-idle");
+			if (this.ui && this.ui.chrome) {
+				this.ui.chrome.style.opacity = "";
+				this.ui.chrome.style.pointerEvents = "";
+				this.ui.chrome.style.transform = "";
+				this.ui.chrome.style.transition = "";
+			}
 
 			const kf = entering ? [{
 				transform: "scale(1)"
