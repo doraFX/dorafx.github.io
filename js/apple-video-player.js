@@ -194,6 +194,15 @@
 			};
 
 			this.ui.volume.value = String(this.video.volume ?? 1);
+
+			// --- Safari audio safety: unmute & restore volume if stuck at 0 ---
+			if (this.video.muted) this.video.muted = false;
+
+			// Safari 有时会把某些页面的视频继承为 volume=0
+			if ((Number(this.video.volume) || 0) <= 0.0001) {
+				const restore = Math.max(0.2, Number(this._lastVolume) || 0.6);
+				this.video.volume = restore;
+			}
 		}
 
 		// ---------- FIX: wrapper portrait layout ----------
@@ -292,7 +301,7 @@
 
 		_updateVolumeUI(force = false) {
 			const v = Number(this.video.volume);
-			const muted = v <= 0.0001;
+			const muted = !!this.video.muted || v <= 0.0001;
 
 			if (!muted) this._lastVolume = v;
 
@@ -300,16 +309,16 @@
 				this.ui.volume.value = String(v);
 			}
 
-			this._setRangeFill(this.ui.volume, v);
-			this.ui.volIcon.innerHTML = this._pickVolumeIcon(v);
+			this._setRangeFill(this.ui.volume, muted ? 0 : v);
+			this.ui.volIcon.innerHTML = this._pickVolumeIcon(muted ? 0 : v);
 		}
 
 		_toggleMute() {
-			const current = Number(this.video.volume);
-			if (current > 0.0001) {
-				this._lastVolume = current;
-				this.video.volume = 0;
+			if (!this.video.muted && this.video.volume > 0.0001) {
+				this._lastVolume = this.video.volume;
+				this.video.muted = true;
 			} else {
+				this.video.muted = false;
 				const restore = Math.max(0.05, Number(this._lastVolume) || 0.5);
 				this.video.volume = restore;
 			}
