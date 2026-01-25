@@ -4,41 +4,50 @@
 (function(global) {
 	async function createSharePoster(opts) {
 		const {
-			// 必填（由你的 Vue 传进来）
+			// required
 			title,
 			desc,
-			url, // 用来生成二维码 & 显示在右下角
+			url,
 
-			// 可选（你可按需传）
+			// type: article | media | app
+			type = "article",
+
+			// media/app optional
+			coverUrl = "", // media cover (image)
+			appIconUrl = "", // app icon
+			appSlogan = "", // app slogan
+			appVersion = "", // e.g. "v1.0.0" or "1.0.0"
+			appVersionLabel = "",
+			appStatusText = "", // e.g. "已发布" / "Developing"
+
+			// optional copy
 			shareLine = "我觉得这篇不错，分享给你 ~",
 			leftHint1 = "长按扫描二维码",
 			leftHint2 = "查看文章",
 			footerLeft = "© 企鹅企企",
 			footerRight = url || "",
 			fileName = "share-poster.png",
-			scale = 2, // 2 清晰且体积适中，3 更清晰更大
-			width = 1080, // 海报宽度
-			padding = 56, // 外边距
-			maxDescLines = 6, // 简介最多显示几行（避免太长撑爆）
-			// 是否自动下载（否则只返回 blob 给你自己处理）
+			scale = 2,
+			width = 1080,
+			padding = 56,
+			maxDescLines = 6,
 			autoDownload = true,
-			// 额外：如果你想把 footerRight 显示成站点而不是完整 url
 			footerRightText,
-		} = (opts || {});
+		} = opts || {};
 
-		if (!global.html2canvas) throw new Error(
-			"Missing html2canvas. Please include it before shareposter.js");
+		if (!global.html2canvas)
+			throw new Error("Missing html2canvas. Please include it before shareposter.js");
 		if (!global.QRCode) throw new Error("Missing QRCode lib. Please include it before shareposter.js");
 		if (!title) throw new Error("createSharePoster: missing title");
-		if (!desc) throw new Error("createSharePoster: missing desc");
 		if (!url) throw new Error("createSharePoster: missing url");
+		if (type === "article" && !desc) throw new Error("createSharePoster: missing desc");
 
 		await ensureGoogleFontsLoaded();
 
 		const qrDataUrl = await global.QRCode.toDataURL(url, {
 			errorCorrectionLevel: "M",
 			margin: 0,
-			width: 240, // 生成更大再缩小，边缘更利落
+			width: 240,
 			color: {
 				dark: "#000000",
 				light: "#FFFFFF"
@@ -59,45 +68,33 @@
 
 		const poster = document.createElement("div");
 		poster.className = "poster-wrap";
-		poster.innerHTML = `
-      <div class="multi-gradient-bg"></div>
-      <div class="content">
-        <div class="glass">
-          <div class="inner-border">
-            <div class="pad">
 
-              <div class="shareline">${escapeHtml(shareLine)}</div>
+		poster.innerHTML = buildPosterHTML({
+			type,
+			title,
+			desc,
+			qrDataUrl,
+			shareLine,
+			leftHint1,
+			leftHint2,
+			footerLeft,
+			footerRight: footerRightText || footerRight,
+			coverUrl,
+			appIconUrl,
+			appSlogan,
+			appVersion,
+			appVersionLabel,
+			appStatusText,
+		});
 
-              <div class="title">${escapeHtml(title)}</div>
-
-              <div class="desc">${escapeHtml(desc)}</div>
-
-              <div class="qr-row">
-                <div class="qr-left">
-                  <div>${escapeHtml(leftHint1)}</div>
-                  <div>${escapeHtml(leftHint2)}</div>
-                </div>
-
-                <div class="qr-card">
-                  <img class="qr-img" src="${qrDataUrl}" alt="QR" />
-                </div>
-              </div>
-
-              <div class="footer">
-                <div>${escapeHtml(footerLeft)}</div>
-                <div>${escapeHtml(footerRightText || footerRight)}</div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
 		mount.appendChild(poster);
 
-		// 等排版 & 字体
+		// wait layout & fonts
 		await nextFrame();
 		await (document.fonts?.ready?.catch(() => {}) || Promise.resolve());
+
+		// wait background image (for media/app) to reduce blank renders
+		await waitBgImagesLoaded(poster).catch(() => {});
 
 		const canvas = await global.html2canvas(poster, {
 			backgroundColor: null,
@@ -106,6 +103,7 @@
 			allowTaint: false,
 			logging: false,
 		});
+
 
 		const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png", 1));
 		if (!blob) {
@@ -120,6 +118,173 @@
 			blob,
 			canvas
 		};
+	}
+
+	// ---------- templates ----------
+	function buildPosterHTML({
+		type,
+		title,
+		desc,
+		qrDataUrl,
+		shareLine,
+		leftHint1,
+		leftHint2,
+		footerLeft,
+		footerRight,
+		coverUrl,
+		appIconUrl,
+		appSlogan,
+		appVersion,
+		appVersionLabel,
+		appStatusText,
+	}) {
+		if (type === "media") {
+			return `
+        <div class="multi-gradient-bg"></div>
+        <div class="content">
+          <div class="glass">
+            <div class="inner-border">
+              <div class="pad pad-media">
+
+                <div class="cover">
+                  ${
+                    coverUrl
+                      ? `<div class="cover-img" style="background-image:url('${escapeAttr(coverUrl)}')"></div>`
+                      : `<div class="cover-ph"></div>`
+                  }
+                  <div class="cover-vignette"></div>
+                </div>
+
+                <div class="title"><div class="up25">${escapeHtml(title)}</div></div>
+
+                <div class="qr-row qr-row-media">
+                  <div class="qr-left">
+                    <div><div class="up25">${escapeHtml(leftHint1)}</div></div>
+                    <div><div class="up25">${escapeHtml(leftHint2 || "查看作品")}</div></div>
+                  </div>
+
+                  <div class="qr-card">
+                    <img class="qr-img" src="${qrDataUrl}" alt="QR" />
+                  </div>
+                </div>
+
+                <div class="footer">
+                  <div><div class="up25">${escapeHtml(footerLeft)}</div></div>
+                  <div><div class="up25">${escapeHtml(footerRight)}</div></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+		}
+
+		if (type === "app") {
+			const safeVer = (appVersion || "").trim();
+			const verText = safeVer ?
+				(safeVer.toLowerCase().startsWith("v") ? safeVer : `v${safeVer}`) :
+				"";
+
+			return `
+        <div class="multi-gradient-bg"></div>
+        <div class="content">
+          <div class="glass">
+            <div class="inner-border">
+              <div class="pad pad-app">
+
+                <div class="shareline"><div class="up25">${escapeHtml(shareLine || "我觉得这个 App 不错，分享给你 ~")}</div></div>
+
+                <div class="app-hero">
+                  <div class="app-icon">
+                    ${
+                      appIconUrl
+                        ? `<div class="app-icon-img" style="background-image:url('${escapeAttr(appIconUrl)}')"></div>`
+                        : `<div class="app-icon-ph"></div>`
+                    }
+                  </div>
+
+                  <div class="app-name"><div class="up25">${escapeHtml(title)}</div></div>
+
+                  ${
+                    appSlogan
+                      ? `<div class="app-slogan"><div class="up25">${escapeHtml(appSlogan)}</div></div>`
+                      : ``
+                  }
+
+                  <div class="app-badges">
+                    ${
+                      verText
+                        ? `<div class="badge badge-ver"><span class="badge-muted"><div class="up25">${escapeHtml(appVersionLabel)}</div></span><span><div class="up25">${escapeHtml(verText)}</div></span></div>`
+                        : ``
+                    }
+
+                    ${
+                      appStatusText
+                        ? `<div class="badge badge-status"><div class="up25">${escapeHtml(appStatusText)}</div></div>`
+                        : ``
+                    }
+                  </div>
+                </div>
+
+                <div class="qr-row qr-row-app">
+                  <div class="qr-left">
+                    <div><div class="up25">${escapeHtml(leftHint1)}</div></div>
+                    <div><div class="up25">${escapeHtml(leftHint2 || "查看 App")}</div></div>
+                  </div>
+
+                  <div class="qr-card">
+                    <img class="qr-img" src="${qrDataUrl}" alt="QR" />
+                  </div>
+                </div>
+
+                <div class="footer">
+                  <div><div class="up25">${escapeHtml(footerLeft)}</div></div>
+                  <div><div class="up25">${escapeHtml(footerRight)}</div></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+		}
+
+		// default: article
+		return `
+      <div class="multi-gradient-bg"></div>
+      <div class="content">
+        <div class="glass">
+          <div class="inner-border">
+            <div class="pad">
+
+              <div class="shareline"><div class="up25">${escapeHtml(shareLine)}</div></div>
+
+              <div class="title"><div class="up25">${escapeHtml(title)}</div></div>
+
+              <div class="desc"><div class="up25">${escapeHtml(desc)}</div></div>
+
+              <div class="qr-row">
+                <div class="qr-left">
+                  <div><div class="up25">${escapeHtml(leftHint1)}</div></div>
+                  <div><div class="up25">${escapeHtml(leftHint2)}</div></div>
+                </div>
+
+                <div class="qr-card">
+                  <img class="qr-img" src="${qrDataUrl}" alt="QR" />
+                </div>
+              </div>
+
+              <div class="footer">
+                <div><div class="up25">${escapeHtml(footerLeft)}</div></div>
+                <div><div class="up25">${escapeHtml(footerRight)}</div></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 	}
 
 	// ---------- helpers ----------
@@ -159,7 +324,10 @@
         display:flex;
         flex-direction:column;
         gap:56px;
+        position:relative;
       }
+
+      /* shared */
       .shareline{
         font-size:36px;
         color:#737373;
@@ -216,7 +384,7 @@
         height:120px;
         display:block;
         background:#fff;
-				border-radius:0px;
+        border-radius:0px;
       }
       .footer{
         display:flex;
@@ -226,35 +394,215 @@
         font-weight:600;
         color:#a3a3a3;
       }
+
+      /* media */
+      .pad-media{ padding:72px 60px 40px 60px; gap:44px; }
+      .cover{
+        width:100%;
+        height:560px;
+        border-radius:28px;
+        overflow:hidden;
+        background:#e5e5e5;
+        border:1px solid rgba(255,255,255,0.60);
+        box-shadow:0 18px 60px rgba(0,0,0,0.12);
+        position:relative;
+      }
+      .cover-img{
+        width:100%;
+        height:100%;
+        background-repeat:no-repeat;
+        background-position:center;
+        background-size:cover;
+      }
+      .cover-ph{ width:100%; height:100%; background:#d4d4d4; }
+      .cover-vignette{
+        position:absolute; inset:0;
+        pointer-events:none;
+        background: radial-gradient(1200px 520px at 50% 30%, rgba(0,0,0,0.00), rgba(0,0,0,0.22));
+      }
+      .qr-row-media{ margin-top:160px; }
+
+      /* app */
+      .pad-app{ padding:72px 60px 40px 60px; gap:44px; }
+      .app-hero{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        gap:32px;
+        padding-top:120px;
+      }
+      .app-icon{
+        width:200px;
+        height:200px;
+        border-radius:44px;
+        overflow:hidden;
+        background:rgba(255,255,255,0.70);
+        border:1px solid rgba(255,255,255,0.70);
+        box-shadow:0 26px 80px rgba(0,0,0,0.18);
+      }
+      .app-icon-img{
+        width:100%;
+        height:100%;
+        background-repeat:no-repeat;
+        background-position:center;
+        background-size:cover;
+      }
+      .app-icon-ph{ width:100%; height:100%; background:#d4d4d4; }
+      .app-name{
+        font-size:88px;
+        line-height:1.06;
+        font-weight:800;
+        color:#171717;
+        font-family:"Noto Sans SC", system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        padding-top:20px;
+        word-break:break-word;
+      }
+      .app-slogan{
+        max-width:860px;
+        font-size:40px;
+        line-height:1.6;
+        color:#404040;
+        font-weight:600;
+        padding-top:10px;
+        word-break:break-word;
+      }
+      .app-badges{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:14px;
+        flex-wrap:wrap;
+        padding-top:6px;
+      }
+      .badge{
+        display:flex;
+        align-items:center;
+				justify-content: center;
+        gap:10px;
+        padding:10px 20px;
+        border-radius:999px;
+        background:rgba(255,255,255,0.70);
+        border:1px solid rgba(229,229,229,0.70);
+        font-size:28px;
+        font-weight:700;
+        color:#404040;
+      }
+      .badge-muted{ color:#737373; font-weight:600; }
+      .badge-status{
+        background: #FFFBEB;
+        color:#B45309;
+        border-color:#FDE68A;
+      }
+      .qr-row-app{ margin-top:150px; }
+			.up25{transform:translateY(-25%);}
     `;
 	}
 
 	async function ensureGoogleFontsLoaded() {
-		if (!document.querySelector('link[data-poster-font="noto-sc"]')) {
-			const pre1 = document.createElement("link");
-			pre1.rel = "preconnect";
-			pre1.href = "https://fonts.googleapis.com";
-			pre1.setAttribute("data-poster-font", "noto-sc");
-			document.head.appendChild(pre1);
-
-			const pre2 = document.createElement("link");
-			pre2.rel = "preconnect";
-			pre2.href = "https://fonts.gstatic.com";
-			pre2.crossOrigin = "anonymous";
-			document.head.appendChild(pre2);
-
-			const css = document.createElement("link");
-			css.rel = "stylesheet";
-			css.href =
-				"https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap";
-			document.head.appendChild(css);
+		if (document.querySelector('link[data-poster-font="noto-sc"]')) {
+			if (document.fonts?.ready) {
+				await document.fonts.ready.catch(() => {});
+			}
+			return;
 		}
 
-		if (document.fonts && document.fonts.ready) {
-			await document.fonts.ready.catch(() => {});
-		} else {
-			await new Promise((r) => setTimeout(r, 200));
+		const sources = [{
+				name: "loli",
+				preconnect: [{
+						href: "https://fonts.loli.net"
+					},
+					{
+						href: "https://gstatic.loli.net",
+						crossOrigin: "anonymous"
+					},
+				],
+				css: "https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap",
+			},
+			{
+				name: "ustc",
+				preconnect: [{
+					href: "https://fonts.lug.ustc.edu.cn"
+				}, ],
+				css: "https://fonts.lug.ustc.edu.cn/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap",
+			},
+			{
+				name: "google",
+				preconnect: [{
+						href: "https://fonts.googleapis.com"
+					},
+					{
+						href: "https://fonts.gstatic.com",
+						crossOrigin: "anonymous"
+					},
+				],
+				css: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap",
+			},
+		];
+
+		for (const src of sources) {
+			try {
+				// preconnect
+				src.preconnect.forEach((cfg) => {
+					const link = document.createElement("link");
+					link.rel = "preconnect";
+					link.href = cfg.href;
+					if (cfg.crossOrigin) link.crossOrigin = cfg.crossOrigin;
+					document.head.appendChild(link);
+				});
+
+				// stylesheet
+				await new Promise((resolve, reject) => {
+					const link = document.createElement("link");
+					link.rel = "stylesheet";
+					link.href = src.css;
+					link.setAttribute("data-poster-font", "noto-sc");
+					link.onload = resolve;
+					link.onerror = reject;
+					document.head.appendChild(link);
+				});
+
+				// 等字体真正 ready
+				if (document.fonts?.ready) {
+					await document.fonts.ready;
+				}
+
+				console.info(`[Fonts] Loaded via ${src.name}`);
+				return;
+			} catch (e) {
+				console.warn(`[Fonts] Failed via ${src.name}, trying next…`);
+			}
 		}
+
+		console.error("[Fonts] All font CDNs failed");
+	}
+
+	// Preload bg images used in inline styles (background-image:url(...))
+	async function waitBgImagesLoaded(root) {
+		const nodes = Array.from(root.querySelectorAll("[style*='background-image']"));
+		const urls = nodes
+			.map((el) => {
+				const s = el.getAttribute("style") || "";
+				const m = /background-image\s*:\s*url\((['"]?)(.*?)\1\)/i.exec(s);
+				return m ? m[2] : "";
+			})
+			.filter(Boolean);
+
+		if (!urls.length) return;
+
+		await Promise.all(
+			urls.map(
+				(u) =>
+				new Promise((resolve) => {
+					const img = new Image();
+					img.crossOrigin = "anonymous";
+					img.referrerPolicy = "no-referrer";
+					img.onload = () => resolve();
+					img.onerror = () => resolve();
+					img.src = u;
+				})
+			)
+		);
 	}
 
 	function downloadBlob(blob, fileName) {
@@ -281,6 +629,15 @@
 			.replaceAll("'", "&#039;");
 	}
 
-	// 暴露到全局
+	function escapeAttr(str) {
+		return String(str ?? "")
+			.replaceAll("&", "&amp;")
+			.replaceAll("<", "&lt;")
+			.replaceAll(">", "&gt;")
+			.replaceAll('"', "&quot;")
+			.replaceAll("'", "&#039;");
+	}
+
+	// expose
 	global.createSharePoster = createSharePoster;
 })(window);

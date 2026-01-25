@@ -988,7 +988,7 @@
 									class="mt-12 pt-8 px-1 md:px-0  border-t border-neutral-200 dark:border-neutral-800">
 									<div class="flex items-center justify-between flex-col gap-3 sm:flex-row sm:gap-0">
 										<span
-											class="text-base font-medium text-neutral-500">{{ t('media.share') || 'Share this work' }}</span>
+											class="text-base font-medium text-neutral-500">{{ t('media.share') }}</span>
 
 										<div class="flex items-center gap-3">
 											<!-- 按钮 1: 复制链接 -->
@@ -1016,8 +1016,7 @@
 
 											<!-- 按钮 2: 浏览器原生分享 (仅在支持时显示) -->
 											<button v-if="canNativeShare" @click="nativeShare"
-												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
-												:title="t('media.shareVia') || 'Share via...'">
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
 												<span class="w-6 h-6 flex items-center justify-center">
 													<i class="ri-share-2-line"></i>
 												</span>
@@ -1025,8 +1024,7 @@
 
 											<!-- 按钮 3: 生成分享海报 -->
 											<button @click="shareposter"
-												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
-												:title="t('media.shareVia') || 'Share via...'">
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
 												<span class="w-auto h-6 px-2 flex gap-1 items-center justify-center">
 													<i class="ri-share-forward-line"></i>
 													<p class="text-sm">{{ t('article.shareposter') }}</p>
@@ -1143,9 +1141,9 @@
 								<!-- ================= 分享功能区域 ================= -->
 								<div
 									class="mt-12 pt-8 px-1 md:px-0  border-t border-neutral-200 dark:border-neutral-800">
-									<div class="flex items-center justify-between">
+									<div class="flex items-center justify-between flex-col gap-3 sm:flex-row sm:gap-0">
 										<span
-											class="text-sm font-medium text-neutral-500">{{ t('media.share') || 'Share this work' }}</span>
+											class="text-base font-medium text-neutral-500">{{ t('media.share') }}</span>
 
 										<div class="flex items-center gap-3">
 											<!-- 按钮 1: 复制链接 -->
@@ -1173,10 +1171,18 @@
 
 											<!-- 按钮 2: 浏览器原生分享 (仅在支持时显示) -->
 											<button v-if="canNativeShare" @click="nativeShare"
-												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
-												:title="t('media.shareVia') || 'Share via...'">
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
 												<span class="w-6 h-6 flex items-center justify-center">
 													<i class="ri-share-2-line"></i>
+												</span>
+											</button>
+
+											<!-- 按钮 3: 生成分享海报 -->
+											<button @click="shareposter"
+												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
+												<span class="w-auto h-6 px-2 flex gap-1 items-center justify-center">
+													<i class="ri-share-forward-line"></i>
+													<p class="text-sm">{{ t('article.shareposter') }}</p>
 												</span>
 											</button>
 										</div>
@@ -1544,6 +1550,14 @@
 													class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
 													:title="t('appstore.share') || 'Share'">
 													<i class="ri-share-circle-line"></i>
+												</button>
+
+												<!-- Button 5: 分享海报 -->
+												<button @click="shareposter"
+													class="shrink-0 w-auto px-4 gap-1 h-11 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													:title="t('appstore.share') || 'Share'">
+													<i class="ri-share-forward-line"></i>
+													<p class="text-sm">{{ t('article.shareposter') }}</p>
 												</button>
 											</div>
 										</div>
@@ -4214,70 +4228,210 @@
 							}
 							sharePosterBlob.value = null;
 
-							// 3) 当前文章数据
-							const title = currentArticle.value?.title?.[currentLang.value] || "";
-							const desc = currentArticle.value?.excerpt?.[currentLang.value] || "";
-							const url = window.location.href;
+							// 3) 自动识别当前页（hash）
+							const hash = (window.location.hash || "").toLowerCase();
+							let type = "article";
+							if (hash.startsWith("#media")) type = "media";
+							else if (hash.startsWith("#appv2")) type = "app";
+							else if (hash.startsWith("#articles")) type = "article";
 
 							// 4) 多语言文案（仅存在于函数内部）
 							const lang = currentLang.value;
-
 							const textMap = {
 								zh: {
-									shareLine: "我觉得这篇不错，分享给你 ~",
+									shareLineArticle: "我觉得这篇不错，分享给你 ~",
+									shareLineApp: "我觉得这个 App 不错，分享给你 ~",
 									leftHint1: "长按扫描二维码",
 									leftHint2: "查看文章",
+									leftHintMedia2: "查看作品",
+									leftHintApp2: "查看 App",
 								},
 								en: {
-									shareLine: "I appreciate this. Sharing it with you ~",
+									shareLineArticle: "I appreciate this. Sharing it with you ~",
+									shareLineApp: "This app is nice. Sharing it with you ~",
 									leftHint1: "Long press to scan the QR code",
 									leftHint2: "Read the article",
+									leftHintMedia2: "View the work",
+									leftHintApp2: "Open the app",
 								},
 								ja: {
-									shareLine: "この記事、いいと思ったので共有します〜",
+									shareLineArticle: "この記事、いいと思ったので共有します〜",
+									shareLineApp: "このアプリ、いいと思ったので共有します〜",
 									leftHint1: "長押ししてQRコードを読み取る",
 									leftHint2: "記事を見る",
+									leftHintMedia2: "作品を見る",
+									leftHintApp2: "アプリを見る",
 								},
 								ko: {
-									shareLine: "이 글이 좋아서 공유해요 ~",
+									shareLineArticle: "이 글이 좋아서 공유해요 ~",
+									shareLineApp: "이 앱이 좋아서 공유해요 ~",
 									leftHint1: "길게 눌러 QR 코드 스캔",
 									leftHint2: "기사 보기",
+									leftHintMedia2: "작품 보기",
+									leftHintApp2: "앱 보기",
 								},
 							};
 
-							const {
-								shareLine,
-								leftHint1,
-								leftHint2
-							} = textMap[lang] || textMap.zh;
+							const tset = textMap[lang] || textMap.zh;
 
-							// 5) 生成海报（只预览，不自动下载）
+							const shareLine =
+								type === "app" ?
+								(tset.shareLineApp || tset.shareLineArticle) :
+								(tset.shareLineArticle || "我觉得这篇不错，分享给你 ~");
+
+							const leftHint1 = tset.leftHint1;
+
+							const leftHint2 =
+								type === "media" ?
+								(tset.leftHintMedia2 || tset.leftHint2) :
+								type === "app" ?
+								(tset.leftHintApp2 || tset.leftHint2) :
+								(tset.leftHint2);
+
+							// 5) 统一：二维码扫到的 url = 当前页面完整链接（包含 #...）
+							const pageUrl = window.location.href;
+
+							// ===== 默认（article） =====
+							let title = currentArticle.value?.title?.[lang] || "";
+							let desc = currentArticle.value?.excerpt?.[lang] || "";
+
+							// ===== media =====
+							let coverUrl = "";
+							// ===== app =====
+							let appIconUrl = "";
+							let appSlogan = "";
+							let appVersion = "";
+							let appVersionLabel = "";
+							let appStatusText = "";
+
+							if (type === "media") {
+								const m = currentMedia.value;
+
+								title =
+									m?.title?.[lang] ||
+									m?.title?.zh ||
+									m?.name?.[lang] ||
+									m?.name ||
+									m?.title ||
+									title;
+
+								coverUrl = m?.thumbnail || ""; // 你已做过 imageCache，本地 blob:url 也可以
+
+								desc = "";
+							}
+
+							if (type === "app") {
+								const a = currentApp?.value || null;
+
+								// title
+								title =
+									(a ? pickI18n(a.name) : "") ||
+									title ||
+									"App";
+
+								// icon
+								appIconUrl =
+									a?.logoUrl ||
+									a?.logo_url ||
+									a?.icon ||
+									"";
+
+								// slogan
+								appSlogan =
+									(a ? pickI18n(a.tagline) : "") ||
+									"";
+
+								// version
+								appVersion = a?.version != null ? String(a.version) : "";
+
+								const versionLabelMap = {
+									zh: "版本",
+									en: "Version",
+									ja: "バージョン",
+									ko: "버전",
+								};
+
+								appVersionLabel = appVersion ?
+									(versionLabelMap[lang] || versionLabelMap.zh) :
+									"";
+
+								// statusKey：唯一可信来源
+								const statusKey = a?.statusKey || "";
+
+								const statusI18nMap = {
+									zh: {
+										"apps.developing": "开发中",
+										"apps.alpha": "内测中",
+										"apps.beta": "公测中",
+										"apps.launched": "正式发布",
+									},
+									en: {
+										"apps.developing": "Developing",
+										"apps.alpha": "Alpha",
+										"apps.beta": "Beta",
+										"apps.launched": "Launched",
+									},
+									ja: {
+										"apps.developing": "開発中",
+										"apps.alpha": "アルファ",
+										"apps.beta": "ベータ",
+										"apps.launched": "正式リリース",
+									},
+									ko: {
+										"apps.developing": "개발 중",
+										"apps.alpha": "알파",
+										"apps.beta": "베타",
+										"apps.launched": "정식 출시",
+									},
+								};
+
+								const map = statusI18nMap[lang] || statusI18nMap.zh;
+
+								appStatusText =
+									(statusKey && map[statusKey]) ||
+									(a?.disabled ? map["apps.developing"] : map["apps.launched"]);
+
+								desc = "";
+								coverUrl = "";
+							}
+
+							// 6) 生成海报（只预览，不自动下载）
 							const {
 								blob
 							} = await window.createSharePoster({
+								type, // article | media | app
 								title,
-								desc,
-								url,
+								desc, // article 用；media/app 为 ""
+								url: pageUrl, // 二维码 + 右下角
+								coverUrl, // media 用
+								// app 用：
+								appIconUrl,
+								appSlogan,
+								appVersion,
+								appVersionLabel,
+								appStatusText,
+
 								shareLine,
 								leftHint1,
 								leftHint2,
-								footerLeft: "@" + t('brand'), // ✅ 只在这里调用一次
+								footerLeft: "@" + t("brand"),
 								footerRightText: "https://dorafx.top",
 								scale: 2,
 								autoDownload: false,
-								fileName: `${title.slice(0, 18) || "share"}-poster.png`,
+								fileName: `${(title || "share").slice(0, 18)}-poster.png`,
 							});
 
 							sharePosterBlob.value = blob;
 							sharePosterImgUrl.value = URL.createObjectURL(blob);
 						} catch (e) {
 							console.error(e);
-							sharePosterError.value =
-								"生成失败了，可能是字体或渲染资源加载异常。你可以重试一次。";
+							sharePosterError.value = "生成失败了，可能是字体或渲染资源加载异常。你可以重试一次。";
 						} finally {
 							sharePosterLoading.value = false;
 						}
 					};
+
+
 
 
 					// 关闭弹层

@@ -50,73 +50,87 @@
 	</head>
 
 	<body class="m-0 p-0 bg-black">
-		<!-- 固定宽度，高度自适应 -->
-		<div class="w-[1080px] h-auto relative overflow-hidden bg-white">
-
+		<!-- 固定宽度，高度自适应：App 应用商店分享页 -->
+		<div class="w-[1080px] h-auto relative overflow-hidden bg-white" id="APP分享页">
 			<!-- ===== 有存在感的气氛渐变背景 ===== -->
-			<div class="absolute inset-0 multi-gradient-bg">
-			</div>
+			<div class="absolute inset-0 multi-gradient-bg"></div>
 
 			<!-- 内容 -->
 			<div class="relative p-[56px]">
 				<!-- Glass 主卡片 -->
-				<div class="bg-white/80 backdrop-blur-xl
-	               border border-neutral-200/80
-	               shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
-
+				<div
+					class="bg-white/80 backdrop-blur-xl border border-neutral-200/80 shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
 					<!-- 内边框 -->
 					<div class="border border-neutral-200/70 m-[16px]">
-						<div class="px-[60px] pt-[80px] pb-[40px] flex flex-col gap-[56px]">
+						<div class="px-[60px] pt-[72px] pb-[40px] flex flex-col gap-[44px]">
 
 							<!-- 顶部分享语 -->
 							<div class="text-left text-[36px] text-neutral-500 font-sans">
-								我觉得这篇不错，分享给你 ~
+								我觉得这个 App 不错，分享给你 ~
 							</div>
 
-							<!-- 标题 -->
-							<div class="text-left text-[80px] leading-[1.14]
-	                     font-extrabold text-neutral-900 font-serif">
-								为什么我一个乳糖不耐受的人，还是会反复买沃集鲜4.0牛奶
-							</div>
+							<!-- ===== 海报式 App 信息区 ===== -->
+							<div class="flex flex-col items-center text-center gap-[32px] pt-[120px]">
+								<!-- App 图标 -->
+								<div class="w-[200px] h-[200px] rounded-[44px] overflow-hidden bg-white/70 border border-white/70 shadow-[0_26px_80px_rgba(0,0,0,0.18)]">
+									<!-- <img src="YOUR_ICON_URL" class="w-full h-full object-cover" /> -->
+									<div class="w-full h-full bg-neutral-300"></div>
+								</div>
 
-							<!-- 简介 -->
-							<div class="max-w-[880px] text-left text-[42px] leading-[1.75]
-	                     text-neutral-700 font-medium">
-								记录一次关于“胜利瞬间”的镜头实验：用节奏、构图与氛围把情绪推到最亮的一秒。
-								不是口味问题，而是身体不太配合。只要喝了奶，最慢半天，快的话一个小时左右，
-								肠胃就会开始有反应。
+								<!-- App 名称 -->
+								<div class="text-[88px] leading-[1.06] font-extrabold text-neutral-900 font-sans pt-[20px]">
+									Diet Pro
+								</div>
+
+								<!-- Slogan -->
+								<div class="max-w-[860px] text-[40px] leading-[1.6] text-neutral-700 font-medium pt-[10px]">
+									科学记录，健康瘦身
+								</div>
+
+								<!-- 版本 / 状态 -->
+								<div class="flex items-center flex-wrap justify-center gap-[14px] pt-[6px]">
+									<!-- 版本号 -->
+									<div class="inline-flex items-center gap-[10px]
+							             px-[20px] py-[10px] rounded-full
+							             bg-white/70 border border-neutral-200/70
+							             text-[28px] font-semibold text-neutral-700">
+										<span class="text-neutral-500 font-medium">版本</span>
+										<span>v1.0.0</span>
+									</div>
+
+									<!-- 状态 -->
+									<div class="px-[20px] py-[10px] text-[28px] rounded-full font-semibold border bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800">
+										<span>已发布</span>
+									</div>
+								</div>
 							</div>
 
 							<!-- 二维码区域 -->
-							<div class="flex items-center justify-between gap-[48px] mt-[240px]">
+							<div class="flex items-center justify-between gap-[48px] mt-[150px]">
 								<!-- 左侧文字 -->
 								<div class="flex flex-col justify-center text-left gap-1">
 									<div class="text-[32px] text-neutral-600 leading-[1.3]">
 										长按扫描二维码
 									</div>
 									<div class="mt-[6px] text-[32px] text-neutral-600 leading-[1.3]">
-										查看文章
+										查看 App
 									</div>
 								</div>
 
 								<!-- 右侧二维码 -->
-								<div class="bg-white/95 backdrop-blur-md
-	                       border border-neutral-200/80
-	                       rounded-xl
-	                       shadow-[0_18px_50px_rgba(0,0,0,0.1)]
-	                       p-[10px]">
-
+								<div class="bg-white/95 backdrop-blur-md border border-neutral-200/80 rounded-xl
+	                                shadow-[0_18px_50px_rgba(0,0,0,0.1)] p-[10px]">
 									<div
 										class="w-[120px] h-[120px] bg-white rounded-lg flex items-center justify-center">
-										<div class="w-[120px] h-[120px] bg-black">
-										</div>
+										<!-- 这里放你的二维码（canvas/svg/img） -->
+										<div class="w-[120px] h-[120px] bg-black"></div>
 									</div>
 								</div>
 							</div>
 
 							<!-- 底部小字 -->
 							<div class="flex items-center justify-between text-[24px] font-medium text-neutral-400">
-								<div>© 企鹅企企</div>
+								<div>@ 企鹅企企</div>
 								<div>https://dorafx.top</div>
 							</div>
 
@@ -126,7 +140,5 @@
 			</div>
 		</div>
 	</body>
-
-
 
 </html>
