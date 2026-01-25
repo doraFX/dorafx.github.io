@@ -436,6 +436,80 @@
 				this._fsAnimLock = false;
 				this._wakeUI();
 			});
+
+			// ---------- keyboard shortcuts ----------
+			// Space: play/pause
+			// Enter: fullscreen toggle
+			// Only active when this player is "focused" (clicked/hovered) to avoid hijacking page typing.
+			this._kbdActive = false;
+
+			// Make container focusable so it can receive focus naturally
+			if (!this.container.hasAttribute("tabindex")) this.container.setAttribute("tabindex", "0");
+
+			const isTypingTarget = (el) => {
+				if (!el) return false;
+				const tag = (el.tagName || "").toUpperCase();
+				return (
+					tag === "INPUT" ||
+					tag === "TEXTAREA" ||
+					tag === "SELECT" ||
+					el.isContentEditable ||
+					(el.closest && !!el.closest('[contenteditable="true"]'))
+				);
+			};
+
+			// Activate keyboard for this player after user interacts with it
+			const activateKbd = () => {
+				this._kbdActive = true;
+				// give it focus for free keyboard usage
+				this.container.focus?.({
+					preventScroll: true
+				});
+			};
+
+			// deactivate when clicking elsewhere
+			const deactivateKbd = (e) => {
+				if (!e?.target) return;
+				if (this.container.contains(e.target)) return;
+				this._kbdActive = false;
+			};
+
+			this.container.addEventListener("pointerdown", activateKbd);
+			this.container.addEventListener("click", activateKbd);
+			document.addEventListener("pointerdown", deactivateKbd, true);
+
+			this._onKeyDown = (e) => {
+				// if user is typing, never hijack
+				if (isTypingTarget(e.target)) return;
+
+				// require this player to be active (focused) OR currently fullscreen
+				const isThisFullscreen = document.fullscreenElement === this.container;
+				const shouldHandle = this._kbdActive || isThisFullscreen;
+				if (!shouldHandle) return;
+
+				// avoid interfering with browser/system shortcuts
+				if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+				// Space (modern browsers: " " or "Spacebar", code: "Space")
+				if (e.code === "Space" || e.key === " " || e.key === "Spacebar") {
+					e.preventDefault();
+					this._togglePlay();
+					this._wakeUI();
+					return;
+				}
+
+				// Enter: fullscreen toggle
+				if (e.code === "Enter" || e.key === "Enter") {
+					e.preventDefault();
+					this._toggleFullscreenAnimatedNoDelay();
+					this._wakeUI();
+					return;
+				}
+			};
+
+			document.addEventListener("keydown", this._onKeyDown, {
+				passive: false
+			});
 		}
 
 		// ---------- playback ----------
