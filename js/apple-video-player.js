@@ -428,43 +428,12 @@
 			this.video.addEventListener("pointermove", wake);
 			this.video.addEventListener("pointerdown", wake);
 
-			// ✅ 关键：全屏时很多事件不再落到 container/video，直接在 document 上兜底
-			const docWake = (e) => {
-				// 只在“这个播放器处于全屏”时才处理，避免影响页面其他区域
-				if (document.fullscreenElement !== this.container) return;
-
-				// 拖动进度条不算“无操作”，但你拖动时本身会 _wakeUI，这里也不干扰
-				this._wakeUI();
-			};
-			document.addEventListener("pointermove", docWake, {
-				passive: true
-			});
-			document.addEventListener("pointerdown", docWake, {
-				passive: true
-			});
-			document.addEventListener("mousemove", docWake, {
-				passive: true
-			});
-			document.addEventListener("touchstart", docWake, {
-				passive: true
-			});
-			document.addEventListener("touchmove", docWake, {
-				passive: true
-			});
-
 			document.addEventListener("fullscreenchange", () => {
 				const isThis = document.fullscreenElement === this.container;
 				this.ui.fsIcon.innerHTML = isThis ? this.icons.exitFullscreen : this.icons.fullscreen;
 				this._fixWrapperLayout();
 				this._animateFullscreenPost(isThis);
 				this._fsAnimLock = false;
-
-				// ✅ 进入全屏后：如果正在播放，立刻重新启动 idle 计时，让控件能按 IDLE_MS 消失
-				clearTimeout(this._idleTimer);
-				this.container.classList.remove("is-idle");
-				if (isThis && this.container.classList.contains("is-playing")) this._armIdle();
-
-				// 退出全屏也唤醒一下（保持一致）
 				this._wakeUI();
 			});
 		}
@@ -493,34 +462,14 @@
 		_wakeUI() {
 			this.container.classList.remove("is-idle");
 			clearTimeout(this._idleTimer);
-
-			// ✅ 关键：唤醒时把 chrome 恢复
-			if (this.ui && this.ui.chrome) {
-				this.ui.chrome.style.opacity = "";
-				this.ui.chrome.style.pointerEvents = "";
-				this.ui.chrome.style.transform = "";
-				this.ui.chrome.style.transition = "";
-			}
-
-			const playing = !this.video.paused && !this.video.ended && this.video.currentTime > 0;
-			if (this.container.classList.contains("is-playing") || playing) this._armIdle();
+			if (this.container.classList.contains("is-playing")) this._armIdle();
 		}
 
 		_armIdle() {
 			clearTimeout(this._idleTimer);
 			this._idleTimer = setTimeout(() => {
-				// 只有播放中才进入 idle
-				const playing = !this.video.paused && !this.video.ended && this.video.currentTime > 0;
-				if (!playing) return;
-
-				this.container.classList.add("is-idle");
-
-				// ✅ 关键：不用等 CSS，直接把整套 chrome（含进度条/音量条/播放键）彻底隐藏
-				if (this.ui && this.ui.chrome) {
-					this.ui.chrome.style.opacity = "0";
-					this.ui.chrome.style.pointerEvents = "none";
-					this.ui.chrome.style.transform = "translateY(10px)";
-					this.ui.chrome.style.transition = "opacity 220ms ease, transform 220ms ease";
+				if (this.container.classList.contains("is-playing")) {
+					this.container.classList.add("is-idle");
 				}
 			}, this.IDLE_MS);
 		}
@@ -562,12 +511,6 @@
 		_animateFullscreenPre(entering) {
 			if (!this._canAnimate(this.container)) return;
 			this.container.classList.remove("is-idle");
-			if (this.ui && this.ui.chrome) {
-				this.ui.chrome.style.opacity = "";
-				this.ui.chrome.style.pointerEvents = "";
-				this.ui.chrome.style.transform = "";
-				this.ui.chrome.style.transition = "";
-			}
 
 			const kf = entering ? [{
 				transform: "scale(1)"
