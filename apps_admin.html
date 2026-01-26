@@ -111,6 +111,19 @@
 							title="刷新">
 							<i class="fa-solid fa-rotate-right" :class="{'animate-spin': loading}"></i>
 						</button>
+
+						<!-- 登录/退出 -->
+						<button v-if="!isAuthed" @click="openLogin()"
+							class="bg-white/70 hover:bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2"
+							title="登录后才能修改">
+							<i class="fa-solid fa-lock text-xs"></i> 登录
+						</button>
+						<button v-else @click="logout()"
+							class="bg-white/70 hover:bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2"
+							title="退出登录">
+							<i class="fa-solid fa-right-from-bracket text-xs"></i> 退出
+						</button>
+
 					</div>
 				</div>
 			</header>
@@ -193,6 +206,62 @@
 					</button>
 				</div>
 			</main>
+
+
+			<!-- 登录 模态框 -->
+			<div v-if="auth.show" class="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6"
+				@click.self="closeLogin()">
+				<div class="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity"></div>
+
+				<div
+					class="relative bg-white/90 backdrop-blur-xl border border-white/60 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-slide-up">
+					<div class="px-6 py-4 border-b border-gray-200/70 flex items-center justify-between">
+						<div class="flex items-center gap-2">
+							<div class="w-9 h-9 rounded-xl bg-black/5 flex items-center justify-center">
+								<i class="fa-solid fa-shield-keyhole text-gray-700"></i>
+							</div>
+							<div class="font-semibold">管理登录</div>
+						</div>
+						<button @click="closeLogin()"
+							class="w-9 h-9 rounded-full hover:bg-black/5 flex items-center justify-center text-gray-600">
+							<i class="fa-solid fa-xmark"></i>
+						</button>
+					</div>
+
+					<div class="p-6 space-y-4">
+
+						<div class="space-y-2">
+							<label class="block text-xs font-bold text-slate-500 uppercase">邮箱</label>
+							<input v-model="auth.email" type="email" placeholder="输入邮箱"
+								class="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 text-sm text-gray-700" />
+						</div>
+
+						<div class="space-y-2">
+							<label class="block text-xs font-bold text-slate-500 uppercase">密码</label>
+							<input v-model="auth.password" type="password" autocomplete="current-password"
+								placeholder="输入密码"
+								class="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 text-sm apple-input" />
+						</div>
+
+						<div v-if="auth.error"
+							class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
+							<i class="fa-solid fa-triangle-exclamation mr-1"></i>{{ auth.error }}
+						</div>
+
+						<div class="flex items-center justify-end gap-2 pt-2">
+							<button @click="closeLogin()"
+								class="px-4 py-2 rounded-full text-sm border border-gray-200 bg-white/80 hover:bg-white transition">
+								取消
+							</button>
+							<button @click="login()" :disabled="auth.loading || !auth.password"
+								class="px-4 py-2 rounded-full text-sm bg-[#0071e3] hover:bg-[#0077ED] text-white transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+								<i v-if="auth.loading" class="fa-solid fa-spinner animate-spin text-xs"></i>
+								<span>{{ auth.loading ? '登录中...' : '登录' }}</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<!-- 编辑/新建 模态框 -->
 			<div v-if="modal.open" class="fixed inset-0 z-50 flex items-center justify-center sm:p-6"
@@ -1218,7 +1287,10 @@
 
 			// ====== 配置 ======
 			const API_BASE = "https://applist.dorafx.top";
-			const ADMIN_TOKEN = "8f3a9c2d-7e4a-4c1a-b1b2";
+			// 只读 token：用于读取列表（不登录也能看）
+			const GET_TOKEN = "ahVh=3f0w>.j?RGkssi7TQ+w*zbkRCrBw-).faM4%:YhjQxd5Fi*4a.]~de3Jj~,";
+			// 登录后拿到的 admin_token（worker /auth/login 返回的 ADMIN_TOKEN），保存在 localStorage
+			const SESSION_KEY = "applist_admin_session";
 			// =================
 
 			// 通用输入组件
@@ -1544,6 +1616,8 @@
 								sort: idx
 							}));
 
+						if (!(await ensureAdmin())) return;
+
 						const res = await fetch(`${API_BASE}/api/apps/reorder`, {
 							method: "POST",
 							headers: {
@@ -1838,10 +1912,84 @@
 						setTimeout(() => toast.show = false, 2600);
 					};
 
-					const authHeaders = () => ({
-						"Authorization": `Bearer ${ADMIN_TOKEN}`
+					// ===== Auth (login required for write) =====
+					const auth = reactive({
+						show: false,
+						email: "",
+						password: "",
+						loading: false,
+						error: ""
 					});
 
+					const sessionToken = ref(localStorage.getItem(SESSION_KEY) || "");
+					const isAuthed = computed(() => !!sessionToken.value);
+
+					const readHeaders = () => ({
+						"Authorization": `Bearer ${GET_TOKEN}`,
+					});
+
+					const adminHeaders = () => ({
+						"Authorization": `Bearer ${sessionToken.value}`,
+					});
+
+					// 默认：没登录 -> 读；登录后 -> 读写都用 session token
+					const authHeaders = () => (isAuthed.value ? adminHeaders() : readHeaders());
+
+					function openLogin() {
+						auth.show = true;
+						auth.email = "";
+						auth.password = "";
+						auth.error = "";
+					}
+
+					function closeLogin() {
+						auth.show = false;
+						auth.password = "";
+						auth.error = "";
+						auth.loading = false;
+					}
+
+					async function login() {
+						auth.error = "";
+						auth.loading = true;
+						try {
+							const res = await fetch(`${API_BASE}/auth/login`, {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify({
+									email: String(auth.email || "").trim(),
+									password: String(auth.password || ""),
+								}),
+							});
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok || !out?.ok || !out?.admin_token) {
+								throw new Error(out?.error || "登录失败");
+							}
+							sessionToken.value = String(out.admin_token);
+							localStorage.setItem(SESSION_KEY, sessionToken.value);
+							showToast("ok", "登录成功");
+							closeLogin();
+						} catch (e) {
+							auth.error = e?.message || String(e);
+						} finally {
+							auth.loading = false;
+						}
+					}
+
+					function logout() {
+						localStorage.removeItem(SESSION_KEY);
+						sessionToken.value = "";
+						showToast("ok", "已退出登录");
+					}
+
+					async function ensureAdmin() {
+						if (isAuthed.value) return true;
+						openLogin();
+						auth.error = "请先登录后再修改";
+						return false;
+					}
 					// Image Processing (Resize & Compress)
 					async function resizeImage(file, maxWidth, maxHeight) {
 						// ===== helpers =====
@@ -1988,6 +2136,8 @@
 						uploading.value = true;
 						try {
 							const processedBlob = await resizeImage(file, 288, 288);
+							if (!(await ensureAdmin())) return;
+
 							const res = await fetch(`${API_BASE}/api/file/${key}`, {
 								method: "PUT",
 								headers: {
@@ -2128,6 +2278,8 @@
 							// ✅ 你要求的路径：apps/<id>/shelf/<file>
 							const key = `apps/${appId}/shelf/${filename}`;
 
+							if (!(await ensureAdmin())) return;
+
 							const res = await fetch(`${API_BASE}/api/file/${key}`, {
 								method: "PUT",
 								headers: {
@@ -2162,6 +2314,8 @@
 						if (!confirm("确定删除该图片文件吗？（会从存储中删除，不可恢复）")) return;
 
 						try {
+							if (!(await ensureAdmin())) return;
+
 							const res = await fetch(`${API_BASE}/api/file/${it.src}`, {
 								method: "DELETE",
 								headers: {
@@ -2401,6 +2555,8 @@
 								`${API_BASE}/api/apps/${encodeURIComponent(form.id)}` :
 								`${API_BASE}/api/apps`;
 							const method = isEdit ? "PUT" : "POST";
+
+							if (!(await ensureAdmin())) return;
 
 							const res = await fetch(url, {
 								method,
@@ -2700,6 +2856,12 @@
 						logoBust,
 						bumpLogoBust,
 						withBust,
+						auth,
+						isAuthed,
+						openLogin,
+						closeLogin,
+						login,
+						logout,
 					};
 				}
 			}).mount("#app");
