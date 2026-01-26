@@ -154,7 +154,7 @@
 
 
 					<!-- 卡片 Item -->
-					<div v-for="app in rows" :key="app.id" :data-id="app.id" @click="dragging ? null : openEdit(app)"
+					<div v-for="app in filteredRows" :key="app.id" :data-id="app.id" @click="dragging ? null : openEdit(app)"
 						class="app-card group py-4 rounded-2xl flex flex-col items-center cursor-pointer" role="button"
 						tabindex="0" @keydown.enter.prevent="openEdit(app)" @keydown.space.prevent="openEdit(app)">
 
@@ -2781,6 +2781,26 @@
 						});
 						return out;
 					}
+					
+					const filteredRows = computed(() => {
+					  const keyword = String(q.value || "").trim().toLowerCase();
+					  if (!keyword) return rows.value;
+					
+					  const hit = (v) => String(v || "").toLowerCase().includes(keyword);
+					
+					  return rows.value.filter(app => {
+					    // name_i18n / tagline_i18n 可能是 JSON 字符串，也可能是对象；你已有 pickLang 可用
+					    const name = pickLang(app.name_i18n);
+					    const tagline = pickLang(app.tagline_i18n);
+					
+					    return (
+					      hit(app.id) ||
+					      hit(app.page) ||
+					      hit(name) ||
+					      hit(tagline)
+					    );
+					  });
+					});
 
 
 
@@ -2862,6 +2882,7 @@
 						closeLogin,
 						login,
 						logout,
+						filteredRows,
 					};
 				}
 			}).mount("#app");
