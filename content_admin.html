@@ -902,7 +902,7 @@
 														<span>{{ form.read_time }} min read</span>
 													</div>
 
-													<div v-if="form.cover"
+													<div v-if="form.cover && form.showCover"
 														class="aspect-video bg-neutral-100 rounded-2xl mb-10 overflow-hidden">
 														<img :src="form.cover" class="w-full h-full object-cover">
 													</div>
@@ -1021,6 +1021,20 @@
 										<a v-if="form.cover" :href="form.cover" target="_blank"
 											class="px-2 py-1 bg-slate-100 border rounded hover:bg-slate-200 text-xs flex items-center justify-center">🔗</a>
 									</div>
+								</div>
+
+								<!-- 页面封面显示 -->
+								<div v-if="currentTab === 'blog'" class="space-y-2">
+									<label class="block text-xs font-bold text-slate-500 uppercase">页面显示封面</label>
+									<button @click="form.showCover = form.showCover ? 0 : 1; isDirty = true"
+										class="w-full flex items-center justify-between px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 hover:bg-white transition">
+										<span class="text-slate-600">{{ form.showCover ? '显示' : '隐藏' }}</span>
+										<span
+											:class="['w-11 h-6 rounded-full transition-colors relative', form.showCover ? 'bg-green-500' : 'bg-slate-300']">
+											<span
+												:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.showCover ? 'translate-x-6' : 'translate-x-1']"></span>
+										</span>
+									</button>
 								</div>
 
 								<!-- 分类/类型 -->
@@ -1243,6 +1257,20 @@
 											<a v-if="form.cover" :href="form.cover" target="_blank"
 												class="px-2 py-1 bg-slate-100 border rounded hover:bg-slate-200 text-xs flex items-center justify-center">🔗</a>
 										</div>
+									</div>
+
+									<!-- 页面封面显示 -->
+									<div v-if="currentTab === 'blog'" class="space-y-2">
+										<label class="block text-xs font-bold text-slate-500 uppercase">页面显示封面</label>
+										<button @click="form.showCover = form.showCover ? 0 : 1; isDirty = true"
+											class="w-full flex items-center justify-between px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 hover:bg-white transition">
+											<span class="text-slate-600">{{ form.showCover ? '显示' : '隐藏' }}</span>
+											<span
+												:class="['w-11 h-6 rounded-full transition-colors relative', form.showCover ? 'bg-green-500' : 'bg-slate-300']">
+												<span
+													:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.showCover ? 'translate-x-6' : 'translate-x-1']"></span>
+											</span>
+										</button>
 									</div>
 
 									<!-- 分类/类型 -->
@@ -1540,6 +1568,7 @@
 						published: false,
 						date: '',
 						cover: '',
+						showCover: 1,
 						slug: '',
 						read_time: 5,
 						type: {
@@ -1711,7 +1740,7 @@
 						if (!forceRefresh && listCache[currentTab.value].length > 0) return
 
 						const selectFields = currentTab.value === 'blog' ?
-							'id, sort, published, date, cover, title, category, read_time, slug' :
+							'id, sort, published, date, cover, showCover, title, category, read_time, slug' :
 							'id, sort, published, date, thumbnail, title, type'
 
 						const {
@@ -2903,6 +2932,7 @@
 						form.published = false
 						form.date = new Date().toISOString().split('T')[0]
 						form.cover = ''
+						form.showCover = 1
 						form.slug = ''
 						form.read_time = 5
 
@@ -2973,6 +3003,7 @@
 
 								if (currentTab.value === 'blog') {
 									form.cover = data.cover || ''
+									form.showCover = data.showCover === 0 ? 0 : 1
 									form.slug = data.slug || ''
 									form.read_time = data.read_time || 5
 
@@ -3096,6 +3127,7 @@
 							if (table === 'blog') {
 								Object.assign(payload, {
 									cover: form.cover || '',
+									showCover: form.showCover ? 1 : 0,
 									slug: (form.slug && String(form.slug).trim()) ? form.slug :
 										`post-${Date.now()}`,
 									read_time: Number(form.read_time || 5),

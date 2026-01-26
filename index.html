@@ -59,49 +59,14 @@
 			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
 			rel="stylesheet">
 
-		<script src="js/html2canvas.min.js"></script>
-		<script src="js/qrcode.min.js"></script>
-		<script src="js/shareposter.js"></script>
+		<script defer src="js/html2canvas.min.js"></script>
+		<script defer src="js/qrcode.min.js"></script>
+		<script defer src="js/shareposter.js"></script>
 
 		<link rel="stylesheet" href="css/apple-video-player.css" />
-		<script src="js/apple-video-player.js"></script>
-		<script>
-			AppleTVLikePlayer.auto();
-		</script>
+		<script defer src="js/apple-video-player.js"></script>
 
 		<link rel="stylesheet" href="css/style.css" />
-
-
-		<!-- <style>
-			@font-face {
-				font-family: 'Noto Sans';
-				src: url('./fonts/NotoSans.ttf') format('truetype');
-				font-weight: 100 900;
-				font-display: swap;
-			}
-
-			@font-face {
-				font-family: 'Noto Sans SC';
-				src: url('./fonts/NotoSansSC.ttf') format('truetype');
-				font-weight: 100 900;
-				font-display: swap;
-			}
-
-			@font-face {
-				font-family: 'Noto Sans JP';
-				src: url('./fonts/NotoSansJP.ttf') format('truetype');
-				font-weight: 100 900;
-				font-display: swap;
-			}
-
-			@font-face {
-				font-family: 'Noto Sans KR';
-				src: url('./fonts/NotoSansKR.ttf') format('truetype');
-				font-weight: 100 900;
-				font-display: swap;
-			}
-		</style> -->
-
 		<script>
 			tailwind.config = {
 				darkMode: 'class',
@@ -970,11 +935,11 @@
 									<span>{{ currentArticle.readTime }} {{ t('article.minRead') }}</span>
 								</div>
 
-								<!-- 封面 不显示 -->
-								<!-- <div class="aspect-video bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-10 overflow-hidden">
+								<div v-if="currentArticle.cover && currentArticle.showCover !== 0"
+									class="aspect-video bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-10 overflow-hidden">
 									<img :src="currentArticle.cover" :alt="currentArticle.title[currentLang]"
 										class="w-full h-full object-cover">
-								</div> -->
+								</div>
 
 								<div class="prose prose-neutral dark:prose-invert max-w-none">
 									<!-- 使用 v-html 渲染解析后的 HTML -->
@@ -3250,31 +3215,6 @@
 
 
 
-					const scrollContainer = ref(null)
-					const currentPhoneIndex = ref(0)
-
-					const handleScroll = (e) => {
-						const container = e.target
-						const scrollLeft = container.scrollLeft
-						const cardWidth = container.clientWidth
-						// 计算当前是第几张图 (四舍五入)
-						currentPhoneIndex.value = Math.round(scrollLeft / cardWidth)
-					}
-
-					const scrollToPhone = (index) => {
-						if (scrollContainer.value) {
-							const cardWidth = scrollContainer.value.clientWidth
-							scrollContainer.value.scrollTo({
-								left: index * cardWidth, // 简化计算，大致滚动到对应位置
-								behavior: 'smooth'
-							})
-						}
-					}
-
-
-
-
-
 					// ========= Cloudflare (applist) =========
 					const API_BASE = "https://applist.dorafx.top";
 					const GET_TOKEN = "ahVh=3f0w>.j?RGkssi7TQ+w*zbkRCrBw-).faM4%:YhjQxd5Fi*4a.]~de3Jj~,";
@@ -3828,6 +3768,7 @@
 						return Promise.all((rows || []).map(async (r) => ({
 							...r, //  这里一定要 ...r，不能写 .r
 							readTime: r.readTime ?? r.read_time ?? 0,
+							showCover: Number(r.showCover ?? r.show_cover ?? 1),
 							cover: r.cover ? await imageCache.toObjectUrl(r.cover) : r.cover,
 						})));
 					}
@@ -4713,10 +4654,6 @@
 						submitContact,
 						contactStatus,
 						contactHint,
-						scrollContainer,
-						currentPhoneIndex,
-						handleScroll,
-						scrollToPhone,
 						articles,
 						mediaItems,
 						isPageLoading,
