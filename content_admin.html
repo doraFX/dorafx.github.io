@@ -1024,17 +1024,17 @@
 								</div>
 
 								<!-- 页面封面显示 -->
-								<div v-if="currentTab === 'blog'" class="space-y-2">
-									<label class="block text-xs font-bold text-slate-500 uppercase">页面显示封面</label>
-									<button @click="form.showCover = form.showCover ? 0 : 1; isDirty = true"
-										class="w-full flex items-center justify-between px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 hover:bg-white transition">
-										<span class="text-slate-600">{{ form.showCover ? '显示' : '隐藏' }}</span>
-										<span
+								<div v-if="currentTab === 'blog'" class="pt-4 border-t border-slate-200">
+									<div class="flex items-center justify-between cursor-pointer"
+										@click="form.showCover = !form.showCover; isDirty = true;">
+										<span class="text-sm font-bold text-slate-700">页面显示封面</span>
+										<div
 											:class="['w-11 h-6 rounded-full transition-colors relative', form.showCover ? 'bg-green-500' : 'bg-slate-300']">
-											<span
-												:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.showCover ? 'translate-x-6' : 'translate-x-1']"></span>
-										</span>
-									</button>
+											<div
+												:class="['absolute top-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm', form.showCover ? 'translate-x-6' : 'translate-x-1']">
+											</div>
+										</div>
+									</div>
 								</div>
 
 								<!-- 分类/类型 -->
