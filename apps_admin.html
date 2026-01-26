@@ -83,6 +83,37 @@
 	<body class="text-[#1d1d1f]">
 		<div id="app" class="min-h-screen pb-20">
 
+			<!-- Access 登录弹窗（未登录就强制弹出） -->
+			<div v-if="needsAccessLogin" class="fixed inset-0 z-50 flex items-center justify-center">
+				<div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+				<div class="relative w-[92vw] max-w-md rounded-3xl bg-white/90 border border-neutral-200 shadow-[0_30px_120px_rgba(0,0,0,0.25)] p-5">
+					<div class="text-lg font-bold text-neutral-900">需要登录才能管理</div>
+					<div class="mt-1 text-sm text-neutral-600 leading-relaxed">
+						管理 API 通过访问 <span class="font-mono">applist-admin.dorafx.top</span>，请先通过 Cloudflare Access 登录。
+					</div>
+
+					<div class="mt-4 flex flex-wrap gap-2">
+						<button @click="openAccessLogin"
+							class="inline-flex items-center gap-2 rounded-2xl bg-[#0071e3] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0077ED] transition active:scale-95">
+							<i class="fa-solid fa-right-to-bracket"></i>
+							去登录
+						</button>
+
+						<button @click="retryAccess"
+							class="inline-flex items-center gap-2 rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 hover:bg-neutral-50 transition active:scale-95">
+							<i class="fa-solid fa-rotate-right"></i>
+							我已登录，重试
+						</button>
+					</div>
+
+					<div class="mt-3 text-xs text-neutral-400">
+						提示：如果你在本地 <span class="font-mono">127.0.0.1</span> 打开，必须启用 Worker 的 CORS，否则浏览器会拦截带 cookie 的请求。
+					</div>
+				</div>
+			</div>
+
+
 			<!-- 顶部导航栏 (毛玻璃) -->
 			<header class="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-200/80">
 				<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -1217,8 +1248,7 @@
 			} = Vue;
 
 			// ====== 配置 ======
-			const API_BASE = "https://applist.dorafx.top";
-			const ADMIN_TOKEN = "8f3a9c2d-7e4a-4c1a-b1b2";
+			const API_BASE = "https://applist-admin.dorafx.top";
 			// =================
 
 			// 通用输入组件
@@ -1544,7 +1574,7 @@
 								sort: idx
 							}));
 
-						const res = await fetch(`${API_BASE}/api/apps/reorder`, {
+						const res = await apiFetch(`${API_BASE}/api/apps/reorder`, {
 							method: "POST",
 							headers: {
 								...authHeaders(),
@@ -1838,11 +1868,61 @@
 						setTimeout(() => toast.show = false, 2600);
 					};
 
-					const authHeaders = () => ({
-						"Authorization": `Bearer ${ADMIN_TOKEN}`
-					});
 
-					// Image Processing (Resize & Compress)
+					// ====== Cloudflare Access 登录检查（管理域） ======
+					const needsAccessLogin = ref(false);
+
+					const openAccessLogin = () => {
+						// 打开管理域根路径，触发 Access 登录页
+						window.open("https://applist-admin.dorafx.top/", "_blank", "noopener,noreferrer");
+					};
+
+					const checkAccess = async () => {
+						try {
+							const r = await apiFetch(API_BASE + "/", {
+								method: "GET",
+								credentials: "include"
+							});
+							// Access 未登录时，通常会 302 到登录页或直接 401/403（fetch 不会弹出登录 UI）
+							if (!r.ok) {
+								needsAccessLogin.value = true;
+								return false;
+							}
+							needsAccessLogin.value = false;
+							return true;
+						} catch (e) {
+							needsAccessLogin.value = true;
+							return false;
+						}
+					};
+
+					const retryAccess = async () => {
+						const ok = await checkAccess();
+						if (ok) {
+							showToast("ok", "Access 登录已就绪，正在重新加载数据…");
+							reload();
+						}
+					};
+					// ================================================
+
+					const authHeaders = () => ({});
+
+
+										// 统一 API 请求：带上 Access Cookie（跨域需要 credentials）
+					const apiFetch = (url, opts = {}) => {
+						const headers = {
+							...(opts.headers || {}),
+							...(authHeaders() || {}),
+						};
+
+						return fetch(url, {
+							...opts,
+							headers,
+							credentials: "include",
+							redirect: "follow",
+						});
+					};
+// Image Processing (Resize & Compress)
 					async function resizeImage(file, maxWidth, maxHeight) {
 						// ===== helpers =====
 						const readImage = (f) =>
@@ -1988,7 +2068,7 @@
 						uploading.value = true;
 						try {
 							const processedBlob = await resizeImage(file, 288, 288);
-							const res = await fetch(`${API_BASE}/api/file/${key}`, {
+							const res = await apiFetch(`${API_BASE}/api/file/${key}`, {
 								method: "PUT",
 								headers: {
 									...authHeaders(),
@@ -2128,7 +2208,7 @@
 							// ✅ 你要求的路径：apps/<id>/shelf/<file>
 							const key = `apps/${appId}/shelf/${filename}`;
 
-							const res = await fetch(`${API_BASE}/api/file/${key}`, {
+							const res = await apiFetch(`${API_BASE}/api/file/${key}`, {
 								method: "PUT",
 								headers: {
 									...authHeaders(),
@@ -2162,7 +2242,7 @@
 						if (!confirm("确定删除该图片文件吗？（会从存储中删除，不可恢复）")) return;
 
 						try {
-							const res = await fetch(`${API_BASE}/api/file/${it.src}`, {
+							const res = await apiFetch(`${API_BASE}/api/file/${it.src}`, {
 								method: "DELETE",
 								headers: {
 									...authHeaders()
@@ -2190,7 +2270,7 @@
 							if (filterStatus.value === 'enabled') p.set("onlyEnabled", "1");
 							if (isLoadMore && nextCursor.value) p.set("cursor", nextCursor.value);
 
-							const res = await fetch(`${API_BASE}/api/apps?${p}`, {
+							const res = await apiFetch(`${API_BASE}/api/apps?${p}`, {
 								headers: authHeaders()
 							});
 							const data = await res.json();
@@ -2402,7 +2482,7 @@
 								`${API_BASE}/api/apps`;
 							const method = isEdit ? "PUT" : "POST";
 
-							const res = await fetch(url, {
+							const res = await apiFetch(url, {
 								method,
 								headers: {
 									...authHeaders(),
@@ -2479,7 +2559,7 @@
 					async function removeRow() {
 						if (!confirm("确定要删除吗？不可恢复")) return;
 						try {
-							await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
+							await apiFetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
 								method: "DELETE",
 								headers: authHeaders()
 							});
@@ -2629,7 +2709,10 @@
 
 
 
-					onMounted(() => reload());
+					onMounted(async () => {
+						await checkAccess();
+						if (!needsAccessLogin.value) reload();
+					});
 
 					return {
 						rows,
@@ -2640,6 +2723,9 @@
 						filterStatus,
 						nextCursor,
 						toast,
+						needsAccessLogin,
+						openAccessLogin,
+						retryAccess,
 						modal,
 						form,
 						activeTab,
