@@ -995,7 +995,7 @@
 											<button @click="shareposter"
 												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
 												<span class="w-auto h-6 px-2 flex gap-1 items-center justify-center">
-													<i class="ri-share-forward-line"></i>
+													<i class="ri-share-forward-fill"></i>
 													<p class="text-sm">{{ t('article.shareposter') }}</p>
 												</span>
 											</button>
@@ -1150,7 +1150,7 @@
 											<button @click="shareposter"
 												class="inline-flex items-center justify-center p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200">
 												<span class="w-auto h-6 px-2 flex gap-1 items-center justify-center">
-													<i class="ri-share-forward-line"></i>
+													<i class="ri-share-forward-fill"></i>
 													<p class="text-sm">{{ t('article.shareposter') }}</p>
 												</span>
 											</button>
@@ -1469,12 +1469,12 @@
 
 										<!-- Action Buttons Group -->
 										<div
-											class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 w-full sm:w-auto">
+											class="flex flex-col flex-wrap md:flex-row items-center justify-center md:justify-start gap-3 w-full sm:w-auto">
 											<!-- Button Group 1: 平台 / 下载 / 页面入口（循环） -->
 											<template v-for="(platform, index) in currentApp.platforms" :key="index">
 												<a v-if="platform.type === 'download'" :href="platform.url || undefined"
 													:download="!!platform.url" :aria-disabled="!platform.url"
-													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full font-bold text-sm sm:text-base transition-all duration-200 shadow-lg select-none"
+													class="max-md:w-[240px] flex min-w-[100px] h-11 md:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full font-bold text-sm md:text-base transition-all duration-200 shadow-lg select-none"
 													:class="platform.url ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-neutral-900/20 dark:shadow-white/10 hover:opacity-90' : 'bg-neutral-400 dark:bg-neutral-700 text-white/70 dark:text-white/50 cursor-not-allowed shadow-none pointer-events-none'">
 													<i class="fa-solid fa-download"></i>
 													<span>{{ platform.label }}{{ t('appstore.download') }}</span>
@@ -1483,14 +1483,14 @@
 
 												<a v-else-if="platform.type === 'page_self'" :href="platform.url"
 													target="_self"
-													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm sm:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
+													class="max-md:w-[240px] flex min-w-[100px] h-11 md:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm md:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
 													<i class="fa-solid fa-arrow-up-right-from-square text-[12px]"></i>
 													<span>{{ t('appstore.open') }}</span>
 												</a>
 
 												<a v-else-if="platform.type === 'page_blank'" :href="platform.url"
 													target="_blank" rel="noopener"
-													class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm sm:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
+													class="max-md:w-[240px] flex min-w-[100px] h-11 md:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold text-sm md:text-base shadow-lg shadow-neutral-900/20 dark:shadow-white/10">
 													<i class="fa-solid fa-arrow-up-right-from-square text-[12px]"></i>
 													<span>{{ t('appstore.open') }}</span>
 												</a>
@@ -1498,7 +1498,7 @@
 
 											<!-- Button 2: 了解详情 -->
 											<button @click="!currentApp.disabled && navigate(currentApp.page)"
-												class="flex sm:flex-none min-w-[100px] h-11 sm:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold text-sm sm:text-base border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 transition-colors disabled:opacity-50"
+												class="max-md:w-[240px] flex min-w-[100px] h-11 md:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold text-sm md:text-base border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 transition-colors disabled:opacity-50"
 												:disabled="currentApp.disabled">
 												<span>{{ t('appstore.learnMore') }}</span>
 											</button>
@@ -1506,7 +1506,7 @@
 											<div class="flex gap-3">
 												<!-- Button 3: 复制链接 (点击变对勾，2秒还原) -->
 												<button @click="copyLink"
-													class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													class="hidden shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
 													:title="t('appstore.copyLink') || 'Copy Link'">
 													<!-- 未复制时显示链接图标 -->
 													<i v-if="!linkCopied" class="ri-file-copy-line"></i>
@@ -1516,17 +1516,17 @@
 
 												<!-- Button 4: 浏览器原生分享 (仅在浏览器支持时显示) -->
 												<button v-if="canNativeShare" @click="nativeShare"
-													class="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													class="hidden shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
 													:title="t('appstore.share') || 'Share'">
 													<i class="ri-share-circle-line"></i>
 												</button>
 
 												<!-- Button 5: 分享海报 -->
 												<button @click="shareposter"
-													class="shrink-0 w-auto px-4 gap-1 h-11 sm:h-12 rounded-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-800"
+													class="flex min-w-[100px] max-md:w-[240px] h-11 md:h-12 items-center justify-center gap-2 px-12 md:px-6 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold text-sm md:text-base border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 transition-colors disabled:opacity-50"
 													:title="t('appstore.share') || 'Share'">
-													<i class="ri-share-forward-line"></i>
-													<p class="text-sm">{{ t('article.shareposter') }}</p>
+													<i class="ri-share-forward-fill"></i>
+													<p class="">{{ t('article.shareposter') }}</p>
 												</button>
 											</div>
 										</div>
