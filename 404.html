@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>企鹅企企</title>
+		<link rel="shortcut icon" href="images/logo.ico">
+
+		<script src="js/vue.global.js"></script>
+		<script src="js/tailwindcss.3.4.17.js"></script>
+		
+		<!-- WEB STATISTICS START-->
+		<script charset="UTF-8" id="LA_COLLECT" async src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+		<script>
+			LA.init({
+				id: "Jl5bi3TeBeipiIT3",
+				ck: "Jl5bi3TeBeipiIT3",
+				autoTrack: true,
+				hashMode: true,
+				screenRecord: true
+			})
+		</script>
+		<script>
+			window.si = window.si || function() {
+				(window.siq = window.siq || []).push(arguments);
+			};
+		</script>
+		<script defer src="/_vercel/speed-insights/script.js"></script>
+		<script>
+			window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		</script>
+		<script defer src="/_vercel/insights/script.js"></script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?8730c7bd77352ff16d63e2d493255930";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+		
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-4N6X53WMGZ');
+		</script>
+		<!-- WEB STATISTICS END -->
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet">
+
+		<script>
+			tailwind.config = {
+				darkMode: 'class',
+				safelist: [
+					'my-6', 'my-8', 'my-10',
+					'mt-3', 'mt-6', 'mt-8', 'mt-10',
+					'mb-3', 'mb-6', 'mb-8', 'mb-10',
+					'text-sm', 'md:text-base',
+					'leading-[1.6]',
+					'text-neutral-500', 'dark:text-neutral-400',
+					'flex', 'flex-col',
+					'w-full',
+					'justify-center',
+					'rounded-2xl',
+					'overflow-hidden',
+					'border-black/5',
+					'dark:border-white/10',
+				],
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: [
+								'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans', 'sans-serif',
+							],
+							mono: [
+								'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"',
+								'"Courier New"', 'monospace'
+							],
+						},
+						colors: {
+							primary: {
+								50: '#f0f9ff',
+								100: '#e0f2fe',
+								200: '#bae6fd',
+								300: '#7dd3fc',
+								400: '#38bdf8',
+								500: '#0ea5e9',
+								600: '#0284c7',
+								700: '#0369a1',
+								800: '#075985',
+								900: '#0c4a6e',
+							}
+						}
+					}
+				}
+			}
+		</script>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
+		<div id="app" v-cloak>
+			<!-- Header（原样保留：有语言 / 主题 / mobile menu；nav 是否显示你自己改） -->
+			<header
+				class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center justify-between h-16">
+						<!-- Logo（这里不做站内路由了：直接回主站） -->
+						<a href="https://dorafx.top"
+							class="flex items-center gap-2 font-semibold text-lg hover:opacity-70 transition-opacity">
+							<img src="images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+							<span>{{ t('brand') }}</span>
+						</a>
+
+
+						<!-- Right Actions -->
+						<div class="flex items-center gap-3">
+							<!-- Language Switcher -->
+							<div class="relative">
+								<button @click="showLangMenu = !showLangMenu"
+									class="flex items-center gap-1 px-3 py-1.5 text-sm rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+									<span>{{ currentLangLabel }}</span>
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M19 9l-7 7-7-7"></path>
+									</svg>
+								</button>
+
+								<div v-if="showLangMenu" @click.away="showLangMenu = false"
+									class="absolute right-0 mt-2 w-32 bg-white dark:bg-neutral-800 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-700 overflow-hidden">
+									<button v-for="lang in languages" :key="lang.code" @click="setLanguage(lang.code)"
+										class="w-full px-4 py-2 text-sm text-left hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+										:class="{ 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400': currentLang === lang.code }">
+										{{ lang.label }}
+									</button>
+								</div>
+							</div>
+
+							<!-- Theme Toggle -->
+							<button @click="toggleTheme"
+								class="p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+								<svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor"
+									viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+									</path>
+								</svg>
+								<svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+									</path>
+								</svg>
+							</button>
+
+							<!-- Mobile Menu Toggle（nav 去掉了的话，这个也可以删；我先保留） -->
+							<button @click="showMobileMenu = !showMobileMenu"
+								class="md:hidden p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M4 6h16M4 12h16M4 18h16"></path>
+								</svg>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mobile Menu（nav 去掉了的话，这块也可以删；我先留空，避免报错） -->
+				<div v-if="showMobileMenu"
+					class="md:hidden bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800">
+					<nav class="px-4 py-4 space-y-2">
+						<a :href="homeUrl"
+							class="block px-4 py-2 rounded-lg transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800">
+							{{ t('nav.home') }}
+						</a>
+					</nav>
+				</div>
+			</header>
+
+			<!-- Main -->
+			<main class="pt-16">
+				<!-- Loading（保留） -->
+				<Transition name="fade">
+					<div v-if="isPageLoading"
+						class="fixed inset-0 z-[100] bg-white dark:bg-neutral-950 flex items-center justify-center">
+						<div
+							class="w-8 h-8 rounded-full border-[3px] border-neutral-200 dark:border-neutral-800 border-t-neutral-800 dark:border-t-white animate-spin">
+						</div>
+					</div>
+				</Transition>
+
+				<!-- ✅ 空 section：你后面替换成 Depository / 404 内容 -->
+				<section class="min-h-[calc(100vh-64px)] flex items-center">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
+						<div class="max-w-3xl mx-auto text-center">
+							<div class="max-sm:hidden flex items-center justify-center">
+								<div
+									class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs text-neutral-600 dark:text-neutral-300">
+									<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+									<span>{{ t('page.where') }}</span>
+									<span class="truncate max-w-[64vw]">{{ whereText }}</span>
+									<button @click="copyWhere"
+										class="ml-1 px-2 py-0.5 rounded-full bg-white/70 dark:bg-neutral-800/70 border border-neutral-200 dark:border-neutral-700 hover:bg-white dark:hover:bg-neutral-800 transition">
+										{{ copied ? t('page.copied') : t('page.copy') }}
+									</button>
+								</div>
+							</div>
+
+							<div
+								class="mt-6 rounded-[28px] border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl shadow-[0_22px_70px_rgba(0,0,0,0.10)] overflow-hidden">
+								<div class="p-10">
+									<div class="text-6xl sm:text-7xl sm:mb-2 md:text-8xl md:mb-2 lg:text-[120px] lg:mb-4
+									    font-black tracking-tight font-mono
+									    bg-clip-text text-transparent
+									    bg-gradient-to-r from-primary-400 via-sky-500 to-indigo-500
+									    drop-shadow-[0_6px_24px_rgba(56,189,248,0.35)]">
+										404
+									</div>
+
+									<div class="mt-3 text-xl sm:text-2xl font-semibold">
+										{{ t('page.title') }}
+									</div>
+
+									<p class="mt-4 text-neutral-600 dark:text-neutral-400 leading-relaxed">
+										{{ t('page.desc') }}
+									</p>
+
+									<div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+										<a :href="homeUrl"
+											class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold hover:opacity-90 transition">
+											{{ t('page.goHome') }}
+										</a>
+
+										<a :href="contactUrl"
+											class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white/60 dark:bg-neutral-800/60 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 hover:bg-white dark:hover:bg-neutral-800 transition font-medium">
+											{{ t('page.goContact') }}
+										</a>
+									</div>
+
+									<div class="mt-8 text-xs text-neutral-400">
+										{{ t('page.tip') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</section>
+			</main>
+
+			<!-- Footer（原样保留，只做“需要字段补齐”） -->
+			<footer class="bg-neutral-100 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div class="grid md:grid-cols-4 gap-8 md:mb-8">
+						<div class="md:col-span-2">
+							<div
+								class="flex items-center justify-center md:justify-start gap-2 font-semibold text-lg mb-4">
+								<img src="images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+								<span>{{ t('brand') }}</span>
+							</div>
+							<p class="text-neutral-600 dark:text-neutral-400 text-sm max-w-md hidden md:block">
+								{{ t('footer.desc') }}
+							</p>
+						</div>
+
+						<div class="hidden md:block">
+							<h4 class="font-semibold mb-4">{{ t('footer.quickLinks') }}</h4>
+							<ul class="space-y-2 text-sm">
+								<li>
+									<a :href="homeUrl"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+										{{ t('nav.home') }}
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="hidden md:block">
+							<h4 class="font-semibold mb-4">{{ t('footer.connect') }}</h4>
+							<ul class="space-y-2 text-sm">
+								<li>
+									<a :href="contactUrl"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+										{{ t('nav.contact') }}
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="pt-8 md:border-t border-neutral-200 dark:border-neutral-800">
+						<div
+							class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-neutral-500">
+							<p>© 2026 {{ t('about.nickname') }}. All rights reserved.</p>
+							<div class="flex flex-col md:flex-row items-center gap-4 text-xs md:text-sm">
+								<a href="https://beian.miit.gov.cn/"
+									class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+									<div><span>京ICP备2023030112号</span></div>
+								</a>
+								<a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879"
+									class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+									<div class="flex items-center gap-1">
+										<img src="images/gongan.png" class="w-4 h-4" />
+										<span>京公网安备11010502053879号</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</footer>
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted
+			} = Vue;
+
+			const translations = {
+				zh: {
+					brand: "企鹅企企",
+					nav: {
+						home: "主页",
+						contact: "联系"
+					},
+					footer: {
+						desc: "独立开发者，专注于数字媒体与应用开发。",
+						quickLinks: "快速链接",
+						connect: "联系方式"
+					},
+					about: {
+						nickname: "企鹅企企"
+					},
+					page: {
+						where: "你现在在：",
+						copy: "复制",
+						copied: "已复制",
+						title: "页面不存在",
+						desc: "很抱歉，你访问的地址不存在。你可以返回网站主页，或联系我反馈这个问题。",
+						goHome: "返回主页",
+						goContact: "反馈问题",
+						tip: "如果你是手动输入链接的，请检查链接是否正确、完整。",
+					}
+				},
+				en: {
+					brand: "Peng-QiQi",
+					nav: {
+						home: "Home",
+						contact: "Contact"
+					},
+					footer: {
+						desc: "Independent developer focused on digital media and application development.",
+						quickLinks: "Quick Links",
+						connect: "Connect"
+					},
+					about: {
+						nickname: "Peng-QiQi"
+					},
+					page: {
+						where: "You are here:",
+						copy: "Copy",
+						copied: "Copied",
+						title: "Page not found",
+						desc: "Sorry, the address you're trying to visit doesn't exist. You can go back to the homepage, or contact me to report the issue.",
+						goHome: "Back to Home",
+						goContact: "Report an Issue",
+						tip: "If you typed the URL manually, please check that it's correct and complete.",
+					}
+				},
+				ja: {
+					brand: "ペンギン企企",
+					nav: {
+						home: "ホーム",
+						contact: "連絡"
+					},
+					footer: {
+						desc: "デジタルメディアとアプリケーション開発に注力するインディペンデントデベロッパー。",
+						quickLinks: "クイックリンク",
+						connect: "連絡",
+					},
+					about: {
+						nickname: "ペンギン企企"
+					},
+					page: {
+						where: "現在地：",
+						copy: "コピー",
+						copied: "コピー済み",
+						title: "ページが見つかりません",
+						desc: "申し訳ありませんが、お探しのページは存在しません。ホームに戻るか、不具合の報告としてご連絡ください。",
+						goHome: "ホームへ戻る",
+						goContact: "問題を報告する",
+						tip: "URL を手入力した場合は、正しく完全に入力されているかご確認ください。",
+					}
+				},
+				ko: {
+					brand: "펭귄 치치",
+					nav: {
+						home: "홈",
+						contact: "연락"
+					},
+					footer: {
+						desc: "디지털 미디어와 애플리케이션 개발에 집중하는 독립 개발자.",
+						quickLinks: "빠른 링크",
+						connect: "연결"
+					},
+					about: {
+						nickname: "펭귄 치치"
+					},
+					page: {
+						where: "현재 위치:",
+						copy: "복사",
+						copied: "복사됨",
+						title: "페이지를 찾을 수 없음",
+						desc: "죄송합니다. 요청하신 주소는 존재하지 않습니다. 홈페이지로 돌아가거나, 문제를 제보해 주세요.",
+						goHome: "홈으로 돌아가기",
+						goContact: "문제 제보하기",
+						tip: "URL을 직접 입력했다면, 주소가 올바르고 완전한지 확인해 주세요.",
+					}
+				}
+			};
+
+			createApp({
+				setup() {
+					// ===== state =====
+					const currentLang = ref('zh');
+					const isDark = ref(false);
+					const showLangMenu = ref(false);
+					const showMobileMenu = ref(false);
+
+					// ✅ 你要求保留
+					const isPageLoading = ref(true);
+
+					// ===== constants =====
+					const homeUrl = "https://dorafx.top/";
+					const contactUrl = "https://dorafx.top/#contact";
+
+					// ===== i18n =====
+					const languages = [{
+							code: 'zh',
+							label: '中文'
+						},
+						{
+							code: 'en',
+							label: 'English'
+						},
+						{
+							code: 'ja',
+							label: '日本語'
+						},
+						{
+							code: 'ko',
+							label: '한국어'
+						}
+					];
+
+					const currentLangLabel = computed(() => {
+						const lang = languages.find(l => l.code === currentLang.value);
+						return lang ? lang.label : '中文';
+					});
+
+					const t = (key) => {
+						const keys = key.split('.');
+						let value = translations[currentLang.value];
+						for (const k of keys) value = value?.[k];
+						return value ?? key;
+					};
+
+					const setLanguage = (lang) => {
+						currentLang.value = lang;
+						showLangMenu.value = false;
+						document.documentElement.lang =
+							lang === 'zh' ? 'zh-CN' : lang === 'en' ? 'en' : lang === 'ja' ? 'ja' : 'ko';
+						try {
+							localStorage.setItem('check_lang', lang);
+						} catch (e) {}
+					};
+
+					// ===== theme =====
+					const toggleTheme = () => {
+						isDark.value = !isDark.value;
+						document.documentElement.classList.toggle('dark', isDark.value);
+						try {
+							localStorage.setItem('check_theme', isDark.value ? 'dark' : 'light');
+						} catch (e) {}
+					};
+
+
+					const whereText = ref("");
+					const copied = ref(false);
+
+					const refreshWhere = () => {
+						const {
+							origin,
+							pathname,
+							search,
+							hash
+						} = window.location;
+						whereText.value = `${origin}${pathname}${search}${hash}`;
+					};
+
+					const copyWhere = async () => {
+						try {
+							await navigator.clipboard.writeText(whereText.value);
+							copied.value = true;
+							setTimeout(() => (copied.value = false), 1200);
+						} catch (e) {}
+					};
+
+					const repoUrl = computed(() => window.location.origin + "/");
+
+					// ===== init =====
+					onMounted(() => {
+						// lang
+						try {
+							const savedLang = localStorage.getItem('check_lang');
+							if (savedLang && translations[savedLang]) currentLang.value = savedLang;
+						} catch (e) {}
+						document.documentElement.lang =
+							currentLang.value === 'zh' ? 'zh-CN' : currentLang.value;
+
+						// theme
+						try {
+							const savedTheme = localStorage.getItem('check_theme');
+							const prefersDark = window.matchMedia && window.matchMedia(
+								'(prefers-color-scheme: dark)').matches;
+							isDark.value = savedTheme ? (savedTheme === 'dark') : prefersDark;
+						} catch (e) {}
+						document.documentElement.classList.toggle('dark', isDark.value);
+
+						refreshWhere();
+						window.addEventListener("hashchange", refreshWhere);
+						window.addEventListener("popstate", refreshWhere);
+
+						isPageLoading.value = false;
+					});
+
+					return {
+						// state
+						currentLang,
+						isDark,
+						showLangMenu,
+						showMobileMenu,
+						isPageLoading,
+						// i18n
+						languages,
+						currentLangLabel,
+						t,
+						setLanguage,
+						// actions
+						toggleTheme,
+						// const
+						homeUrl,
+						contactUrl,
+						whereText,
+						copied,
+						copyWhere,
+						repoUrl
+
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
