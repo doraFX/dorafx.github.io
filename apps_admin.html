@@ -1838,6 +1838,14 @@
 						setTimeout(() => toast.show = false, 2600);
 					};
 
+					const ensureLogin = (res) => {
+						if (res && (res.status === 401 || res.status === 403)) {
+							showToast("error", "请先登录");
+							return true;
+						}
+						return false;
+					};
+
 					const authHeaders = () => ({
 						"Authorization": `Bearer ${ADMIN_TOKEN}`
 					});
@@ -2137,6 +2145,7 @@
 								body: blob
 							});
 
+							if (ensureLogin(res)) return;
 							const out = await res.json().catch(() => ({}));
 							if (!res.ok) throw new Error(out?.error || "上传失败");
 
@@ -2168,6 +2177,7 @@
 									...authHeaders()
 								}
 							});
+							if (ensureLogin(res)) return;
 							const out = await res.json().catch(() => ({}));
 							if (!res.ok) throw new Error(out?.error || "删除失败");
 
@@ -2411,6 +2421,7 @@
 								body: JSON.stringify(payload)
 							});
 
+							if (ensureLogin(res)) return;
 							const out = await res.json().catch(() => ({}));
 							if (!res.ok) throw new Error(out?.error || "保存失败");
 
@@ -2479,10 +2490,13 @@
 					async function removeRow() {
 						if (!confirm("确定要删除吗？不可恢复")) return;
 						try {
-							await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
+							const res = await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
 								method: "DELETE",
 								headers: authHeaders()
 							});
+							if (ensureLogin(res)) return;
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok) throw new Error(out?.error || "删除失败");
 							showToast("ok", "已删除");
 							modal.open = false;
 							reload();
