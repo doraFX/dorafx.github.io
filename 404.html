@@ -141,19 +141,18 @@
 
 	<body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300">
 		<div id="app" v-cloak>
-			<!-- Header（原样保留：有语言 / 主题 / mobile menu；nav 是否显示你自己改） -->
+			<!-- Header -->
 			<header
 				class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div class="flex items-center justify-between h-16">
-						<!-- Logo（这里不做站内路由了：直接回主站） -->
+						<!-- Logo -->
 						<a href="https://dorafx.top"
 							class="flex items-center gap-2 font-semibold text-lg hover:opacity-70 transition-opacity">
 							<img src="https://dorafx.top/images/logo.webp" alt="企鹅企企 Logo"
 								class="w-8 h-8 rounded-lg object-contain" />
 							<span>{{ t('brand') }}</span>
 						</a>
-
 
 						<!-- Right Actions -->
 						<div class="flex items-center gap-3">
@@ -194,7 +193,7 @@
 								</svg>
 							</button>
 
-							<!-- Mobile Menu Toggle（nav 去掉了的话，这个也可以删；我先保留） -->
+							<!-- Mobile Menu Toggle -->
 							<button @click="showMobileMenu = !showMobileMenu"
 								class="md:hidden p-2 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
 								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +205,7 @@
 					</div>
 				</div>
 
-				<!-- Mobile Menu（nav 去掉了的话，这块也可以删；我先留空，避免报错） -->
+				<!-- Mobile Menu -->
 				<div v-if="showMobileMenu"
 					class="md:hidden bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800">
 					<nav class="px-4 py-4 space-y-2">
@@ -220,7 +219,7 @@
 
 			<!-- Main -->
 			<main class="pt-16">
-				<!-- Loading（保留） -->
+				<!-- Loading -->
 				<Transition name="fade">
 					<div v-if="isPageLoading"
 						class="fixed inset-0 z-[100] bg-white dark:bg-neutral-950 flex items-center justify-center">
@@ -230,10 +229,12 @@
 					</div>
 				</Transition>
 
-				<!-- ✅ 空 section：你后面替换成 Depository / 404 内容 -->
+				<!-- ✅ 404 / Smart Suggest Sections -->
 				<section class="min-h-[calc(100vh-64px)] flex items-center">
 					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
 						<div class="max-w-3xl mx-auto text-center">
+
+							<!-- where badge (两套都保留同一个) -->
 							<div class="max-sm:hidden flex items-center justify-center">
 								<div
 									class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs text-neutral-600 dark:text-neutral-300">
@@ -247,7 +248,8 @@
 								</div>
 							</div>
 
-							<div
+							<!-- ====== A) 普通 404（检测不到关键词）====== -->
+							<div v-if="!intent"
 								class="mt-6 rounded-[28px] border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl shadow-[0_22px_70px_rgba(0,0,0,0.10)] overflow-hidden">
 								<div class="p-10">
 									<div class="text-6xl sm:text-7xl sm:mb-2 md:text-8xl md:mb-2 lg:text-[120px] lg:mb-4
@@ -283,13 +285,60 @@
 									</div>
 								</div>
 							</div>
+
+							<!-- ====== B) 智能推荐 404（检测到关键词）====== -->
+							<div v-else
+								class="mt-6 rounded-[28px] border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 backdrop-blur-xl shadow-[0_22px_70px_rgba(0,0,0,0.10)] overflow-hidden">
+								<div class="p-10">
+									<div class="text-6xl sm:text-7xl sm:mb-2 md:text-8xl md:mb-2 lg:text-[120px] lg:mb-4
+									    font-black tracking-tight font-mono
+									    bg-clip-text text-transparent
+									    bg-gradient-to-r from-primary-400 via-sky-500 to-indigo-500
+									    drop-shadow-[0_6px_24px_rgba(56,189,248,0.35)]">
+										404
+									</div>
+
+									<div class="mt-3 text-xl sm:text-2xl font-semibold">
+										{{ t('page.title') }}
+									</div>
+
+									<!-- 简介（不说反馈问题）+ 你是否想访问 -->
+									<p class="mt-4 text-neutral-600 dark:text-neutral-400 leading-relaxed">
+										{{ t('smart.desc') }}<span>{{ t('smart.maybe') }}</span>
+										<span class="font-semibold text-neutral-900 dark:text-white">
+											 {{ ' ' + intentLabel + ' ' }} 
+										</span>
+										<span>？</span>
+									</p>
+
+									<div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+										<!-- 推荐按钮 -->
+										<a :href="intentUrl"
+											class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold hover:opacity-90 transition">
+											{{ t('smart.goRecommend') }}{{ intentLabel }}
+										</a>
+
+										<!-- 返回主页按钮 -->
+										<a :href="homeUrl"
+											class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white/60 dark:bg-neutral-800/60 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 hover:bg-white dark:hover:bg-neutral-800 transition font-medium">
+											{{ t('smart.goHome') }}
+										</a>
+									</div>
+
+									<!-- 最下面的小字提示 -->
+									<div class="mt-8 text-xs text-neutral-400">
+										{{ t('smart.tip') }}
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 
 				</section>
 			</main>
 
-			<!-- Footer（原样保留，只做“需要字段补齐”） -->
+			<!-- Footer -->
 			<footer class="bg-neutral-100 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 					<div class="grid md:grid-cols-4 gap-8 md:mb-8">
@@ -386,6 +435,21 @@
 						goHome: "返回主页",
 						goContact: "反馈问题",
 						tip: "如果你是手动输入链接的，请检查链接是否正确、完整。",
+					},
+					smart: {
+						desc: "很抱歉，你访问的地址不存在。",
+						maybe: "你是否想访问",
+						goRecommend: "打开",
+						goHome: "返回主页",
+						tip: "如果你是手动输入链接的，请检查链接是否正确、完整。",
+						dest: {
+							media: "作品",
+							articles: "文章",
+							appv1: "应用",
+							appv2: "启动台",
+							about: "关于我",
+							contact: "联系我"
+						}
 					}
 				},
 				en: {
@@ -411,6 +475,21 @@
 						goHome: "Back to Home",
 						goContact: "Report an Issue",
 						tip: "If you typed the URL manually, please check that it's correct and complete.",
+					},
+					smart: {
+						desc: "Sorry, the address you're trying to visit doesn't exist.",
+						maybe: "Did you mean to visit",
+						goRecommend: "Open ",
+						goHome: "Back to Home",
+						tip: "If you typed the URL manually, please check that it's correct and complete.",
+						dest: {
+							media: "Works",
+							articles: "Articles",
+							appv1: "Apps",
+							appv2: "Launchpad",
+							about: "About",
+							contact: "Contact"
+						}
 					}
 				},
 				ja: {
@@ -436,6 +515,21 @@
 						goHome: "ホームへ戻る",
 						goContact: "問題を報告する",
 						tip: "URL を手入力した場合は、正しく完全に入力されているかご確認ください。",
+					},
+					smart: {
+						desc: "申し訳ありませんが、お探しのページは存在しません。",
+						maybe: "もしかして",
+						goRecommend: "開く",
+						goHome: "ホームへ戻る",
+						tip: "URL を手入力した場合は、正しく完全に入力されているかご確認ください。",
+						dest: {
+							media: "作品",
+							articles: "記事",
+							appv1: "アプリ",
+							appv2: "ランチパッド",
+							about: "私について",
+							contact: "お問い合わせ"
+						}
 					}
 				},
 				ko: {
@@ -461,9 +555,143 @@
 						goHome: "홈으로 돌아가기",
 						goContact: "문제 제보하기",
 						tip: "URL을 직접 입력했다면, 주소가 올바르고 완전한지 확인해 주세요.",
+					},
+					smart: {
+						desc: "죄송합니다. 요청하신 주소는 존재하지 않습니다.",
+						maybe: "아래 페이지를 찾으셨나요",
+						goRecommend: "열기 ",
+						goHome: "홈으로 돌아가기",
+						tip: "URL을 직접 입력했다면, 주소가 올바르고 완전한지 확인해 주세요.",
+						dest: {
+							media: "작품",
+							articles: "글",
+							appv1: "앱",
+							appv2: "런치패드",
+							about: "소개",
+							contact: "문의하기"
+						}
 					}
 				}
 			};
+
+			// ====== Smart detect (URL 全部部分都参与匹配) ======
+			function normalizeAnyText(input) {
+				let s = input == null ? "" : String(input);
+
+				for (let i = 0; i < 2; i++) {
+					try {
+						const decoded = decodeURIComponent(s);
+						if (decoded === s) break;
+						s = decoded;
+					} catch (e) {
+						break;
+					}
+				}
+
+				s = s.toLowerCase();
+				s = s.replace(/[\/?#&=._\-]+/g, " ");
+				s = s.replace(/\s+/g, " ").trim();
+				return s;
+			}
+
+			// 你站点里真实存在的 hash 页面：/#about /#works /#contact
+			// 关键词宁少不乱：只匹配很明显的意图
+			// 你站点真实存在的 hash 页面（唯一真相）
+			const DESTS = {
+				media: {
+					id: "media",
+					hash: "#media"
+				}, // 作品
+				articles: {
+					id: "articles",
+					hash: "#articles"
+				}, // 文章
+				appv1: {
+					id: "appv1",
+					hash: "#appv1"
+				}, // 应用
+				appv2: {
+					id: "appv2",
+					hash: "#appv2"
+				}, // 启动台
+				about: {
+					id: "about",
+					hash: "#about"
+				}, // 关于
+				contact: {
+					id: "contact",
+					hash: "#contact"
+				}, // 联系我
+			};
+
+			const INTENT_RULES = [{
+					id: DESTS.contact.id,
+					target: DESTS.contact.hash,
+					keywords: ["contact", "connect", "email", "mail", "support", "feedback", "message"]
+				},
+				{
+					id: DESTS.about.id,
+					target: DESTS.about.hash,
+					keywords: ["about", "bio", "profile", "info", "intro"]
+				},
+				{
+					id: DESTS.media.id,
+					target: DESTS.media.hash,
+					keywords: ["media", "work", "works", "portfolio", "project", "projects", "case", "cases", "showreel"]
+				},
+				{
+					id: DESTS.articles.id,
+					target: DESTS.articles.hash,
+					keywords: ["article", "articles", "blog", "post", "posts", "writing", "readme"]
+				},
+				{
+					id: DESTS.appv1.id,
+					target: DESTS.appv1.hash,
+					keywords: ["app", "apps", "application", "applications", "tool", "tools", "download"]
+				},
+				{
+					id: DESTS.appv2.id,
+					target: DESTS.appv2.hash,
+					keywords: ["launcher", "launchpad", "dock", "start", "hub", "appv2", "applist"]
+				},
+			];
+
+
+			// 直接从当前 URL 检测（pathname + search + hash 全覆盖）
+			function detectIntentFromUrl(urlLike) {
+				let url;
+				try {
+					url = urlLike ? new URL(urlLike, window.location.origin) : new URL(window.location.href);
+				} catch (e) {
+					const fallback = normalizeAnyText(String(urlLike || window.location.href));
+					return detectIntentFromNormalizedText(fallback);
+				}
+
+				const joined = `${url.pathname} ${url.search} ${url.hash}`;
+				const clean = normalizeAnyText(joined);
+				return detectIntentFromNormalizedText(clean);
+			}
+
+			// 从“已归一化的整段文本”里匹配
+			function detectIntentFromNormalizedText(clean) {
+				if (!clean) return null;
+				const padded = ` ${clean} `;
+
+				for (const rule of INTENT_RULES) {
+					for (const k of rule.keywords) {
+						const kk = normalizeAnyText(k);
+						if (!kk) continue;
+
+						// 词边界优先
+						if (padded.includes(` ${kk} `)) return rule;
+
+						// 你要求“只要出现规定词就算” → 再补 includes（更激进）
+						if (clean.includes(kk)) return rule;
+					}
+				}
+				return null;
+			}
+
 
 			createApp({
 				setup() {
@@ -530,7 +758,7 @@
 						} catch (e) {}
 					};
 
-
+					// ===== where/copy =====
 					const whereText = ref("");
 					const copied = ref(false);
 
@@ -552,7 +780,21 @@
 						} catch (e) {}
 					};
 
-					const repoUrl = computed(() => window.location.origin + "/");
+					// ===== intent =====
+					const intent = ref(null); // {id,target,keywords} or null
+
+					const intentUrl = computed(() => {
+						if (!intent.value) return homeUrl;
+						return homeUrl.replace(/\/+$/, "/") + intent.value.target; // https://dorafx.top/#xxx
+					});
+
+					const intentLabel = computed(() => {
+						if (!intent.value) return "";
+						const id = intent.value.id;
+						// smart.dest.xxx
+						const map = translations[currentLang.value]?.smart?.dest || {};
+						return map[id] || id;
+					});
 
 					// ===== init =====
 					onMounted(() => {
@@ -561,8 +803,7 @@
 							const savedLang = localStorage.getItem('check_lang');
 							if (savedLang && translations[savedLang]) currentLang.value = savedLang;
 						} catch (e) {}
-						document.documentElement.lang =
-							currentLang.value === 'zh' ? 'zh-CN' : currentLang.value;
+						document.documentElement.lang = currentLang.value === 'zh' ? 'zh-CN' : currentLang.value;
 
 						// theme
 						try {
@@ -572,6 +813,9 @@
 							isDark.value = savedTheme ? (savedTheme === 'dark') : prefersDark;
 						} catch (e) {}
 						document.documentElement.classList.toggle('dark', isDark.value);
+
+						// detect intent once on load
+						intent.value = detectIntentFromUrl();
 
 						refreshWhere();
 						window.addEventListener("hashchange", refreshWhere);
@@ -587,21 +831,29 @@
 						showLangMenu,
 						showMobileMenu,
 						isPageLoading,
+
 						// i18n
 						languages,
 						currentLangLabel,
 						t,
 						setLanguage,
+
 						// actions
 						toggleTheme,
+
 						// const
 						homeUrl,
 						contactUrl,
+
+						// where/copy
 						whereText,
 						copied,
 						copyWhere,
-						repoUrl
 
+						// intent
+						intent,
+						intentUrl,
+						intentLabel
 					};
 				}
 			}).mount('#app');
