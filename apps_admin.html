@@ -2478,7 +2478,8 @@
 					}
 
 					// Platform Logic
-					function addPlatform(type) {
+					async function addPlatform(type) {
+						if (!(await ensureAdmin())) return;
 						const make = (base) => ({
 							label: base?.label || "New Platform",
 							icon: base?.icon || "fa-solid fa-link",
@@ -2495,7 +2496,8 @@
 					}
 
 
-					function removePlatform(idx) {
+					async function removePlatform(idx) {
+						if (!(await ensureAdmin())) return;
 						parsedPlatforms.value.splice(idx, 1);
 					}
 
@@ -2580,7 +2582,8 @@
 						}
 					}
 
-					function addShelfItem() {
+					async function addShelfItem() {
+						if (!(await ensureAdmin())) return;
 						shelfItems.value.push({
 							src: "",
 							ratio: "9:16",
@@ -2589,11 +2592,13 @@
 						});
 					}
 
-					function removeShelfItem(idx) {
+					async function removeShelfItem(idx) {
+						if (!(await ensureAdmin())) return;
 						shelfItems.value.splice(idx, 1);
 					}
 
-					function moveShelf(idx, dir) {
+					async function moveShelf(idx, dir) {
+						if (!(await ensureAdmin())) return;
 						const a = shelfItems.value;
 						const j = idx + dir;
 						if (j < 0 || j >= a.length) return;
@@ -2602,7 +2607,8 @@
 						a[j] = t;
 					}
 
-					function addChangelog() {
+					async function addChangelog() {
+						if (!(await ensureAdmin())) return;
 						changelogItems.value.unshift({
 							version: "",
 							date: "",
@@ -2617,11 +2623,13 @@
 						});
 					}
 
-					function removeChangelog(idx) {
+					async function removeChangelog(idx) {
+						if (!(await ensureAdmin())) return;
 						changelogItems.value.splice(idx, 1);
 					}
 
-					function moveChangelog(idx, dir) {
+					async function moveChangelog(idx, dir) {
+						if (!(await ensureAdmin())) return;
 						const a = changelogItems.value;
 						const j = idx + dir;
 						if (j < 0 || j >= a.length) return;
@@ -2634,11 +2642,14 @@
 
 					async function removeRow() {
 						if (!confirm("确定要删除吗？不可恢复")) return;
+						if (!(await ensureAdmin())) return;
 						try {
-							await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
+							const res = await fetch(`${API_BASE}/api/apps/${encodeURIComponent(form.id)}`, {
 								method: "DELETE",
 								headers: authHeaders()
 							});
+							const out = await res.json().catch(() => ({}));
+							if (!res.ok) throw new Error(out?.error || "删除失败");
 							showToast("ok", "已删除");
 							modal.open = false;
 							reload();
