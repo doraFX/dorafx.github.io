@@ -447,6 +447,7 @@
 							articles: "文章",
 							appv1: "应用",
 							appv2: "启动台",
+							ip: "IP",
 							about: "关于我",
 							contact: "联系我"
 						}
@@ -487,6 +488,7 @@
 							articles: "Articles",
 							appv1: "Apps",
 							appv2: "Launchpad",
+							ip: "IP",
 							about: "About",
 							contact: "Contact"
 						}
@@ -527,6 +529,7 @@
 							articles: "記事",
 							appv1: "アプリ",
 							appv2: "ランチパッド",
+							ip: "IP",
 							about: "私について",
 							contact: "お問い合わせ"
 						}
@@ -567,6 +570,7 @@
 							articles: "글",
 							appv1: "앱",
 							appv2: "런치패드",
+							ip: "IP",
 							about: "소개",
 							contact: "문의하기"
 						}
@@ -614,6 +618,10 @@
 					id: "appv2",
 					hash: "#launchpad"
 				}, // 启动台
+				ip: {
+					id: "ip",
+					hash: "#ip"
+				}, // IP
 				about: {
 					id: "about",
 					hash: "#about"
@@ -648,6 +656,11 @@
 					id: DESTS.appv1.id,
 					target: DESTS.appv1.hash,
 					keywords: ["app", "apps", "application", "applications", "tool", "tools", "download"]
+				},
+				{
+					id: DESTS.ip.id,
+					target: DESTS.ip.hash,
+					keywords: ["ip", "ips", "character", "characters", "intellectual", "property"]
 				},
 				{
 					id: DESTS.appv2.id,
