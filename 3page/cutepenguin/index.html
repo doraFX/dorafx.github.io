@@ -1,547 +1,286 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<title>收藏的可爱企鹅</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<script>
-		  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-		</script>
-		<script defer src="/_vercel/speed-insights/script.js"></script>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		
-		  gtag('config', 'G-4N6X53WMGZ');
-		</script>
-	</head>
-	<body>
-		<div class="container">
-			<div class="bar">
-				<div class="bar-logo">
-				</div>
-				<div class="bar-text">
-					<p>收藏的可爱企鹅表情包</p>
-				</div>
-			</div>
-			<div class="innercontainer">
-				<div class="left">
-					<div class="list-text">
-						<p>可爱的小企鹅喵！<br>小企鹅原名“ぺんちゃん”<br>是line上的表情贴图，作者是mojiji</p>
-					</div>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nekopen Biyori Fan Site | 呆萌企鹅与猫</title>
+	<link rel="shortcut icon" href="img/logo.png" type="image/x-icon" />
+    
+    <!-- 引入圆润可爱的日系字体 -->
+    <!-- 引入字体：英文数字用 M PLUS，中文用霞鹜文楷 (这是一款非常可爱的开源手写体) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet"> -->
+	<link rel="stylesheet" href="css/style.css" />
 
-					<div class="list-separate"></div>
+    
+    <!-- 引入 Tailwind CSS -->
+    <script src="../../js/tailwindcss.3.4.17.js"></script>
+    
+    <!-- 引入 Vue 3 -->
+    <script src="../../js/vue.global.js"></script>
 
-					<a href="https://store.line.me/stickershop/product/1154149/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"cute pengin" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+    <!-- 统计代码 (保留) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4N6X53WMGZ');
+        window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 
-					<div class="list-separate"></div>
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                    },
+                    colors: {
+                        neko: {
+                            bg: '#fdfbf7', // 米白色背景，像画纸一样
+                            light: '#fff9f0',
+                            accent: '#f4a261', // 猫咪的暖色
+                            blue: '#a8dadc',   // 企鹅的冷色
+                            text: '#4a4a4a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'scroll': 'scroll 40s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 隐藏滚动条但保留功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        [v-cloak] { display: none; }
+    </style>
+</head>
+<body class="bg-neko-bg text-neko-text font-sans min-h-screen selection:bg-neko-blue selection:text-white">
 
-					<a href="https://store.line.me/stickershop/product/1224592/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"cute pengin 2" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+    <div id="app" v-cloak class="min-h-screen flex flex-col">
+        
+        <!-- 顶部导航栏 -->
+        <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-100 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- 引用 iOS 风格的 Emoji 图片 -->
+                    <img src="img/neko.png" class="w-8 h-8 animate-bounce" alt="Penguin">
+                    <img src="img/pen.png" class="w-8 h-8 animate-[bounce_1s_infinite_200ms]" alt="Cat">
+                    <h1 class="text-xl font-extrabold tracking-tight text-stone-600">Nekopen <span class="text-neko-blue">Gallery</span></h1>
+                </div>
+                <div class="hidden sm:block text-sm font-bold text-stone-400">
+                    Fan Collection Site
+                </div>
+            </div>
+        </nav>
 
-					<div class="list-separate"></div>
+        <!-- 主要内容区域 -->
+        <div class="container mx-auto px-4 py-8 max-w-7xl flex-grow">
+            
+            <!-- 顶部 Banner (粉丝站风格) -->
+            <section class="mb-12 relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-blue-50 to-orange-50 shadow-inner border border-white">
+                <div class="absolute top-0 left-0 w-full h-full opacity-30 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNjY2MiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PC9zdmc+')]"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-8">
+                    <div class="text-center md:text-left space-y-4 max-w-lg">
+                        <h2 class="text-3xl md:text-5xl font-extrabold text-stone-700 leading-4 leading-tight flex flex-col md:gap-3">
+							<span>你好，</span>
+                            <span>
+                                <span class="text-neko-blue">企鹅</span> 与 <span class="text-neko-accent">猫咪</span> 的日常
+							</span>
+                        </h2>
+                        <p class="text-stone-500 font-medium text-lg">
+                            收录了 Nekopen 的可爱瞬间。<br>
+                            这里没有烦恼，只有软绵绵的治愈时光。
+                        </p>
+                    </div>
 
-					<a href="https://store.line.me/stickershop/product/1311259/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"cute pengin 3" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+                    <!-- 右侧：随机展示几张图片作为装饰 -->
+                    <div class="grid grid-cols-2 gap-4 rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <!-- 第一张随机图 -->
+                        <div class="bg-white p-3 rounded-2xl shadow-lg animate-float flex items-center justify-center" style="animation-delay: 0s;">
+                            <img v-if="bannerImages.length > 0" :src="bannerImages[0]" class="w-24 h-24 object-contain">
+                        </div>
+                        
+                        <!-- 第二张随机图 -->
+                        <div class="bg-white p-3 rounded-2xl shadow-lg animate-float mt-8" style="animation-delay: -4s;">
+                            <img v-if="bannerImages.length > 0" :src="bannerImages[1]" class="w-24 h-24 object-contain">
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-					<div class="list-separate"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- 左侧导航/目录 -->
+                <aside class="lg:col-span-3 lg:sticky lg:top-24 space-y-6">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-100">
+                        <h3 class="font-extrabold text-stone-400 text-xs uppercase tracking-wider mb-4 ml-2">Collections</h3>
+                        <div class="space-y-1">
+                            <button v-for="(collection, idx) in collections" 
+                                    @click="scrollToCollection(idx)"
+                                    class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-between group hover:bg-stone-50 text-stone-500 hover:text-neko-blue">
+                                {{ formatName(collection.folder) }}
+                                <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/27a1.png" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity -ml-4 group-hover:ml-0" alt="arrow">
+                            </button>
+                        </div>
+                    </div>
 
-					<a href="https://store.line.me/stickershop/product/1010476/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"penguin and cat days" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+                    <!-- Line Store 链接 -->
+                    <div class="bg-blue-50/50 rounded-3xl p-6 border border-blue-100">
+                        <h3 class="font-extrabold text-blue-300 text-xs uppercase tracking-wider mb-4 ml-2">Support Creators</h3>
+                        <a href="https://store.line.me/search/zh-Hans?q=mojiji" target="_blank" class="block bg-white hover:bg-blue-500 hover:text-white transition-colors duration-300 rounded-xl p-4 text-center shadow-sm border border-blue-100 group">
+                            <span class="font-bold text-sm block mb-1">Visit Line Store</span>
+                            <span class="text-xs text-stone-400 group-hover:text-blue-100">© mojiji / LINE</span>
+                        </a>
+                    </div>
+                </aside>
 
-					<div class="list-separate"></div>
+                <!-- 右侧图片墙 -->
+                <main class="lg:col-span-9 space-y-12">
+                    
+                    <div v-for="(collection, cIdx) in collections" :key="cIdx" :id="'collection-' + cIdx" class="scroll-mt-28">
+                        <!-- 系列标题 -->
+                        <div class="flex items-center gap-4 mb-6 px-2">
+                            <div class="h-8 w-1.5 bg-gradient-to-b from-neko-blue to-neko-accent rounded-full"></div>
+                            <h2 class="text-2xl font-bold text-stone-700 capitalize">
+                                {{ formatName(collection.folder) }}
+                            </h2>
+                            <span class="text-xs font-bold px-2 py-1 bg-stone-100 text-stone-400 rounded-md">
+                                {{ collection.end - collection.start + 1 }} stickers
+                            </span>
+                        </div>
 
-					<a href="https://store.line.me/stickershop/product/1189750/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"penguin and cat days2" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+                        <!-- 图片网格 -->
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 sm:gap-4">
+                            <!-- 循环生成图片 -->
+                            <div v-for="n in (collection.end - collection.start + 1)" :key="collection.start + n"
+                                 class="group relative bg-white rounded-2xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-lg border border-stone-50 transition-all duration-300 hover:-translate-y-1 aspect-square flex items-center justify-center p-4 overflow-hidden">
+                                
+                                <!-- 装饰性背景圆 -->
+                                <div class="absolute bg-stone-50 w-full h-full rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 ease-out z-0 opacity-50"></div>
 
-					<div class="list-separate"></div>
+                                <img :src="getImageUrl(collection.folder, collection.start + n - 1)" 
+                                     loading="lazy"
+                                     alt="sticker"
+                                     class="relative z-10 w-full h-full object-contain filter drop-shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                        </div>
+                    </div>
 
-					<a href="https://store.line.me/stickershop/product/1434023/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"penguin and cat days3" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
+                </main>
+            </div>
+        </div>
 
-					<div class="list-separate"></div>
+        <!-- 底部 -->
+        <footer class="bg-white border-t border-stone-100 py-10 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <div class="flex justify-center gap-4 mb-6 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                    <img src="img/neko.png" class="w-6 h-6" alt="penguin">
+                    <img src="img/love.png" class="w-6 h-6" alt="love">
+                    <img src="img/pen.png" class="w-6 h-6" alt="cat">
+                </div>
+                <p class="text-stone-400 text-sm font-medium">
+                    Made with love for Pen-chan & Neko-kun.
+                </p>
+                <p class="text-stone-300 text-xs mt-2">
+                    Images are property of mojiji / LINE Corporation. This is a fan site.
+                </p>
+            </div>
+        </footer>
+    </div>
 
-					<a href="https://store.line.me/stickershop/product/1608925/zh-Hans?from=sticker">
-						<div class="list-item">
-							<div class="list-item-content">
-								"penguin and cat days4" on Line Store
-							</div>
-							<i class="mdui-icon material-icons">arrow_forward</i>
-						</div>
-					</a>
-
-					<div class="list-separate"></div>
-
-					<div class="list-text">
-						<p>Attention: Each one cost</p>
-						<p style="color: #00b84f; font-size: 30px; font-weight: 500;">US$0.99</p>
-					</div>
-				</div>
-				<div class="right">
-					<div class="download">
-						<div class="button">
-							<a href="cutepenguin.zip"><button class="download-button" type="button">点击这里下载全部表情包</button></a>
-						</div>
-					</div>
-					<ul id="add">
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (1).png">
-								<p class="sticker-item-description">怪不好意思的</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (2).png">
-								<p class="sticker-item-description">躺着吃东西</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (3).png">
-								<p class="sticker-item-description">送心呀！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (4).png">
-								<p class="sticker-item-description">泪流成河</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (5).png">
-								<p class="sticker-item-description">敲脑袋！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (6).png">
-								<p class="sticker-item-description">坐和放宽</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (7).png">
-								<p class="sticker-item-description">趴！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (8).png">
-								<p class="sticker-item-description">兴奋地送心！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (9).png">
-								<p class="sticker-item-description">躺着吃东西</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (10).png">
-								<p class="sticker-item-description">鼓掌！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (11).png">
-								<p class="sticker-item-description">冷！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (12).png">
-								<p class="sticker-item-description">吃！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (13).png">
-								<p class="sticker-item-description">身上都是肉</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (14).png">
-								<p class="sticker-item-description">躺平</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (15).png">
-								<p class="sticker-item-description">抱抱</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (16).png">
-								<p class="sticker-item-description">缩在被窝看手机</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (17).png">
-								<p class="sticker-item-description">滑倒</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (18).png">
-								<p class="sticker-item-description">拍手</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (19).png">
-								<p class="sticker-item-description">手舞足蹈</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (20).png">
-								<p class="sticker-item-description">OK</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (21).png">
-								<p class="sticker-item-description">NO</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (22).png">
-								<p class="sticker-item-description">呜呜呜</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (23).png">
-								<p class="sticker-item-description">凝视</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (24).png">
-								<p class="sticker-item-description">豆大的泪珠</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (25).png">
-								<p class="sticker-item-description">亲亲害羞</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (26).png">
-								<p class="sticker-item-description">怪不好意思的</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (27).png">
-								<p class="sticker-item-description">赞许</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (28).png">
-								<p class="sticker-item-description">开心</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (29).png">
-								<p class="sticker-item-description">喜欢</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (30).png">
-								<p class="sticker-item-description">揉揉滚滚</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (31).png">
-								<p class="sticker-item-description">趴</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (32).png">
-								<p class="sticker-item-description">生气</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (33).png">
-								<p class="sticker-item-description">端庄</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (34).png">
-								<p class="sticker-item-description">紧张</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (35).png">
-								<p class="sticker-item-description">脑袋空空</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (36).png">
-								<p class="sticker-item-description">磕头！</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (37).png">
-								<p class="sticker-item-description">欢呼</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (38).png">
-								<p class="sticker-item-description">坐正</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (39).png">
-								<p class="sticker-item-description">后悔</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (40).png">
-								<p class="sticker-item-description">开心的转圈</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (41).png">
-								<p class="sticker-item-description">给你小心心</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (42).png">
-								<p class="sticker-item-description">采访</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (43).png">
-								<p class="sticker-item-description">躺（无力）</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (44).png">
-								<p class="sticker-item-description">趴-安慰</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (45).png">
-								<p class="sticker-item-description">一起趴</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (46).png">
-								<p class="sticker-item-description">猛然</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (47).png">
-								<p class="sticker-item-description">满眼冒星</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (48).png">
-								<p class="sticker-item-description">佛</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (49).png">
-								<p class="sticker-item-description">掐腰</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (50).png">
-								<p class="sticker-item-description">玩心心</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (51).png">
-								<p class="sticker-item-description">？</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (52).png">
-								<p class="sticker-item-description">唱歌</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (53).png">
-								<p class="sticker-item-description">欢呼</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (54).png">
-								<p class="sticker-item-description">偷笑</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (55).png">
-								<p class="sticker-item-description">趴</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (56).png">
-								<p class="sticker-item-description">端正</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (57).png">
-								<p class="sticker-item-description">躲远</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (58).png">
-								<p class="sticker-item-description">点头哈腰</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (59).png">
-								<p class="sticker-item-description">气急败坏</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (60).png">
-								<p class="sticker-item-description">疑问</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (61).png">
-								<p class="sticker-item-description">逆雨</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (62).png">
-								<p class="sticker-item-description">开心</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (63).png">
-								<p class="sticker-item-description">无力躺</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (64).png">
-								<p class="sticker-item-description">努力起身</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (65).png">
-								<p class="sticker-item-description">感激</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (66).png">
-								<p class="sticker-item-description">沮丧</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (67).png">
-								<p class="sticker-item-description">傻乎乎的</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (68).png">
-								<p class="sticker-item-description">湿透</p>
-							</div>
-						</li>
-						<li>
-							<div class="sticker-item">
-								<img class="sticker-item-pic" src="img/penguin/pic (69).png">
-								<p class="sticker-item-description">叫你呀</p>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-	</body>
+    <script>
+        const { createApp } = Vue;
+    
+        createApp({
+            data() {
+                return {
+                    // 存储随机选出来的 Banner 图片 URL
+                    bannerImages: [], 
+                    
+                    collections: [
+                        { folder: "penguin and cat days", start: 486034, end: 486073 },
+                        { folder: "cute pengin", start: 6280808, end: 6280847 },
+                        { folder: "penguin and cat days2", start: 7715108, end: 7715147 },
+                        { folder: "cute pengin2", start: 9117688, end: 9117727 },
+                        { folder: "cute pengin3", start: 12569598, end: 12569637 },
+                        { folder: "penguin and cat days3", start: 16531410, end: 16531449 },
+                        { folder: "penguin and cat days4", start: 20572256, end: 20572295 },
+                        { folder: "nekopenbiyori snow", start: 25975968, end: 25976007 },
+                    ]
+                }
+            },
+            mounted() {
+                // 页面加载完成后，立刻生成2张随机图片
+                this.refreshBannerImages();
+            },
+            methods: {
+                getImageUrl(folder, id) {
+                    return `img/${folder}/${id}.png`; 
+                },
+                
+                formatName(name) {
+                    return name
+                        .replace(/pengin/g, 'penguin')
+                        .replace(/(\d+)$/, ' $1')
+                        .replace(/\b\w/g, l => l.toUpperCase());
+                },
+    
+                scrollToCollection(index) {
+                    const el = document.getElementById(`collection-${index}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                },
+    
+                // 【新逻辑】从所有文件夹里真正的随机抽取
+                pickRandomSticker() {
+                    // 1. 随机选一个文件夹 (Collection)
+                    const randomColIndex = Math.floor(Math.random() * this.collections.length);
+                    const col = this.collections[randomColIndex];
+    
+                    // 2. 计算这个文件夹里有多少张图
+                    const count = col.end - col.start + 1;
+    
+                    // 3. 随机选一个 ID
+                    const randomOffset = Math.floor(Math.random() * count);
+                    const randomId = col.start + randomOffset;
+    
+                    // 4. 返回 URL
+                    return this.getImageUrl(col.folder, randomId);
+                },
+    
+                // 生成 Banner 用的数组
+                refreshBannerImages() {
+                    this.bannerImages = [
+                        this.pickRandomSticker(),
+                        this.pickRandomSticker()
+                    ];
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
 </html>
