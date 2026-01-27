@@ -8,7 +8,7 @@
 
 		<script src="https://dorafx.top/js/vue.global.js"></script>
 		<script src="https://dorafx.top/js/tailwindcss.3.4.17.js"></script>
-		
+
 		<!-- WEB STATISTICS START-->
 		<script charset="UTF-8" id="LA_COLLECT" async src="https://sdk.51.la/js-sdk-pro.min.js"></script>
 		<script>
@@ -27,7 +27,9 @@
 		</script>
 		<script defer src="/_vercel/speed-insights/script.js"></script>
 		<script>
-			window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+			window.va = window.va || function() {
+				(window.vaq = window.vaq || []).push(arguments);
+			};
 		</script>
 		<script defer src="/_vercel/insights/script.js"></script>
 		<script>
@@ -43,7 +45,7 @@
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4N6X53WMGZ"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
-		
+
 			function gtag() {
 				dataLayer.push(arguments);
 			}
@@ -109,6 +111,31 @@
 			[v-cloak] {
 				display: none;
 			}
+
+			/* Smooth scrolling */
+			html {
+				scrollbar-gutter: stable;
+				scroll-behavior: smooth;
+			}
+
+			/* Custom scrollbar */
+			::-webkit-scrollbar {
+				width: 6px;
+				height: 6px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: #cbd5e1;
+				border-radius: 3px;
+			}
+
+			.dark ::-webkit-scrollbar-thumb {
+				background: #475569;
+			}
 		</style>
 	</head>
 
@@ -122,7 +149,8 @@
 						<!-- Logo（这里不做站内路由了：直接回主站） -->
 						<a href="https://dorafx.top"
 							class="flex items-center gap-2 font-semibold text-lg hover:opacity-70 transition-opacity">
-							<img src="https://dorafx.top/images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+							<img src="https://dorafx.top/images/logo.webp" alt="企鹅企企 Logo"
+								class="w-8 h-8 rounded-lg object-contain" />
 							<span>{{ t('brand') }}</span>
 						</a>
 
@@ -268,7 +296,8 @@
 						<div class="md:col-span-2">
 							<div
 								class="flex items-center justify-center md:justify-start gap-2 font-semibold text-lg mb-4">
-								<img src="https://dorafx.top/images/logo.webp" alt="企鹅企企 Logo" class="w-8 h-8 rounded-lg object-contain" />
+								<img src="https://dorafx.top/images/logo.webp" alt="企鹅企企 Logo"
+									class="w-8 h-8 rounded-lg object-contain" />
 								<span>{{ t('brand') }}</span>
 							</div>
 							<p class="text-neutral-600 dark:text-neutral-400 text-sm max-w-md hidden md:block">
