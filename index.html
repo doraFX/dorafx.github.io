@@ -517,7 +517,7 @@
 								</a>
 							</div>
 
-							<div ref="ipCarousel" @pointerdown="onIpDragStart" @click.capture="onIpClickCapture"
+							<div ref="ipCarousel" @mousedown="onIpDragStart" @click.capture="onIpClickCapture"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer" @dragstart.prevent
@@ -3265,10 +3265,8 @@
 					const ipDragStartX = ref(0)
 					const ipDragScrollLeft = ref(0)
 					const ipDragMoved = ref(false)
-					const ipDragPointerId = ref(null)
 
 					const onIpDragStart = (event) => {
-						if (event.pointerType && event.pointerType !== "mouse") return
 						const carousel = ipCarouselRef.value
 						if (!carousel) return
 						if (event.button !== 0) return
@@ -3277,17 +3275,16 @@
 						ipDragStartX.value = event.clientX
 						ipDragScrollLeft.value = carousel.scrollLeft
 						ipDragMoved.value = false
-						ipDragPointerId.value = event.pointerId ?? "mouse"
-						carousel.setPointerCapture?.(event.pointerId)
+						carousel.classList.add("is-dragging")
 					}
 
 					const onIpDragMove = (event) => {
-						if (event.pointerType && event.pointerType !== "mouse") return
-						if (ipDragPointerId.value !== null && event.pointerId != null && event.pointerId !== ipDragPointerId.value) {
-							return
-						}
 						const carousel = ipCarouselRef.value
 						if (!carousel || !isIpDragging.value) return
+						if (event.buttons === 0) {
+							onIpDragEnd()
+							return
+						}
 						event.preventDefault()
 						const delta = event.clientX - ipDragStartX.value
 						if (Math.abs(delta) > 3) {
@@ -3299,8 +3296,7 @@
 					const onIpDragEnd = (event) => {
 						if (!isIpDragging.value) return
 						isIpDragging.value = false
-						ipDragPointerId.value = null
-						ipCarouselRef.value?.releasePointerCapture?.(event?.pointerId)
+						ipCarouselRef.value?.classList.remove("is-dragging")
 					}
 
 					const onIpClickCapture = (event) => {
@@ -5189,9 +5185,8 @@
 
 						await nextTick();
 
-						window.addEventListener("pointermove", onIpDragMove, { passive: false })
-						window.addEventListener("pointerup", onIpDragEnd)
-						window.addEventListener("pointercancel", onIpDragEnd)
+						window.addEventListener("mousemove", onIpDragMove, { passive: false })
+						window.addEventListener("mouseup", onIpDragEnd)
 						window.addEventListener("blur", onIpDragEnd)
 
 						// 后台预加载：不阻塞页面（深链需要的内容会在 applyRoute 里按需 await）

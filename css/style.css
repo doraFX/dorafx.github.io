@@ -40,6 +40,11 @@ html {
 	-webkit-user-drag: none;
 }
 
+.ip-carousel.is-dragging a,
+.ip-carousel.is-dragging button {
+	pointer-events: none;
+}
+
 .ip-carousel::-webkit-scrollbar {
 	display: none;
 }
