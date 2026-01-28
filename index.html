@@ -517,7 +517,7 @@
 								</a>
 							</div>
 
-							<div ref="ipCarousel" @mousedown="onIpDragStart" @click.capture="onIpClickCapture"
+							<div ref="ipCarousel" @mousedown.prevent="onIpDragStart" @click.capture="onIpClickCapture"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer" @dragstart.prevent
@@ -5181,8 +5181,8 @@
 
 						await nextTick();
 
-						window.addEventListener("mousemove", onIpDragMove, { passive: false })
-						window.addEventListener("mouseup", onIpDragEnd)
+						window.addEventListener("mousemove", onIpDragMove, { passive: false, capture: true })
+						window.addEventListener("mouseup", onIpDragEnd, { capture: true })
 						window.addEventListener("blur", onIpDragEnd)
 
 						// 后台预加载：不阻塞页面（深链需要的内容会在 applyRoute 里按需 await）
