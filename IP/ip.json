@@ -1,0 +1,77 @@
+[
+  {
+    "index": 1,
+    "name": {
+      "zh": "鸡贼黄袋鼠兔",
+      "en": "Sneaky RooBunny",
+      "ja": "ずる賢いルーバニー",
+      "ko": "약삭빠른 루버니"
+    },
+    "image": "IP/Sneaky RooBunny/icon.png",
+    "link": "/IP/Sneaky RooBunny/index.html",
+    "desc": {
+      "zh": "光看着就已经很鸡贼了，没想到动起来更鸡贼",
+      "en": "Looks sneaky enough at first glance — somehow even sneakier once it starts moving.",
+      "ja": "見た目だけでも十分ずる賢そうなのに、動き出すとさらにずる賢い。",
+      "ko": "가만히 있어도 약삭빠른데, 움직이기 시작하면 더 약삭빠르다."
+    },
+    "platforms": {
+      "xiaohongshu": true,
+      "weibo": false,
+      "ins": true,
+      "x": true
+    },
+    "visible": true,
+    "accent": "linear-gradient(135deg, #eab308, #f59e0b)"
+  },
+  {
+    "index": 2,
+    "name": {
+      "zh": "嘎布拉兔",
+      "en": "嘎布拉兔",
+      "ja": "嘎布拉兔",
+      "ko": "嘎布拉兔"
+    },
+    "image": "IP/Gabra/icon.png",
+    "link": "IP/Gabra/index.html",
+    "desc": {
+      "zh": "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+      "en": "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+      "ja": "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+      "ko": "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+    },
+    "platforms": {
+      "xiaohongshu": false,
+      "weibo": false,
+      "ins": false,
+      "x": false
+    },
+    "visible": true,
+    "accent": "linear-gradient(135deg, #6b7280, #71717a)"
+  },
+  {
+    "index": 2,
+    "name": {
+      "zh": "嘎布拉兔",
+      "en": "嘎布拉兔",
+      "ja": "嘎布拉兔",
+      "ko": "嘎布拉兔"
+    },
+    "image": "IP/Gabra/icon.png",
+    "link": "IP/Gabra/index.html",
+    "desc": {
+      "zh": "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+      "en": "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+      "ja": "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+      "ko": "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+    },
+    "platforms": {
+      "xiaohongshu": false,
+      "weibo": false,
+      "ins": false,
+      "x": false
+    },
+    "visible": true,
+    "accent": "linear-gradient(135deg, #6b7280, #71717a)"
+  }
+]

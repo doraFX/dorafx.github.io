@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP JSON Admin</title>
+  <script src="../js/vue.global.js"></script>
+  <script src="../js/tailwindcss.3.4.17.js"></script>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <div id="app" class="max-w-6xl mx-auto px-6 py-10">
+    <header class="flex flex-col gap-3 mb-8">
+      <h1 class="text-3xl font-semibold">IP JSON 管理</h1>
+      <p class="text-slate-300 text-sm">
+        载入并编辑 <code class="px-2 py-1 rounded bg-slate-800">IP/ip.json</code>，
+        生成新的 JSON 文件。
+      </p>
+    </header>
+
+    <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-wrap gap-3">
+          <button @click="loadJson"
+            class="px-4 py-2 rounded-xl bg-emerald-500/90 hover:bg-emerald-400 text-slate-950 font-semibold">
+            载入 ip.json
+          </button>
+          <button @click="formatJson"
+            class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700">
+            格式化
+          </button>
+          <button @click="downloadJson"
+            class="px-4 py-2 rounded-xl bg-sky-500/90 hover:bg-sky-400 text-slate-950 font-semibold">
+            下载 ip.json
+          </button>
+        </div>
+
+        <div class="text-sm text-slate-400" v-if="statusMessage">{{ statusMessage }}</div>
+        <div v-if="parseError" class="text-sm text-rose-400">解析错误：{{ parseError }}</div>
+
+        <textarea v-model="rawJson" @input="parseRaw"
+          class="w-full min-h-[420px] rounded-xl bg-slate-950 border border-slate-800 p-4 text-sm font-mono text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+      </section>
+
+      <aside class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <h2 class="text-lg font-semibold">预览</h2>
+        <div class="text-sm text-slate-400">
+          当前条目数：<span class="text-slate-100">{{ itemCount }}</span>
+        </div>
+        <div class="space-y-3 max-h-[480px] overflow-y-auto pr-2">
+          <div v-for="(item, idx) in previewItems" :key="idx"
+            class="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <div class="flex items-center justify-between">
+              <div class="text-sm text-slate-400">Index {{ item.index ?? '-' }}</div>
+              <span class="text-xs px-2 py-1 rounded-full"
+                :class="item.visible === false ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'">
+                {{ item.visible === false ? '隐藏' : '显示' }}
+              </span>
+            </div>
+            <div class="mt-2 font-semibold">{{ item.name?.zh || item.name?.en || '未命名' }}</div>
+            <div class="text-xs text-slate-400 mt-1 break-all">{{ item.link }}</div>
+          </div>
+          <div v-if="!previewItems.length" class="text-sm text-slate-500">暂无可预览数据。</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+      setup() {
+        const rawJson = ref('');
+        const parseError = ref('');
+        const statusMessage = ref('');
+        const parsedData = ref([]);
+
+        const itemCount = computed(() => {
+          if (Array.isArray(parsedData.value)) return parsedData.value.length;
+          if (parsedData.value && typeof parsedData.value === 'object') {
+            return Object.keys(parsedData.value).length;
+          }
+          return 0;
+        });
+
+        const previewItems = computed(() => {
+          const data = parsedData.value;
+          if (Array.isArray(data)) return data.slice(0, 12);
+          if (data && typeof data === 'object') return Object.values(data).slice(0, 12);
+          return [];
+        });
+
+        const parseRaw = () => {
+          if (!rawJson.value.trim()) {
+            parsedData.value = [];
+            parseError.value = '';
+            return;
+          }
+          try {
+            parsedData.value = JSON.parse(rawJson.value);
+            parseError.value = '';
+          } catch (error) {
+            parseError.value = error?.message || String(error);
+          }
+        };
+
+        const loadJson = async () => {
+          statusMessage.value = '加载中...';
+          try {
+            const res = await fetch('ip.json', { cache: 'no-store' });
+            if (!res.ok) {
+              throw new Error(`加载失败：${res.status} ${res.statusText}`);
+            }
+            rawJson.value = (await res.text()).trim();
+            parseRaw();
+            statusMessage.value = '已载入 ip.json';
+          } catch (error) {
+            statusMessage.value = error?.message || String(error);
+          }
+        };
+
+        const formatJson = () => {
+          try {
+            const data = JSON.parse(rawJson.value);
+            rawJson.value = JSON.stringify(data, null, 2);
+            parseError.value = '';
+          } catch (error) {
+            parseError.value = error?.message || String(error);
+          }
+        };
+
+        const downloadJson = () => {
+          try {
+            const data = JSON.parse(rawJson.value);
+            const jsonText = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ip.json';
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 500);
+          } catch (error) {
+            parseError.value = error?.message || String(error);
+          }
+        };
+
+        loadJson();
+
+        return {
+          rawJson,
+          parseError,
+          statusMessage,
+          itemCount,
+          previewItems,
+          parseRaw,
+          loadJson,
+          formatJson,
+          downloadJson,
+        };
+      },
+    }).mount('#app');
+  </script>
+</body>
+
+</html>
