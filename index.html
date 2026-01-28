@@ -517,9 +517,9 @@
 								</a>
 							</div>
 
-							<div ref="ipCarousel"
-								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
-								style="scrollbar-width: thin; touch-action: pan-x pan-y;">
+							<div ref="ipCarousel" @pointerdown="onIpDragStart" @pointermove="onIpDragMove"
+								@pointerup="onIpDragEnd" @pointerleave="onIpDragEnd" @pointercancel="onIpDragEnd"
+								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer"
 									class="group flex flex-col items-center gap-4 min-w-[160px] sm:min-w-[180px] lg:min-w-[200px] snap-start">
@@ -3267,6 +3267,7 @@
 					const ipDragScrollLeft = ref(0)
 
 					const onIpDragStart = (event) => {
+						if (event.pointerType && event.pointerType !== "mouse") return
 						const carousel = ipCarouselRef.value
 						if (!carousel) return
 						isIpDragging.value = true
@@ -3276,8 +3277,10 @@
 					}
 
 					const onIpDragMove = (event) => {
+						if (event.pointerType && event.pointerType !== "mouse") return
 						const carousel = ipCarouselRef.value
 						if (!carousel || !isIpDragging.value) return
+						event.preventDefault()
 						const delta = event.clientX - ipDragStartX.value
 						carousel.scrollLeft = ipDragScrollLeft.value - delta
 					}
