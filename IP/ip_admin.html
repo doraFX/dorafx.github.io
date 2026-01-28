@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Admin</title>
+  <script src="../js/vue.global.js"></script>
+  <script src="../js/tailwindcss.3.4.17.js"></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 text-slate-900">
+  <div id="app" class="min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <header class="flex flex-col gap-4 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-[18px] bg-gradient-to-br from-slate-900 to-slate-700 text-white flex items-center justify-center shadow-lg">
+            <span class="text-lg font-semibold">IP</span>
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-semibold">IP 管理</h1>
+            <p class="text-sm text-slate-500">支持增删查改，自动识别 JSON 结构并保存修改到本地。</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button @click="loadJson" class="px-4 py-2 rounded-full bg-white shadow-sm border border-slate-200 hover:border-slate-300">
+            载入 ip.json
+          </button>
+          <button @click="saveToLocal" class="px-4 py-2 rounded-full bg-slate-900 text-white shadow">
+            保存到本地草稿
+          </button>
+          <button @click="restoreFromLocal" class="px-4 py-2 rounded-full bg-white shadow-sm border border-slate-200 hover:border-slate-300">
+            恢复本地草稿
+          </button>
+          <button @click="downloadJson" class="px-4 py-2 rounded-full bg-emerald-500 text-white shadow">
+            下载 ip.json
+          </button>
+          <div class="text-sm text-slate-500" v-if="statusMessage">{{ statusMessage }}</div>
+        </div>
+      </header>
+
+      <div class="grid gap-6 lg:grid-cols-[1.1fr_1.9fr]">
+        <aside class="bg-white/70 backdrop-blur border border-slate-200 rounded-3xl shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold">条目列表</h2>
+              <p class="text-xs text-slate-500">共 {{ items.length }} 条</p>
+            </div>
+            <button @click="addItem" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs">新增</button>
+          </div>
+
+          <input v-model="searchQuery" placeholder="搜索名称或描述"
+            class="w-full mb-4 px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400" />
+
+          <div class="space-y-3 max-h-[520px] overflow-y-auto pr-1">
+            <button v-for="(item, idx) in filteredItems" :key="idx" @click="selectItem(idx)"
+              class="w-full text-left px-4 py-3 rounded-2xl border transition"
+              :class="selectedIndex === idx ? 'border-slate-900 bg-slate-900 text-white shadow' : 'border-slate-200 bg-white hover:border-slate-300'">
+              <div class="flex items-center justify-between">
+                <div class="font-medium text-sm">
+                  {{ displayTitle(item) }}
+                </div>
+                <span class="text-xs" :class="item.visible === false ? 'text-rose-400' : 'text-emerald-500'">
+                  {{ item.visible === false ? '隐藏' : '显示' }}
+                </span>
+              </div>
+              <div class="text-xs mt-1" :class="selectedIndex === idx ? 'text-slate-200' : 'text-slate-400'">
+                {{ item.link || '未设置链接' }}
+              </div>
+            </button>
+            <div v-if="!filteredItems.length" class="text-sm text-slate-400">暂无匹配数据。</div>
+          </div>
+        </aside>
+
+        <section class="bg-white/70 backdrop-blur border border-slate-200 rounded-3xl shadow-sm p-6">
+          <div v-if="!selectedItem" class="text-slate-400 text-sm">请选择左侧条目进行编辑。</div>
+
+          <div v-else class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-xl font-semibold">编辑条目</h2>
+                <p class="text-xs text-slate-500">自动识别字段类型，支持结构化编辑。</p>
+              </div>
+              <div class="flex gap-2">
+                <button @click="duplicateItem" class="px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs">复制</button>
+                <button @click="deleteItem" class="px-3 py-1.5 rounded-full bg-rose-500 text-white text-xs">删除</button>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs text-slate-500">排序 Index</label>
+                <input type="number" v-model.number="selectedItem.index"
+                  class="mt-1 w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200" />
+              </div>
+              <div>
+                <label class="text-xs text-slate-500">显示</label>
+                <div class="mt-2 flex items-center gap-2">
+                  <input type="checkbox" v-model="selectedItem.visible" class="w-4 h-4" />
+                  <span class="text-sm">可见</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs text-slate-500">图片</label>
+                <input v-model="selectedItem.image"
+                  class="mt-1 w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200" />
+              </div>
+              <div>
+                <label class="text-xs text-slate-500">链接</label>
+                <input v-model="selectedItem.link"
+                  class="mt-1 w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200" />
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-500">主题色</label>
+              <input v-model="selectedItem.accent"
+                class="mt-1 w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200" />
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="text-xs text-slate-500">名称</label>
+                <input v-for="lang in langs" :key="`name-${lang}`" v-model="selectedItem.name[lang]"
+                  class="w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200"
+                  :placeholder="`name.${lang}`" />
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs text-slate-500">描述</label>
+                <textarea v-for="lang in langs" :key="`desc-${lang}`" v-model="selectedItem.desc[lang]"
+                  class="w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200"
+                  :placeholder="`desc.${lang}`"></textarea>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-500">平台</label>
+              <div class="mt-2 flex flex-wrap gap-3">
+                <label v-for="platform in platformKeys" :key="platform" class="flex items-center gap-2 text-sm">
+                  <input type="checkbox" v-model="selectedItem.platforms[platform]" class="w-4 h-4" />
+                  {{ platformLabels[platform] || platform }}
+                </label>
+              </div>
+            </div>
+
+            <div v-if="extraFields.length" class="space-y-4">
+              <h3 class="text-sm font-semibold text-slate-600">额外字段</h3>
+              <div v-for="field in extraFields" :key="field" class="space-y-2">
+                <label class="text-xs text-slate-500">{{ field }}</label>
+                <textarea v-model="extraFieldDrafts[field]"
+                  @change="applyExtraField(field)"
+                  class="w-full px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200 font-mono text-xs"></textarea>
+                <div class="text-xs text-slate-400">支持 JSON 字符串，修改后会自动解析。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref, computed, watch } = Vue;
+
+    createApp({
+      setup() {
+        const items = ref([]);
+        const selectedIndex = ref(null);
+        const statusMessage = ref('');
+        const searchQuery = ref('');
+        const langs = ['zh', 'en', 'ja', 'ko'];
+        const platformKeys = ['xiaohongshu', 'weibo', 'ins', 'x'];
+        const platformLabels = {
+          xiaohongshu: '小红书',
+          weibo: '微博',
+          ins: 'Instagram',
+          x: 'X',
+        };
+        const extraFieldDrafts = ref({});
+
+        const selectedItem = computed(() => {
+          if (selectedIndex.value == null) return null;
+          return items.value[selectedIndex.value] || null;
+        });
+
+        const filteredItems = computed(() => {
+          if (!searchQuery.value.trim()) return items.value;
+          const keyword = searchQuery.value.toLowerCase();
+          return items.value.filter(item => {
+            const name = displayTitle(item).toLowerCase();
+            const desc = (item.desc?.zh || item.desc?.en || '').toLowerCase();
+            return name.includes(keyword) || desc.includes(keyword);
+          });
+        });
+
+        const extraFields = computed(() => {
+          if (!selectedItem.value) return [];
+          const knownKeys = new Set(['index', 'name', 'image', 'link', 'desc', 'platforms', 'visible', 'accent']);
+          return Object.keys(selectedItem.value).filter(key => !knownKeys.has(key));
+        });
+
+        const displayTitle = (item) => {
+          if (!item) return '未命名';
+          return item.name?.zh || item.name?.en || item.name?.ja || item.name?.ko || '未命名';
+        };
+
+        const selectItem = (idx) => {
+          selectedIndex.value = idx;
+          initExtraFieldDrafts();
+        };
+
+        const loadJson = async () => {
+          statusMessage.value = '加载中...';
+          try {
+            const res = await fetch('ip.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error(`加载失败：${res.status} ${res.statusText}`);
+            const data = await res.json();
+            items.value = Array.isArray(data) ? data : Object.values(data || {});
+            if (items.value.length) selectItem(0);
+            statusMessage.value = '已载入 ip.json';
+          } catch (error) {
+            statusMessage.value = error?.message || String(error);
+          }
+        };
+
+        const saveToLocal = () => {
+          localStorage.setItem('ipAdminDraft', JSON.stringify(items.value, null, 2));
+          statusMessage.value = '已保存到本地草稿';
+        };
+
+        const restoreFromLocal = () => {
+          const saved = localStorage.getItem('ipAdminDraft');
+          if (!saved) {
+            statusMessage.value = '未找到本地草稿';
+            return;
+          }
+          try {
+            const data = JSON.parse(saved);
+            items.value = Array.isArray(data) ? data : Object.values(data || {});
+            if (items.value.length) selectItem(0);
+            statusMessage.value = '已恢复本地草稿';
+          } catch (error) {
+            statusMessage.value = error?.message || String(error);
+          }
+        };
+
+        const downloadJson = () => {
+          try {
+            const jsonText = JSON.stringify(items.value, null, 2);
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ip.json';
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 300);
+          } catch (error) {
+            statusMessage.value = error?.message || String(error);
+          }
+        };
+
+        const createEmptyItem = () => {
+          const templateSource = items.value[0] || {
+            index: items.value.length + 1,
+            name: { zh: '', en: '', ja: '', ko: '' },
+            image: '',
+            link: '',
+            desc: { zh: '', en: '', ja: '', ko: '' },
+            platforms: { xiaohongshu: false, weibo: false, ins: false, x: false },
+            visible: true,
+            accent: '',
+          };
+
+          const cloneValue = (value) => {
+            if (Array.isArray(value)) return [];
+            if (value && typeof value === 'object') {
+              const result = {};
+              Object.keys(value).forEach(key => {
+                result[key] = cloneValue(value[key]);
+              });
+              return result;
+            }
+            if (typeof value === 'boolean') return false;
+            if (typeof value === 'number') return 0;
+            return '';
+          };
+
+          return cloneValue(templateSource);
+        };
+
+        const addItem = () => {
+          items.value.push(createEmptyItem());
+          selectItem(items.value.length - 1);
+        };
+
+        const duplicateItem = () => {
+          if (!selectedItem.value) return;
+          const copy = JSON.parse(JSON.stringify(selectedItem.value));
+          items.value.splice(selectedIndex.value + 1, 0, copy);
+          selectItem(selectedIndex.value + 1);
+        };
+
+        const deleteItem = () => {
+          if (selectedIndex.value == null) return;
+          items.value.splice(selectedIndex.value, 1);
+          if (items.value.length === 0) {
+            selectedIndex.value = null;
+          } else {
+            selectItem(Math.max(0, selectedIndex.value - 1));
+          }
+        };
+
+        const initExtraFieldDrafts = () => {
+          if (!selectedItem.value) return;
+          const drafts = {};
+          extraFields.value.forEach(key => {
+            drafts[key] = JSON.stringify(selectedItem.value[key], null, 2);
+          });
+          extraFieldDrafts.value = drafts;
+        };
+
+        const applyExtraField = (field) => {
+          if (!selectedItem.value) return;
+          try {
+            selectedItem.value[field] = JSON.parse(extraFieldDrafts.value[field]);
+          } catch (error) {
+            statusMessage.value = `字段 ${field} 解析失败：${error?.message || error}`;
+          }
+        };
+
+        watch(items, () => {
+          localStorage.setItem('ipAdminDraft', JSON.stringify(items.value, null, 2));
+        }, { deep: true });
+
+        loadJson();
+
+        return {
+          items,
+          selectedIndex,
+          selectedItem,
+          filteredItems,
+          statusMessage,
+          searchQuery,
+          langs,
+          platformKeys,
+          platformLabels,
+          extraFields,
+          extraFieldDrafts,
+          displayTitle,
+          selectItem,
+          loadJson,
+          saveToLocal,
+          restoreFromLocal,
+          downloadJson,
+          addItem,
+          duplicateItem,
+          deleteItem,
+          applyExtraField,
+        };
+      },
+    }).mount('#app');
+  </script>
+</body>
+
+</html>
