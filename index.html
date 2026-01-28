@@ -29,7 +29,9 @@
 		</script>
 		<script defer src="/_vercel/speed-insights/script.js"></script>
 		<script>
-			window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+			window.va = window.va || function() {
+				(window.vaq = window.vaq || []).push(arguments);
+			};
 		</script>
 		<script defer src="/_vercel/insights/script.js"></script>
 		<script>
@@ -155,6 +157,12 @@
 								{{ t('nav.apps') }}
 							</a>
 
+							<!-- IP -->
+							<a @click.prevent="navigate('ip')" href="#"
+								:class="[ navBase, isActive(['ip']) ? navActive : navIdle]">
+								{{ t('nav.ip') }}
+							</a>
+
 							<!-- Articles / Article Detail -->
 							<a @click.prevent="navigate('articles')" href="#"
 								:class="[ navBase, isActive(['articles','article-detail']) ? navActive : navIdle]">
@@ -242,6 +250,12 @@
 						<a @click.prevent="navigate('apps'); showMobileMenu = false" href="#"
 							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['apps','appdetail']) ? navActiveMobile : navIdleMobile]">
 							{{ t('nav.apps') }}
+						</a>
+
+						<!-- IP -->
+						<a @click.prevent="navigate('ip'); showMobileMenu = false" href="#"
+							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['ip']) ? navActiveMobile : navIdleMobile]">
+							{{ t('nav.ip') }}
 						</a>
 
 						<!-- Articles / Article Detail -->
@@ -486,6 +500,39 @@
 									</div>
 								</div>
 
+							</div>
+						</div>
+					</section>
+
+					<!-- Featured IP Section -->
+					<section class="py-20 bg-neutral-50 dark:bg-neutral-900">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex items-center justify-between">
+								<div>
+									<h2 class="text-3xl font-bold">{{ t('ip.sectionTitle') }}</h2>
+								</div>
+								<a @click.prevent="navigate('ip')" href="#"
+									class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">
+									{{ t('ip.sectionCta') }} →
+								</a>
+							</div>
+
+							<div ref="ipCarousel"
+								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
+								style="scrollbar-width: thin; touch-action: pan-x pan-y;">
+								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
+									rel="noopener noreferrer"
+									class="group flex flex-col items-center gap-4 min-w-[160px] sm:min-w-[180px] lg:min-w-[200px] snap-start">
+									<div class="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden bg-white dark:bg-neutral-900 ring-4 ring-white/80 dark:ring-neutral-700/50 shadow-xl dark:shadow-neutral-800
+                                        transition-transform duration-300 group-hover:-translate-y-1">
+										<img :src="ip.image" :alt="pickI18n(ip.name)"
+											class="w-full h-full object-cover" />
+									</div>
+									<h3
+										class="text-base sm:text-lg font-semibold text-neutral-900 dark:text-white text-center">
+										{{ pickI18n(ip.name) }}
+									</h3>
+								</a>
 							</div>
 						</div>
 					</section>
@@ -827,6 +874,116 @@
 
 								</div>
 							</div>
+						</div>
+					</section>
+				</template>
+
+				<!-- ========== IP PAGE ========== -->
+				<template v-if="currentPage === 'ip'">
+					<section class="py-24">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h1 class="text-4xl font-bold mb-4 animate-fade-in-up">{{ t('ip.pageTitle') }}</h1>
+								<p class="text-xl text-neutral-600 dark:text-neutral-400 animate-fade-in-up">
+									{{ t('ip.pageDesc') }}
+								</p>
+							</div>
+
+							<div class="max-w-xl mx-auto mb-12 animate-fade-in-up">
+								<div class="relative">
+									<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400"
+										fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+									</svg>
+									<input v-model="ipSearch" type="text" :placeholder="t('ip.search')"
+										class="w-full pl-12 pr-4 py-3 bg-neutral-100 dark:bg-neutral-800 border border-transparent focus:border-primary-500 rounded-full outline-none transition-colors">
+								</div>
+							</div>
+
+							<div class="grid gap-5 lg:grid-cols-2 xl:grid-cols-3 lg:gap-6">
+								<a v-for="ip in filteredIpList" :key="`ip-${ip.index}`" :href="ip.link" target="_blank"
+									rel="noopener noreferrer" class="group relative overflow-hidden rounded-[28px]
+							           border border-neutral-200/70 dark:border-neutral-800/70
+							           bg-white/90 dark:bg-neutral-900/60 backdrop-blur-xl
+							           p-5 sm:p-6 transition-all duration-300
+							           hover:-translate-y-1
+							           hover:shadow-[0_10px_20px_rgba(15,23,42,0.1)]
+							           dark:hover:shadow-[0_10px_20px_rgba(0,0,0,0.25)]">
+									<!-- 背景光晕（保留你原来那种两团） -->
+									<div class="pointer-events-none absolute -right-12 -top-12 w-44 h-44 rounded-full opacity-15 blur-3xl
+							             transition-all duration-300 group-hover:opacity-20" :style="{ background: ip.accent }"></div>
+									<div class="pointer-events-none absolute -left-10 -bottom-12 w-36 h-36 rounded-full opacity-10 blur-3xl
+							             transition-all duration-300 group-hover:opacity-15" :style="{ background: ip.accent }"></div>
+
+									<div class="relative flex flex-col h-full">
+										<!-- 头部：头像 + 标题 + 箭头（更紧凑、精致） -->
+										<div class="flex items-start justify-between gap-4">
+											<div class="flex items-center gap-4 min-w-0">
+												<!-- 大圆形头像（无 rotate 动画） -->
+												<div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0
+							                   ring-4 ring-white/80 dark:ring-white/10
+							                   shadow-xl dark:shadow-[0_14px_44px_rgba(0,0,0,0.65)]
+							                   transition-transform duration-300 group-hover:scale-[1.03]">
+													<img :src="ip.image" :alt="pickI18n(ip.name)"
+														class="w-full h-full object-cover" />
+													<!-- 轻微高光，头像更“贵” -->
+													<div
+														class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 to-black/15 dark:from-white/5 dark:to-black/35">
+													</div>
+												</div>
+
+												<!-- 标题（更稳：支持截断） -->
+												<div class="min-w-0">
+													<h3
+														class="text-[18px] sm:text-[19px] font-semibold text-neutral-900 dark:text-white leading-snug line-clamp-1">
+														{{ pickI18n(ip.name) }}
+													</h3>
+												</div>
+											</div>
+
+											<!-- 右侧箭头 -->
+											<span
+												class="mt-1 w-10 h-10 rounded-full border border-neutral-200/70 dark:border-neutral-700/70 bg-white/70 dark:bg-neutral-800/70
+							                 flex items-center justify-center text-neutral-500 dark:text-neutral-300
+							                 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-neutral-900 dark:group-hover:text-white">
+												<svg class="w-4 h-4" fill="none" stroke="currentColor"
+													viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round"
+														stroke-width="2" d="M9 5l7 7-7 7" />
+												</svg>
+											</span>
+										</div>
+
+										<!-- 描述 -->
+										<p
+											class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-3">
+											{{ pickI18n(ip.desc) }}
+										</p>
+
+										<!-- 底部：标签 + 平台（更有秩序） -->
+										<div class="mt-auto">
+
+											<div class="h-px bg-neutral-100/90 dark:bg-neutral-800/80 mt-4"></div>
+
+											<!-- Platforms：chip 形式（最多 3 个） -->
+											<div class="mt-3 flex flex-wrap gap-2" v-if="ip.platforms">
+												<span
+													v-for="(pf, pfIndex) in resolveIpPlatforms(ip.platforms).slice(0, 3)"
+													:key="`ip-${ip.index}-pf-${pfIndex}`" class="text-[11px] px-3 py-1 rounded-full
+											           bg-white/60 dark:bg-neutral-800/70
+											           text-neutral-500 dark:text-neutral-400
+											           border border-neutral-200/60 dark:border-neutral-700/60">
+													{{ pf }}
+												</span>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+
+
+
 						</div>
 					</section>
 				</template>
@@ -1927,6 +2084,10 @@
 										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
 									t('nav.apps') }}</a>
 								</li>
+								<li><a @click.prevent="navigate('ip')" href="#"
+										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+										IP</a>
+								</li>
 								<li><a @click.prevent="navigate('articles')" href="#"
 										class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">{{
 									t('nav.articles') }}</a>
@@ -2106,6 +2267,7 @@
 					nav: {
 						home: "首页",
 						apps: "应用",
+						ip: "IP",
 						articles: "随笔",
 						media: "作品",
 						about: "关于",
@@ -2130,6 +2292,15 @@
 						contactTitle: "想要合作？",
 						contactDesc: "无论是项目合作还是简单交流，都欢迎与我联系",
 						contactBtn: "联系我"
+					},
+					ip: {
+						sectionTitle: "IP 展示",
+						sectionDesc: "独立 IP 的角色宇宙与分流入口，轻量但各自有光。",
+						sectionCta: "查看全部",
+						pageTitle: "IP 展示",
+						pageDesc: "持续构建中的原创角色与世界观",
+						pageCta: "查看详情",
+						search: "搜索 IP..."
 					},
 					apps: {
 						title: "我的应用",
@@ -2236,6 +2407,7 @@
 					nav: {
 						home: "Home",
 						apps: "Apps",
+						ip: "IP",
 						articles: "Articles",
 						media: "Media",
 						about: "About",
@@ -2260,6 +2432,15 @@
 						contactTitle: "Want to collaborate?",
 						contactDesc: "Whether for project collaboration or just a chat, feel free to reach out",
 						contactBtn: "Contact Me"
+					},
+					ip: {
+						sectionTitle: "IP Collection",
+						sectionDesc: "Independent IP universes and offsite entry points, light yet full of character.",
+						sectionCta: "View All",
+						pageTitle: "IP Collection",
+						pageDesc: "Original characters and worlds in continuous development.",
+						pageCta: "View Details",
+						search: "Search IP..."
 					},
 					apps: {
 						title: "My Apps",
@@ -2366,6 +2547,7 @@
 					nav: {
 						home: "ホーム",
 						apps: "アプリ",
+						ip: "IP",
 						articles: "記事",
 						media: "メディア",
 						about: "紹介",
@@ -2390,6 +2572,15 @@
 						contactTitle: "コラボレーションしませんか？",
 						contactDesc: "プロジェクトの協力や気軽な交流、お気軽にご連絡ください",
 						contactBtn: "連絡する"
+					},
+					ip: {
+						sectionTitle: "IP コレクション",
+						sectionDesc: "独立 IP の世界観と分流入口。軽やかに、それぞれの物語へ。",
+						sectionCta: "すべて見る",
+						pageTitle: "IP コレクション",
+						pageDesc: "継続的に構築しているオリジナルキャラクターと世界観",
+						pageCta: "詳細を見る",
+						search: "IP を検索..."
 					},
 					apps: {
 						title: "マイアプリ",
@@ -2496,6 +2687,7 @@
 					nav: {
 						home: "홈",
 						apps: "앱",
+						ip: "IP",
 						articles: "글",
 						media: "미디어",
 						about: "소개",
@@ -2520,6 +2712,15 @@
 						contactTitle: "협업하고 싶으신가요?",
 						contactDesc: "프로젝트 협업이든 가벼운 대화든 언제든지 연락주세요",
 						contactBtn: "연락하기"
+					},
+					ip: {
+						sectionTitle: "IP 컬렉션",
+						sectionDesc: "독립 IP 세계관과 외부 진입점, 가볍지만 선명한 존재감.",
+						sectionCta: "전체 보기",
+						pageTitle: "IP 컬렉션",
+						pageDesc: "지속적으로 구축 중인 오리지널 캐릭터와 세계관.",
+						pageCta: "자세히 보기",
+						search: "IP 검색..."
 					},
 					apps: {
 						title: "내 앱",
@@ -2609,7 +2810,7 @@
 						sending: "전송 중…",
 						sent: "전송됨",
 						sendFailed: "전송 실패",
-						fillAll: "이름 / 이메일 / 내용을 모두 작성해 주세요"
+						fillAll: "이름 / 이메일 / 내용을 모두 작성해 주세요",
 					},
 					footer: {
 						desc: "디지털 미디어와 애플리케이션 개발에 집중하는 독립 개발자.",
@@ -2730,6 +2931,7 @@
 					const articleSearch = ref('')
 					const mediaSearch = ref('')
 					const appsSearch = ref("")
+					const ipSearch = ref("")
 					const currentArticleId = ref(null)
 					const currentMediaId = ref(null)
 					const contactForm = ref({
@@ -2737,6 +2939,354 @@
 						email: '',
 						message: ''
 					})
+
+					const ipi18n = {
+						0: {
+							index: 1,
+							name: {
+								zh: "鸡贼黄袋鼠兔",
+								en: "Sneaky RooBunny",
+								ja: "ずる賢いルーバニー",
+								ko: "약삭빠른 루버니"
+							},
+							image: "IP/Sneaky RooBunny/icon.png",
+							link: "/IP/Sneaky RooBunny/index.html",
+							desc: {
+								zh: "光看着就已经很鸡贼了，没想到动起来更鸡贼",
+								en: "Looks sneaky enough at first glance — somehow even sneakier once it starts moving.",
+								ja: "見た目だけでも十分ずる賢そうなのに、動き出すとさらにずる賢い。",
+								ko: "가만히 있어도 약삭빠른데, 움직이기 시작하면 더 약삭빠르다."
+							},
+							platforms: {
+								xiaohongshu: true,
+								weibo: false,
+								ins: true,
+								x: true,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #eab308, #f59e0b)"
+						},
+						1: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						2: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						3: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						4: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						5: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						6: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						7: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						8: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						9: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						},
+						10: {
+							index: 2,
+							name: {
+								zh: "嘎布拉兔",
+								en: "嘎布拉兔",
+								ja: "嘎布拉兔",
+								ko: "嘎布拉兔"
+							},
+							image: "IP/Gabra/icon.png",
+							link: "IP/Gabra/index.html",
+							desc: {
+								zh: "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+								en: "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+								ja: "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+								ko: "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+							},
+							platforms: {
+								xiaohongshu: false,
+								weibo: false,
+								ins: false,
+								x: false,
+							},
+							visible: true,
+							accent: "linear-gradient(135deg, #6b7280, #71717a)"
+						}
+					}
+
+					const ipList = computed(() => {
+						return Object.values(ipi18n)
+							.filter((item) => item.visible !== false)
+							.sort((a, b) => Number(a.index) - Number(b.index))
+					})
+
+					const filteredIpList = computed(() => {
+						if (!ipSearch.value) return ipList.value
+						const keyword = ipSearch.value.toLowerCase()
+						return ipList.value.filter((item) => {
+							const name = pickI18n(item.name).toLowerCase()
+							const desc = pickI18n(item.desc).toLowerCase()
+							return name.includes(keyword) || desc.includes(keyword)
+						})
+					})
+
+					const ipPlatformLabels = {
+						xiaohongshu: "小红书",
+						weibo: "微博",
+						ins: "Instagram",
+						x: "X"
+					}
+
+					function resolveIpPlatforms(platforms) {
+						if (!platforms || typeof platforms !== "object") {
+							return ["暂未公开"];
+						}
+
+						// 平台映射（你可以随便改显示名）
+						const PLATFORM_LABELS = {
+							xiaohongshu: "小红书",
+							weibo: "微博",
+							ins: "Instagram",
+							x: "X"
+						};
+
+						const result = Object.keys(PLATFORM_LABELS)
+							.filter(key => platforms[key] === true) // 只认 true
+							.map(key => PLATFORM_LABELS[key]);
+
+						return result.length ? result : ["暂未公开"];
+					}
+
+					const ipCarouselRef = ref(null)
+					const isIpDragging = ref(false)
+					const ipDragStartX = ref(0)
+					const ipDragScrollLeft = ref(0)
+
+					const onIpDragStart = (event) => {
+						const carousel = ipCarouselRef.value
+						if (!carousel) return
+						isIpDragging.value = true
+						ipDragStartX.value = event.clientX
+						ipDragScrollLeft.value = carousel.scrollLeft
+						carousel.setPointerCapture?.(event.pointerId)
+					}
+
+					const onIpDragMove = (event) => {
+						const carousel = ipCarouselRef.value
+						if (!carousel || !isIpDragging.value) return
+						const delta = event.clientX - ipDragStartX.value
+						carousel.scrollLeft = ipDragScrollLeft.value - delta
+					}
+
+					const onIpDragEnd = (event) => {
+						if (!isIpDragging.value) return
+						isIpDragging.value = false
+						ipCarouselRef.value?.releasePointerCapture?.(event.pointerId)
+					}
 
 					const isActive = (pages) => {
 						return pages.includes(currentPage.value);
@@ -2777,6 +3327,7 @@
 							about: "about",
 							contact: "contact",
 							apps: "appv1",
+							ip: "ip",
 							appsv2: "launchpad",
 							articles: "articles",
 							media: "media",
@@ -2886,6 +3437,12 @@
 
 								case "appv1":
 									currentPage.value = "apps";
+									currentAppUrl.value = "";
+									scrollTop();
+									break;
+
+								case "ip":
+									currentPage.value = "ip";
 									currentAppUrl.value = "";
 									scrollTop();
 									break;
@@ -4600,7 +5157,6 @@
 
 
 
-
 					// Lifecycle
 					onMounted(async () => {
 						if (navigator.share) canNativeShare.value = true;
@@ -4645,6 +5201,14 @@
 						filteredMedia,
 						currentArticle,
 						currentMedia,
+						ipList,
+						ipSearch,
+						filteredIpList,
+						resolveIpPlatforms,
+						ipCarouselRef,
+						onIpDragStart,
+						onIpDragMove,
+						onIpDragEnd,
 						t,
 						tStatus,
 						applist,
