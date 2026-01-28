@@ -1249,433 +1249,290 @@
 		<script src="https://unpkg.com/lucide@latest"></script>
 		<script>
 			const {
-				createApp
+				createApp,
+				ref,
+				reactive,
+				computed,
+				onMounted,
+				onBeforeUnmount,
+				onUpdated,
+				nextTick
 			} = Vue;
 
 			createApp({
-				data() {
-					return {
-						isScrolled: false,
-						galleryFixed: false,
+				setup() {
+					const isScrolled = ref(false);
+					const galleryFixed = ref(false);
+					const heroMouse = reactive({
+						x: 0,
+						y: 0
+					});
 
-						heroMouse: {
-							x: 0,
-							y: 0
+					const navLinks = ref([{
+							label: "传说",
+							href: "#story"
 						},
-
-						navLinks: [{
-								label: "传说",
-								href: "#story"
-							},
-							{
-								label: "图鉴",
-								href: "#gallery"
-							},
-							{
-								label: "证言",
-								href: "#testimonials"
-							},
-							{
-								label: "科学",
-								href: "#characteristics"
-							},
-						],
-
-						galleryItems: [{
-								image: "public/rabbit-eating.png",
-								title: "粗硬的毛发",
-								description: "毛发比常见的家兔更粗硬，梳了也不服帖，像风吹过的草，转眼又乱。"
-							},
-							{
-								image: "public/rabbit-profile.png",
-								title: "挑衅的眼神",
-								description: "眼神尤其不同，明亮里带着几分挑衅，好像时刻准备往前蹦。"
-							},
-							{
-								image: "public/rabbit-running.png",
-								title: "活泼好动",
-								description: "几乎不肯安分待着，跳跃奔跑，四处翻找，把一切都变作玩具。"
-							},
-							{
-								image: "public/hero-rabbit.png",
-								title: "不可驯服",
-								description: "它不是温驯的宠物，而是一种持续不断的经历。"
-							},
-						],
-
-						// ===== Gallery state（极简）=====
-						currentIndex: 0,
-						galleryTranslate: 0,
-						gallerySectionHeight: 0,
-						gallerySectionHeightNow: 0,
-
-						// 缓存（滚动时不测量DOM）
-						_gTop: 0,
-						_gTravel: 0, // 纵向消费长度
-						_gStep: 1,
-						_gMax: 0,
-
-						// 1:1 跟手关键：scroll 只记录值，rAF 每帧消费
-						_latestY: 0,
-						_tickRAF: 0,
-						_ticking: false,
-
-						testimonials: [{
-								city: "上海",
-								country: "中国",
-								quote: "兔子半夜拍笼，把他吵醒不知多少回。他本想送走，可临到真有人要接手时，他又舍不得。",
-								translation: "养了它，就像家里多了个不安分的亲戚，吵吵闹闹，却也是热闹。",
-								author: "一位租房青年",
-								x: 80.5,
-								y: 39
-							},
-							{
-								city: "广州",
-								country: "中国",
-								quote: "她的嘎布拉喜欢掀花盆，把绿萝啃得秃秃的。她气急败坏，可又笑着说：",
-								translation: "真怪，它啃坏的地方反倒冒出新芽来。",
-								author: "一位女教师",
-								x: 78.6,
-								y: 43
-							},
-							{
-								city: "里昂",
-								country: "法国",
-								quote: "Ce n'est pas que nous ne l'ayons pas surveillé, mais il a trop d'énergie. Le jour ne lui suffit pas, et la nuit il doit encore s'agiter.",
-								translation: "我们不是没管过，可它精力太盛，白天跑不够，晚上就要闹。",
-								author: "一个家庭主妇",
-								x: 45,
-								y: 29.5
-							},
-							{
-								city: "汉堡",
-								country: "德国",
-								quote: "Sie sind sehr geschickt. Selbst im letzten Moment, kurz bevor man sie erwischt, springen sie plötzlich weg.",
-								translation: "它们很灵巧，抓到前一刻，还能猛地蹦开。",
-								author: "一位园丁",
-								x: 46.3,
-								y: 26
-							},
-							{
-								city: "印度",
-								country: "印度",
-								quote: "ऐसे समय पर तो डाँटना भी मन नहीं करता।",
-								translation: "就是这个时候，舍不得再怪它。",
-								author: "年轻女孩阿妮塔",
-								x: 68,
-								y: 49
-							},
-						],
-						activeTestimonial: null,
-						mousePos: {
-							x: 0,
-							y: 0
+						{
+							label: "图鉴",
+							href: "#gallery"
 						},
-						windowWidth: window.innerWidth,
+						{
+							label: "证言",
+							href: "#testimonials"
+						},
+						{
+							label: "科学",
+							href: "#characteristics"
+						},
+					]);
 
-						stats: [{
-								number: "5+",
-								label: "国家地区"
-							},
-							{
-								number: "100+",
-								label: "真实故事"
-							},
-							{
-								number: "∞",
-								label: "精力指数"
-							},
-							{
-								number: "0",
-								label: "驯服可能"
-							},
-						],
+					const galleryItems = ref([{
+							image: "public/rabbit-eating.png",
+							title: "粗硬的毛发",
+							description: "毛发比常见的家兔更粗硬，梳了也不服帖，像风吹过的草，转眼又乱。"
+						},
+						{
+							image: "public/rabbit-profile.png",
+							title: "挑衅的眼神",
+							description: "眼神尤其不同，明亮里带着几分挑衅，好像时刻准备往前蹦。"
+						},
+						{
+							image: "public/rabbit-running.png",
+							title: "活泼好动",
+							description: "几乎不肯安分待着，跳跃奔跑，四处翻找，把一切都变作玩具。"
+						},
+						{
+							image: "public/hero-rabbit.png",
+							title: "不可驯服",
+							description: "它不是温驯的宠物，而是一种持续不断的经历。"
+						},
+					]);
 
-						barsAnimated: false,
-						statsBars: [{
-								code: "EDP",
-								name: "环境破坏力",
-								value: 92,
-								valueColor: "text-gabura-red",
-								tip: "在数百个案例中，嘎布拉兔子表现极强破坏能力",
-								fillClass: (i) => (i <= 9 ? (i === 9 ? "bg-gabura-red/50" : "bg-gabura-red") :
-									"bg-gray-200")
-							},
-							{
-								code: "ESV",
-								name: "逃逸速度",
-								value: 85,
-								valueColor: "text-gabura-black",
-								tip: "",
-								fillClass: (i) => (i <= 8 ? (i === 8 ? "bg-gabura-black/50" : "bg-gabura-black") :
-									"bg-gray-200")
-							},
-							{
-								code: "ULS",
-								name: "开锁技巧",
-								value: 65,
-								valueColor: "text-gabura-black",
-								tip: "在数十个案例中，嘎布拉兔子已学会开启插销式笼门",
-								fillClass: (i) => (i <= 6 ? (i === 6 ? "bg-gray-800/50" : "bg-gray-800") :
-									"bg-gray-200")
-							}
-						],
+					// ===== Gallery state（极简）=====
+					const currentIndex = ref(0);
+					const galleryTranslate = ref(0);
+					const gallerySectionHeight = ref(0);
+					const gallerySectionHeightNow = ref(0);
 
-						featureCards: [{
-								title: "夜间活动",
-								desc: "夜里必定要拍打笼壁，声音大得让人失眠",
-								icon: "activity"
-							},
-							{
-								title: "破坏行为",
-								desc: "翻开花盆，啃坏根茎，咬坏鞋子和纸箱",
-								icon: "alert-triangle"
-							},
-							{
-								title: "聪明绝顶",
-								desc: "学得快，一旦学会开锁，便永远记得",
-								icon: "brain"
-							},
-						],
+					// 缓存（滚动时不测量DOM）
+					let _gTop = 0;
+					let _gTravel = 0; // 纵向消费长度
+					let _gStep = 1;
+					let _gMax = 0;
 
-						footerLinks: [{
-								title: "探索",
-								links: [{
-									label: "传说起源",
-									href: "#story"
-								}, {
-									label: "图鉴",
-									href: "#gallery"
-								}, {
-									label: "全球证言",
-									href: "#testimonials"
-								}, {
-									label: "科学观察",
-									href: "#characteristics"
-								}]
-							},
-							{
-								title: "社区",
-								links: [{
-									label: "分享故事",
-									href: "#"
-								}, {
-									label: "饲养指南",
-									href: "#"
-								}, {
-									label: "论坛讨论",
-									href: "#"
-								}, {
-									label: "活动日历",
-									href: "#"
-								}]
-							},
-							{
-								title: "关于",
-								links: [{
-									label: "关于嘎布拉",
-									href: "#"
-								}, {
-									label: "联系方式",
-									href: "#"
-								}, {
-									label: "合作伙伴",
-									href: "#"
-								}, {
-									label: "媒体资源",
-									href: "#"
-								}]
-							},
-						],
-						socialLinks: [{
-								icon: "instagram",
-								href: "#",
-								label: "Instagram"
-							},
-							{
-								icon: "twitter",
-								href: "#",
-								label: "Twitter"
-							},
-							{
-								icon: "youtube",
-								href: "#",
-								label: "Youtube"
-							},
-							{
-								icon: "mail",
-								href: "#",
-								label: "Email"
-							},
-						],
+					// 1:1 跟手关键：scroll 只记录值，rAF 每帧消费
+					let _latestY = 0;
+					let _tickRAF = 0;
+					let _ticking = false;
+					let _prevY = 0;
+					let _prevY2 = 0;
 
-						currentYear: new Date().getFullYear(),
-						sloganBlur: 10,
-						sloganOpacity: 0.3,
-
-						// ===== Typewriter（控制字符，不控制宽度）=====
-						typewriterLines: [
-							"这兔子，不是一般的兔子。",
-							"它看着呆，其实心眼贼多。",
-							"你以为它安静？下一秒就开始叫嚷。",
-							"嘎布拉，出场自带风声。"
-						],
-						typewriterLineIndex: 0,
-						typewriterFull: "",
-						typewriterDisplay: "",
-						typewriterCharIndex: 0,
-						typewriterMode: "typing", // typing | holding | deleting
-						_typeTimer: 0,
-						_typeStop: false,
-
-						// ===== Share Poster UI State =====
-						showSharePoster: false,
-						sharePosterLoading: false,
-						sharePosterImgUrl: "", // ObjectURL for <img>
-						sharePosterBlob: null, // Blob
-						sharePosterError: "",
-					};
-				},
-
-				computed: {
-					isMobile() {
-						return this.windowWidth < 768
-					},
-
-					barBaseClass() {
-						// 默认“未动画”状态：压扁不可见
-						return this.barsAnimated ?
-							"opacity-1" :
-							"opacity-0"
-					}
-				},
-
-				mounted() {
-					window.addEventListener("resize", this.handleResize)
-
-					this.setupGallery();
-
-					// scroll：只记录最新 y（不要在这里做计算）
-					window.addEventListener("scroll", this.onScroll, {
-						passive: true
+					const testimonials = ref([{
+							city: "上海",
+							country: "中国",
+							quote: "兔子半夜拍笼，把他吵醒不知多少回。他本想送走，可临到真有人要接手时，他又舍不得。",
+							translation: "养了它，就像家里多了个不安分的亲戚，吵吵闹闹，却也是热闹。",
+							author: "一位租房青年",
+							x: 80.5,
+							y: 39
+						},
+						{
+							city: "广州",
+							country: "中国",
+							quote: "她的嘎布拉喜欢掀花盆，把绿萝啃得秃秃的。她气急败坏，可又笑着说：",
+							translation: "真怪，它啃坏的地方反倒冒出新芽来。",
+							author: "一位女教师",
+							x: 78.6,
+							y: 43
+						},
+						{
+							city: "里昂",
+							country: "法国",
+							quote: "Ce n'est pas que nous ne l'ayons pas surveillé, mais il a trop d'énergie. Le jour ne lui suffit pas, et la nuit il doit encore s'agiter.",
+							translation: "我们不是没管过，可它精力太盛，白天跑不够，晚上就要闹。",
+							author: "一个家庭主妇",
+							x: 45,
+							y: 29.5
+						},
+						{
+							city: "汉堡",
+							country: "德国",
+							quote: "Sie sind sehr geschickt. Selbst im letzten Moment, kurz bevor man sie erwischt, springen sie plötzlich weg.",
+							translation: "它们很灵巧，抓到前一刻，还能猛地蹦开。",
+							author: "一位园丁",
+							x: 46.3,
+							y: 26
+						},
+						{
+							city: "印度",
+							country: "印度",
+							quote: "ऐसे समय पर तो डाँटना भी मन नहीं करता।",
+							translation: "就是这个时候，舍不得再怪它。",
+							author: "年轻女孩阿妮塔",
+							x: 68,
+							y: 49
+						},
+					]);
+					const activeTestimonial = ref(null);
+					const mousePos = reactive({
+						x: 0,
+						y: 0
 					});
+					const windowWidth = ref(window.innerWidth);
 
-					window.addEventListener("resize", () => {
-						this.setupGallery();
-						this.onScroll(); // 触发一次记录 + tick
-					}, {
-						passive: true
-					});
+					const stats = ref([{
+							number: "5+",
+							label: "国家地区"
+						},
+						{
+							number: "100+",
+							label: "真实故事"
+						},
+						{
+							number: "∞",
+							label: "精力指数"
+						},
+						{
+							number: "0",
+							label: "驯服可能"
+						},
+					]);
 
-					this.$nextTick(() => {
-						this.onScroll(); // 初始化 _latestY + 启动 tick
-						lucide.createIcons();
-						this.initStatsAndScanObservers();
-					});
-
-					this.startTypewriter();
-
-					const el = this.$refs.statsBlock
-					if (!el) return
-
-					const io = new IntersectionObserver((entries) => {
-						const e = entries[0]
-						if (e.isIntersecting) {
-							this.startBarsAnim()
-							io.disconnect()
+					const barsAnimated = ref(false);
+					const statsBars = ref([{
+							code: "EDP",
+							name: "环境破坏力",
+							value: 92,
+							valueColor: "text-gabura-red",
+							tip: "在数百个案例中，嘎布拉兔子表现极强破坏能力",
+							fillClass: (i) => (i <= 9 ? (i === 9 ? "bg-gabura-red/50" : "bg-gabura-red") :
+								"bg-gray-200")
+						},
+						{
+							code: "ESV",
+							name: "逃逸速度",
+							value: 85,
+							valueColor: "text-gabura-black",
+							tip: "",
+							fillClass: (i) => (i <= 8 ? (i === 8 ? "bg-gabura-black/50" : "bg-gabura-black") :
+								"bg-gray-200")
+						},
+						{
+							code: "ULS",
+							name: "开锁技巧",
+							value: 65,
+							valueColor: "text-gabura-black",
+							tip: "在数十个案例中，嘎布拉兔子已学会开启插销式笼门",
+							fillClass: (i) => (i <= 6 ? (i === 6 ? "bg-gray-800/50" : "bg-gray-800") :
+								"bg-gray-200")
 						}
-					}, {
-						threshold: 0.25
-					})
+					]);
 
-					io.observe(el)
-				},
+					const currentYear = ref(new Date().getFullYear());
+					const sloganBlur = ref(10);
+					const sloganOpacity = ref(0.3);
 
-				beforeUnmount() {
-					window.removeEventListener("resize", this.handleResize)
-					window.removeEventListener("scroll", this.onScroll);
-					if (this._tickRAF) cancelAnimationFrame(this._tickRAF);
-					this.stopTypewriter();
-					if (this.sharePosterImgUrl) {
-						try {
-							URL.revokeObjectURL(this.sharePosterImgUrl);
-						} catch (e) {}
-					}
-				},
+					// ===== Typewriter（控制字符，不控制宽度）=====
+					const typewriterLines = ref([
+						"这兔子，不是一般的兔子。",
+						"它看着呆，其实心眼贼多。",
+						"你以为它安静？下一秒就开始叫嚷。",
+						"嘎布拉，出场自带风声。"
+					]);
+					const typewriterLineIndex = ref(0);
+					const typewriterFull = ref("");
+					const typewriterDisplay = ref("");
+					const typewriterCharIndex = ref(0);
+					const typewriterMode = ref("typing"); // typing | holding | deleting
+					let _typeTimer = 0;
+					let _typeStop = false;
 
-				updated() {
-					lucide.createIcons();
-				},
+					// ===== Share Poster UI State =====
+					const showSharePoster = ref(false);
+					const sharePosterLoading = ref(false);
+					const sharePosterImgUrl = ref(""); // ObjectURL for <img>
+					const sharePosterBlob = ref(null); // Blob
+					const sharePosterError = ref("");
 
-				methods: {
+					const gallerySection = ref(null);
+					const galleryTrack = ref(null);
+					const statsBlock = ref(null);
+					const sloganSection = ref(null);
+
+					const isMobile = computed(() => windowWidth.value < 768);
+
+					const barBaseClass = computed(() => (barsAnimated.value ?
+						"opacity-1" :
+						"opacity-0"));
+
 					// ===== scroll 事件：只写入最新 scrollY，然后开启 rAF tick =====
-					onScroll() {
-						this._latestY = window.scrollY || window.pageYOffset;
-						if (!this._ticking) {
-							this._ticking = true;
-							this._tick();
+					const onScroll = () => {
+						_latestY = window.scrollY || window.pageYOffset;
+						if (!_ticking) {
+							_ticking = true;
+							tick();
 						}
-					},
+					};
 
 					// ===== 每帧消费最新 y：实现 scrollbar 1:1 =====
-					_tick() {
-						const y = this._latestY;
+					const tick = () => {
+						const y = _latestY;
 
-						this.isScrolled = y > 100;
-						this.updateSloganProgress();
+						isScrolled.value = y > 100;
+						updateSloganProgress();
 
-						const start = this._gTop;
-						const end = start + this._gTravel;
+						const start = _gTop;
+						const end = start + _gTravel;
 
-						const hasTravel = this._gTravel > 0;
+						const hasTravel = _gTravel > 0;
 
 						// ===== 三段式 pin：before / during / after =====
 						if (!hasTravel) {
-							this.galleryFixed = false;
-							this.gallerySectionHeightNow = 0;
+							galleryFixed.value = false;
+							gallerySectionHeightNow.value = 0;
 						} else if (y < start) {
 							// 进入前：relative + top=0
-							this.galleryFixed = false;
-							this.gallerySectionHeightNow = 0;
+							galleryFixed.value = false;
+							gallerySectionHeightNow.value = 0;
 						} else if (y >= start && y <= end) {
 							// 区间中：fixed + top=0（真正钉住）
-							this.galleryFixed = true;
-							this.gallerySectionHeightNow = 0;
+							galleryFixed.value = true;
+							gallerySectionHeightNow.value = 0;
 						} else {
 							// 离开后：relative + top=travel（落在结束位置）
-							this.galleryFixed = false;
-							this.gallerySectionHeightNow = this._gTravel;
+							galleryFixed.value = false;
+							gallerySectionHeightNow.value = _gTravel;
 						}
 
 						// ===== translateX：仍然用 y-start 映射 0.._gMax =====
 						if (hasTravel) {
 							const offset = y - start; // 0..travel
-							const clamped = Math.min(Math.max(offset, 0), this._gMax);
-							this.galleryTranslate = -clamped;
+							const clamped = Math.min(Math.max(offset, 0), _gMax);
+							galleryTranslate.value = -clamped;
 
-							const idx = Math.round(clamped / this._gStep);
-							this.currentIndex = Math.min(Math.max(idx, 0), this.galleryItems.length - 1);
+							const idx = Math.round(clamped / _gStep);
+							currentIndex.value = Math.min(Math.max(idx, 0), galleryItems.value.length - 1);
 						} else {
-							this.galleryTranslate = 0;
-							this.currentIndex = 0;
+							galleryTranslate.value = 0;
+							currentIndex.value = 0;
 						}
 
 						// ===== 继续跑：只要 scroll 还在变化就继续；稳定两帧就停 =====
-						if (this._prevY === y && this._prevY2 === y) {
-							this._ticking = false;
-							this._tickRAF = 0;
+						if (_prevY === y && _prevY2 === y) {
+							_ticking = false;
+							_tickRAF = 0;
 							return;
 						}
-						this._prevY2 = this._prevY;
-						this._prevY = y;
+						_prevY2 = _prevY;
+						_prevY = y;
 
-						this._tickRAF = requestAnimationFrame(() => this._tick());
-					},
+						_tickRAF = requestAnimationFrame(() => tick());
+					};
 
 					// ===== Gallery：只测量（resize 时重测）=====
-					setupGallery() {
-						const section = this.$refs.gallerySection;
-						const track = this.$refs.galleryTrack;
+					const setupGallery = () => {
+						const section = gallerySection.value;
+						const track = galleryTrack.value;
 						if (!section || !track) return;
 
 						const card = track.querySelector(".gallery-card");
@@ -1690,215 +1547,158 @@
 						// 步长 = 卡片宽 + gap
 						const cs = getComputedStyle(track);
 						const gap = parseFloat(cs.gap || cs.columnGap || "0") || 0;
-						this._gStep = Math.max(cardWidth + gap, 1);
+						_gStep = Math.max(cardWidth + gap, 1);
 
 						// 总旅行 = step * (N-1)
-						this._gMax = this._gStep * Math.max(this.galleryItems.length - 1, 0);
-						this._gTravel = this._gMax;
+						_gMax = _gStep * Math.max(galleryItems.value.length - 1, 0);
+						_gTravel = _gMax;
 
 						// section 总高度 = 1屏 + travel
-						this.gallerySectionHeight = Math.max(window.innerHeight + this._gTravel + 1, window.innerHeight);
+						gallerySectionHeight.value = Math.max(window.innerHeight + _gTravel + 1, window.innerHeight);
 
 						// 缓存 top
 						const rect = section.getBoundingClientRect();
-						this._gTop = rect.top + (window.scrollY || window.pageYOffset);
-					},
+						_gTop = rect.top + (window.scrollY || window.pageYOffset);
+					};
 
 					// ===== 其余保持你的原逻辑 =====
-					scrollToTop() {
+					const scrollToTop = () => {
 						window.scrollTo({
 							top: 0,
 							behavior: "smooth"
 						});
-					},
-					scrollToSection(href) {
+					};
+					const scrollToSection = (href) => {
 						const el = document.querySelector(href);
 						if (el) el.scrollIntoView({
 							behavior: "smooth"
 						});
-					},
-					splitText(text) {
-						return text.split("");
-					},
-					updateHeroMouse(event) {
+					};
+					const splitText = (text) => text.split("");
+					const updateHeroMouse = (event) => {
 						const rect = event.currentTarget.getBoundingClientRect();
 						const x = (event.clientX - rect.left - rect.width / 2) / rect.width;
 						const y = (event.clientY - rect.top - rect.height / 2) / rect.height;
-						this.heroMouse = {
-							x: x * 40,
-							y: y * 40
-						};
-					},
+						heroMouse.x = x * 40;
+						heroMouse.y = y * 40;
+					};
 
-					setActiveTestimonial(t) {
-						this.activeTestimonial = t;
-					},
-					clearActiveTestimonial() {
-						this.activeTestimonial = null;
-					},
-					updateTestimonialMouse(e) {
-						this.mousePos = {
-							x: e.clientX,
-							y: e.clientY
-						};
-					},
+					const setActiveTestimonial = (t) => {
+						activeTestimonial.value = t;
+					};
+					const clearActiveTestimonial = () => {
+						activeTestimonial.value = null;
+					};
+					const updateTestimonialMouse = (e) => {
+						mousePos.x = e.clientX;
+						mousePos.y = e.clientY;
+					};
 
-					updateSloganProgress() {
-						const section = this.$refs.sloganSection;
+					const updateSloganProgress = () => {
+						const section = sloganSection.value;
 						if (!section) return;
 						const rect = section.getBoundingClientRect();
 						const h = window.innerHeight;
 						const p = 1 - Math.min(Math.max(rect.top / h, 0), 1);
-						this.sloganBlur = Math.max(10 - p * 13, 0);
-						this.sloganOpacity = Math.min(0.3 + p * 0.9, 1);
-					},
+						sloganBlur.value = Math.max(10 - p * 13, 0);
+						sloganOpacity.value = Math.min(0.3 + p * 0.9, 1);
+					};
 
-					initStatsAndScanObservers() {
-						const statsObserver = new IntersectionObserver((entries) => {
-							for (const entry of entries) {
-								if (entry.isIntersecting) {
-									const duration = 2000;
-									const start = performance.now();
-									const startValues = [...this.counters];
-									const animate = (now) => {
-										const progress = Math.min((now - start) / duration, 1);
-										this.counters = this.traits.map((trait, i) =>
-											Math.round(startValues[i] + (trait.value - startValues[i]) *
-												progress)
-										);
-										if (progress < 1) requestAnimationFrame(animate);
-									};
-									requestAnimationFrame(animate);
-									statsObserver.disconnect();
-								}
-							}
-						}, {
-							threshold: 0.4
-						});
+					const typeSleep = (ms) => new Promise((resolve) => {
+						_typeTimer = setTimeout(resolve, ms);
+					});
 
-						if (this.$refs.statsSection) statsObserver.observe(this.$refs.statsSection);
-
-						const scanObserver = new IntersectionObserver((entries) => {
-							for (const entry of entries) {
-								if (entry.isIntersecting) {
-									this.isScanning = true;
-									setTimeout(() => {
-										this.isScanning = false;
-									}, 3000);
-									scanObserver.disconnect();
-								}
-							}
-						}, {
-							threshold: 0.5
-						});
-
-						if (this.$refs.scanLine) scanObserver.observe(this.$refs.scanLine);
-					},
-
-					_typeSleep(ms) {
-						return new Promise((resolve) => {
-							this._typeTimer = setTimeout(resolve, ms);
-						});
-					},
-
-					async startTypewriter() {
-						if (this._typeStop === false && this.typewriterFull) return; // 防重复
-						this._typeStop = false;
+					const startTypewriter = async () => {
+						if (_typeStop === false && typewriterFull.value) return; // 防重复
+						_typeStop = false;
 
 						const TYPE_SPEED = 70;
 						const DELETE_SPEED = 45;
 						const HOLD_AFTER_TYPE = 900;
 						const HOLD_AFTER_DELETE = 250;
 
-						while (!this._typeStop) {
+						while (!_typeStop) {
 							// 取下一句
-							this.typewriterFull = this.typewriterLines[this.typewriterLineIndex % this
-								.typewriterLines.length];
-							this.typewriterLineIndex++;
+							typewriterFull.value = typewriterLines.value[typewriterLineIndex.value % typewriterLines.value.length];
+							typewriterLineIndex.value += 1;
 
 							// 重置显示
-							this.typewriterDisplay = "";
-							this.typewriterCharIndex = 0;
-							this.typewriterMode = "typing";
+							typewriterDisplay.value = "";
+							typewriterCharIndex.value = 0;
+							typewriterMode.value = "typing";
 
 							// 打字
-							while (this.typewriterCharIndex <= this.typewriterFull.length && !this._typeStop) {
-								this.typewriterDisplay = this.typewriterFull.slice(0, this.typewriterCharIndex);
-								this.typewriterCharIndex++;
-								await this._typeSleep(TYPE_SPEED);
+							while (typewriterCharIndex.value <= typewriterFull.value.length && !_typeStop) {
+								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex.value);
+								typewriterCharIndex.value += 1;
+								await typeSleep(TYPE_SPEED);
 							}
-							if (this._typeStop) break;
+							if (_typeStop) break;
 
-							this.typewriterMode = "holding";
-							await this._typeSleep(HOLD_AFTER_TYPE);
-							if (this._typeStop) break;
+							typewriterMode.value = "holding";
+							await typeSleep(HOLD_AFTER_TYPE);
+							if (_typeStop) break;
 
 							// 删字
-							this.typewriterMode = "deleting";
-							while (this.typewriterCharIndex >= 0 && !this._typeStop) {
-								this.typewriterDisplay = this.typewriterFull.slice(0, this.typewriterCharIndex);
-								this.typewriterCharIndex--;
-								await this._typeSleep(DELETE_SPEED);
+							typewriterMode.value = "deleting";
+							while (typewriterCharIndex.value >= 0 && !_typeStop) {
+								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex.value);
+								typewriterCharIndex.value -= 1;
+								await typeSleep(DELETE_SPEED);
 							}
-							if (this._typeStop) break;
+							if (_typeStop) break;
 
-							await this._typeSleep(HOLD_AFTER_DELETE);
+							await typeSleep(HOLD_AFTER_DELETE);
 						}
-					},
+					};
 
-					stopTypewriter() {
-						this._typeStop = true;
-						if (this._typeTimer) clearTimeout(this._typeTimer);
-						this._typeTimer = 0;
-					},
+					const stopTypewriter = () => {
+						_typeStop = true;
+						if (_typeTimer) clearTimeout(_typeTimer);
+						_typeTimer = 0;
+					};
 
-					handleResize() {
-						this.windowWidth = window.innerWidth
-					},
+					const handleResize = () => {
+						windowWidth.value = window.innerWidth;
+					};
 
-					barAnimClass(statIndex, i) {
+					const barAnimClass = (statIndex, i) => {
 						// i 从 1..10，做逐格延迟
-						const delay = (statIndex * 120) + ((i - 1) * 45) // 你可以调
-						return this.barsAnimated ?
+						const delay = (statIndex * 120) + ((i - 1) * 45); // 你可以调
+						return barsAnimated.value ?
 							`transition-opacity duration-500 ease-out [transition-delay:${delay}ms]` :
-							"transition-opacity duration-500 ease-out"
-					},
+							"transition-opacity duration-500 ease-out";
+					};
 
 					// 在你想触发动画时调用
-					startBarsAnim() {
-						this.barsAnimated = true
-					},
-
+					const startBarsAnim = () => {
+						barsAnimated.value = true;
+					};
 
 					// 关闭弹层
-					closeSharePoster() {
-						this.showSharePoster = false;
-						this.sharePosterLoading = false;
-						this.sharePosterError = "";
-						this.sharePosterBlob = null;
+					const closeSharePoster = () => {
+						showSharePoster.value = false;
+						sharePosterLoading.value = false;
+						sharePosterError.value = "";
+						sharePosterBlob.value = null;
 
-						if (this.sharePosterImgUrl) {
+						if (sharePosterImgUrl.value) {
 							try {
-								URL.revokeObjectURL(this.sharePosterImgUrl);
+								URL.revokeObjectURL(sharePosterImgUrl.value);
 							} catch (e) {}
-							this.sharePosterImgUrl = "";
+							sharePosterImgUrl.value = "";
 						}
-					},
+					};
 
 					// 保存按钮：手动下载
-					saveSharePoster() {
-						if (!this.sharePosterBlob || this.sharePosterLoading) return;
+					const saveSharePoster = () => {
+						if (!sharePosterBlob.value || sharePosterLoading.value) return;
 
-						const title =
-							this.currentArticle?.title?.zh ||
-							this.currentMedia?.title?.zh ||
-							this.currentApp?.name?.zh ||
-							this.currentApp?.name ||
-							"share";
+						const title = "share";
 
 						const name = `${String(title).slice(0, 18)}-poster.png`;
 
-						const url = URL.createObjectURL(this.sharePosterBlob);
+						const url = URL.createObjectURL(sharePosterBlob.value);
 						const a = document.createElement("a");
 						a.href = url;
 						a.download = name;
@@ -1906,27 +1706,27 @@
 						a.click();
 						a.remove();
 						URL.revokeObjectURL(url);
-					},
+					};
 
-					async shareposter() {
+					const shareposter = async () => {
 						try {
 							if (!window.createSharePoster) {
 								throw new Error("shareposter.js 未加载");
 							}
 
 							// 1) 打开弹层 + loading
-							this.showSharePoster = true;
-							this.sharePosterLoading = true;
-							this.sharePosterError = "";
+							showSharePoster.value = true;
+							sharePosterLoading.value = true;
+							sharePosterError.value = "";
 
 							// 2) 清理旧 ObjectURL
-							if (this.sharePosterImgUrl) {
+							if (sharePosterImgUrl.value) {
 								try {
-									URL.revokeObjectURL(this.sharePosterImgUrl);
+									URL.revokeObjectURL(sharePosterImgUrl.value);
 								} catch (e) {}
-								this.sharePosterImgUrl = "";
+								sharePosterImgUrl.value = "";
 							}
-							this.sharePosterBlob = null;
+							sharePosterBlob.value = null;
 
 							// ===== 只生成 IP 海报 =====
 							const type = "ip";
@@ -1975,19 +1775,129 @@
 								fileName: `${String(title).slice(0, 18) || "ip"}-poster.png`,
 							});
 
-							this.sharePosterBlob = blob;
-							this.sharePosterImgUrl = URL.createObjectURL(blob);
+							sharePosterBlob.value = blob;
+							sharePosterImgUrl.value = URL.createObjectURL(blob);
 						} catch (e) {
 							console.error(e);
-							this.sharePosterError = "生成失败了，可能是资源或字体加载异常。";
+							sharePosterError.value = "生成失败了，可能是资源或字体加载异常。";
 						} finally {
-							this.sharePosterLoading = false;
+							sharePosterLoading.value = false;
 						}
-					}
+					};
 
+					onMounted(() => {
+						window.addEventListener("resize", handleResize);
 
+						setupGallery();
 
-				},
+						// scroll：只记录最新 y（不要在这里做计算）
+						window.addEventListener("scroll", onScroll, {
+							passive: true
+						});
+
+						window.addEventListener("resize", () => {
+							setupGallery();
+							onScroll(); // 触发一次记录 + tick
+						}, {
+							passive: true
+						});
+
+						nextTick(() => {
+							onScroll(); // 初始化 _latestY + 启动 tick
+							lucide.createIcons();
+						});
+
+						startTypewriter();
+
+						const el = statsBlock.value;
+						if (!el) return;
+
+						const io = new IntersectionObserver((entries) => {
+							const e = entries[0];
+							if (e.isIntersecting) {
+								startBarsAnim();
+								io.disconnect();
+							}
+						}, {
+							threshold: 0.25
+						});
+
+						io.observe(el);
+					});
+
+					onBeforeUnmount(() => {
+						window.removeEventListener("resize", handleResize);
+						window.removeEventListener("scroll", onScroll);
+						if (_tickRAF) cancelAnimationFrame(_tickRAF);
+						stopTypewriter();
+						if (sharePosterImgUrl.value) {
+							try {
+								URL.revokeObjectURL(sharePosterImgUrl.value);
+							} catch (e) {}
+						}
+					});
+
+					onUpdated(() => {
+						lucide.createIcons();
+					});
+
+					return {
+						isScrolled,
+						galleryFixed,
+						heroMouse,
+						navLinks,
+						galleryItems,
+						currentIndex,
+						galleryTranslate,
+						gallerySectionHeight,
+						gallerySectionHeightNow,
+						testimonials,
+						activeTestimonial,
+						mousePos,
+						windowWidth,
+						stats,
+						barsAnimated,
+						statsBars,
+						currentYear,
+						sloganBlur,
+						sloganOpacity,
+						typewriterLines,
+						typewriterLineIndex,
+						typewriterFull,
+						typewriterDisplay,
+						typewriterCharIndex,
+						typewriterMode,
+						showSharePoster,
+						sharePosterLoading,
+						sharePosterImgUrl,
+						sharePosterBlob,
+						sharePosterError,
+						gallerySection,
+						galleryTrack,
+						statsBlock,
+						sloganSection,
+						isMobile,
+						barBaseClass,
+						onScroll,
+						setupGallery,
+						scrollToTop,
+						scrollToSection,
+						splitText,
+						updateHeroMouse,
+						setActiveTestimonial,
+						clearActiveTestimonial,
+						updateTestimonialMouse,
+						updateSloganProgress,
+						startTypewriter,
+						stopTypewriter,
+						handleResize,
+						barAnimClass,
+						startBarsAnim,
+						closeSharePoster,
+						saveSharePoster,
+						shareposter
+					};
+				}
 			}).mount("#app");
 		</script>
 
