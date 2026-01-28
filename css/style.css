@@ -25,13 +25,23 @@ html {
 
 /* IP carousel */
 .ip-carousel {
+	--ip-mask-left: 0%;
+	--ip-mask-right: 100%;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	overscroll-behavior-x: contain;
 	scroll-behavior: auto;
 	-webkit-overflow-scrolling: touch;
-	mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
-	-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+	mask-image: linear-gradient(90deg, transparent 0%, #000 var(--ip-mask-left), #000 var(--ip-mask-right), transparent 100%);
+	-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 var(--ip-mask-left), #000 var(--ip-mask-right), transparent 100%);
+}
+
+.ip-carousel.has-left-fade {
+	--ip-mask-left: 6%;
+}
+
+.ip-carousel.has-right-fade {
+	--ip-mask-right: 94%;
 }
 
 .ip-carousel *,

@@ -2957,6 +2957,9 @@
 						} catch (error) {
 							ipLoadError.value = error?.message || String(error)
 							console.error("[ip] load failed:", error)
+						} finally {
+							await nextTick()
+							updateIpCarouselMask()
 						}
 					}
 
@@ -3042,6 +3045,18 @@
 						if (!ipDragMoved.value) return
 						event.preventDefault()
 						event.stopPropagation()
+					}
+
+					const updateIpCarouselMask = () => {
+						const carousel = ipCarouselRef.value
+						if (!carousel) return
+						const maxScrollLeft = Math.max(0, carousel.scrollWidth - carousel.clientWidth)
+						const currentScroll = carousel.scrollLeft
+						const threshold = 2
+						const hasLeftFade = currentScroll > threshold
+						const hasRightFade = currentScroll < maxScrollLeft - threshold
+						carousel.classList.toggle("has-left-fade", hasLeftFade)
+						carousel.classList.toggle("has-right-fade", hasRightFade)
 					}
 
 					const isActive = (pages) => {
@@ -4927,6 +4942,13 @@
 						window.addEventListener("mousemove", onIpDragMove, { passive: false, capture: true })
 						window.addEventListener("mouseup", onIpDragEnd, { capture: true })
 						window.addEventListener("blur", onIpDragEnd)
+						window.addEventListener("resize", updateIpCarouselMask)
+
+						const ipCarousel = ipCarouselRef.value
+						if (ipCarousel) {
+							updateIpCarouselMask()
+							ipCarousel.addEventListener("scroll", updateIpCarouselMask, { passive: true })
+						}
 
 						// 后台预加载：不阻塞页面（深链需要的内容会在 applyRoute 里按需 await）
 						loadIpData().catch(() => {})
