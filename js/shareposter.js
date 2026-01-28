@@ -20,6 +20,12 @@
 			appVersionLabel = "",
 			appStatusText = "", // e.g. "已发布" / "Developing"
 
+			// ===== IP optional =====
+			ipName = "", // IP 名称
+			ipDesc = "", // IP 简介
+			ipHeroUrl = "", // 竖屏 Hero 图
+			ipIconUrl = "", // IP Icon
+
 			// optional copy
 			shareLine = "我觉得这篇不错，分享给你 ~",
 			leftHint1 = "长按扫描二维码",
@@ -85,6 +91,10 @@
 			appVersion,
 			appVersionLabel,
 			appStatusText,
+			ipHeroUrl,
+			ipIconUrl,
+			ipName,
+			ipDesc,
 		});
 
 		mount.appendChild(poster);
@@ -137,6 +147,10 @@
 		appVersion,
 		appVersionLabel,
 		appStatusText,
+		ipHeroUrl,
+		ipIconUrl,
+		ipName,
+		ipDesc,
 	}) {
 		if (type === "media") {
 			return `
@@ -248,6 +262,75 @@
           </div>
         </div>
       `;
+		}
+
+		if (type === "ip") {
+			return `
+		    <div class="multi-gradient-bg"></div>
+		    <div class="content">
+		      <div class="glass">
+		        <div class="inner-border">
+		          <div class="pad pad-ip">
+		
+		            <div class="shareline">
+		              <div class="up25">${escapeHtml(shareLine || "我发现了一个有趣的 IP，分享给你 ~")}</div>
+		            </div>
+		
+		            <!-- ===== 海报式 IP 信息区（按你给的结构） ===== -->
+		            <div class="ip-area">
+		              <div class="ip-stage">
+		                <div class="ip-hero-sq">
+		                  ${
+		                    ipHeroUrl
+		                      ? `<img class="ip-hero-imgtag" src="${escapeAttr(ipHeroUrl)}" alt="IP Hero" />`
+		                      : `<div class="ip-hero-ph"></div>`
+		                  }
+		                </div>
+		
+		                <div class="ip-info-sq">
+		                  <div class="ip-icon-round">
+		                    ${
+		                      ipIconUrl
+		                        ? `<img class="ip-icon-imgtag" src="${escapeAttr(ipIconUrl)}" alt="IP Icon" />`
+		                        : `<div class="ip-icon-ph"></div>`
+		                    }
+		                  </div>
+		
+		                  <div class="ip-name-sq">
+		                    <div class="up25">${escapeHtml(ipName || title || "IP")}</div>
+		                  </div>
+		
+		                  ${
+		                    ipDesc
+		                      ? `<div class="ip-desc-sq"><div class="up25">${escapeHtml(ipDesc)}</div></div>`
+		                      : ``
+		                  }
+		                </div>
+		              </div>
+		            </div>
+		
+		            <!-- ===== QR ===== -->
+		            <div class="qr-row qr-row-ip">
+		              <div class="qr-left">
+		                <div><div class="up25">${escapeHtml(leftHint1)}</div></div>
+		                <div><div class="up25">${escapeHtml(leftHint2 || "查看 IP")}</div></div>
+		              </div>
+		
+		              <div class="qr-card">
+		                <img class="qr-img" src="${qrDataUrl}" alt="QR" />
+		              </div>
+		            </div>
+		
+		            <div class="footer">
+		              <div><div class="up25">${escapeHtml(footerLeft)}</div></div>
+		              <div><div class="up25">${escapeHtml(footerRight)}</div></div>
+		            </div>
+		
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		  `;
 		}
 
 		// default: article
@@ -496,6 +579,101 @@
       }
       .qr-row-app{ margin-top:150px; }
 			.up25{transform:translateY(-25%);}
+			
+			/* ====== shareposter.js: buildPosterCSS 末尾追加/替换 IP 这段 ====== */
+			
+			/* ===== IP (Square hero + floating icon + title/desc) ===== */
+			.pad-ip{ padding:72px 60px 40px 60px; gap:44px; }
+			
+			/* 对齐你给的：flex-col items-center text-center gap-[32px] */
+			.ip-area{
+			  display:flex;
+			  flex-direction:column;
+			  align-items:center;
+			  text-align:center;
+			  gap:32px;
+			}
+			
+			/* 相当于 relative w-[860px] */
+			.ip-stage{
+			  position:relative;
+			  width:860px;
+			  max-width:100%;
+			}
+			
+			/* 相当于 w-full aspect-square rounded-[24px] overflow-hidden bg-white/60 border */
+			.ip-hero-sq{
+			  width:100%;
+			  aspect-ratio:1 / 1;
+			  border-radius:24px;
+			  overflow:hidden;
+			  background:rgba(255,255,255,0.60);
+			  border:1px solid rgba(255,255,255,0.70);
+			}
+			
+			/* Hero 用 img（更直观），object-cover */
+			.ip-hero-imgtag{
+			  width:100%;
+			  height:100%;
+			  display:block;
+			  object-fit:cover;
+			}
+			.ip-hero-ph{ width:100%; height:100%; background:#d4d4d4; }
+			
+			/* 名字+简介区域：translateY(-100px) */
+			.ip-info-sq{
+			  position:relative;
+			  z-index:20;
+			  display:flex;
+			  flex-direction:column;
+			  align-items:center;
+			  text-align:center;
+			  gap:18px;
+			  transform:translateY(-100px);
+			}
+			
+			/* Icon：w200 h200 圆形 + shadow */
+			.ip-icon-round{
+			  width:200px;
+			  height:200px;
+			  border-radius:9999px;
+			  overflow:hidden;
+			  background:rgba(255,255,255,0.80);
+			  border:1px solid rgba(255,255,255,0.70);
+			  box-shadow:0 26px 80px rgba(0,0,0,0.18);
+			}
+			.ip-icon-imgtag{
+			  width:100%;
+			  height:100%;
+			  display:block;
+			  object-fit:cover;
+			}
+			.ip-icon-ph{ width:100%; height:100%; background:#d4d4d4; }
+			
+			/* 名称：text-[88px] leading-[1.06] mt-[40px] font-extrabold */
+			.ip-name-sq{
+			  margin-top:40px;
+			  font-size:88px;
+			  line-height:1.06;
+			  font-weight:800;
+			  color:#171717;
+			  word-break:break-word;
+			}
+			
+			/* 简介：text-[40px] leading-[1.6] mt-[20px] */
+			.ip-desc-sq{
+			  margin-top:20px;
+			  max-width:860px;
+			  font-size:40px;
+			  line-height:1.6;
+			  font-weight:600;
+			  color:#404040;
+			  word-break:break-word;
+			}
+			
+			/* QR 距离：保持你原来的 app 风格 */
+			.qr-row-ip{ margin-top:150px; }
+
     `;
 	}
 

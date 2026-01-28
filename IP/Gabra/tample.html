@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企鹅兔子宇宙 - IP Landing Page Template</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 引入 Google Fonts (为了演示不同字体风格) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Noto+Sans+SC:wght@400;700&family=Zcool+KuaiLe&display=swap" rel="stylesheet">
+    
+    <!-- 配置 Tailwind 扩展 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" :class="[currentTheme.fontFamily, 'text-gray-800 transition-colors duration-500']" :style="{ backgroundColor: currentTheme.bgColor }">
+
+    <!-- ================= 宇宙通用页眉 (Fixed Header) ================= -->
+    <header class="fixed top-0 w-full z-50 glass-effect border-b border-gray-200 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-bold text-xs">
+                    PRU
+                </div>
+                <span class="font-bold text-xl tracking-wider">企鹅兔子宇宙</span>
+            </div>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-8 font-medium">
+                <a href="#" class="hover:text-blue-500 transition">首页</a>
+                <a href="#" class="hover:text-blue-500 transition">角色</a>
+                <a href="#" class="hover:text-blue-500 transition">动画</a>
+                <a href="#" class="hover:text-blue-500 transition">周边</a>
+            </nav>
+
+            <!-- Debug Tools: Theme Switcher (实际部署时可移除) -->
+            <div class="flex gap-2">
+                <button @click="setTheme('qiqi')" class="text-xs px-2 py-1 rounded bg-blue-100 hover:bg-blue-200">企企(蓝)</button>
+                <button @click="setTheme('kangaroo')" class="text-xs px-2 py-1 rounded bg-yellow-100 hover:bg-yellow-200">黄袋鼠(黄)</button>
+                <button @click="setTheme('gabura')" class="text-xs px-2 py-1 rounded bg-purple-100 hover:bg-purple-200">嘎布拉(紫)</button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-2xl">☰</button>
+        </div>
+    </header>
+
+    <!-- 占位符，防止内容被 Header 遮挡 -->
+    <div class="h-16"></div>
+
+    <!-- ================= 内容区域 (Dynamic Content) ================= -->
+    <main>
+
+        <!-- 1. Hero Section: 视觉冲击与 Slogan -->
+        <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+            <!-- 动态背景装饰 -->
+            <div class="absolute inset-0 z-0 opacity-20">
+                <div class="absolute top-10 left-10 w-32 h-32 rounded-full blur-3xl" :style="{ background: currentTheme.primary }"></div>
+                <div class="absolute bottom-10 right-10 w-64 h-64 rounded-full blur-3xl" :style="{ background: currentTheme.secondary }"></div>
+            </div>
+
+            <div class="container mx-auto px-4 z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left space-y-6">
+                    <span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-white mb-2" :style="{ background: currentTheme.primary }">
+                        NO.1 人气角色
+                    </span>
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+                        {{ activeIP.heroTitle }}<br>
+                        <span :style="{ color: currentTheme.primary }">{{ activeIP.heroSubtitle }}</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 max-w-lg">
+                        {{ activeIP.intro }}
+                    </p>
+                    <div class="flex gap-4 justify-center md:justify-start">
+                        <button class="px-8 py-3 rounded-xl text-white font-bold transform hover:-translate-y-1 transition shadow-lg" 
+                                :style="{ background: currentTheme.primary, borderRadius: currentTheme.btnRadius }">
+                            开始探索
+                        </button>
+                        <button class="px-8 py-3 border-2 font-bold transform hover:-translate-y-1 transition"
+                                :style="{ borderColor: currentTheme.primary, color: currentTheme.primary, borderRadius: currentTheme.btnRadius }">
+                            观看动画
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 大图展示 (支持 3D 或 图片) -->
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-white opacity-30 rounded-full blur-xl animate-pulse"></div>
+                    <img :src="activeIP.heroImage" alt="Hero" class="relative z-10 w-full max-w-md mx-auto animate-float drop-shadow-2xl transform transition hover:scale-105">
+                    <!-- 3D 徽章 -->
+                    <div class="absolute -bottom-5 -right-5 bg-white p-4 rounded-2xl shadow-xl z-20 animate-wiggle">
+                        <p class="font-bold text-xs text-gray-400">最新状态</p>
+                        <p class="font-bold text-lg">正在捣乱中...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 图集与介绍 (Gallery & About) -->
+        <section class="py-20 bg-white/50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4">日常快照</h2>
+                    <div class="h-1 w-20 mx-auto rounded-full" :style="{ background: currentTheme.primary }"></div>
+                </div>
+
+                <!-- Masonry Layout (模拟) -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+                    <!-- 大图 -->
+                    <div class="col-span-2 row-span-2 rounded-2xl overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent text-white opacity-0 group-hover:opacity-100 transition">
+                            <h3 class="font-bold text-xl">捣乱计划 A</h3>
+                        </div>
+                    </div>
+                    <!-- 小图们 -->
+                    <div v-for="(img, idx) in 4" :key="idx" class="rounded-2xl overflow-hidden relative group">
+                        <img :src="`https://picsum.photos/400/400?random=${idx}`" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    </div>
+                    <!-- 引用卡片 -->
+                    <div class="rounded-2xl p-6 flex items-center justify-center text-center relative overflow-hidden" :style="{ background: currentTheme.secondary, color: 'white' }">
+                        <p class="font-bold text-xl italic">"{{ activeIP.slogan }}"</p>
+                        <div class="absolute -bottom-4 -right-4 text-9xl opacity-20">”</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 多媒体中心 (Video & Music) -->
+        <section class="py-20" :style="{ backgroundColor: currentTheme.accentBg }">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- 视频板块 -->
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm" :style="{background: currentTheme.primary}">▶</span>
+                            最新剧集
+                        </h2>
+                        <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl relative group cursor-pointer">
+                            <!-- 模拟视频封面 -->
+                            <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=1000" class="w-full h-full object-cover opacity-80">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition">
+                                    <div class="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-gray-500 text-sm">第 32 集：{{ activeIP.latestEpisode }}</p>
+                    </div>
+
+                    <!-- 音乐与档案 -->
+                    <div class="space-y-8">
+                        <!-- 音乐播放器卡片 -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-gray-400 text-xs tracking-widest mb-4">ORIGINAL SOUNDTRACK</h3>
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-lg bg-gray-200 animate-spin-slow" :style="{ background: `url(${activeIP.heroImage}) center/cover` }"></div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-lg">{{ activeIP.songName }}</h4>
+                                    <div class="w-full h-1 bg-gray-100 rounded-full mt-2 overflow-hidden">
+                                        <div class="h-full w-1/3 rounded-full" :style="{ background: currentTheme.primary }"></div>
+                                    </div>
+                                </div>
+                                <button class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200">▶</button>
+                            </div>
+                        </div>
+
+                        <!-- 档案/Wiki -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-lg mb-2">💡 宇宙冷知识</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                {{ activeIP.trivia }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 3D模型展示 (可选) & 新闻 -->
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="bg-black rounded-3xl text-white overflow-hidden grid md:grid-cols-2">
+                    <!-- 3D 模拟区 -->
+                    <div class="h-96 relative bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <div class="text-center opacity-50">
+                            <div class="text-6xl mb-4">🧊</div>
+                            <p>3D 模型加载区域</p>
+                            <p class="text-xs text-gray-400 mt-2">支持拖拽旋转查看</p>
+                            <!-- 实际开发中这里会放入 <model-viewer> 标签 -->
+                        </div>
+                        <!-- 覆盖层 -->
+                        <div class="absolute bottom-6 left-6">
+                            <h3 class="font-bold text-2xl">3D 设定集</h3>
+                            <p class="text-gray-400 text-sm">360° 全方位查看</p>
+                        </div>
+                    </div>
+
+                    <!-- 新闻列表 -->
+                    <div class="p-8 md:p-12 flex flex-col justify-center">
+                        <h2 class="text-3xl font-bold mb-8">最新情报</h2>
+                        <ul class="space-y-6">
+                            <li v-for="(news, i) in activeIP.news" :key="i" class="group cursor-pointer">
+                                <span class="text-xs text-gray-500 font-mono">{{ news.date }}</span>
+                                <h4 class="text-lg font-medium group-hover:text-gray-300 transition">{{ news.title }} ➝</h4>
+                                <div class="h-[1px] w-full bg-gray-800 mt-4 group-hover:bg-gray-600"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- ================= 宇宙通用页脚 (Fixed Footer) ================= -->
+    <footer class="bg-gray-900 text-white py-12 border-t-4" :style="{ borderColor: currentTheme.primary }">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-8 flex justify-center gap-6">
+                <!-- Social Icons Mockup -->
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-white hover:text-black transition">Tw</a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-white hover:text-black transition">Ins</a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-white hover:text-black transition">Ytb</a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-sm text-gray-400 mb-8 max-w-4xl mx-auto">
+                <a href="#" class="hover:text-white">联系我们</a>
+                <a href="#" class="hover:text-white">隐私政策</a>
+                <a href="#" class="hover:text-white">商业授权</a>
+            </div>
+
+            <p class="text-gray-500 text-xs">
+                &copy; 2024 Penguin Rabbit Universe. All Rights Reserved.<br>
+                Made for the Multiverse.
+            </p>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+        setup() {
+            // ============ 数据配置区 (Config) ============
+            
+            // 1. 定义IP数据 (Content Data)
+            const ipData = {
+                qiqi: {
+                    name: '企鹅企企',
+                    heroTitle: '冰面上的',
+                    heroSubtitle: '滑倒专家',
+                    intro: '企企和那只总是捣乱的大黄兔虽然整天打架，但关键时刻总是......一起闯更大的祸。',
+                    heroImage: 'https://cdn-icons-png.flaticon.com/512/826/826963.png', // 示例图
+                    slogan: '今天不想滑雪，只想躺平。',
+                    latestEpisode: '大黄兔偷走了我的围巾！',
+                    songName: '企企的悲伤进行曲',
+                    trivia: '企企的肚子其实是一个四次元口袋（并不是），但他总能在里面藏鱼干。',
+                    news: [
+                        { date: '2023.10.24', title: '企鹅企企 x 某大牌联名雪糕上市' },
+                        { date: '2023.10.20', title: '第5季动画制作决定！' },
+                        { date: '2023.10.15', title: '大黄兔通缉令发布' }
+                    ]
+                },
+                kangaroo: {
+                    name: '鸡贼黄袋鼠兔',
+                    heroTitle: '小心！',
+                    heroSubtitle: '这是个陷阱',
+                    intro: '看着像兔子，跳起来像袋鼠，实际上是个超级谋略家。别被它无辜的眼神骗了。',
+                    heroImage: 'https://cdn-icons-png.flaticon.com/512/3069/3069172.png',
+                    slogan: '这不叫偷，这叫战略性转移。',
+                    latestEpisode: '如何用胡萝卜钓到一只企鹅',
+                    songName: '神偷狂想曲',
+                    trivia: '它的袋子里并没有宝宝，只有从隔壁片场顺来的道具。',
+                    news: [
+                        { date: '2023.11.01', title: '关于黄袋鼠兔被评为“最不想做邻居”第一名' },
+                        { date: '2023.10.28', title: '全新绘本《陷阱制作指南》发售' },
+                        { date: '2023.10.10', title: '线下见面会（请看好您的钱包）' }
+                    ]
+                },
+                gabura: {
+                    name: '嘎布拉兔子',
+                    heroTitle: 'GABURA',
+                    heroSubtitle: '来自虚空',
+                    intro: '它不说话，它只凝视。嘎布拉兔子是宇宙中神秘的存在，所到之处寸草不生（因为被吃光了）。',
+                    heroImage: 'https://cdn-icons-png.flaticon.com/512/2002/2002624.png',
+                    slogan: '...... (咀嚼声)',
+                    latestEpisode: '黑洞的尽头是甜甜圈',
+                    songName: '虚空低语 (Remix)',
+                    trivia: '虽然看起来很凶，但其实很怕痒。',
+                    news: [
+                        { date: '2023.12.01', title: '嘎布拉兔子潮流玩具展' },
+                        { date: '2023.11.15', title: '新单曲空降公告牌榜单' },
+                        { date: '2023.11.02', title: '神秘信号被破译：它饿了' }
+                    ]
+                }
+            };
+
+            // 2. 定义视觉主题 (Visual Themes)
+            const themes = {
+                qiqi: {
+                    bg: 'bg-blue-50', // Tailwind class
+                    bgColor: '#eff6ff', // Inline for specificity
+                    primary: '#3b82f6', // Blue
+                    secondary: '#93c5fd', 
+                    accentBg: '#dbeafe',
+                    fontFamily: 'font-sans', // 使用标准字体
+                    btnRadius: '12px'
+                },
+                kangaroo: {
+                    bg: 'bg-yellow-50',
+                    bgColor: '#fefce8',
+                    primary: '#eab308', // Yellow
+                    secondary: '#fca5a5', // Red accent
+                    accentBg: '#fef9c3',
+                    fontFamily: 'font-serif', // 模拟 Zcool KuaiLe
+                    btnRadius: '24px' // 更圆润
+                },
+                gabura: {
+                    bg: 'bg-purple-50',
+                    bgColor: '#faf5ff',
+                    primary: '#9333ea', // Purple
+                    secondary: '#1f2937', // Dark
+                    accentBg: '#f3e8ff',
+                    fontFamily: 'font-mono', // 酷炫等宽
+                    btnRadius: '4px' // 锐利
+                }
+            };
+
+            // ============ 状态管理 ============
+            const currentIpKey = ref('qiqi'); // 默认IP
+
+            const activeIP = computed(() => ipData[currentIpKey.value]);
+            const currentTheme = computed(() => themes[currentIpKey.value]);
+
+            const setTheme = (key) => {
+                currentIpKey.value = key;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return {
+                currentIpKey,
+                activeIP,
+                currentTheme,
+                setTheme
+            };
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
