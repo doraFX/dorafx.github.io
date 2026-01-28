@@ -3281,10 +3281,6 @@
 					const onIpDragMove = (event) => {
 						const carousel = ipCarouselRef.value
 						if (!carousel || !isIpDragging.value) return
-						if (event.buttons === 0) {
-							onIpDragEnd()
-							return
-						}
 						event.preventDefault()
 						const delta = event.clientX - ipDragStartX.value
 						if (Math.abs(delta) > 3) {
