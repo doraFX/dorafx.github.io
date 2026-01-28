@@ -125,23 +125,6 @@
 			[v-cloak] {
 				display: none;
 			}
-
-			.ip-carousel::-webkit-scrollbar {
-				height: 6px;
-			}
-
-			.ip-carousel::-webkit-scrollbar-track {
-				background: transparent;
-			}
-
-			.ip-carousel::-webkit-scrollbar-thumb {
-				background: rgba(148, 163, 184, 0.4);
-				border-radius: 999px;
-			}
-
-			.dark .ip-carousel::-webkit-scrollbar-thumb {
-				background: rgba(71, 85, 105, 0.6);
-			}
 		</style>
 
 	</head>
@@ -177,11 +160,7 @@
 							<!-- IP -->
 							<a @click.prevent="navigate('ip')" href="#"
 								:class="[ navBase, isActive(['ip']) ? navActive : navIdle]">
-<<<<<<< HEAD
 								{{ t('nav.ip') }}
-=======
-								IP
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 							</a>
 
 							<!-- Articles / Article Detail -->
@@ -276,11 +255,7 @@
 						<!-- IP -->
 						<a @click.prevent="navigate('ip'); showMobileMenu = false" href="#"
 							:class="['block px-4 py-2 rounded-lg transition-colors',isActive(['ip']) ? navActiveMobile : navIdleMobile]">
-<<<<<<< HEAD
 							{{ t('nav.ip') }}
-=======
-							IP
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						</a>
 
 						<!-- Articles / Article Detail -->
@@ -530,25 +505,11 @@
 					</section>
 
 					<!-- Featured IP Section -->
-<<<<<<< HEAD
 					<section class="py-20 bg-neutral-50 dark:bg-neutral-900">
 						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 							<div class="flex items-center justify-between">
 								<div>
 									<h2 class="text-3xl font-bold">{{ t('ip.sectionTitle') }}</h2>
-=======
-					<section class="py-20 bg-white dark:bg-neutral-950">
-						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-							<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-								<div>
-									<p class="text-sm uppercase tracking-[0.25em] text-neutral-400">
-										{{ t('ip.sectionTag') }}
-									</p>
-									<h2 class="text-3xl font-bold mt-2">{{ t('ip.sectionTitle') }}</h2>
-									<p class="text-neutral-500 dark:text-neutral-400 mt-3 max-w-2xl">
-										{{ t('ip.sectionDesc') }}
-									</p>
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 								</div>
 								<a @click.prevent="navigate('ip')" href="#"
 									class="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">
@@ -556,7 +517,6 @@
 								</a>
 							</div>
 
-<<<<<<< HEAD
 							<div ref="ipCarousel"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
 								style="scrollbar-width: thin; touch-action: pan-x pan-y;">
@@ -570,25 +530,6 @@
 									</div>
 									<h3
 										class="text-base sm:text-lg font-semibold text-neutral-900 dark:text-white text-center">
-=======
-							<div
-								ref="ipCarouselRef"
-								@pointerdown="onIpDragStart"
-								@pointermove="onIpDragMove"
-								@pointerup="onIpDragEnd"
-								@pointerleave="onIpDragEnd"
-								class="ip-carousel flex gap-8 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
-								style="scrollbar-width: thin; touch-action: pan-y;">
-								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
-									rel="noopener noreferrer"
-									class="group flex flex-col items-center gap-4 min-w-[160px] sm:min-w-[180px] lg:min-w-[200px] snap-start">
-									<div
-										class="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden ring-4 ring-white/80 dark:ring-neutral-900/80 shadow-xl transition-transform duration-300 group-hover:-translate-y-1">
-										<img :src="ip.image" :alt="pickI18n(ip.name)"
-											class="w-full h-full object-cover" />
-									</div>
-									<h3 class="text-base sm:text-lg font-semibold text-neutral-900 dark:text-white text-center">
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 										{{ pickI18n(ip.name) }}
 									</h3>
 								</a>
@@ -960,7 +901,6 @@
 								</div>
 							</div>
 
-<<<<<<< HEAD
 							<div class="grid gap-5 lg:grid-cols-2 xl:grid-cols-3 lg:gap-6">
 								<a v-for="ip in filteredIpList" :key="`ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer" class="group relative overflow-hidden rounded-[28px]
@@ -1011,44 +951,10 @@
 													viewBox="0 0 24 24">
 													<path stroke-linecap="round" stroke-linejoin="round"
 														stroke-width="2" d="M9 5l7 7-7 7" />
-=======
-							<div class="grid gap-8 lg:gap-10 md:grid-cols-2">
-								<a v-for="ip in filteredIpList" :key="`ip-${ip.index}`" :href="ip.link" target="_blank"
-									rel="noopener noreferrer"
-									class="group relative overflow-hidden rounded-[36px] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 backdrop-blur-xl p-7 sm:p-9 transition-all hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.18)]">
-									<div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-30 blur-3xl"
-										:style="{ background: ip.accent }"></div>
-									<div class="absolute -left-8 -bottom-10 w-32 h-32 rounded-full opacity-20 blur-3xl"
-										:style="{ background: ip.accent }"></div>
-									<div class="relative flex flex-col gap-6">
-										<div class="flex items-start justify-between gap-4">
-											<div class="flex items-center gap-5">
-												<div
-													class="w-24 h-24 rounded-[30px] overflow-hidden ring-4 ring-white/80 dark:ring-neutral-900/80 shadow-xl rotate-[-3deg] transition-transform duration-300 group-hover:rotate-[3deg]">
-													<img :src="ip.image" :alt="pickI18n(ip.name)"
-														class="w-full h-full object-cover" />
-												</div>
-												<div>
-													<h3 class="text-2xl font-semibold">{{ pickI18n(ip.name) }}</h3>
-													<div
-														class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white"
-														:style="{ background: ip.accent }">
-														<span class="w-1.5 h-1.5 rounded-full bg-white/80"></span>
-														<span>IP</span>
-													</div>
-												</div>
-											</div>
-											<span
-												class="w-10 h-10 rounded-full border border-neutral-200/70 dark:border-neutral-700/70 bg-white/70 dark:bg-neutral-800/70 flex items-center justify-center text-neutral-500 dark:text-neutral-300 transition-transform group-hover:-translate-y-0.5">
-												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-														d="M9 5l7 7-7 7" />
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 												</svg>
 											</span>
 										</div>
 
-<<<<<<< HEAD
 										<!-- 描述 -->
 										<p
 											class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-3">
@@ -1071,35 +977,13 @@
 													{{ pf }}
 												</span>
 											</div>
-=======
-										<p class="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 leading-relaxed">
-											{{ pickI18n(ip.desc) }}
-										</p>
-
-										<div class="flex flex-wrap gap-2">
-											<span v-for="(tag, tagIndex) in (ip.tags || [])" :key="`ip-${ip.index}-tag-${tagIndex}`"
-												class="text-xs px-3 py-1 rounded-full bg-primary-50/80 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 border border-primary-100/80 dark:border-primary-800/60">
-												{{ tag }}
-											</span>
-										</div>
-
-										<div class="flex flex-wrap gap-2">
-											<span v-for="(pf, pfIndex) in resolveIpPlatforms(ip.platforms)"
-												:key="`ip-${ip.index}-pf-${pfIndex}`"
-												class="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">
-												{{ pf }}
-											</span>
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 										</div>
 									</div>
 								</a>
 							</div>
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						</div>
 					</section>
 				</template>
@@ -2410,19 +2294,11 @@
 						contactBtn: "联系我"
 					},
 					ip: {
-<<<<<<< HEAD
-=======
-						sectionTag: "IP",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						sectionTitle: "IP 展示",
 						sectionDesc: "独立 IP 的角色宇宙与分流入口，轻量但各自有光。",
 						sectionCta: "查看全部",
 						pageTitle: "IP 展示",
-<<<<<<< HEAD
 						pageDesc: "持续构建中的原创角色与世界观",
-=======
-						pageDesc: "这些角色与项目将跳转到独立页面，后续会持续补充内容。",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						pageCta: "查看详情",
 						search: "搜索 IP..."
 					},
@@ -2558,19 +2434,11 @@
 						contactBtn: "Contact Me"
 					},
 					ip: {
-<<<<<<< HEAD
-=======
-						sectionTag: "IP",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						sectionTitle: "IP Collection",
 						sectionDesc: "Independent IP universes and offsite entry points, light yet full of character.",
 						sectionCta: "View All",
 						pageTitle: "IP Collection",
-<<<<<<< HEAD
 						pageDesc: "Original characters and worlds in continuous development.",
-=======
-						pageDesc: "These characters and projects lead to standalone pages and will keep expanding.",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						pageCta: "View Details",
 						search: "Search IP..."
 					},
@@ -2706,19 +2574,11 @@
 						contactBtn: "連絡する"
 					},
 					ip: {
-<<<<<<< HEAD
-=======
-						sectionTag: "IP",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						sectionTitle: "IP コレクション",
 						sectionDesc: "独立 IP の世界観と分流入口。軽やかに、それぞれの物語へ。",
 						sectionCta: "すべて見る",
 						pageTitle: "IP コレクション",
-<<<<<<< HEAD
 						pageDesc: "継続的に構築しているオリジナルキャラクターと世界観",
-=======
-						pageDesc: "これらのキャラクターは個別ページへ移動し、今後も追加していきます。",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						pageCta: "詳細を見る",
 						search: "IP を検索..."
 					},
@@ -2854,19 +2714,11 @@
 						contactBtn: "연락하기"
 					},
 					ip: {
-<<<<<<< HEAD
-=======
-						sectionTag: "IP",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						sectionTitle: "IP 컬렉션",
 						sectionDesc: "독립 IP 세계관과 외부 진입점, 가볍지만 선명한 존재감.",
 						sectionCta: "전체 보기",
 						pageTitle: "IP 컬렉션",
-<<<<<<< HEAD
 						pageDesc: "지속적으로 구축 중인 오리지널 캐릭터와 세계관.",
-=======
-						pageDesc: "각 캐릭터와 프로젝트는 독립 페이지로 이동하며 계속 확장됩니다.",
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						pageCta: "자세히 보기",
 						search: "IP 검색..."
 					},
@@ -3093,7 +2945,6 @@
 							index: 1,
 							name: {
 								zh: "鸡贼黄袋鼠兔",
-<<<<<<< HEAD
 								en: "Sneaky RooBunny",
 								ja: "ずる賢いルーバニー",
 								ko: "약삭빠른 루버니"
@@ -3114,28 +2965,6 @@
 							},
 							visible: true,
 							accent: "linear-gradient(135deg, #eab308, #f59e0b)"
-=======
-								en: "鸡贼黄袋鼠兔",
-								ja: "鸡贼黄袋鼠兔",
-								ko: "鸡贼黄袋鼠兔"
-							},
-							tags: ["鸡贼", "皇气场", "灵巧行动", "袋鼠兔"],
-							image: "images/logo.webp",
-							link: "/ip/jizei.html",
-							desc: {
-								zh: "机灵、行动力强的小冒险家，总能在关键时刻做出妙招。",
-								en: "A quick-witted adventurer who always finds a clever way forward.",
-								ja: "ひらめきと行動力に満ちた小さな冒険家。",
-								ko: "재치와 행동력이 뛰어난 작은 모험가."
-							},
-							platforms: {
-								xiaohongshu: "",
-								weibo: "",
-								ins: ""
-							},
-							visible: true,
-							accent: "linear-gradient(135deg, #fbbf24, #f97316)"
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						},
 						1: {
 							index: 2,
@@ -3145,7 +2974,6 @@
 								ja: "嘎布拉兔",
 								ko: "嘎布拉兔"
 							},
-<<<<<<< HEAD
 							image: "IP/Gabra/icon.png",
 							link: "IP/Gabra/index.html",
 							desc: {
@@ -3387,24 +3215,6 @@
 							},
 							visible: true,
 							accent: "linear-gradient(135deg, #6b7280, #71717a)"
-=======
-							tags: ["软萌治愈", "元气社交", "暖心陪伴"],
-							image: "images/old.webp",
-							link: "/ip/gabra.html",
-							desc: {
-								zh: "温柔又有主见的陪伴系角色，善于让氛围更柔和。",
-								en: "A gentle companion who brings calm and warmth to every scene.",
-								ja: "やさしく芯のある相棒タイプのキャラクター。",
-								ko: "부드럽지만 중심이 있는 동반자형 캐릭터。"
-							},
-							platforms: {
-								xiaohongshu: "",
-								weibo: "",
-								ins: ""
-							},
-							visible: true,
-							accent: "linear-gradient(135deg, #a5b4fc, #f472b6)"
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						}
 					}
 
@@ -3420,12 +3230,7 @@
 						return ipList.value.filter((item) => {
 							const name = pickI18n(item.name).toLowerCase()
 							const desc = pickI18n(item.desc).toLowerCase()
-<<<<<<< HEAD
 							return name.includes(keyword) || desc.includes(keyword)
-=======
-							const tags = Array.isArray(item.tags) ? item.tags.join(" ").toLowerCase() : ""
-							return name.includes(keyword) || desc.includes(keyword) || tags.includes(keyword)
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 						})
 					})
 
@@ -3433,7 +3238,6 @@
 						xiaohongshu: "小红书",
 						weibo: "微博",
 						ins: "Instagram",
-<<<<<<< HEAD
 						x: "X"
 					}
 
@@ -3455,17 +3259,6 @@
 							.map(key => PLATFORM_LABELS[key]);
 
 						return result.length ? result : ["暂未公开"];
-=======
-						instagram: "Instagram"
-					}
-
-					const resolveIpPlatforms = (platforms) => {
-						if (!platforms || typeof platforms !== "object") return ["暂未公开"]
-						const list = Object.entries(platforms)
-							.filter(([, value]) => value != null && String(value).trim() !== "")
-							.map(([key]) => ipPlatformLabels[key] || key)
-						return list.length ? list : ["暂未公开"]
->>>>>>> 5e4fb0870168c2aa4a2f08a2f01462b97aff07cd
 					}
 
 					const ipCarouselRef = ref(null)
