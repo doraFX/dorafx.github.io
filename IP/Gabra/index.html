@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>嘎布拉兔子 Gabura Rabbit</title>
+		<title>嘎布拉兔子 Gabra Rabbit</title>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,7 @@
 				theme: {
 					extend: {
 						colors: {
-							gabura: {
+							Gabra: {
 								red: '#d02b2b',
 								black: '#000000',
 								white: '#ffffff',
@@ -308,7 +308,7 @@
 						<!-- Left: Back Home (desktop only) -->
 						<div class="hidden md:flex items-center">
 							<button @click="goHome" class="inline-flex items-center gap-2 px-4 py-2 rounded-full font-accent text-sm font-semibold
-			                 bg-white/70 hover:bg-white transition border border-black/5 text-gabura-black">
+			                 bg-white/70 hover:bg-white transition border border-black/5 text-Gabra-black">
 								<i data-lucide="arrow-left" class="w-4 h-4"></i>
 								返回主页
 							</button>
@@ -326,7 +326,7 @@
 						<!-- Right: Generate Poster (desktop only) -->
 						<div class="hidden md:flex items-center">
 							<button @click="shareposter" class="px-5 py-2 rounded-full font-accent text-sm font-semibold
-			                 bg-gabura-red text-white hover:bg-gabura-black transition">
+			                 bg-Gabra-red text-white hover:bg-Gabra-black transition">
 								生成海报
 							</button>
 						</div>
@@ -340,7 +340,7 @@
 					class="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white noise-overlay"
 					@mousemove="updateHeroMouse">
 					<div class="absolute inset-0 overflow-hidden">
-						<div class="absolute -right-1/4 -top-1/4 w-[80vw] h-[80vw] rounded-full bg-gabura-red/5 blur-3xl"
+						<div class="absolute -right-1/4 -top-1/4 w-[80vw] h-[80vw] rounded-full bg-Gabra-red/5 blur-3xl"
 							:style="{ transform: `translate(${heroMouse.x * 2}px, ${heroMouse.y * 2}px)` }">
 						</div>
 					</div>
@@ -348,12 +348,12 @@
 					<div class="relative z-10 w-full section-padding py-20">
 						<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 							<div class="order-2 lg:order-1 text-center lg:text-left">
-								<h1 class="heading-xl text-gabura-black mb-4 sm:mb-6">
-									<span class="block text-gabura-black">
+								<h1 class="heading-xl text-Gabra-black mb-4 sm:mb-6">
+									<span class="block text-Gabra-black">
 										<span v-for="(char, index) in splitText('嘎布拉')" :key="`hero-title-${index}`"
 											class="inline-block">{{ char }}</span>
 									</span>
-									<span class="block text-gabura-red">
+									<span class="block text-Gabra-red">
 										<span v-for="(char, index) in splitText('兔子')" :key="`hero-subtitle-${index}`"
 											class="inline-block">{{ char }}</span>
 									</span>
@@ -361,22 +361,22 @@
 
 								<div class="overflow-hidden mb-6 sm:mb-8">
 									<p
-										class="text-lg h-full flex items-center sm:text-xl md:text-2xl text-gabura-gray whitespace-nowrap inline-flex">
+										class="text-lg h-full flex items-center sm:text-xl md:text-2xl text-Gabra-gray whitespace-nowrap inline-flex">
 										<span class="typewriter-text flex items-center">{{ typewriterDisplay }}</span>
 										<span class="typewriter-cursor h-6 sm:h-6 md:h-8" aria-hidden="true"></span>
 									</p>
 								</div>
 
 								<div class="glass-effect rounded-2xl p-4 sm:p-6 max-w-md mx-auto lg:mx-0 shadow-lg">
-									<p class="body-md text-gabura-darkgray leading-relaxed">
-										一种<span class="text-gabura-red font-semibold">活泼好动</span>、
-										<span class="text-gabura-red font-semibold">难以驯服</span>的兔子品种，
+									<p class="body-md text-Gabra-darkgray leading-relaxed">
+										一种<span class="text-Gabra-red font-semibold">活泼好动</span>、
+										<span class="text-Gabra-red font-semibold">难以驯服</span>的兔子品种，
 										以其狂野的举止和粗硬的皮毛而闻名。
 									</p>
 								</div>
 
 								<button @click="scrollToSection('#story')"
-									class="mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-gabura-red text-white rounded-full font-accent font-semibold text-sm sm:text-base hover:bg-gabura-black transition-colors duration-300 custom-expo flex items-center gap-2 mx-auto lg:mx-0 w-fit group">
+									class="mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-Gabra-red text-white rounded-full font-accent font-semibold text-sm sm:text-base hover:bg-Gabra-black transition-colors duration-300 custom-expo flex items-center gap-2 mx-auto lg:mx-0 w-fit group">
 									探索故事
 									<i data-lucide="chevron-down"
 										class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
@@ -387,7 +387,7 @@
 								<div class="relative"
 									:style="{transform: `translate(${heroMouse.x}px, ${heroMouse.y}px)`, transition: 'transform 0.3s ease-out',}">
 									<div
-										class="absolute aspect-square inset-0 border-2 border-gabura-red/20 rounded-full animate-pulse-ring">
+										class="absolute aspect-square inset-0 border-2 border-Gabra-red/20 rounded-full animate-pulse-ring">
 									</div>
 
 									<img src="public/hero-gabra.png" alt="嘎布拉兔子"
@@ -395,11 +395,11 @@
 
 									<div
 										class="absolute -left-4 sm:-left-8 top-1/4 glass-effect px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-accent animate-float">
-										<span class="text-gabura-red">野生</span> · 不驯
+										<span class="text-Gabra-red">野生</span> · 不驯
 									</div>
 									<div class="absolute -right-4 sm:-right-8 bottom-1/3 glass-effect px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-accent animate-float"
 										style="animation-delay: 1s">
-										<span class="text-gabura-red">活力</span> · 无限
+										<span class="text-Gabra-red">活力</span> · 无限
 									</div>
 								</div>
 							</div>
@@ -407,15 +407,15 @@
 					</div>
 
 					<div
-						class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gabura-cream to-transparent">
+						class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-Gabra-cream to-transparent">
 					</div>
 				</section>
 
 				<section id="story"
-					class="relative w-full py-20 sm:py-32 bg-gabura-cream noise-overlay overflow-hidden">
+					class="relative w-full py-20 sm:py-32 bg-Gabra-cream noise-overlay overflow-hidden">
 					<div class="absolute inset-0 opacity-30">
 						<div
-							class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gabura-lightgray/20 to-transparent">
+							class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-Gabra-lightgray/20 to-transparent">
 						</div>
 					</div>
 
@@ -436,21 +436,21 @@
 						<div class="max-w-7xl mx-auto px-6 sm:px-8">
 							<!-- 头部标题区：增强仪式感 -->
 							<div class="mb-0 lg:mb-24 text-center lg:text-left relative">
-								<span class="block text-gabura-red uppercase text-sm mb-2 opacity-80">The
+								<span class="block text-Gabra-red uppercase text-sm mb-2 opacity-80">The
 									Untold Story</span>
 								<h2
-									class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gabura-black leading-tight">
-									传说与<span class="relative inline-block text-gabura-red">
+									class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-Gabra-black leading-tight">
+									传说与<span class="relative inline-block text-Gabra-red">
 										起源
 										<!-- 标题下划线装饰 -->
-										<svg class="absolute w-full h-3 -bottom-2 left-0 text-gabura-red opacity-60"
+										<svg class="absolute w-full h-3 -bottom-2 left-0 text-Gabra-red opacity-60"
 											viewBox="0 0 100 10" preserveAspectRatio="none">
 											<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
 												fill="none" />
 										</svg>
 									</span>
 								</h2>
-								<p class="mt-10 text-lg text-gabura-gray max-w-2xl lg:mx-0 mx-auto font-serif">
+								<p class="mt-10 text-lg text-Gabra-gray max-w-2xl lg:mx-0 mx-auto font-serif">
 									“凡是提到‘嘎布拉’，老人的眉毛就会皱一皱，像是想起什么既好笑又棘手的事。”
 								</p>
 							</div>
@@ -463,7 +463,7 @@
 									class="lg:col-span-5 relative min-h-[450px] sm:min-h-[600px] flex items-center justify-center lg:block">
 									<!-- 装饰背景 -->
 									<div
-										class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-gradient-to-tr from-gabura-red/5 to-transparent rounded-full blur-3xl -z-10">
+										class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-gradient-to-tr from-Gabra-red/5 to-transparent rounded-full blur-3xl -z-10">
 									</div>
 
 									<!-- 图片组 -->
@@ -475,7 +475,7 @@
 													class="w-full h-auto object-contain drop-shadow-2xl relative z-10" />
 												<!-- 边框装饰 -->
 												<div
-													class="absolute inset-0 border-2 border-gabura-black/10 rounded-xl translate-x-4 translate-y-4 -z-10 bg-white">
+													class="absolute inset-0 border-2 border-Gabra-black/10 rounded-xl translate-x-4 translate-y-4 -z-10 bg-white">
 												</div>
 											</div>
 										</div>
@@ -488,7 +488,7 @@
 												<img src="public/rabbit-jumping.png" alt="跳跃的嘎布拉兔子"
 													class="w-full h-auto drop-shadow-2xl" />
 												<div
-													class="absolute inset-0 bg-gabura-red/20 rounded-full blur-xl -z-10">
+													class="absolute inset-0 bg-Gabra-red/20 rounded-full blur-xl -z-10">
 												</div>
 											</div>
 										</div>
@@ -496,7 +496,7 @@
 										<!-- 装饰性标签 -->
 										<div
 											class="absolute top-10 -left-4 bg-white px-4 py-2 rounded-lg shadow-md border border-gray-100 z-30 rotate-[-6deg] hidden sm:block">
-											<span class="text-sm font-bold text-gabura-black">⚠ 极度活跃</span>
+											<span class="text-sm font-bold text-Gabra-black">⚠ 极度活跃</span>
 										</div>
 									</div>
 								</div>
@@ -505,13 +505,13 @@
 								<div class="lg:col-span-7 space-y-10">
 
 									<!-- 1. 核心叙事段落 (Lead Text) -->
-									<div class="prose prose-lg text-gabura-darkgray">
+									<div class="prose prose-lg text-Gabra-darkgray">
 										<p class="text-xl leading-relaxed font-medium">
 											“这兔子，不是一般的兔子。” 一位老人回忆道。别的兔子安安静静啃草，嘎布拉却总是
 											<span
-												class="bg-gabura-red/10 text-gabura-red px-1 rounded mx-1 font-bold">扑腾</span>、
+												class="bg-Gabra-red/10 text-Gabra-red px-1 rounded mx-1 font-bold">扑腾</span>、
 											<span
-												class="bg-gabura-red/10 text-gabura-red px-1 rounded mx-1 font-bold">拱土</span>。
+												class="bg-Gabra-red/10 text-Gabra-red px-1 rounded mx-1 font-bold">拱土</span>。
 											甚至把木栏杆啃得劈里啪啦直响。夜里翻水盆，光修笼子就修了五六次。
 										</p>
 									</div>
@@ -522,15 +522,15 @@
 										<div
 											class="p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
 											<div
-												class="w-10 h-10 bg-gabura-black/5 rounded-full flex items-center justify-center mb-4">
-												<svg class="w-5 h-5 text-gabura-black" fill="none" viewBox="0 0 24 24"
+												class="w-10 h-10 bg-Gabra-black/5 rounded-full flex items-center justify-center mb-4">
+												<svg class="w-5 h-5 text-Gabra-black" fill="none" viewBox="0 0 24 24"
 													stroke="currentColor">
 													<path stroke-linecap="round" stroke-linejoin="round"
 														stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
 												</svg>
 											</div>
-											<h3 class="font-bold text-gabura-black text-lg mb-2">野性外观</h3>
-											<p class="text-sm text-gabura-gray leading-relaxed">
+											<h3 class="font-bold text-Gabra-black text-lg mb-2">野性外观</h3>
+											<p class="text-sm text-Gabra-gray leading-relaxed">
 												毛发粗硬如风中乱草，梳不服帖。体型灵活，四肢强劲，随时准备冲破束缚。
 											</p>
 										</div>
@@ -538,8 +538,8 @@
 										<div
 											class="p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
 											<div
-												class="w-10 h-10 bg-gabura-red/10 rounded-full flex items-center justify-center mb-4">
-												<svg class="w-5 h-5 text-gabura-red" fill="none" viewBox="0 0 24 24"
+												class="w-10 h-10 bg-Gabra-red/10 rounded-full flex items-center justify-center mb-4">
+												<svg class="w-5 h-5 text-Gabra-red" fill="none" viewBox="0 0 24 24"
 													stroke="currentColor">
 													<path stroke-linecap="round" stroke-linejoin="round"
 														stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -548,8 +548,8 @@
 														d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
 												</svg>
 											</div>
-											<h3 class="font-bold text-gabura-black text-lg mb-2">挑衅眼神</h3>
-											<p class="text-sm text-gabura-gray leading-relaxed">
+											<h3 class="font-bold text-Gabra-black text-lg mb-2">挑衅眼神</h3>
+											<p class="text-sm text-Gabra-gray leading-relaxed">
 												明亮里带着几分挑衅，眼神中透露着不肯安分。凡手边之物，皆可变为它的玩具。
 											</p>
 										</div>
@@ -560,23 +560,23 @@
 										class="relative bg-[#faf7f2] p-7 sm:p-8 rounded-xl shadow-[0_20px_40px_-25px_rgba(0,0,0,0.35)] border border-black/10">
 										<!-- 纸张旧痕 / 污渍 -->
 										<div
-											class="absolute -top-6 -right-6 w-24 h-24 bg-gabura-red/10 rounded-full blur-2xl">
+											class="absolute -top-6 -right-6 w-24 h-24 bg-Gabra-red/10 rounded-full blur-2xl">
 										</div>
 										<div class="absolute bottom-6 left-6 w-16 h-16 bg-black/5 rounded-full blur-xl">
 										</div>
 
 										<!-- 右上角：档案角标 -->
 										<div class="absolute top-3 right-3 rotate-6 text-[10px] tracking-widest uppercase 
-									           text-gabura-red border border-gabura-red/40 px-2 py-1 rounded">
+									           text-Gabra-red border border-Gabra-red/40 px-2 py-1 rounded">
 											Archive
 										</div>
 
 										<!-- 正文 -->
 										<p
-											class="relative z-10 text-gabura-darkgray font-serif italic leading-relaxed text-base sm:text-lg">
+											class="relative z-10 text-Gabra-darkgray font-serif italic leading-relaxed text-base sm:text-lg">
 											“这不是严格意义上的新品种，可在行为和外貌上确实形成了一群体，毛发粗糙，性子急躁，和安哥拉、垂耳那类观赏兔完全不同。它更像是家兔里被遗忘的
 											<span
-												class="text-gabura-red font-semibold font-serif not-italic border-b border-gabura-red/30">
+												class="text-Gabra-red font-semibold font-serif not-italic border-b border-Gabra-red/30">
 												野性分支
 											</span>。”
 										</p>
@@ -586,7 +586,7 @@
 											class="mt-6 pt-4 border-t border-dashed border-black/15 flex items-center gap-3">
 											<div
 												class="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center">
-												<svg class="w-4 h-4 text-gabura-gray" fill="currentColor"
+												<svg class="w-4 h-4 text-Gabra-gray" fill="currentColor"
 													viewBox="0 0 24 24">
 													<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4
 									             1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2
@@ -594,8 +594,8 @@
 												</svg>
 											</div>
 
-											<div class="text-xs text-gabura-gray tracking-wide">
-												记录来源：<span class="font-semibold text-gabura-darkgray">年轻兽医 · 田野笔记</span>
+											<div class="text-xs text-Gabra-gray tracking-wide">
+												记录来源：<span class="font-semibold text-Gabra-darkgray">年轻兽医 · 田野笔记</span>
 											</div>
 										</div>
 									</div>
@@ -603,11 +603,11 @@
 
 									<!-- 4. 历史脚注 (Lore Context) -->
 									<div class="flex items-start gap-4 opacity-80 mt-8">
-										<span class="text-4xl text-gabura-red/20 font-serif font-bold">“</span>
-										<p class="text-sm text-gabura-gray leading-relaxed">
+										<span class="text-4xl text-Gabra-red/20 font-serif font-bold">“</span>
+										<p class="text-sm text-Gabra-gray leading-relaxed">
 											学者在古墓壁画发现相似兔形，旁刻 <span
-												class="font-bold font-serif text-gabura-black">Gabra</span>，译为
-											<span class="text-gabura-red font-sans font-bold">“不可驯服者”</span>。
+												class="font-bold font-serif text-Gabra-black">Gabra</span>，译为
+											<span class="text-Gabra-red font-sans font-bold">“不可驯服者”</span>。
 										</p>
 									</div>
 
@@ -617,7 +617,7 @@
 					</section>
 				</section>
 
-				<section id="gallery" ref="gallerySection" class="relative w-full bg-gabura-darkgray overflow-hidden"
+				<section id="gallery" ref="gallerySection" class="relative w-full bg-Gabra-darkgray overflow-hidden"
 					:style="{ height: `${gallerySectionHeight}px` }">
 
 					<div class="top-0 h-screen flex items-center overflow-hidden" :style="{position: galleryFixed ? 'fixed' : 'relative',
@@ -626,11 +626,11 @@
 						<div class="absolute top-24 left-0 right-0 z-20 section-padding">
 							<div class="max-w-7xl mx-auto px-6 sm:px-8 mb-16 lg:mb-24 text-center relative">
 								<h2
-									class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gabura-white leading-tight">
-									嘎布拉<span class="relative inline-block text-gabura-red">
+									class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-Gabra-white leading-tight">
+									嘎布拉<span class="relative inline-block text-Gabra-red">
 										图鉴
 										<!-- 标题下划线装饰 -->
-										<svg class="absolute w-full h-3 -bottom-2 left-0 text-gabura-red opacity-60"
+										<svg class="absolute w-full h-3 -bottom-2 left-0 text-Gabra-red opacity-60"
 											viewBox="0 0 100 10" preserveAspectRatio="none">
 											<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
 												fill="none" />
@@ -647,17 +647,17 @@
 								:style="{ transform: `translateX(${galleryTranslate}px)` }">
 								<div v-for="(item, index) in galleryItems" :key="item.title"
 									class="gallery-card flex-shrink-0 w-[80vw] sm:w-[60vw] lg:w-[40vw] h-[70vh] relative group">
-									<div class="relative h-full rounded-2xl overflow-hidden bg-gabura-black/50">
+									<div class="relative h-full rounded-2xl overflow-hidden bg-Gabra-black/50">
 										<img :src="item.image" :alt="item.title"
 											class="w-full h-full object-contain p-4 sm:p-8 transition-transform duration-500 group-hover:scale-105"
 											draggable="false" />
 										<div
-											class="absolute inset-0 bg-gradient-to-t from-gabura-black/90 via-transparent to-transparent">
+											class="absolute inset-0 bg-gradient-to-t from-Gabra-black/90 via-transparent to-transparent">
 										</div>
 
 										<div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
 											<span
-												class="text-gabura-red text-sm font-accent font-semibold mb-2 block">0{{ index + 1 }}</span>
+												class="text-Gabra-red text-sm font-accent font-semibold mb-2 block">0{{ index + 1 }}</span>
 											<h3 class="text-2xl sm:text-3xl font-accent font-bold text-white mb-3">
 												{{ item.title }}
 											</h3>
@@ -665,7 +665,7 @@
 										</div>
 
 										<div
-											class="absolute inset-0 border-2 border-gabura-red/0 rounded-2xl transition-colors duration-300 group-hover:border-gabura-red/50">
+											class="absolute inset-0 border-2 border-Gabra-red/0 rounded-2xl transition-colors duration-300 group-hover:border-Gabra-red/50">
 										</div>
 									</div>
 								</div>
@@ -676,7 +676,7 @@
 						<div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
 							<div v-for="(_, index) in galleryItems" :key="`dot-${index}`"
 								class="w-2 h-2 rounded-full transition-all duration-300"
-								:class="index === currentIndex ? 'bg-gabura-red w-6' : 'bg-white/30'"></div>
+								:class="index === currentIndex ? 'bg-Gabra-red w-6' : 'bg-white/30'"></div>
 						</div>
 
 					</div>
@@ -685,19 +685,19 @@
 				<section id="testimonials" class="relative w-full min-h-screen bg-white py-20 sm:py-32 overflow-hidden"
 					@mousemove="updateTestimonialMouse">
 					<div class="max-w-7xl mx-auto px-6 sm:px-8 mb-0 lg:mb-24 text-center lg:text-left relative">
-						<span class="block text-gabura-red uppercase text-sm mb-2 opacity-80">
+						<span class="block text-Gabra-red uppercase text-sm mb-2 opacity-80">
 							Global Testimony</span>
-						<h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gabura-black leading-tight">
-							全球<span class="relative inline-block text-gabura-red">
+						<h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-Gabra-black leading-tight">
+							全球<span class="relative inline-block text-Gabra-red">
 								证言
 								<!-- 标题下划线装饰 -->
-								<svg class="absolute w-full h-3 -bottom-2 left-0 text-gabura-red opacity-60"
+								<svg class="absolute w-full h-3 -bottom-2 left-0 text-Gabra-red opacity-60"
 									viewBox="0 0 100 10" preserveAspectRatio="none">
 									<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3" fill="none" />
 								</svg>
 							</span>
 						</h2>
-						<p class="mt-10 text-lg text-gabura-gray max-w-2xl lg:mx-0 mx-auto font-serif">
+						<p class="mt-10 text-lg text-Gabra-gray max-w-2xl lg:mx-0 mx-auto font-serif">
 							从中国的乡村到欧洲的都市，嘎布拉兔子在世界各地留下了它的痕迹。听听那些亲眼见过的人怎么说。
 						</p>
 					</div>
@@ -717,18 +717,18 @@
 									@click="isMobile && setActiveTestimonial(testimonial)">
 									<div class="absolute inset-0" style="transform: translate(-50%, -50%);">
 										<div
-											class="w-8 h-8 rounded-full border border-gabura-red/50 animate-pulse-ring">
+											class="w-8 h-8 rounded-full border border-Gabra-red/50 animate-pulse-ring">
 										</div>
 									</div>
 									<div
-										class="relative w-4 h-4 bg-gabura-red rounded-full cursor-pointer hover:scale-150 transition-transform duration-300 shadow-lg">
+										class="relative w-4 h-4 bg-Gabra-red rounded-full cursor-pointer hover:scale-150 transition-transform duration-300 shadow-lg">
 										<div
-											class="absolute inset-0 bg-gabura-red rounded-full animate-ping opacity-50">
+											class="absolute inset-0 bg-Gabra-red rounded-full animate-ping opacity-50">
 										</div>
 									</div>
 
 									<div class="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
-										<span class="text-xs font-accent font-semibold text-gabura-darkgray">
+										<span class="text-xs font-accent font-semibold text-Gabra-darkgray">
 											{{ testimonial.city }}
 										</span>
 									</div>
@@ -755,8 +755,8 @@
 
 								<!-- 城市信息 -->
 								<div class="flex items-center gap-2 mb-4">
-									<i data-lucide="map-pin" class="w-4 h-4 text-gabura-red"></i>
-									<h3 class="font-accent font-semibold text-gabura-darkgray text-base">
+									<i data-lucide="map-pin" class="w-4 h-4 text-Gabra-red"></i>
+									<h3 class="font-accent font-semibold text-Gabra-darkgray text-base">
 										{{ activeTestimonial.city }}, {{ activeTestimonial.country }}
 									</h3>
 								</div>
@@ -764,27 +764,27 @@
 								<!-- 引文 -->
 								<div class="relative bg-white rounded-2xl p-5 shadow-sm border border-black/5">
 									<i data-lucide="quote"
-										class="absolute -top-3 -left-3 w-6 h-6 text-gabura-red/20"></i>
+										class="absolute -top-3 -left-3 w-6 h-6 text-Gabra-red/20"></i>
 
-									<p class="text-gabura-darkgray italic leading-relaxed text-base">
+									<p class="text-Gabra-darkgray italic leading-relaxed text-base">
 										{{ activeTestimonial.quote }}
 									</p>
 
 									<div class="mt-4 pt-3 border-t border-dashed border-black/10">
-										<p class="text-sm text-gabura-gray leading-relaxed">
+										<p class="text-sm text-Gabra-gray leading-relaxed">
 											{{ activeTestimonial.translation }}
 										</p>
 									</div>
 								</div>
 
 								<!-- 作者 -->
-								<p class="mt-4 text-xs text-gabura-gray text-right">
+								<p class="mt-4 text-xs text-Gabra-gray text-right">
 									—— {{ activeTestimonial.author }}
 								</p>
 
 								<!-- 关闭按钮（兜底） -->
 								<button class="mt-6 w-full py-3 rounded-xl
-						             bg-gabura-red/10 text-gabura-red font-semibold" @click="clearActiveTestimonial">
+						             bg-Gabra-red/10 text-Gabra-red font-semibold" @click="clearActiveTestimonial">
 									关闭
 								</button>
 							</div>
@@ -792,29 +792,29 @@
 
 						<div v-if="!isMobile && activeTestimonial" class="fixed z-50 w-80 sm:w-96 pointer-events-none"
 							:style="{ left: `${mousePos.x + 20}px`, top: `${mousePos.y - 100}px` }">
-							<div class="bg-white rounded-2xl shadow-2xl p-6 border border-gabura-lightgray">
+							<div class="bg-white rounded-2xl shadow-2xl p-6 border border-Gabra-lightgray">
 								<div class="flex items-center gap-2 mb-4">
-									<i data-lucide="map-pin" class="w-4 h-4 text-gabura-red"></i>
-									<span class="font-accent font-semibold text-gabura-darkgray">
+									<i data-lucide="map-pin" class="w-4 h-4 text-Gabra-red"></i>
+									<span class="font-accent font-semibold text-Gabra-darkgray">
 										{{ activeTestimonial.city }}, {{ activeTestimonial.country }}
 									</span>
 								</div>
 
 								<div class="relative">
 									<i data-lucide="quote"
-										class="absolute -top-2 -left-2 w-6 h-6 text-gabura-red/20"></i>
-									<p class="body-md text-gabura-darkgray italic mb-3 pl-4">
+										class="absolute -top-2 -left-2 w-6 h-6 text-Gabra-red/20"></i>
+									<p class="body-md text-Gabra-darkgray italic mb-3 pl-4">
 										{{ activeTestimonial.quote }}
 									</p>
 								</div>
 
-								<div class="border-t border-gabura-lightgray pt-3 mt-3">
-									<p class="text-sm text-gabura-gray">
+								<div class="border-t border-Gabra-lightgray pt-3 mt-3">
+									<p class="text-sm text-Gabra-gray">
 										{{ activeTestimonial.translation }}
 									</p>
 								</div>
 
-								<p class="text-xs text-gabura-gray mt-3 text-right">
+								<p class="text-xs text-Gabra-gray mt-3 text-right">
 									—— {{ activeTestimonial.author }}
 								</p>
 							</div>
@@ -828,10 +828,10 @@
 						<div class="max-w-6xl mx-auto">
 							<div class="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
 								<div v-for="stat in stats" :key="stat.label" class="text-center">
-									<div class="text-3xl sm:text-4xl font-accent font-bold text-gabura-red mb-1">
+									<div class="text-3xl sm:text-4xl font-accent font-bold text-Gabra-red mb-1">
 										{{ stat.number }}
 									</div>
-									<div class="text-sm text-gabura-gray">
+									<div class="text-sm text-Gabra-gray">
 										{{ stat.label }}
 									</div>
 								</div>
@@ -848,27 +848,27 @@
 
 					<!-- 装饰：巨大的水印文字 -->
 					<div
-						class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 text-[200px] font-black text-gabura-black opacity-[0.02] pointer-events-none select-none">
+						class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 text-[200px] font-black text-Gabra-black opacity-[0.02] pointer-events-none select-none">
 						SPECIMEN
 					</div>
 
 					<div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
 
 						<div class="max-w-7xl mx-auto px-6 sm:px-8 mb-16 lg:mb-24 text-center lg:text-left relative">
-							<span class="block text-gabura-red uppercase text-sm mb-2 opacity-80">
+							<span class="block text-Gabra-red uppercase text-sm mb-2 opacity-80">
 								Biological Report</span>
-							<h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gabura-black leading-tight">
-								生物<span class="relative inline-block text-gabura-red">
+							<h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-Gabra-black leading-tight">
+								生物<span class="relative inline-block text-Gabra-red">
 									监测报告
 									<!-- 标题下划线装饰 -->
-									<svg class="absolute w-full h-3 -bottom-2 left-0 text-gabura-red opacity-60"
+									<svg class="absolute w-full h-3 -bottom-2 left-0 text-Gabra-red opacity-60"
 										viewBox="0 0 100 10" preserveAspectRatio="none">
 										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
 											fill="none" />
 									</svg>
 								</span>
 							</h2>
-							<p class="mt-10 text-lg text-gabura-gray max-w-2xl lg:mx-0 mx-auto font-serif">
+							<p class="mt-10 text-lg text-Gabra-gray max-w-2xl lg:mx-0 mx-auto font-serif">
 								兽医的临床视角，解读嘎布拉兔子的独特行为模式
 							</p>
 						</div>
@@ -878,7 +878,7 @@
 							<!-- 左侧：生物扫描仪 (视觉核心) -->
 							<div class="lg:col-span-5 sticky top-24">
 								<div
-									class="relative group rounded-xl bg-gabura-black p-2 shadow-2xl ring-1 ring-gabura-black/10">
+									class="relative group rounded-xl bg-Gabra-black p-2 shadow-2xl ring-1 ring-Gabra-black/10">
 									<!-- 顶部UI栏 -->
 									<div
 										class="absolute top-4 left-4 right-4 z-20 flex justify-between text-[10px] font-mono text-white/70">
@@ -895,7 +895,7 @@
 
 										<!-- 扫描线动画 -->
 										<div
-											class="absolute top-0 left-0 w-full h-2 bg-gabura-red/50 shadow-[0_0_30px_rgba(208,43,43,0.6)] z-20 animate-scan">
+											class="absolute top-0 left-0 w-full h-2 bg-Gabra-red/50 shadow-[0_0_30px_rgba(208,43,43,0.6)] z-20 animate-scan">
 										</div>
 
 										<!-- 扫描网格覆盖层 -->
@@ -906,8 +906,8 @@
 										<!-- 动态数据浮层 -->
 										<div class="absolute bottom-6 left-6 z-30 font-sans">
 											<div
-												class="inline-flex items-center gap-2 px-3 py-1 bg-gabura-red/10 backdrop-blur-md border border-gabura-red/30 rounded text-xs text-gabura-red">
-												<span class="w-1.5 h-1.5 rounded-full bg-gabura-red animate-ping">
+												class="inline-flex items-center gap-2 px-3 py-1 bg-Gabra-red/10 backdrop-blur-md border border-Gabra-red/30 rounded text-xs text-Gabra-red">
+												<span class="w-1.5 h-1.5 rounded-full bg-Gabra-red animate-ping">
 												</span>
 												心率: <span class="font-mono">320 BPM</span> (异常)
 											</div>
@@ -937,21 +937,21 @@
 							<div class="lg:col-span-7 space-y-10">
 
 								<!-- 1. 摘要卡片 -->
-								<div class="bg-white border-l-4 border-gabura-red p-6 shadow-sm">
-									<h3 class="font-bold text-gabura-black mb-2 flex items-center gap-2">
-										<svg class="w-5 h-5 text-gabura-red" fill="none" viewBox="0 0 24 24"
+								<div class="bg-white border-l-4 border-Gabra-red p-6 shadow-sm">
+									<h3 class="font-bold text-Gabra-black mb-2 flex items-center gap-2">
+										<svg class="w-5 h-5 text-Gabra-red" fill="none" viewBox="0 0 24 24"
 											stroke="currentColor">
 											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 												d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
 										</svg>
 										临床总结
 									</h3>
-									<p class="text-gabura-darkgray leading-relaxed text-sm sm:text-base">
+									<p class="text-Gabra-darkgray leading-relaxed text-sm sm:text-base">
 										其骨骼密度高于普通家兔 <span
 											class="font-bold">15%</span>，后肢肌肉群呈现异常发达状态。行为模式显示出极高的环境改造欲（俗称拆家）。
 										<br class="hidden sm:block">
 										<span
-											class="text-xs text-gabura-gray mt-2 block font-mono">注：常规笼具无法限制其活动范围。</span>
+											class="text-xs text-Gabra-gray mt-2 block font-mono">注：常规笼具无法限制其活动范围。</span>
 									</p>
 								</div>
 
@@ -961,8 +961,8 @@
 										<div class="flex justify-between items-end mb-2">
 											<div class="flex items-center gap-2">
 												<span
-													class="font-mono text-xs text-gabura-gray bg-gray-100 px-1 rounded">{{ s.code }}</span>
-												<span class="font-bold text-gabura-black">{{ s.name }}</span>
+													class="font-mono text-xs text-Gabra-gray bg-gray-100 px-1 rounded">{{ s.code }}</span>
+												<span class="font-bold text-Gabra-black">{{ s.name }}</span>
 											</div>
 											<span :class="['font-mono font-bold text-lg', s.valueColor]">
 												{{ s.value }}<small class="text-xs text-gray-400">/100</small>
@@ -989,26 +989,26 @@
 
 								<!-- 3. 行为特征网格 (Evidence Grid) -->
 								<div class="pt-6 border-t border-dashed border-gray-300">
-									<h4 class="font-mono text-xs text-gabura-gray uppercase mb-4 tracking-wider">Field
+									<h4 class="font-mono text-xs text-Gabra-gray uppercase mb-4 tracking-wider">Field
 										Notes / 观察笔记</h4>
 									<div class="grid sm:grid-cols-2 gap-4">
 										<!-- 笔记 1 -->
 										<div
 											class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-start gap-3 hover:-translate-y-1 transition-transform">
 											<div
-												class="mt-1 w-2 h-2 rounded-full bg-gabura-red shadow-[0_0_8px_rgba(208,43,43,0.8)]">
+												class="mt-1 w-2 h-2 rounded-full bg-Gabra-red shadow-[0_0_8px_rgba(208,43,43,0.8)]">
 											</div>
 											<div>
-												<h5 class="font-bold text-sm text-gabura-black">夜间活跃</h5>
+												<h5 class="font-bold text-sm text-Gabra-black">夜间活跃</h5>
 												<p class="text-xs text-gray-500 mt-1">凌晨2点至4点为活跃峰值，伴随高频跑动声。</p>
 											</div>
 										</div>
 										<!-- 笔记 2 -->
 										<div
 											class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-start gap-3 hover:-translate-y-1 transition-transform">
-											<div class="mt-1 w-2 h-2 rounded-full bg-gabura-black"></div>
+											<div class="mt-1 w-2 h-2 rounded-full bg-Gabra-black"></div>
 											<div>
-												<h5 class="font-bold text-sm text-gabura-black">领地意识</h5>
+												<h5 class="font-bold text-sm text-Gabra-black">领地意识</h5>
 												<p class="text-xs text-gray-500 mt-1">会通过下巴摩擦物体边缘来标记所有权。</p>
 											</div>
 										</div>
@@ -1017,7 +1017,7 @@
 											class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-start gap-3 hover:-translate-y-1 transition-transform sm:col-span-2">
 											<div class="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
 											<div>
-												<h5 class="font-bold text-sm text-gabura-black">特殊食性</h5>
+												<h5 class="font-bold text-sm text-Gabra-black">特殊食性</h5>
 												<p class="text-xs text-gray-500 mt-1">除了常规牧草，表现出对数据线、墙纸的异常兴趣。</p>
 											</div>
 										</div>
@@ -1030,11 +1030,11 @@
 				</section>
 
 				<section id="slogan"
-					class="relative w-full min-h-screen flex items-center justify-center bg-gabura-black overflow-hidden"
+					class="relative w-full min-h-screen flex items-center justify-center bg-Gabra-black overflow-hidden"
 					ref="sloganSection">
 					<div class="absolute inset-0">
-						<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gabura-red/20 rounded-full blur-3xl"></div>
-						<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gabura-red/10 rounded-full blur-3xl">
+						<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-Gabra-red/20 rounded-full blur-3xl"></div>
+						<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-Gabra-red/10 rounded-full blur-3xl">
 						</div>
 
 						<div class="absolute inset-0 opacity-20">
@@ -1048,11 +1048,11 @@
 						<div class="max-w-4xl mx-auto">
 							<h2 class="heading-xl text-white mb-8 transition-all duration-300"
 								:style="{ filter: `blur(${sloganBlur}px)`, opacity: sloganOpacity }">
-								它从不肯<span class="text-gabura-red">顺从</span>，
+								它从不肯<span class="text-Gabra-red">顺从</span>，
 								<br />
 								却也因此，
 								<br />
-								活得格外<span class="text-gabura-red">鲜明</span>。
+								活得格外<span class="text-Gabra-red">鲜明</span>。
 							</h2>
 
 							<p class="body-lg text-white/60 max-w-2xl mx-auto mb-12">
@@ -1063,7 +1063,7 @@
 
 							<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
 								<button
-									class="px-8 py-4 bg-gabura-red text-white rounded-full font-accent font-semibold hover:bg-white hover:text-gabura-black transition-all duration-300 custom-expo flex items-center gap-2 group">
+									class="px-8 py-4 bg-Gabra-red text-white rounded-full font-accent font-semibold hover:bg-white hover:text-Gabra-black transition-all duration-300 custom-expo flex items-center gap-2 group">
 									<i data-lucide="share-2"
 										class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
 									分享你的故事
@@ -1076,22 +1076,22 @@
 							</div>
 
 							<div
-								class="absolute -top-16 -left-24 text-[200px] font-serif text-gabura-red/10 leading-none select-none pointer-events-none">
+								class="absolute -top-16 -left-24 text-[200px] font-serif text-Gabra-red/10 leading-none select-none pointer-events-none">
 								“</div>
 							<div
-								class="absolute -bottom-24 -right-16 text-[200px] font-serif text-gabura-red/10 leading-none select-none pointer-events-none">
+								class="absolute -bottom-24 -right-16 text-[200px] font-serif text-Gabra-red/10 leading-none select-none pointer-events-none">
 								”</div>
 						</div>
 					</div>
 
 					<div
-						class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gabura-darkgray to-transparent">
+						class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-Gabra-darkgray to-transparent">
 					</div>
 				</section>
 
 			</main>
 
-			<footer class="relative w-full bg-gabura-darkgray text-white overflow-hidden">
+			<footer class="relative w-full bg-Gabra-darkgray text-white overflow-hidden">
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
 					<!-- 上半部分 -->
@@ -1099,7 +1099,7 @@
 						<!-- 品牌区 -->
 						<div class="">
 							<div class="flex items-center justify-center gap-2 font-semibold text-lg mb-4">
-								<!-- 你可以换成 Gabura 的 logo -->
+								<!-- 你可以换成 Gabra 的 logo -->
 								<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
 									<img src="public/icon-gabra.png" alt="" />
 								</div>
@@ -1147,7 +1147,7 @@
 
 			<!-- Share Poster Overlay -->
 			<Transition name="fade">
-				<div v-if="showSharePoster" class="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6">
+				<div v-if="showSharePoster" class="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6">
 
 					<!-- Backdrop: 使用更深度的模糊，营造景深感，背景色稍微淡一点 -->
 					<div class="absolute inset-0 bg-neutral-900/30 dark:bg-black/60 backdrop-blur-md transition-opacity"
@@ -1281,24 +1281,6 @@
 						y: 0
 					});
 
-					const navLinks = ref([{
-							label: "传说",
-							href: "#story"
-						},
-						{
-							label: "图鉴",
-							href: "#gallery"
-						},
-						{
-							label: "证言",
-							href: "#testimonials"
-						},
-						{
-							label: "科学",
-							href: "#characteristics"
-						},
-					]);
-
 					const galleryItems = ref([{
 							image: "public/rabbit-eating.png",
 							title: "粗硬的毛发",
@@ -1416,25 +1398,25 @@
 							code: "EDP",
 							name: "环境破坏力",
 							value: 92,
-							valueColor: "text-gabura-red",
+							valueColor: "text-Gabra-red",
 							tip: "在数百个案例中，嘎布拉兔子表现极强破坏能力",
-							fillClass: (i) => (i <= 9 ? (i === 9 ? "bg-gabura-red/50" : "bg-gabura-red") :
+							fillClass: (i) => (i <= 9 ? (i === 9 ? "bg-Gabra-red/50" : "bg-Gabra-red") :
 								"bg-gray-200")
 						},
 						{
 							code: "ESV",
 							name: "逃逸速度",
 							value: 85,
-							valueColor: "text-gabura-black",
+							valueColor: "text-Gabra-black",
 							tip: "",
-							fillClass: (i) => (i <= 8 ? (i === 8 ? "bg-gabura-black/50" : "bg-gabura-black") :
+							fillClass: (i) => (i <= 8 ? (i === 8 ? "bg-Gabra-black/50" : "bg-Gabra-black") :
 								"bg-gray-200")
 						},
 						{
 							code: "ULS",
 							name: "开锁技巧",
 							value: 65,
-							valueColor: "text-gabura-black",
+							valueColor: "text-Gabra-black",
 							tip: "在数十个案例中，嘎布拉兔子已学会开启插销式笼门",
 							fillClass: (i) => (i <= 6 ? (i === 6 ? "bg-gray-800/50" : "bg-gray-800") :
 								"bg-gray-200")
@@ -1860,7 +1842,6 @@
 						isScrolled,
 						galleryFixed,
 						heroMouse,
-						navLinks,
 						galleryItems,
 						currentIndex,
 						galleryTranslate,
