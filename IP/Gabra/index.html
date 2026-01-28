@@ -289,6 +289,17 @@
 	</head>
 	<body>
 		<div id="app" class="relative w-full min-h-screen bg-white overflow-x-hidden">
+			
+			<!-- ================== Loading ================== -->
+			<Transition name="fade">
+				<div v-if="isPageLoading"
+					class="fixed inset-0 z-[100] bg-white dark:bg-neutral-950 flex items-center justify-center">
+					<div
+						class="w-8 h-8 rounded-full border-[3px] border-neutral-200 dark:border-neutral-800 border-t-neutral-800 dark:border-t-white animate-spin">
+					</div>
+				</div>
+			</Transition>
+			
 			<!-- Top Action Bar (not a navbar) -->
 			<div class="fixed top-0 left-0 right-0 z-50">
 				<div class="section-padding">
@@ -1261,6 +1272,8 @@
 
 			createApp({
 				setup() {
+					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
+					
 					const isScrolled = ref(false);
 					const galleryFixed = ref(false);
 					const heroMouse = reactive({
@@ -1823,6 +1836,7 @@
 						});
 
 						io.observe(el);
+						isPageLoading.value = false
 					});
 
 					onBeforeUnmount(() => {
@@ -1842,6 +1856,7 @@
 					});
 
 					return {
+						isPageLoading,
 						isScrolled,
 						galleryFixed,
 						heroMouse,
