@@ -23,6 +23,32 @@ html {
 	background: #475569;
 }
 
+/* IP carousel */
+.ip-carousel {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	overscroll-behavior-x: contain;
+	scroll-behavior: auto;
+	-webkit-overflow-scrolling: touch;
+	mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+	-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+
+.ip-carousel *,
+.ip-carousel img {
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.ip-carousel.is-dragging a,
+.ip-carousel.is-dragging button {
+	pointer-events: none;
+}
+
+.ip-carousel::-webkit-scrollbar {
+	display: none;
+}
+
 /* Phone mockup */
 .phone-frame {
 	background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
