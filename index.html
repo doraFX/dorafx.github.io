@@ -517,7 +517,7 @@
 								</a>
 							</div>
 
-							<div ref="ipCarousel" @mousedown.prevent="onIpDragStart" @click.capture="onIpClickCapture"
+							<div ref="ipCarouselRef" @mousedown.prevent="onIpDragStart" @click.capture="onIpClickCapture"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer" @dragstart.prevent
