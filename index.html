@@ -520,11 +520,11 @@
 							<div ref="ipCarousel" @mousedown="onIpDragStart" @click.capture="onIpClickCapture"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
-									rel="noopener noreferrer"
+									rel="noopener noreferrer" @dragstart.prevent
 									class="group flex flex-col items-center gap-4 min-w-[160px] sm:min-w-[180px] lg:min-w-[200px] snap-start">
 									<div class="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden bg-white dark:bg-neutral-900 ring-4 ring-white/80 dark:ring-neutral-700/50 shadow-xl dark:shadow-neutral-800
                                         transition-transform duration-300 group-hover:-translate-y-1">
-										<img :src="ip.image" :alt="pickI18n(ip.name)"
+										<img :src="ip.image" :alt="pickI18n(ip.name)" draggable="false"
 											class="w-full h-full object-cover" />
 									</div>
 									<h3
