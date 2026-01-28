@@ -28,32 +28,6 @@
 	{
 		"index": 2,
 		"name": {
-			"zh": "嘎布拉兔",
-			"en": "Gabra",
-			"ja": "嘎布拉兔",
-			"ko": "嘎布拉兔"
-		},
-		"image": "IP/Gabra/icon.png",
-		"link": "IP/Gabra/index.html",
-		"desc": {
-			"zh": "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
-			"en": "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
-			"ja": "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
-			"ko": "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
-		},
-		"platforms": {
-			"xiaohongshu": false,
-			"weibo": false,
-			"ins": false,
-			"x": false
-		},
-		"visible": true,
-		"accent": "linear-gradient(135deg, #6b7280, #71717a)",
-		"_uid": "b6e7b6d9-6749-43e6-903f-f4880d3c97db"
-	},
-	{
-		"index": 3,
-		"name": {
 			"zh": "鸡贼黄袋鼠兔",
 			"en": "Sneaky RooBunny",
 			"ja": "ずる賢いルーバニー",
@@ -76,5 +50,31 @@
 		"visible": true,
 		"accent": "linear-gradient(135deg, #eab308, #f59e0b)",
 		"_uid": "9b27c99d-f517-4965-a183-0c25345c2c7b"
+	},
+	{
+		"index": 3,
+		"name": {
+			"zh": "嘎布拉兔",
+			"en": "Gabra",
+			"ja": "嘎布拉兔",
+			"ko": "嘎布拉兔"
+		},
+		"image": "IP/Gabra/icon.png",
+		"link": "IP/Gabra/index.html",
+		"desc": {
+			"zh": "毛发乱蓬蓬的灰色兔子，爱叫嚷，性格不老实",
+			"en": "A scruffy gray rabbit with messy fur, loud and anything but well-behaved.",
+			"ja": "毛並みがぼさぼさの灰色のウサギ。よく騒ぎ、性格もかなり落ち着きがない。",
+			"ko": "털이 헝클어진 회색 토끼로, 잘 떠들고 성격도 얌전하지 않다."
+		},
+		"platforms": {
+			"xiaohongshu": false,
+			"weibo": false,
+			"ins": false,
+			"x": false
+		},
+		"visible": true,
+		"accent": "linear-gradient(135deg, #6b7280, #71717a)",
+		"_uid": "b6e7b6d9-6749-43e6-903f-f4880d3c97db"
 	}
 ]
