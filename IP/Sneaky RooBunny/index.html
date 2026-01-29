@@ -1,0 +1,1535 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>鸡贼黄袋鼠兔 Sneaky RooBunny</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap"
+			rel="stylesheet">
+
+		<script src="../../js/tailwindcss.3.4.17.js"></script>
+		<script src="../../js/vue.global.js"></script>
+		<script src="../../js/shareposter.js"></script>
+		<script src="../../js/html2canvas.min.js"></script>
+		<script src="../../js/qrcode.min.js"></script>
+		<script src="../../js/lucide.min.js"></script>
+		<script type="module" src="../../js/model-viewer.min.js"></script>
+
+		<script defer src="../../js/apple-video-player.js"></script>
+		<link rel="stylesheet" href="../../css/apple-video-player.css" />
+
+		<link rel="stylesheet" href="../../css/remixicon.css" />
+
+		<script>
+			tailwind = window.tailwind || {};
+			tailwind.config = {
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: [
+								'Noto Sans SC', 'Lora', 'sans-serif',
+							],
+							serif: [
+								'Noto Serif SC', 'Noto Sans', 'sans-serif',
+							],
+							bebas: [
+								'Bebas Neue', 'sans-serif',
+							],
+						},
+						colors: {
+							border: "hsl(var(--border))",
+							input: "hsl(var(--input))",
+							ring: "hsl(var(--ring))",
+							background: "hsl(var(--background))",
+							foreground: "hsl(var(--foreground))",
+							primary: {
+								DEFAULT: "hsl(var(--primary))",
+								foreground: "hsl(var(--primary-foreground))",
+							},
+							secondary: {
+								DEFAULT: "hsl(var(--secondary))",
+								foreground: "hsl(var(--secondary-foreground))",
+							},
+							destructive: {
+								DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+								foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
+							},
+							muted: {
+								DEFAULT: "hsl(var(--muted))",
+								foreground: "hsl(var(--muted-foreground))",
+							},
+							accent: {
+								DEFAULT: "hsl(var(--accent))",
+								foreground: "hsl(var(--accent-foreground))",
+							},
+							popover: {
+								DEFAULT: "hsl(var(--popover))",
+								foreground: "hsl(var(--popover-foreground))",
+							},
+							card: {
+								DEFAULT: "hsl(var(--card))",
+								foreground: "hsl(var(--card-foreground))",
+							},
+							bunny: {
+								yellow: "#F5D547",
+								"yellow-light": "#FFE066",
+								"yellow-dark": "#D4B83A",
+								white: "#FAFAFA",
+								orange: "#FF9F43",
+								green: "#7CB342",
+								brown: "#8D6E63",
+							},
+						},
+						keyframes: {
+							float: {
+								"0%, 100%": {
+									transform: "translateY(0)"
+								},
+								"50%": {
+									transform: "translateY(-20px)"
+								},
+							},
+							wiggle: {
+								"0%, 100%": {
+									transform: "rotate(-3deg)"
+								},
+								"50%": {
+									transform: "rotate(3deg)"
+								},
+							},
+						},
+						animation: {
+							float: "float 6s ease-in-out infinite",
+							wiggle: "wiggle 1s ease-in-out infinite",
+						},
+					},
+				},
+			};
+		</script>
+
+		<style>
+			:root {
+				--background: 48 100% 97%;
+				--foreground: 30 20% 20%;
+				--card: 48 80% 95%;
+				--card-foreground: 30 20% 20%;
+				--popover: 48 100% 97%;
+				--popover-foreground: 30 20% 20%;
+				--primary: 48 90% 62%;
+				--primary-foreground: 30 20% 15%;
+				--secondary: 40 60% 90%;
+				--secondary-foreground: 30 20% 20%;
+				--muted: 40 30% 88%;
+				--muted-foreground: 30 10% 45%;
+				--accent: 35 100% 63%;
+				--accent-foreground: 30 20% 15%;
+				--destructive: 0 84.2% 60.2%;
+				--destructive-foreground: 0 0% 98%;
+				--border: 40 40% 85%;
+				--input: 40 40% 85%;
+				--ring: 48 90% 62%;
+			}
+
+			* {
+				border-color: hsl(var(--border));
+			}
+
+			body {
+				font-family: 'Noto Sans SC', 'Lora', sans-serif;
+				background-color: hsl(var(--background));
+				color: hsl(var(--foreground));
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			::selection {
+				background-color: rgba(245, 213, 71, 0.3);
+				color: inherit;
+			}
+
+			img {
+				image-rendering: -webkit-optimize-contrast;
+			}
+
+			button:focus-visible,
+			a:focus-visible {
+				outline: 2px solid #f5d547;
+				outline-offset: 2px;
+			}
+
+			.text-gradient {
+				background-image: linear-gradient(90deg, #d4b83a 0%, #f5d547 50%, #ff9f43 100%);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+			}
+
+			.bg-pattern {
+				background-image:
+					radial-gradient(circle at 20% 80%, rgba(245, 213, 71, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(255, 159, 67, 0.1) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(124, 179, 66, 0.08) 0%, transparent 40%);
+			}
+
+			.glass-card {
+				background: rgba(255, 255, 255, 0.7);
+				backdrop-filter: blur(12px);
+				border: 1px solid rgba(255, 255, 255, 0.5);
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+			}
+
+			.reveal {
+				opacity: 0;
+				transform: translateY(2.5rem);
+				transition: opacity 0.7s ease, transform 0.7s ease;
+			}
+
+			.reveal.is-visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			::-webkit-scrollbar {
+				width: 5px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: #f5d547;
+				border-radius: 4px;
+			}
+
+			::-webkit-scrollbar-thumb:hover {
+				background: #d4b83a;
+			}
+		</style>
+	</head>
+	<body class="min-h-screen bg-background">
+		<div id="app" v-cloak>
+
+			<!-- ================== Loading ================== -->
+			<Transition name="fade">
+				<div v-if="isPageLoading"
+					class="fixed inset-0 z-[100] bg-white dark:bg-neutral-950 flex items-center justify-center">
+					<div
+						class="w-8 h-8 rounded-full border-[3px] border-neutral-200 dark:border-neutral-800 border-t-neutral-800 dark:border-t-white animate-spin">
+					</div>
+				</div>
+			</Transition>
+
+			<nav class="fixed top-0 left-0 right-0 z-50">
+				<div class="px-4 sm:px-6 lg:px-8">
+					<div class="max-w-7xl mx-auto flex items-center justify-between py-2 px-3 transition-all duration-300"
+						:class="isScrolled ? 'bg-white/90 backdrop-blur-md shadow-md rounded-full mt-3' : 'bg-transparent'">
+
+						<div class="md:flex items-center">
+							<button @click="goHome" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold
+								       bg-bunny-yellow/80 hover:bg-bunny-yellow transition border border-black/5 text-black">
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									<span class="hidden sm:block">返回主页</span>
+								</span>
+							</button>
+						</div>
+
+						<button @click="scrollToTop" class="flex items-center justify-center mx-auto md:mx-0"
+							aria-label="鸡贼黄袋鼠兔">
+							<div class="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300"
+								:class="isScrolled ? 'bg-bunny-yellow shadow-sm' : 'bg-white/20 backdrop-blur-sm'">
+								<img src="public/icon-SneakyRooBunny.png" alt="鸡贼黄袋鼠兔"
+									class="w-full h-full object-cover" />
+							</div>
+						</button>
+
+						<div class="md:flex items-center">
+							<button @click="shareposter" class="px-5 py-2 rounded-full text-sm font-semibold transition
+								       bg-bunny-yellow text-black hover:bg-bunny-yellow/80">
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="square-arrow-out-up-right" class="w-4 h-4"></i>
+									<span class="hidden sm:block">生成海报</span>
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</nav>
+
+
+
+			<main class="min-h-screen bg-background">
+				<section id="hero" ref="heroRef"
+					class="relative min-h-screen flex items-center justify-center overflow-hidden bg-pattern">
+					<div class="absolute inset-0 overflow-hidden">
+						<div
+							class="absolute top-20 left-10 w-32 h-32 bg-bunny-yellow/20 rounded-full blur-3xl animate-float">
+						</div>
+						<div class="absolute bottom-20 right-10 w-48 h-48 bg-bunny-orange/15 rounded-full blur-3xl animate-float"
+							style="animation-delay: 2s;"></div>
+						<div class="absolute top-1/2 left-1/3 w-24 h-24 bg-bunny-green/10 rounded-full blur-2xl animate-float"
+							style="animation-delay: 4s;"></div>
+					</div>
+
+					<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+						<div class="grid lg:grid-cols-2 gap-12 items-center">
+							<div
+								class="hero-content text-center lg:text-left flex flex-col items-center lg:items-start relative z-20">
+
+								<!-- 顶部标签：设计成“盖章”或“标牌”的感觉，带一点倾斜增加调皮感 -->
+								<div
+									class="inline-flex items-center gap-2 bg-white border-2 border-bunny-yellow px-5 py-2 rounded-full mb-8 shadow-[4px_4px_0px_rgba(252,211,77,0.4)] transform -rotate-2">
+									<span
+										class="text-sm font-bold tracking-wide text-bunny-yellow-dark uppercase">Sneaky
+										RooBunny</span>
+								</div>
+
+								<!-- 主标题：放大权重，增加紧凑感，由字重传递力量 -->
+								<h1
+									class="text-5xl sm:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
+									<span code-path="src/sections/Hero.tsx:55:15" class="text-gradient">鸡贼黄袋鼠兔</span>
+								</h1>
+
+								<div class="mb-10 max-w-lg">
+									<p class="text-xl sm:text-2xl text-gray-800 font-bold leading-tight">
+										光看着就已经很
+										<span class="relative inline-block mx-1 text-2xl sm:text-3xl">
+											<span class="relative z-10 text-bunny-yellow-dark">鸡贼</span>
+											<span
+												class="absolute inset-x-0 bottom-1 h-3 bg-bunny-yellow/40 -z-0 rounded-sm"></span>
+										</span>
+										了
+									</p>
+
+									<p class="mt-3 text-xl sm:text-2xl text-gray-800 font-bold leading-tight">
+										没想到动起来更
+										<span class="relative inline-block mx-1 text-2xl sm:text-3xl">
+											<span class="relative z-10 text-bunny-yellow-dark">鸡贼</span>
+											<span
+												class="absolute inset-x-0 bottom-1 h-3 bg-bunny-yellow/40 -z-0 rounded-sm"></span>
+										</span>！
+									</p>
+								</div>
+
+								<!-- 按钮组：增强点击欲，使用硬投影风格 (Neo-brutalism soft) -->
+								<div
+									class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center lg:justify-start mb-10">
+									<button @click="scrollToSection('#story')"
+										class="group relative px-8 py-4 bg-bunny-yellow text-gray-900 font-bold rounded-2xl transition-all transform hover:-translate-y-1 hover:shadow-[6px_6px_0px_rgba(0,0,0,0.1)] active:translate-y-0 active:shadow-none border-2 border-transparent hover:border-bunny-yellow-dark">
+										<span class="relative z-10 flex items-center justify-center gap-2">
+											了解我的故事
+											<svg xmlns="http://www.w3.org/2000/svg"
+												class="h-5 w-5 transition-transform group-hover:translate-x-1"
+												fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+													d="M14 5l7 7m0 0l-7 7m7-7H3" />
+											</svg>
+										</span>
+									</button>
+
+									<button @click="scrollToSection('#gallery')"
+										class="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl border-2 border-gray-100 hover:border-bunny-yellow hover:text-bunny-yellow-dark hover:bg-orange-50 transition-all shadow-sm hover:shadow-md">
+										看图集
+									</button>
+								</div>
+
+								<!-- 标签组：设计成随机散落的贴纸样式 -->
+								<div class="flex flex-wrap gap-3 justify-center lg:justify-start max-w-md">
+									<span
+										class="px-4 py-1.5 bg-yellow-50 text-yellow-700 font-semibold rounded-lg border border-yellow-100 transform -rotate-1 hover:rotate-0 transition-transform cursor-default select-none text-sm">
+										#黄色袋鼠兔
+									</span>
+									<span
+										class="px-4 py-1.5 bg-gray-50 text-gray-600 font-semibold rounded-lg border border-gray-100 transform rotate-2 hover:rotate-0 transition-transform cursor-default select-none text-sm">
+										#白色肚兜
+									</span>
+									<span
+										class="px-4 py-1.5 bg-orange-50 text-orange-700 font-semibold rounded-lg border border-orange-100 transform -rotate-2 hover:rotate-0 transition-transform cursor-default select-none text-sm">
+										#鸡贼
+									</span>
+									<span
+										class="px-4 py-1.5 bg-red-50 text-red-600 font-semibold rounded-lg border border-red-100 transform rotate-1 hover:rotate-0 transition-transform cursor-default select-none text-sm">
+										#濒危物种
+									</span>
+								</div>
+							</div>
+
+
+							<div class="hero-image relative flex justify-center lg:justify-end">
+								<div class="relative">
+									<div class="absolute inset-0 bg-bunny-yellow/30 rounded-full blur-3xl scale-110">
+									</div>
+
+									<img src="public/hero-SneakyRooBunny.png" alt="鸡贼黄袋鼠兔"
+										class="relative mb-40 sm:mb-0 z-10 w-full max-w-md lg:max-w-lg drop-shadow-2xl" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<button @click="scrollToSection('#story')" class="absolute bottom-8 w-full animate-bounce">
+						<div class="w-full flex items-center justify-center">
+							<i data-lucide="chevron-down" class="w-8 h-8 text-gray-400"></i>
+						</div>
+					</button>
+				</section>
+
+				<section id="model3d" class="py-20 bg-white">
+					<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+						<div class="text-center mb-20 reveal" data-reveal>
+							<div class="relative inline-block group">
+								<span
+									class="absolute inset-0 bg-bunny-yellow rounded-lg transform rotate-3 transition-transform group-hover:rotate-6"></span>
+								<span
+									class="relative inline-block px-6 py-2 bg-white border-2 border-gray-900 text-gray-900 text-sm font-bold tracking-wider rounded-lg uppercase shadow-sm">
+									3D Archive
+								</span>
+							</div>
+
+							<h2 class="mt-6 text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+								鸡贼黄
+								<span class="text-bunny-yellow-dark relative inline-block transform -rotate-2">
+									袋鼠兔
+								</span>
+								<br />立体形态记录
+							</h2>
+							<p class="mt-4 text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+								来看数字化鸡贼黄袋鼠兔角色呈现！
+							</p>
+						</div>
+
+						<div class="relative max-w-4xl mx-auto">
+							<div
+								class="aspect-square md:aspect-[16/10] bg-gradient-to-br from-bunny-yellow/20 via-bunny-yellow/10 to-bunny-orange/10 rounded-3xl overflow-hidden shadow-2xl">
+								<div v-if="isLoading" class="w-full h-full flex flex-col items-center justify-center">
+									<div
+										class="w-16 h-16 border-4 border-bunny-yellow border-t-transparent rounded-full animate-spin mb-4">
+									</div>
+									<p class="text-gray-600">加载3D模型中...</p>
+								</div>
+								<div v-else class="w-full h-full relative">
+									<div class="absolute inset-0">
+										<model-viewer ref="viewerRef"
+											src="https://check.dorafx.top/IP/SneakyRooBunny/SneakyRooBunny.glb"
+											alt="鸡贼黄袋鼠兔 3D 模型" ar camera-controls auto-rotate
+											rotation-per-second="30deg" interaction-prompt="none" shadow-intensity="1"
+											exposure="1" environment-image="neutral" exposure="1.2" shadow-intensity="1"
+											class="w-full h-full" style="background: transparent;">
+										</model-viewer>
+									</div>
+
+									<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3">
+										<button @click="zoomIn"
+											class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110">
+											<i data-lucide="zoom-in" class="w-5 h-5 text-gray"></i>
+										</button>
+										<button @click="zoomOut"
+											class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110">
+											<i data-lucide="zoom-out" class="w-5 h-5 text-gray"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-6 flex items-start gap-3 bg-bunny-yellow/10 rounded-xl p-4">
+								<i data-lucide="info" class="w-5 h-5 text-bunny-yellow-dark flex-shrink-0 mt-0.5"></i>
+								<div class="text-sm text-gray-600">
+									<p>您可以使用鼠标拖拽来旋转模型，滚轮缩放查看细节。</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="video" class="py-20 bg-gradient-to-b from-transparent to-bunny-yellow/10">
+					<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+						<div class="text-center mb-20 reveal" data-reveal>
+							<div class="relative inline-block group">
+								<span
+									class="absolute inset-0 bg-bunny-yellow rounded-lg transform rotate-3 transition-transform group-hover:rotate-6"></span>
+								<span
+									class="relative inline-block px-6 py-2 bg-white border-2 border-gray-900 text-gray-900 text-sm font-bold tracking-wider rounded-lg uppercase shadow-sm">
+									Video
+								</span>
+							</div>
+
+							<h2 class="mt-6 text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+								鸡贼黄
+								<span class="text-bunny-yellow-dark relative inline-block transform -rotate-2">
+									袋鼠兔
+								</span>
+								<br />觅食画面公开
+							</h2>
+							<p class="mt-4 text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+								来看鸡贼黄袋鼠兔动起来的样子！
+							</p>
+						</div>
+
+						<div class="max-w-4xl mx-auto">
+							<div class="relative rounded-3xl overflow-hidden shadow-2xl bg-black">
+
+								<video src="https://check.dorafx.top/IP/SneakyRooBunny/video.mp4"
+									class="w-full aspect-video" controls playsinline preload="metadata"></video>
+
+
+							</div>
+
+							<div
+								class="mt-6 relative flex items-start gap-4 rounded-2xl bg-white/80 backdrop-blur border border-gray-200/70 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.12)] transition-all">
+
+								<!-- 左侧 Icon：更像“观察编号” -->
+								<div class="relative flex-shrink-0">
+									<div
+										class="w-14 h-14 bg-bunny-yellow/30 rounded-2xl flex items-center justify-center rotate-[-6deg]">
+										<i data-lucide="film" class="w-7 h-7 text-bunny-yellow-dark"></i>
+									</div>
+
+									<!-- 小贴纸 -->
+									<div
+										class="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-bunny-yellow text-bunny-yellow-dark text-[10px] font-bold shadow">
+										记录
+									</div>
+								</div>
+
+								<!-- 右侧文字 -->
+								<div class="flex-1">
+									<h3 class="text-xl font-extrabold text-gray-800 mb-2 leading-tight">
+										鸡贼黄袋鼠兔觅食记录
+									</h3>
+
+									<!-- 文案做成“气泡段落感” -->
+									<div class="relative">
+										<div
+											class="absolute -left-2 top-2 bottom-2 w-1 bg-bunny-yellow/60 rounded-full hidden sm:block">
+										</div>
+										<p class="text-gray-700 text-sm leading-relaxed mx-1">
+											鸡贼黄袋鼠兔总是很鸡贼，经常躲在草丛里簌簌的，探出个脑袋四处侦查。一旦发现鸡贼兔爱吃的食物，就会奋力迈着粗短的小腿，砰砰砰地跑过去，把食物捕获，踹到自己肚子上的小兜兜里，然后迅速钻入草丛😤
+										</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+				<section id="story" class="relative py-24 overflow-hidden bg-[#FFFDF5]">
+					<!-- 背景装饰：跳跃路径 (仅在大屏显示) -->
+					<div class="absolute inset-0 pointer-events-none hidden lg:block">
+						<svg class="absolute top-0 left-1/2 -translate-x-1/2 h-full w-full max-w-4xl opacity-20"
+							viewBox="0 0 100 800" preserveAspectRatio="none">
+							<path
+								d="M50,0 C50,0 20,150 50,200 C80,250 50,400 50,400 C50,400 20,550 50,600 C80,650 50,800 50,800"
+								stroke="#FCD34D" stroke-width="2" stroke-dasharray="8 8" fill="none" />
+						</svg>
+					</div>
+
+					<div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+						<!-- 头部：更具漫画感的标题 -->
+						<div class="text-center mb-20 reveal" data-reveal>
+							<div class="relative inline-block group">
+								<span
+									class="absolute inset-0 bg-bunny-yellow rounded-lg transform rotate-3 transition-transform group-hover:rotate-6"></span>
+								<span
+									class="relative inline-block px-6 py-2 bg-white border-2 border-gray-900 text-gray-900 text-sm font-bold tracking-wider rounded-lg uppercase shadow-sm">
+									Our Story
+								</span>
+							</div>
+
+							<h2 class="mt-6 text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+								鸡贼黄<span
+									class="text-bunny-yellow-dark relative inline-block transform -rotate-2">袋鼠兔</span>的故事
+							</h2>
+							<p class="mt-4 text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+								<span class="text-2xl mr-2">📖</span>
+								一个关于机灵、收藏、友谊与保护的温馨（且鸡贼）故事
+							</p>
+						</div>
+
+						<!-- 故事列表：时间轴/交错布局 -->
+						<div class="space-y-24 relative">
+							<div v-for="(story, index) in stories" :key="story.title"
+								class="group grid md:grid-cols-2 gap-12 lg:gap-20 items-center reveal relative"
+								data-reveal :data-delay="index * 100">
+
+								<!-- 序号背景 (装饰) -->
+								<div :class="[
+				                    'absolute -top-10 text-[120px] font-black text-bunny-yellow/10 select-none pointer-events-none z-0',
+				                    index % 2 === 0 ? 'left-0 md:left-10' : 'right-0 md:right-10'
+				                ]">
+									0{{ index + 1 }}
+								</div>
+
+								<!-- 图片区域：拍立得风格 -->
+								<div :class="[
+				                    'relative z-10',
+				                    index % 2 === 1 ? 'md:order-2' : ''
+				                ]">
+									<div class="relative transform transition-transform duration-500 hover:scale-105 hover:rotate-0"
+										:class="index % 2 === 0 ? '-rotate-2' : 'rotate-2'">
+										<!-- 装饰胶带 -->
+										<div
+											class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-yellow-200/80 rotate-1 z-20 backdrop-blur-sm shadow-sm">
+										</div>
+
+										<!-- 照片边框 -->
+										<div
+											class="bg-white p-3 pb-8 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100">
+											<div class="relative overflow-hidden rounded-md aspect-video bg-gray-100">
+												<img :src="story.image" :alt="story.title"
+													class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+											</div>
+											<!-- 照片底部的装饰性文字 -->
+											<div class="mt-3 flex justify-between items-center px-2">
+												<span class="text-xs font-handwriting text-gray-400">Sneaky Moment
+													#{{index + 1}}</span>
+												<i data-lucide="camera" class="w-4 h-4 text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- 文字区域：故事卡片 -->
+								<div :class="['relative z-10', index % 2 === 1 ? 'md:order-1' : 'md:text-left']">
+									<div class="inline-flex items-center gap-3 mb-4"
+										:class="index % 2 === 1 ? 'md:flex-row-reverse' : ''">
+										<div
+											class="w-14 h-14 bg-white border-2 border-bunny-yellow rounded-2xl flex items-center justify-center shadow-sm">
+											<i :data-lucide="story.icon" class="w-7 h-7 text-bunny-yellow-dark"></i>
+										</div>
+										<h3 class="text-2xl sm:text-3xl font-bold text-gray-800">{{ story.title }}</h3>
+									</div>
+
+									<div
+										class="bg-white/60 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white shadow-sm hover:shadow-md transition-shadow">
+										<p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
+											{{ story.content }}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- 底部语录：便利贴风格 -->
+						<div
+							class="mt-32 flex justify-center transform hover:scale-105 transition-transform duration-300">
+							<div
+								class="relative bg-[#fff0c5] text-gray-800 p-8 max-w-2xl w-full shadow-[4px_4px_0px_rgba(0,0,0,0.1)] rotate-1">
+								<!-- 顶部图钉效果 -->
+								<div
+									class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-red-400 shadow-sm border-2 border-white z-20">
+								</div>
+
+								<div class="font-medium text-center space-y-4">
+									<p class="text-xl italic font-serif text-gray-800 relative z-10">
+										<span
+											class="text-4xl absolute -top-4 -left-2 text-bunny-yellow-dark opacity-40">"</span>
+										但是，鸡贼黄袋鼠兔光看着就已经很鸡贼了，动起来的话更鸡贼。
+										<span
+											class="text-4xl absolute -bottom-8 -right-2 text-bunny-yellow-dark opacity-40">"</span>
+									</p>
+									<div class="w-16 h-1 bg-bunny-yellow/30 mx-auto rounded-full"></div>
+									<p class="text-gray-600 text-sm font-handwriting transform -rotate-1">
+										( 就算他不动起来鸡贼，他光看着也鸡贼。没有办法，鸡贼黄只能静悄悄的鸡贼。)
+									</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+				<section id="characteristics" class="py-24 bg-white relative overflow-hidden">
+					<!-- 背景装饰：淡淡的爪印纹理，增加IP氛围 -->
+					<div class="absolute top-0 right-0 p-10 opacity-5 pointer-events-none transform rotate-12">
+						<i data-lucide="paw-print" class="w-64 h-64 text-bunny-yellow-dark"></i>
+					</div>
+
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+						<div class="text-center mb-20 reveal" data-reveal>
+							<div class="relative inline-block group">
+								<span
+									class="absolute inset-0 bg-bunny-yellow rounded-lg transform rotate-3 transition-transform group-hover:rotate-6"></span>
+								<span
+									class="relative inline-block px-6 py-2 bg-white border-2 border-gray-900 text-gray-900 text-sm font-bold tracking-wider rounded-lg uppercase shadow-sm">
+									TOP SECRET
+								</span>
+							</div>
+
+							<h2 class="mt-6 text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
+								鸡贼黄
+								<span class="text-bunny-yellow-dark relative inline-block transform -rotate-2">
+									袋鼠兔
+								</span>
+								<br />性格特点
+							</h2>
+							<p class="mt-4 text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+								鸡贼黄袋鼠兔有着独特的性格魅力，让我们一起来了解它们！
+							</p>
+						</div>
+
+						<!-- 卡片区域：Bento Grid (便当盒) 布局风格 -->
+						<!-- 使用 gap-8 拉开间距，让呼吸感更强 -->
+						<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+							<div v-for="(trait, index) in traits" :key="trait.title"
+								class="group relative bg-white rounded-[2rem] p-8 border-2 border-gray-100 hover:border-bunny-yellow transition-all duration-300 hover:-translate-y-2 hover:shadow-[8px_8px_0px_#fcd34d] reveal h-full flex flex-col"
+								data-reveal :data-delay="index * 100">
+
+								<!-- 卡片顶部的装饰条（模拟活页夹或标签色） -->
+								<div
+									class="absolute top-6 right-6 w-3 h-3 rounded-full bg-gray-200 group-hover:bg-bunny-yellow-dark transition-colors">
+								</div>
+
+								<!-- 图标区：大色块背景 -->
+								<div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-gray-50 to-white shadow-sm border border-gray-100 group-hover:border-transparent"
+									:class="trait.color + '/10'"> <!-- 这里利用原来的颜色变量做淡背景 -->
+									<i :data-lucide="trait.icon" class="w-10 h-10 transition-colors duration-300"
+										:class="trait.iconColor"></i>
+								</div>
+
+								<!-- 文字区 -->
+								<h3
+									class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-bunny-yellow-dark transition-colors">
+									{{ trait.title }}
+								</h3>
+								<p class="text-gray-500 font-medium leading-relaxed flex-grow">
+									{{ trait.description }}
+								</p>
+
+								<!-- 底部装饰线 -->
+								<div
+									class="mt-6 w-12 h-1 rounded-full bg-gray-100 group-hover:w-full group-hover:bg-bunny-yellow transition-all duration-500">
+								</div>
+							</div>
+						</div>
+
+						<!-- 数据区域：设计成“仪表盘”或“能量槽”样式 -->
+						<div class="relative mt-24">
+							<!-- 仪表盘背景框 -->
+							<div
+								class="absolute inset-0 bg-gray-900 rounded-[3rem] transform rotate-1 opacity-100 shadow-2xl">
+							</div>
+
+							<div
+								class="relative bg-white border-4 border-gray-900 rounded-[3rem] p-8 sm:p-12 transform -rotate-1 transition-transform">
+								<!-- 内部标题 -->
+								<div
+									class="absolute -top-5 left-1/2 -translate-x-1/2 bg-bunny-yellow border-2 border-gray-900 px-8 py-2 rounded-full font-bold text-gray-900 uppercase tracking-widest text-sm shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+									物种分析
+								</div>
+
+								<div class="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mt-4">
+									<div v-for="stat in stats" :key="stat.label"
+										class="flex flex-col items-center justify-center text-center group cursor-default">
+
+										<!-- 圆形数据圈 -->
+										<div
+											class="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4">
+											<svg class="absolute inset-0 w-full h-full transform -rotate-90 text-gray-100"
+												viewBox="0 0 100 100">
+												<circle cx="50" cy="50" r="45" fill="none" stroke="currentColor"
+													stroke-width="8" />
+												<!-- 动态进度条模拟 (需要JS控制stroke-dasharray，这里用静态样式模拟视觉) -->
+												<circle cx="50" cy="50" r="45" fill="none"
+													:class="stat.color.replace('text-', 'stroke-')"
+													class="opacity-80 group-hover:opacity-100 transition-opacity"
+													stroke-width="8" stroke-dasharray="220" stroke-dashoffset="60"
+													stroke-linecap="round" />
+											</svg>
+											<div
+												class="text-3xl sm:text-4xl font-black text-gray-800 font-bebas group-hover:scale-110 transition-transform duration-300">
+												{{ stat.value }}
+											</div>
+										</div>
+
+										<div
+											class="font-bold text-gray-500 uppercase tracking-wider text-sm group-hover:text-gray-900 transition-colors">
+											{{ stat.label }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+				<section id="gallery" class="py-24 bg-pattern relative overflow-hidden">
+					<!-- 背景装饰：散落的元素 -->
+					<div class="absolute top-10 left-10 text-gray-100 transform -rotate-12 pointer-events-none">
+						<i data-lucide="camera" class="w-32 h-32 opacity-50"></i>
+					</div>
+					<div
+						class="absolute bottom-10 right-10 text-bunny-yellow/10 transform rotate-12 pointer-events-none">
+						<i data-lucide="film" class="w-40 h-40"></i>
+					</div>
+
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+						<!-- 头部：手账风格标题 -->
+						<div class="text-center mb-20 reveal" data-reveal>
+							<div class="relative inline-block group">
+								<span
+									class="absolute inset-0 bg-bunny-yellow rounded-lg transform rotate-3 transition-transform group-hover:rotate-6"></span>
+								<span
+									class="relative inline-block px-6 py-2 bg-white border-2 border-gray-900 text-gray-900 text-sm font-bold tracking-wider rounded-lg uppercase shadow-sm">
+									Video
+								</span>
+							</div>
+							<div class="mt-6">
+								<div class="relative inline-block">
+									<!-- 荧光笔划痕效果 -->
+									<div
+										class="absolute -bottom-2 left-0 w-full h-4 bg-bunny-yellow/40 -rotate-1 rounded-full">
+									</div>
+									<h2 class="relative text-4xl sm:text-5xl font-black text-gray-900 mb-2">
+										偷拍镜头
+									</h2>
+								</div>
+							</div>
+
+							<p class="mt-4 text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+								记录鸡贼黄袋鼠兔的“犯罪”现场
+							</p>
+						</div>
+
+						<!-- 图集区域：Masonry 风格 / 错落照片墙 -->
+						<!-- 使用 columns 布局来实现瀑布流感，或者用 grid + 变换 -->
+						<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 pb-10">
+							<div v-for="(image, index) in galleryImages" :key="image.src"
+								class="group relative cursor-pointer reveal" :class="[
+				                    index % 2 === 0 ? 'mt-0' : 'lg:mt-8', // 简单的错位效果
+				                ]" data-reveal :data-delay="index * 100" @click="openLightbox(index)">
+
+								<!-- 模拟透明胶带 (纯CSS画图) -->
+								<div
+									class="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-white/30 backdrop-blur-sm border-l border-r border-white/50 shadow-sm z-20 transform rotate-1">
+								</div>
+
+								<!-- 照片主体 -->
+								<div class="relative bg-white p-3 pb-12 rounded-sm shadow-[0_4px_20px_-5px_rgba(0,0,0,0.1)] transition-all duration-500 ease-out transform group-hover:scale-105 group-hover:rotate-0 group-hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] group-hover:z-30"
+									:class="[
+				                        index % 3 === 0 ? '-rotate-2' : (index % 3 === 1 ? 'rotate-1' : 'rotate-3')
+				                     ]">
+
+									<!-- 图片容器 -->
+									<div class="relative aspect-square overflow-hidden bg-gray-100">
+										<img :src="image.src" :alt="image.title"
+											class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter sepia-[0.1] group-hover:sepia-0" />
+
+										<!-- 悬停时的遮罩和图标 -->
+										<div
+											class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+											<div
+												class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-lg">
+												<i data-lucide="eye" class="w-6 h-6 text-gray-800"></i>
+											</div>
+										</div>
+									</div>
+
+									<!-- 手写风格标题 -->
+									<div
+										class="absolute bottom-3 left-4 right-4 text-center flex flex-col items-center">
+										<h3
+											class="text-gray-700 font-bold text-lg truncate py-1 px-3 mb-2 bg-gray-200 w-fit shadow-base">
+											{{ image.title }}
+										</h3>
+										<p class="text-xs text-gray-400 mt-0.5">
+											{{ image.description }}
+										</p>
+									</div>
+
+									<!-- 装饰：右下角贴纸 -->
+									<div
+										class="absolute -bottom-2 -right-2 w-8 h-8 bg-bunny-yellow rounded-full flex items-center justify-center shadow-md transform rotate-12">
+										<span class="text-xs font-bold text-gray-900">#{{index + 1}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Lightbox Modal (暗房风格) -->
+					<div v-if="selectedImage !== null"
+						class="fixed inset-0 z-50 bg-gray-900/95 backdrop-blur-md flex items-center justify-center transition-all duration-300"
+						@click="closeLightbox">
+
+						<!-- 导航按钮 (改用大块点击区域，更易用) -->
+						<button
+							class="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-50"
+							@click.stop="closeLightbox">
+							<i data-lucide="x" class="w-8 h-8"></i>
+						</button>
+
+						<button
+							class="absolute left-4 top-1/2 -translate-y-1/2 p-4 text-white/50 hover:text-white hover:scale-110 transition-all"
+							@click.stop="navigateImage('prev')">
+							<i data-lucide="chevron-left" class="w-10 h-10"></i>
+						</button>
+
+						<button
+							class="absolute right-4 top-1/2 -translate-y-1/2 p-4 text-white/50 hover:text-white hover:scale-110 transition-all"
+							@click.stop="navigateImage('next')">
+							<i data-lucide="chevron-right" class="w-10 h-10"></i>
+						</button>
+
+						<!-- 图片展示区 -->
+						<div class="relative max-w-5xl max-h-[85vh] w-full mx-4 flex flex-col items-center" @click.stop>
+							<div class="relative bg-black border-4 border-white p-1 shadow-2xl rounded-sm">
+								<img :src="selectedImageData.src" :alt="selectedImageData.title"
+									class="max-w-full max-h-[75vh] object-contain block" />
+							</div>
+
+							<div class="mt-6 text-center text-white">
+								<h3 class="font-bold text-2xl mb-2">{{ selectedImageData.title }}</h3>
+								<p class="text-gray-300 text-lg max-w-lg mx-auto">{{ selectedImageData.description }}
+								</p>
+							</div>
+
+							<!-- 缩略图导航点 -->
+							<div class="flex gap-3 mt-6 overflow-x-auto overflow-y-hidden py-2 px-4 max-w-full">
+								<button v-for="(_, index) in galleryImages" :key="index"
+									class="h-1.5 rounded-full transition-all duration-300"
+									:class="index === selectedImage ? 'w-8 bg-bunny-yellow' : 'w-2 bg-gray-600 hover:bg-gray-400'"
+									@click.stop="selectedImage = index">
+								</button>
+							</div>
+						</div>
+					</div>
+				</section>
+
+
+			</main>
+
+			<footer class="relative w-full bg-gray-900 text-white overflow-hidden">
+				<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+					<!-- 上半部分：品牌区（居中） -->
+					<div class="grid gap-8 md:mb-8">
+						<div class="text-center">
+							<div class="flex items-center justify-center gap-3 mb-4">
+								<div class="w-10 h-10 bg-bunny-yellow rounded-full flex items-center justify-center">
+									<img src="public/icon-SneakyRooBunny.png" alt="" />
+								</div>
+
+								<div class="text-left">
+									<h3 class="text-lg font-bold leading-tight">鸡贼黄袋鼠兔</h3>
+									<p class="text-gray-400 text-sm leading-tight">Sneaky RooBunny</p>
+								</div>
+							</div>
+							<!-- 引言：保留你原来的句子，但更像“footer slogan” -->
+							<div class="mt-8">
+								<p class="text-bunny-yellow/60 text-sm sm:text-base font-medium">
+									光看着就已经很鸡贼了，没想到动起来更鸡贼
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="pt-8 md:border-t border-gray-800">
+						<div
+							class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-gray-500">
+							<p>© {{ currentYear }} BunnyVerse. All rights reserved.</p>
+
+							<!-- 备案（可选：你有就填，没有就删掉这块） -->
+							<div class="flex flex-col md:flex-row items-center gap-4 text-xs md:text-sm">
+								<a href="https://beian.miit.gov.cn/"
+									class="text-gray-500 hover:text-gray-400 transition-colors">
+									<span>京ICP备2023030112号</span>
+								</a>
+
+								<a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879"
+									class="text-gray-500 hover:text-gray-400 transition-colors">
+									<div class="flex items-center gap-1">
+										<img src="../../images/gongan.png" class="w-4 h-4" alt="">
+										<span>京公网安备11010502053879号</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</footer>
+
+			<!-- Share Poster Overlay -->
+			<Transition name="fade">
+				<div v-if="showSharePoster" class="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6">
+
+					<!-- Backdrop: 使用更深度的模糊，营造景深感，背景色稍微淡一点 -->
+					<div class="absolute inset-0 bg-neutral-900/30 dark:bg-black/60 backdrop-blur-md transition-opacity"
+						@click="closeSharePoster"></div>
+
+					<!-- Panel: 模仿 iOS 弹窗 (Alert/Action Sheet 风格) -->
+					<!-- 关键点: backdrop-saturate-150 增加鲜艳度, ring-1 替代 border 更加细腻 -->
+					<div class="relative w-full max-w-[440px] overflow-hidden 
+                                rounded-[1.2rem] shadow-2xl 
+                                bg-white/85 dark:bg-[#1c1c1e]/85 
+                                backdrop-blur-2xl backdrop-saturate-150
+                                ring-1 ring-black/5 dark:ring-white/10
+                                flex flex-col transition-all transform duration-300">
+
+						<!-- Header: 经典的 iOS 居中标题 + 绝对定位关闭按钮 -->
+						<div
+							class="relative flex items-center justify-center px-4 py-4 shrink-0 border-b border-black/5 dark:border-white/10">
+							<div class="text-[17px] font-semibold text-neutral-900 dark:text-white">
+								分享海报
+							</div>
+
+							<!-- Close Button: 灰色圆形背景 -->
+							<button @click="closeSharePoster" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full 
+                                       bg-neutral-200/50 dark:bg-white/10 
+                                       text-neutral-500 dark:text-neutral-400 
+                                       hover:bg-neutral-300/50 dark:hover:bg-white/20 
+                                       transition-all active:scale-90" title="关闭">
+								<i class="ri-close-line text-lg"></i>
+							</button>
+						</div>
+
+						<!-- Body: 内容区域 -->
+						<div class="p-6 md:p-8 flex flex-col items-center justify-center min-h-[300px]">
+
+							<!-- Loading -->
+							<div v-if="sharePosterLoading" class="flex flex-col items-center gap-5">
+								<div class="relative w-10 h-10">
+									<span
+										class="absolute w-full h-full border-[3px] border-neutral-300/30 dark:border-neutral-600/30 rounded-full"></span>
+									<span
+										class="absolute w-full h-full border-[3px] border-t-transparent border-r-transparent border-b-transparent border-l-neutral-800 dark:border-l-white rounded-full animate-spin"></span>
+								</div>
+								<div class="text-[15px] font-medium text-neutral-500 dark:text-neutral-400">
+									生成中...
+								</div>
+							</div>
+
+							<!-- Error State -->
+							<div v-else-if="sharePosterError" class="text-center w-full animate-fade-in-up">
+								<div
+									class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500">
+									<i class="ri-error-warning-fill text-3xl"></i>
+								</div>
+								<div class="text-[17px] font-semibold text-neutral-900 dark:text-white mb-2">
+									生成失败
+								</div>
+								<div
+									class="text-[15px] text-neutral-500 dark:text-neutral-400 mb-8 px-4 leading-relaxed">
+									生成失败了，可能是字体或渲染资源加载异常。你可以重试一次。
+								</div>
+
+								<div class="grid grid-cols-2 gap-3 w-full">
+									<button @click="closeSharePoster"
+										class="h-11 rounded-full font-medium text-[15px] bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 active:scale-95 transition-all">
+										取消
+									</button>
+									<button @click="shareposter"
+										class="h-11 rounded-full font-medium text-[15px] bg-neutral-900 dark:bg-white text-white dark:text-black hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-neutral-500/10">
+										重试
+									</button>
+								</div>
+							</div>
+
+							<!-- Preview Image -->
+							<div v-else class="flex flex-col items-center w-full animate-fade-in-up">
+								<!-- Image Container: 增加阴影和细微边框，让图片"浮"起来 -->
+								<div
+									class="relative w-full overflow-hidden shadow-2xl shadow-neutral-900/10 dark:shadow-black/40 ring-1 ring-black/5 dark:ring-white/10 bg-white">
+									<img v-if="sharePosterImgUrl" :src="sharePosterImgUrl" class="w-full h-auto block"
+										alt="share poster" />
+								</div>
+
+								<p
+									class="mt-6 text-[13px] md:hidden text-neutral-400 dark:text-neutral-500 text-center font-medium">
+									长按图片分享 • 或点击下方保存
+								</p>
+							</div>
+						</div>
+
+						<!-- Bottom Bar: 悬浮大按钮 -->
+						<div class="p-5 pt-0 pb-6 bg-gradient-to-t from-white/0 via-white/0 to-transparent">
+							<button @click="saveSharePoster" :disabled="!sharePosterBlob || sharePosterLoading" class="w-full h-[52px] inline-flex items-center justify-center gap-2 rounded-full
+                                bg-[#000000] dark:bg-[#FFFFFF] 
+                                text-white dark:text-black
+                                text-[16px] font-semibold tracking-tight
+                                shadow-lg shadow-neutral-900/10 dark:shadow-black/20
+                                hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:scale-100
+                                transition-all duration-200 ease-out">
+								<i class="ri-download-line text-lg"></i>
+								保存到本地
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</Transition>
+
+
+
+		</div>
+
+		<script>
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted,
+				onUpdated,
+				onBeforeUnmount,
+				watch,
+				nextTick
+			} = Vue;
+
+			createApp({
+				setup() {
+					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
+
+					const goHome = () => {
+						window.location.href = "https://dorafx.top/#IP";
+					};
+
+					const stories = [{
+							title: '收集宝贝的习性',
+							content: `鸡贼黄袋鼠兔们有个共同的小习惯：只要看到"可能以后会有用的东西"，就会踮着脚尖悄悄捡起来，小心翼翼地放进肚兜口袋里。\n\n熟透的红浆果、饱满的草籽、干燥的软干草、带着清香的树根，甚至是亮晶晶的小石子、形状奇特的羽毛……别人看不懂这些东西的用处，可它们总坚信，说不定哪一天，这些宝贝就能派上大用场。`,
+							image: 'public/story-collecting.png',
+							icon: 'book-open',
+						},
+						{
+							title: '森林里的传言',
+							content: `一开始，森林里的其他兔子——灰扑扑的田野兔、雪白雪白的棉尾兔、带着斑点的花斑兔，还有耳朵长长的垂耳兔，都没太在意这群黄袋鼠兔。\n\n可奇怪的是，每当遇到麻烦，比如突如其来的暴雨、找不到食物的寒冬，鸡贼黄袋鼠兔总能从肚兜里掏出有用的东西。其他兔子们都觉得，这群黄袋鼠兔可真聪明。\n\n但关于它们的传言也像蒲公英的种子，被风一吹，传遍了整个森林……`,
+							image: 'public/gallery-pocket.png',
+							icon: 'heart',
+						},
+						{
+							title: '危机降临',
+							content: `有路过的小松鼠说，被它们肚兜口袋装过的浆果，吃起来格外香甜；有年老的刺猬偷偷议论，说鸡贼黄袋鼠兔的绒毛能驱走蚊虫，就连它们的小口袋，都藏着让人身体健康的魔力。\n\n这些传言很快就传到了森林外不法商人的耳朵里。他们扛着大大的网，拿着长长的笼子，闯进了这片宁静的土地。还有一些打猎的人，他们觉得这种东西非常鸡贼，就吃什么补什么，非常有药用价值。\n\n于是，鸡贼黄袋鼠兔被猎捕成了濒危物种。`,
+							image: 'public/gallery-running.png',
+							icon: 'alert-triangle',
+						},
+						{
+							title: '兔子委员会',
+							content: `在兔子委员会的第一届会议上，安哥拉兔、金吉拉兔、侏儒兔、长耳兔、垂耳兔……甚至连嘎布拉兔都赶来了。它们的脸上满是担忧。\n\n"不能再这样下去了！"一只灰兔蹲坐在地上，严肃地说，"黄袋鼠兔是我们的朋友，我们不能看着它们消失。"\n\n大会最终通过了一些决议，其中一条就是不允许鸡贼——这样能避免杀身之祸。因为鸡贼黄袋鼠兔数量稀少，所以在兔子委员会当中永远有一席之地。`,
+							image: 'public/story-council.png',
+							icon: 'shield',
+						},
+					];
+
+					const traits = [{
+							icon: 'search',
+							iconColor: 'text-amber-600',
+							title: '趋利避害',
+							description: '总是能第一时间发现危险，并以最快的速度逃离。遇到危险就跑掉，这是它们生存的智慧。',
+							color: 'bg-amber-500',
+						},
+						{
+							icon: 'zap',
+							iconColor: 'text-yellow-600',
+							title: '机灵鸡贼',
+							description: '光看着就已经很鸡贼了，动起来更鸡贼。那种机灵劲儿是从骨子里透出来的。',
+							color: 'bg-yellow-500',
+						},
+						{
+							icon: 'backpack',
+							iconColor: 'text-green-600',
+							title: '收藏癖好',
+							description: '只要看到"可能以后会有用的东西"，就会踮着脚尖悄悄捡起来，小心翼翼地放进肚兜口袋里。',
+							color: 'bg-green-500',
+						},
+						{
+							icon: 'heart',
+							iconColor: 'text-rose-500',
+							title: '温暖善良',
+							description: '虽然看起来很鸡贼，但从不争抢食物，也从不伤害别人。只是喜欢收集有用的东西而已。',
+							color: 'bg-rose-500',
+						},
+						{
+							icon: 'eye',
+							iconColor: 'text-purple-600',
+							title: '敏锐观察',
+							description: '能迅速找到最好吃的食物，然后揣在兜兜里。对周围环境的观察力超乎寻常。',
+							color: 'bg-purple-500',
+						},
+						{
+							icon: 'rabbit',
+							iconColor: 'text-orange-600',
+							title: '独特外形',
+							description: '黄色的袋鼠兔，穿着白色肚兜，口袋里鼓鼓囊囊装着各种宝贝。一眼就能认出来。',
+							color: 'bg-orange-500',
+						},
+					];
+
+					const stats = [{
+							value: '100%',
+							label: '鸡贼程度',
+							color: 'text-bunny-yellow-dark'
+						},
+						{
+							value: '∞',
+							label: '肚兜容量',
+							color: 'text-bunny-orange'
+						},
+						{
+							value: '濒危',
+							label: '保护等级',
+							color: 'text-red-500'
+						},
+						{
+							value: '永远',
+							label: '委员会席位',
+							color: 'text-bunny-green'
+						},
+					];
+
+					const galleryImages = [{
+							src: 'public/photo-1.png',
+							title: '偷吃胡萝卜',
+							description: '发现了森林中的胡萝卜田，来偷吃几根胡萝卜吧',
+						},
+						{
+							src: 'public/photo-2.png',
+							title: '薅羊毛',
+							description: '来到了牧羊场，一定要薅点羊毛回去',
+						},
+						{
+							src: 'public/photo-3.png',
+							title: '偷吃甘蔗',
+							description: '甜甜的甘蔗，最适合当下午的开胃零食了',
+						},
+						{
+							src: 'public/photo-4.png',
+							title: '朋友们',
+							description: '和朋友们的合照，是当中最鸡贼的！',
+						},
+						{
+							src: 'public/photo-5.png',
+							title: '飞速逃跑',
+							description: '遇到危险时落荒而逃，逃跑中也要保持鸡贼',
+						},
+						{
+							src: 'public/photo-6.png',
+							title: '口袋里的秘密',
+							description: '红浆果、干草、羽毛、小石子……每一样都有大用处',
+						},
+					];
+
+					const currentYear = new Date().getFullYear();
+					const isScrolled = ref(false);
+					const isMobileMenuOpen = ref(false);
+					const isLoading = ref(true);
+					const isPlaying = ref(false);
+					const isMuted = ref(true);
+					const progress = ref(0);
+					const selectedImage = ref(null);
+					const heroRef = ref(null);
+					let revealObserver = null;
+					let loadingTimer = null;
+
+					const scrollToTop = () => {
+						window.scrollTo({
+							top: 0,
+							behavior: "smooth"
+						});
+					};
+
+					const viewerRef = ref(null);
+
+					const zoomIn = () => {
+						if (!viewerRef.value) return;
+						viewerRef.value.zoom(2);
+					};
+
+					const zoomOut = () => {
+						if (!viewerRef.value) return;
+						viewerRef.value.zoom(-2);
+					};
+
+					const selectedImageData = computed(() => {
+						if (selectedImage.value === null) return {};
+						return galleryImages[selectedImage.value];
+					});
+
+					const scrollToSection = (href) => {
+						if (href === '#') return;
+						const element = document.querySelector(href);
+						if (element) {
+							element.scrollIntoView({
+								behavior: 'smooth'
+							});
+						}
+						isMobileMenuOpen.value = false;
+					};
+
+					const handleScroll = () => {
+						isScrolled.value = window.scrollY > 50;
+						handleParallax();
+					};
+
+					const handleParallax = () => {
+						if (!heroRef.value) return;
+						const scrolled = window.scrollY;
+						const heroImage = heroRef.value.querySelector('.hero-image');
+						const heroContent = heroRef.value.querySelector('.hero-content');
+						if (heroImage) {
+							heroImage.style.transform = `translateY(${scrolled * 0.3}px)`;
+						}
+						if (heroContent) {
+							heroContent.style.transform = `translateY(${scrolled * 0.1}px)`;
+						}
+					};
+
+					const openLightbox = (index) => {
+						selectedImage.value = index;
+					};
+
+					const closeLightbox = () => {
+						selectedImage.value = null;
+					};
+
+					const navigateImage = (direction) => {
+						if (selectedImage.value === null) return;
+						const newIndex =
+							direction === 'prev' ?
+							(selectedImage.value - 1 + galleryImages.length) % galleryImages.length :
+							(selectedImage.value + 1) % galleryImages.length;
+						selectedImage.value = newIndex;
+					};
+
+					const handleKeyDown = (event) => {
+						if (selectedImage.value === null) return;
+						if (event.key === 'Escape') closeLightbox();
+						if (event.key === 'ArrowLeft') navigateImage('prev');
+						if (event.key === 'ArrowRight') navigateImage('next');
+					};
+
+					const renderIcons = () => {
+						if (window.lucide) {
+							window.lucide.createIcons();
+						}
+					};
+
+					const setupRevealObserver = () => {
+						const elements = document.querySelectorAll('[data-reveal]');
+						revealObserver = new IntersectionObserver(
+							(entries) => {
+								entries.forEach((entry) => {
+									if (entry.isIntersecting) {
+										const delay = parseInt(entry.target.dataset.delay || '0', 10);
+										setTimeout(() => {
+											entry.target.classList.add('is-visible');
+										}, delay);
+										revealObserver.unobserve(entry.target);
+									}
+								});
+							}, {
+								threshold: 0.2
+							}
+						);
+						elements.forEach((el) => revealObserver.observe(el));
+					};
+
+
+					// ===== Share Poster UI State =====
+					const showSharePoster = ref(false);
+					const sharePosterLoading = ref(false);
+					const sharePosterImgUrl = ref(""); // ObjectURL for <img>
+					const sharePosterBlob = ref(null); // Blob
+					const sharePosterError = ref("");
+					// 关闭弹层
+					const closeSharePoster = () => {
+						showSharePoster.value = false;
+						sharePosterLoading.value = false;
+						sharePosterError.value = "";
+						sharePosterBlob.value = null;
+
+						if (sharePosterImgUrl.value) {
+							try {
+								URL.revokeObjectURL(sharePosterImgUrl.value);
+							} catch (e) {}
+							sharePosterImgUrl.value = "";
+						}
+					};
+
+					// 保存按钮：手动下载
+					const saveSharePoster = () => {
+						if (!sharePosterBlob.value || sharePosterLoading.value) return;
+
+						const title = "share";
+
+						const name = `${String(title).slice(0, 18)}-poster.png`;
+
+						const url = URL.createObjectURL(sharePosterBlob.value);
+						const a = document.createElement("a");
+						a.href = url;
+						a.download = name;
+						document.body.appendChild(a);
+						a.click();
+						a.remove();
+						URL.revokeObjectURL(url);
+					};
+
+					const shareposter = async () => {
+						try {
+							if (!window.createSharePoster) {
+								throw new Error("shareposter.js 未加载");
+							}
+
+							// 1) 打开弹层 + loading
+							showSharePoster.value = true;
+							sharePosterLoading.value = true;
+							sharePosterError.value = "";
+
+							// 2) 清理旧 ObjectURL
+							if (sharePosterImgUrl.value) {
+								try {
+									URL.revokeObjectURL(sharePosterImgUrl.value);
+								} catch (e) {}
+								sharePosterImgUrl.value = "";
+							}
+							sharePosterBlob.value = null;
+
+							// ===== 只生成 IP 海报 =====
+							const type = "ip";
+
+							// 统一中文文案
+							const shareLine = "我发现了一个有趣的 IP，分享给你 ~";
+							const leftHint1 = "长按扫描二维码";
+							const leftHint2 = "查看 IP";
+
+							// 页面 URL（二维码扫到）
+							const pageUrl = window.location.href;
+
+							// 固定 IP 内容（本地 public 资源）
+							const ipName = "鸡贼黄袋鼠兔";
+							const ipDesc = "光看着就已经很鸡贼了，没想到动起来更鸡贼";
+							const ipHeroUrl = new URL("public/hero-SneakyRooBunny.png", window.location).href;
+							const ipIconUrl = new URL("public/icon-SneakyRooBunny.png", window.location).href;
+
+							// shareposter.js 仍要求 title 必填：这里用 ipName
+							const title = ipName;
+							const desc = ""; // ip 不用
+
+							// 生成海报（只预览）
+							const {
+								blob
+							} = await window.createSharePoster({
+								type,
+								title,
+								desc,
+								url: pageUrl,
+
+								// ip
+								ipName,
+								ipDesc,
+								ipHeroUrl,
+								ipIconUrl,
+
+								shareLine,
+								leftHint1,
+								leftHint2,
+								footerLeft: "@ 企鹅企企",
+								footerRightText: "https://dorafx.top",
+
+								scale: 2,
+								autoDownload: false,
+								fileName: `${String(title).slice(0, 18) || "ip"}-poster.png`,
+							});
+
+							sharePosterBlob.value = blob;
+							sharePosterImgUrl.value = URL.createObjectURL(blob);
+						} catch (e) {
+							console.error(e);
+							sharePosterError.value = "生成失败了，可能是资源或字体加载异常。";
+						} finally {
+							sharePosterLoading.value = false;
+						}
+					};
+
+
+
+
+
+
+					onMounted(() => {
+						window.addEventListener('scroll', handleScroll);
+						window.addEventListener('keydown', handleKeyDown);
+						handleScroll();
+						setupRevealObserver();
+						renderIcons();
+						loadingTimer = setTimeout(() => {
+							isLoading.value = false;
+						}, 1500);
+						isPageLoading.value = false;
+					});
+
+					onUpdated(() => {
+						renderIcons();
+					});
+
+					onBeforeUnmount(() => {
+						window.removeEventListener('scroll', handleScroll);
+						window.removeEventListener('keydown', handleKeyDown);
+						if (revealObserver) {
+							revealObserver.disconnect();
+						}
+						if (loadingTimer) {
+							clearTimeout(loadingTimer);
+						}
+					});
+
+					watch([isMobileMenuOpen, isPlaying, isMuted, selectedImage], async () => {
+						await nextTick();
+						renderIcons();
+					});
+
+					watch(selectedImage, (value) => {
+						document.body.style.overflow = value !== null ? 'hidden' : 'auto';
+					});
+
+					return {
+						isPageLoading,
+						goHome,
+						stories,
+						traits,
+						stats,
+						galleryImages,
+						currentYear,
+						isScrolled,
+						isMobileMenuOpen,
+						isLoading,
+						isPlaying,
+						isMuted,
+						progress,
+						viewerRef,
+						zoomIn,
+						zoomOut,
+						selectedImage,
+						selectedImageData,
+						heroRef,
+						scrollToSection,
+						openLightbox,
+						closeLightbox,
+						navigateImage,
+						scrollToTop,
+						showSharePoster,
+						sharePosterLoading,
+						sharePosterImgUrl,
+						sharePosterBlob,
+						sharePosterError,
+						closeSharePoster,
+						saveSharePoster,
+						shareposter,
+					};
+				},
+			}).mount('#app');
+		</script>
+	</body>
+</html>

@@ -517,7 +517,7 @@
 								</a>
 							</div>
 
-							<div ref="ipCarouselRef" @mousedown.prevent="onIpDragStart" @click.capture="onIpClickCapture"
+							<div ref="ipCarouselRef" @mousedown="onIpDragStart" @click.capture="onIpClickCapture"
 								class="ip-carousel flex gap-8 overflow-x-auto pt-12 pb-4 cursor-grab active:cursor-grabbing select-none">
 								<a v-for="ip in ipList" :key="`home-ip-${ip.index}`" :href="ip.link" target="_blank"
 									rel="noopener noreferrer" @dragstart.prevent
@@ -2944,7 +2944,9 @@
 					async function loadIpData() {
 						try {
 							ipLoadError.value = ""
-							const res = await fetch("IP/ip.json", { cache: "no-store" })
+							const res = await fetch("IP/ip.json", {
+								cache: "no-store"
+							})
 							if (!res.ok) {
 								throw new Error(`Failed to load IP data: ${res.status} ${res.statusText}`)
 							}
@@ -3012,36 +3014,54 @@
 					const ipDragScrollLeft = ref(0)
 					const ipDragMoved = ref(false)
 
+					const DRAG_THRESHOLD = 6 // 从 3 提高到 6，更像“点一下=点击”
+
 					const onIpDragStart = (event) => {
 						const carousel = ipCarouselRef.value
 						if (!carousel) return
 						if (event.button !== 0) return
-						event.preventDefault()
+
+						// ✅ 不要在这里 preventDefault，也不要立刻加 is-dragging
 						isIpDragging.value = true
 						ipDragStartX.value = event.clientX
 						ipDragScrollLeft.value = carousel.scrollLeft
 						ipDragMoved.value = false
-						carousel.classList.add("is-dragging")
 					}
 
 					const onIpDragMove = (event) => {
 						const carousel = ipCarouselRef.value
 						if (!carousel || !isIpDragging.value) return
-						event.preventDefault()
+
 						const delta = event.clientX - ipDragStartX.value
-						if (Math.abs(delta) > 3) {
+
+						// ✅ 超过阈值才进入“真正拖拽态”
+						if (!ipDragMoved.value && Math.abs(delta) > DRAG_THRESHOLD) {
 							ipDragMoved.value = true
+							carousel.classList.add("is-dragging") // 只有拖拽时才禁 a 的 pointer-events
 						}
+
+						// ✅ 只有在拖拽态才 preventDefault + 滚动
+						if (!ipDragMoved.value) return
+
+						event.preventDefault()
 						carousel.scrollLeft = ipDragScrollLeft.value - delta
 					}
 
-					const onIpDragEnd = (event) => {
+					const onIpDragEnd = () => {
 						if (!isIpDragging.value) return
 						isIpDragging.value = false
-						ipCarouselRef.value?.classList.remove("is-dragging")
+
+						const carousel = ipCarouselRef.value
+						if (!carousel) return
+
+						// ✅ 关键：延迟一帧移除 is-dragging，防止 mouseup 同帧 click 被误伤
+						requestAnimationFrame(() => {
+							carousel.classList.remove("is-dragging")
+						})
 					}
 
 					const onIpClickCapture = (event) => {
+						// 只有真的发生过拖拽才拦截 click
 						if (!ipDragMoved.value) return
 						event.preventDefault()
 						event.stopPropagation()
@@ -4939,15 +4959,22 @@
 
 						await nextTick();
 
-						window.addEventListener("mousemove", onIpDragMove, { passive: false, capture: true })
-						window.addEventListener("mouseup", onIpDragEnd, { capture: true })
+						window.addEventListener("mousemove", onIpDragMove, {
+							passive: false,
+							capture: true
+						})
+						window.addEventListener("mouseup", onIpDragEnd, {
+							capture: true
+						})
 						window.addEventListener("blur", onIpDragEnd)
 						window.addEventListener("resize", updateIpCarouselMask)
 
 						const ipCarousel = ipCarouselRef.value
 						if (ipCarousel) {
 							updateIpCarouselMask()
-							ipCarousel.addEventListener("scroll", updateIpCarouselMask, { passive: true })
+							ipCarousel.addEventListener("scroll", updateIpCarouselMask, {
+								passive: true
+							})
 						}
 
 						// 后台预加载：不阻塞页面（深链需要的内容会在 applyRoute 里按需 await）

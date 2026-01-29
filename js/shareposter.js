@@ -638,9 +638,9 @@
 			  height:200px;
 			  border-radius:9999px;
 			  overflow:hidden;
-			  background:rgba(255,255,255,0.80);
-			  border:1px solid rgba(255,255,255,0.70);
-			  box-shadow:0 26px 80px rgba(0,0,0,0.18);
+			  background:rgba(255,255,255,1);
+			  border:2px solid rgba(220, 220, 220, 1);
+			  box-shadow:0 26px 80px rgba(0,0,0,0.28);
 			}
 			.ip-icon-imgtag{
 			  width:100%;

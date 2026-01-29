@@ -16,6 +16,10 @@
 		<script src="../../js/shareposter.js"></script>
 		<script src="../../js/html2canvas.min.js"></script>
 		<script src="../../js/qrcode.min.js"></script>
+		<script src="../../js/lucide.min.js"></script>
+		
+		<link rel="stylesheet" href="../../css/remixicon.css" />
+
 		<script>
 			tailwind.config = {
 				theme: {
@@ -254,10 +258,6 @@
 				width: 4px;
 			}
 
-			::-webkit-scrollbar-track {
-				background: #f5f5f5;
-			}
-
 			::-webkit-scrollbar-thumb {
 				background: #d02b2b;
 				border-radius: 4px;
@@ -289,7 +289,7 @@
 	</head>
 	<body>
 		<div id="app" class="relative w-full min-h-screen bg-white overflow-x-hidden">
-			
+
 			<!-- ================== Loading ================== -->
 			<Transition name="fade">
 				<div v-if="isPageLoading"
@@ -299,18 +299,20 @@
 					</div>
 				</div>
 			</Transition>
-			
+
 			<!-- Top Action Bar (not a navbar) -->
 			<div class="fixed top-0 left-0 right-0 z-50">
 				<div class="section-padding">
 					<div class="max-w-7xl mx-auto flex items-center justify-between py-2 px-3"
 						:class="isScrolled ? 'bg-white/10 backdrop-blur-md shadow-sm rounded-full mt-3' : 'bg-transparent'">
 						<!-- Left: Back Home (desktop only) -->
-						<div class="hidden md:flex items-center">
+						<div class="md:flex items-center">
 							<button @click="goHome" class="inline-flex items-center gap-2 px-4 py-2 rounded-full font-accent text-sm font-semibold
 			                 bg-white/70 hover:bg-white transition border border-black/5 text-Gabra-black">
-								<i data-lucide="arrow-left" class="w-4 h-4"></i>
-								返回主页
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									<span class="hidden sm:block">返回主页</span>
+								</span>
 							</button>
 						</div>
 
@@ -324,10 +326,13 @@
 						</button>
 
 						<!-- Right: Generate Poster (desktop only) -->
-						<div class="hidden md:flex items-center">
+						<div class="md:flex items-center">
 							<button @click="shareposter" class="px-5 py-2 rounded-full font-accent text-sm font-semibold
 			                 bg-Gabra-red text-white hover:bg-Gabra-black transition">
-								生成海报
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="square-arrow-out-up-right" class="w-4 h-4"></i>
+									<span class="hidden sm:block">生成海报</span>
+								</span>
 							</button>
 						</div>
 					</div>
@@ -406,13 +411,11 @@
 						</div>
 					</div>
 
-					<div
-						class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-Gabra-cream to-transparent">
+					<div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-Gabra-cream to-transparent">
 					</div>
 				</section>
 
-				<section id="story"
-					class="relative w-full py-20 sm:py-32 bg-Gabra-cream noise-overlay overflow-hidden">
+				<section id="story" class="relative w-full py-20 sm:py-32 bg-Gabra-cream noise-overlay overflow-hidden">
 					<div class="absolute inset-0 opacity-30">
 						<div
 							class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-Gabra-lightgray/20 to-transparent">
@@ -716,14 +719,12 @@
 									@mouseleave="!isMobile && clearActiveTestimonial()"
 									@click="isMobile && setActiveTestimonial(testimonial)">
 									<div class="absolute inset-0" style="transform: translate(-50%, -50%);">
-										<div
-											class="w-8 h-8 rounded-full border border-Gabra-red/50 animate-pulse-ring">
+										<div class="w-8 h-8 rounded-full border border-Gabra-red/50 animate-pulse-ring">
 										</div>
 									</div>
 									<div
 										class="relative w-4 h-4 bg-Gabra-red rounded-full cursor-pointer hover:scale-150 transition-transform duration-300 shadow-lg">
-										<div
-											class="absolute inset-0 bg-Gabra-red rounded-full animate-ping opacity-50">
+										<div class="absolute inset-0 bg-Gabra-red rounded-full animate-ping opacity-50">
 										</div>
 									</div>
 
@@ -1257,7 +1258,6 @@
 
 		</div>
 
-		<script src="https://unpkg.com/lucide@latest"></script>
 		<script>
 			const {
 				createApp,
@@ -1273,13 +1273,17 @@
 			createApp({
 				setup() {
 					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
-					
+
 					const isScrolled = ref(false);
 					const galleryFixed = ref(false);
 					const heroMouse = reactive({
 						x: 0,
 						y: 0
 					});
+
+					const goHome = () => {
+						window.location.href = "https://dorafx.top/#IP";
+					};
 
 					const galleryItems = ref([{
 							image: "public/rabbit-eating.png",
@@ -1614,7 +1618,8 @@
 
 						while (!_typeStop) {
 							// 取下一句
-							typewriterFull.value = typewriterLines.value[typewriterLineIndex.value % typewriterLines.value.length];
+							typewriterFull.value = typewriterLines.value[typewriterLineIndex.value %
+								typewriterLines.value.length];
 							typewriterLineIndex.value += 1;
 
 							// 重置显示
@@ -1624,7 +1629,8 @@
 
 							// 打字
 							while (typewriterCharIndex.value <= typewriterFull.value.length && !_typeStop) {
-								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex.value);
+								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex
+									.value);
 								typewriterCharIndex.value += 1;
 								await typeSleep(TYPE_SPEED);
 							}
@@ -1637,7 +1643,8 @@
 							// 删字
 							typewriterMode.value = "deleting";
 							while (typewriterCharIndex.value >= 0 && !_typeStop) {
-								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex.value);
+								typewriterDisplay.value = typewriterFull.value.slice(0, typewriterCharIndex
+									.value);
 								typewriterCharIndex.value -= 1;
 								await typeSleep(DELETE_SPEED);
 							}
@@ -1842,6 +1849,7 @@
 						isScrolled,
 						galleryFixed,
 						heroMouse,
+						goHome,
 						galleryItems,
 						currentIndex,
 						galleryTranslate,

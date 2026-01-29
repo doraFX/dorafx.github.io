@@ -44,15 +44,31 @@ html {
 	--ip-mask-right: 94%;
 }
 
-.ip-carousel *,
+.ip-carousel {
+	user-select: none;
+	/* 允许拖拽时不选中文字 */
+	-webkit-user-select: none;
+}
+
 .ip-carousel img {
 	user-select: none;
 	-webkit-user-drag: none;
+	/* 防止把图片拖走 */
+	pointer-events: none;
+	/* ✅ 关键：点到图片也算点到 a（交给父级 a） */
 }
 
 .ip-carousel.is-dragging a,
 .ip-carousel.is-dragging button {
 	pointer-events: none;
+}
+
+.ip-carousel a {
+	cursor: pointer;
+}
+
+.ip-carousel.is-dragging {
+	cursor: grabbing;
 }
 
 .ip-carousel::-webkit-scrollbar {
