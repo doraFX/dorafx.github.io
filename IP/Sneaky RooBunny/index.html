@@ -740,11 +740,12 @@
 												viewBox="0 0 100 100">
 												<circle cx="50" cy="50" r="45" fill="none" stroke="currentColor"
 													stroke-width="8" />
-												<!-- 动态进度条模拟 (需要JS控制stroke-dasharray，这里用静态样式模拟视觉) -->
+												<!-- 动态进度条（基于角度） -->
 												<circle cx="50" cy="50" r="45" fill="none"
 													:class="stat.color.replace('text-', 'stroke-')"
 													class="opacity-80 group-hover:opacity-100 transition-opacity"
-													stroke-width="8" stroke-dasharray="220" stroke-dashoffset="60"
+													stroke-width="8"
+													:stroke-dasharray="`${(stat.angle / 360) * 2 * Math.PI * 45} 1000`"
 													stroke-linecap="round" />
 											</svg>
 											<div
@@ -752,7 +753,6 @@
 												{{ stat.value }}
 											</div>
 										</div>
-
 										<div
 											class="font-bold text-gray-500 uppercase tracking-wider text-sm group-hover:text-gray-900 transition-colors">
 											{{ stat.label }}
@@ -1168,21 +1168,25 @@
 					];
 
 					const stats = [{
-							value: '100%',
+							angle: 342,
+							value: '95%',
 							label: '鸡贼程度',
 							color: 'text-bunny-yellow-dark'
 						},
 						{
+							angle: 260,
 							value: '2kg',
 							label: '肚兜容量',
 							color: 'text-bunny-orange'
 						},
 						{
+							angle: 30,
 							value: '濒危',
 							label: '保护等级',
 							color: 'text-red-500'
 						},
 						{
+							angle: 360,
 							value: '终身',
 							label: '委员会席位',
 							color: 'text-bunny-green'
