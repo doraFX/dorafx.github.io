@@ -382,6 +382,31 @@
 				box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.2);
 			}
 
+			.firework {
+				position: absolute;
+				width: 6px;
+				height: 6px;
+				border-radius: 999px;
+				background: radial-gradient(circle, #fef08a, #f97316);
+				animation: firework-burst 1.8s ease-out infinite;
+				opacity: 0;
+			}
+
+			@keyframes firework-burst {
+				0% {
+					transform: translate(0, 0) scale(0.2);
+					opacity: 0;
+				}
+
+				20% {
+					opacity: 1;
+				}
+
+				100% {
+					transform: translate(var(--x), var(--y)) scale(1);
+					opacity: 0;
+				}
+			}
 			.music-disc {
 				animation: spin-slow 8s linear infinite;
 			}
@@ -869,6 +894,17 @@
 												<i data-lucide="zoom-in"
 													class="w-4 h-4 sm:w-5 sm:h-5 text-penguin-gray"></i>
 											</div>
+											<div v-if="showPuzzleCelebration"
+												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+												<div class="firework"
+													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
+												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
+												</div>
+												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
+												</div>
+												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
+												</div>
+											</div>
 										</div>
 									</div>
 
@@ -1038,28 +1074,26 @@
 					<div v-if="selectedVideo" class="fixed inset-0 z-[90] bg-black/90 flex items-center justify-center"
 						@click="closeVideo">
 						<!-- 竖屏主体（像一台手机） -->
-						<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
+							<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
 					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop>
-							<!-- 视频播放器 -->
-							<video :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
-								class="absolute inset-0 w-full h-full object-cover" controls autoplay playsinline
-								preload="metadata"></video>
+								<!-- 视频播放器 -->
+								<video ref="videoPlayerRef" :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
+									class="absolute inset-0 w-full h-full object-cover" playsinline preload="metadata"
+									@ended="handleVideoEnded"></video>
 
 							<!-- 氛围遮罩 -->
 							<div class="absolute inset-0 bg-black/30"></div>
 							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
 
-							<!-- 中央播放提示 -->
-							<div class="absolute inset-0 flex items-center justify-center">
-								<div class="text-center text-white">
-									<div class="w-16 h-16 rounded-full bg-white/90 backdrop-blur
-					                 flex items-center justify-center mx-auto shadow-lg">
-										<i data-lucide="play" class="w-8 h-8 text-penguin-gray ml-0.5"
-											style="fill: currentColor"></i>
-									</div>
-									<p class="mt-3 text-sm opacity-80">前往小红书观看</p>
+								<!-- 播放/暂停按钮 -->
+								<div class="absolute inset-0 flex items-center justify-center">
+									<button
+										class="w-16 h-16 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg"
+										@click.stop="toggleVideoPlayback">
+										<i :data-lucide="isVideoPlaying ? 'pause' : 'play'"
+											class="w-8 h-8 text-penguin-gray ml-0.5" style="fill: currentColor"></i>
+									</button>
 								</div>
-							</div>
 
 							<!-- 顶部操作区 -->
 							<div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
@@ -1075,25 +1109,8 @@
 								</button>
 							</div>
 
-							<!-- 右侧操作列（短视频味道） -->
-							<div class="absolute right-3 bottom-28 flex flex-col items-center gap-5 text-white z-10">
-								<div class="flex flex-col items-center gap-1">
-									<i data-lucide="heart" class="w-6 h-6"></i>
-									<span class="text-xs">{{ selectedVideo.likes }}</span>
-								</div>
-								<div class="flex flex-col items-center gap-1">
-									<i data-lucide="eye" class="w-6 h-6"></i>
-									<span class="text-xs">{{ selectedVideo.views }}</span>
-								</div>
-								<a v-if="selectedVideo.xhsUrl" :href="selectedVideo.xhsUrl" target="_blank"
-									rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-rabbit-yellow
-					               text-penguin-gray flex items-center justify-center" @click.stop>
-									<i data-lucide="square-arrow-out-up-right" class="w-5 h-5"></i>
-								</a>
-							</div>
-
-							<!-- 底部信息区 -->
-							<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
+								<!-- 底部信息区 -->
+								<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
 								<h3 class="font-semibold text-base leading-snug line-clamp-2">
 									{{ selectedVideo.title }}
 								</h3>
@@ -1165,7 +1182,7 @@
 								<div class="relative mb-8 group">
 									<!-- 唱片黑胶纹理 -->
 									<div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-900 bg-gray-900 flex items-center justify-center overflow-hidden transition-transform duration-[3s] linear"
-										:class="[isPlaying ? 'animate-spin-slow' : '']">
+										:style="{ transform: `rotate(${discRotation}deg)` }">
 										<!-- 专辑图 -->
 										<img :src="currentSong.cover" alt="Album Cover"
 											class="w-2/3 h-2/3 object-cover rounded-full border-2 border-gray-800" />
@@ -1546,7 +1563,7 @@
 											<div
 												class="absolute inset-0 bg-penguin-gray/80 backdrop-blur-sm rounded-lg transition-opacity">
 											</div>
-											<div
+											<div v-if="showCompletionModal"
 												class="relative bg-white p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
 												<div
 													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
@@ -1571,6 +1588,17 @@
 														class="w-full py-3 bg-gray-100 text-gray-500 rounded-xl font-bold hover:bg-gray-200 transition-colors">
 														返回选关
 													</button>
+												</div>
+											</div>
+											<div v-if="showPuzzleCelebration"
+												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+												<div class="firework"
+													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
+												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
+												</div>
+												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
+												</div>
+												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
 												</div>
 											</div>
 										</div>
@@ -1937,7 +1965,7 @@
 									<i data-lucide="help-circle" class="w-10 h-10 text-penguin-gray"></i>
 								</div>
 								<h3 class="text-xl font-bold text-penguin-gray mb-2">准备好了吗？</h3>
-								<p class="text-muted-foreground mb-6">共 {{ quizData.length }} 道题，看看你能答对多少</p>
+								<p class="text-muted-foreground mb-6">共 {{ quizTotal }} 道题，看看你能答对多少</p>
 								<button @click="startQuiz"
 									class="bg-rabbit-yellow text-penguin-gray hover:bg-rabbit-dark px-8 py-2 rounded-full font-medium">
 									开始答题
@@ -2343,13 +2371,40 @@
 						},
 					];
 					const selectedVideo = ref(null);
+					const videoPlayerRef = ref(null);
+					const isVideoPlaying = ref(false);
 
 					const selectVideo = (video) => {
 						selectedVideo.value = video;
+						nextTick(() => {
+							if (!videoPlayerRef.value) return;
+							videoPlayerRef.value.currentTime = 0;
+							videoPlayerRef.value.play();
+							isVideoPlaying.value = true;
+						});
 					};
 
 					const closeVideo = () => {
+						if (videoPlayerRef.value) {
+							videoPlayerRef.value.pause();
+						}
+						isVideoPlaying.value = false;
 						selectedVideo.value = null;
+					};
+
+					const toggleVideoPlayback = () => {
+						if (!videoPlayerRef.value) return;
+						if (isVideoPlaying.value) {
+							videoPlayerRef.value.pause();
+							isVideoPlaying.value = false;
+						} else {
+							videoPlayerRef.value.play();
+							isVideoPlaying.value = true;
+						}
+					};
+
+					const handleVideoEnded = () => {
+						isVideoPlaying.value = false;
 					};
 
 					// === Music section ===
@@ -2361,6 +2416,9 @@
 					const audioRef = ref(null);
 					const currentTime = ref(0);
 					const durationSeconds = ref(0);
+					const discRotation = ref(0);
+					const lastRotationTime = ref(null);
+					let rotationFrame = null;
 
 					// 歌曲数据 JSON
 					const songs = [{
@@ -2457,6 +2515,20 @@
 						audioRef.value.currentTime = 0;
 						audioRef.value.play();
 						isPlaying.value = true;
+					};
+
+					const updateDiscRotation = (timestamp) => {
+						if (!isPlaying.value) {
+							lastRotationTime.value = null;
+							return;
+						}
+						if (!lastRotationTime.value) {
+							lastRotationTime.value = timestamp;
+						}
+						const delta = (timestamp - lastRotationTime.value) / 1000;
+						lastRotationTime.value = timestamp;
+						discRotation.value = (discRotation.value + delta * 90) % 360;
+						rotationFrame = requestAnimationFrame(updateDiscRotation);
 					};
 
 					// 切换下一首
@@ -2591,12 +2663,15 @@
 					const draggedPiece = ref(null);
 					const dragOverPos = ref(null);
 					const isCompleted = ref(false);
+					const showPuzzleCelebration = ref(false);
+					const showCompletionModal = ref(false);
 					const moves = ref(0);
 					const startTime = ref(null);
 					const elapsedTime = ref(0);
 					const unlockedLevels = ref([1]);
 					const showLevelSelect = ref(true);
 					let timerRef = null;
+					let celebrationTimer = null;
 
 					const checkCompleted = (pieceList) => pieceList.every((piece) => piece.currentPos === piece
 						.correctPos);
@@ -2624,9 +2699,12 @@
 
 						pieces.value = shuffled;
 						isCompleted.value = false;
+						showPuzzleCelebration.value = false;
+						showCompletionModal.value = false;
 						moves.value = 0;
 						startTime.value = Date.now();
 						elapsedTime.value = 0;
+						if (celebrationTimer) clearTimeout(celebrationTimer);
 					};
 
 					const startLevel = (levelIndex) => {
@@ -2642,7 +2720,10 @@
 					const goBack = () => {
 						showLevelSelect.value = true;
 						startTime.value = null;
+						showPuzzleCelebration.value = false;
+						showCompletionModal.value = false;
 						if (timerRef) clearInterval(timerRef);
+						if (celebrationTimer) clearTimeout(celebrationTimer);
 					};
 
 					const handleDragStart = (pieceId) => {
@@ -2684,6 +2765,8 @@
 
 							if (checkCompleted(newPieces)) {
 								isCompleted.value = true;
+								showPuzzleCelebration.value = true;
+								showCompletionModal.value = false;
 								if (timerRef) clearInterval(timerRef);
 
 								const nextLevel = currentLevel.value + 2;
@@ -2692,6 +2775,11 @@
 								}
 
 								showToast(`恭喜完成第${currentLevel.value + 1}关！`, 'success');
+								if (celebrationTimer) clearTimeout(celebrationTimer);
+								celebrationTimer = setTimeout(() => {
+									showPuzzleCelebration.value = false;
+									showCompletionModal.value = true;
+								}, 2200);
 							}
 						}
 
@@ -2851,7 +2939,7 @@
 					// === Quiz section ===
 					const quizRef = ref(null);
 					const isQuizVisible = ref(false);
-					const quizData = [{
+					const questionBank = [{
 							question: '企鹅和兔子是怎么相遇的？',
 							options: ['在动物园里认识的', '企鹅给冻坏的兔子煮年糕', '在公园里偶遇', '通过朋友介绍'],
 							correct: 1,
@@ -2901,7 +2989,24 @@
 							options: ['微博', '抖音', '小红书', 'B站'],
 							correct: 2,
 						},
+						{
+							question: '企鹅最爱做的事情是什么？',
+							options: ['钓鱼', '晒太阳', '滑冰', '读书'],
+							correct: 2,
+						},
+						{
+							question: '兔子最擅长的技能是？',
+							options: ['画画', '跳跃', '唱歌', '游泳'],
+							correct: 1,
+						},
+						{
+							question: '企鹅和兔子最常一起做什么？',
+							options: ['堆雪人', '打篮球', '写作业', '看电影'],
+							correct: 0,
+						},
 					];
+					const quizData = ref([]);
+					const quizTotal = computed(() => Math.min(10, questionBank.length));
 					const quizStarted = ref(false);
 					const currentQuestion = ref(0);
 					const selectedAnswer = ref(null);
@@ -2911,6 +3016,17 @@
 
 					const startQuiz = () => {
 						quizStarted.value = true;
+						const total = Math.min(10, questionBank.length);
+						const pool = [...questionBank];
+						for (let i = pool.length - 1; i > 0; i -= 1) {
+							const j = Math.floor(Math.random() * (i + 1));
+							[pool[i], pool[j]] = [pool[j], pool[i]];
+						}
+						quizData.value = pool.slice(0, total);
+						currentQuestion.value = 0;
+						selectedAnswer.value = null;
+						answers.value = [];
+						showResult.value = false;
 					};
 
 					const handleSelectAnswer = (index) => {
@@ -2918,18 +3034,19 @@
 						selectedAnswer.value = index;
 						answers.value = [...answers.value, index];
 
-						if (index === quizData[currentQuestion.value].correct) {
+						if (index === quizData.value[currentQuestion.value].correct) {
 							showToast('回答正确！', 'success');
 						} else {
 							showToast('回答错误', 'error');
 						}
 
 						quizTimer = setTimeout(() => {
-							if (currentQuestion.value < quizData.length - 1) {
+							if (currentQuestion.value < quizData.value.length - 1) {
 								currentQuestion.value += 1;
 								selectedAnswer.value = null;
 							} else {
 								showResult.value = true;
+								selectedAnswer.value = null;
 							}
 						}, 1500);
 					};
@@ -2937,12 +3054,14 @@
 					const score = computed(() => {
 						let correct = 0;
 						answers.value.forEach((answer, index) => {
-							if (answer === quizData[index].correct) correct += 1;
+							if (answer === quizData.value[index].correct) correct += 1;
 						});
 						return correct;
 					});
 
-					const percentage = computed(() => Math.round((score.value / quizData.length) * 100));
+					const percentage = computed(() =>
+						quizData.value.length ? Math.round((score.value / quizData.value.length) * 100) : 0
+					);
 
 					const resetQuiz = () => {
 						quizStarted.value = false;
@@ -3005,6 +3124,17 @@
 						window.removeEventListener('mousemove', handleMouseMove);
 						if (timerRef) clearInterval(timerRef);
 						if (quizTimer) clearTimeout(quizTimer);
+						if (celebrationTimer) clearTimeout(celebrationTimer);
+						if (rotationFrame) cancelAnimationFrame(rotationFrame);
+					});
+
+					watch(isPlaying, (value) => {
+						if (rotationFrame) cancelAnimationFrame(rotationFrame);
+						if (value) {
+							rotationFrame = requestAnimationFrame(updateDiscRotation);
+						} else {
+							lastRotationTime.value = null;
+						}
 					});
 
 					watch(startTime, (value) => {
@@ -3023,9 +3153,11 @@
 						quizStarted,
 						showResult,
 						isCompleted,
+						showCompletionModal,
 						showLevelSelect,
 						currentLevel,
-						selectedAnswer
+						selectedAnswer,
+						isVideoPlaying
 					], async () => {
 						await nextTick();
 						lucide.createIcons();
@@ -3063,8 +3195,12 @@
 						isVideoVisible,
 						videos,
 						selectedVideo,
+						videoPlayerRef,
+						isVideoPlaying,
 						selectVideo,
 						closeVideo,
+						toggleVideoPlayback,
+						handleVideoEnded,
 
 						// === Return: Music section ===
 						musicRef,
@@ -3075,6 +3211,7 @@
 						audioRef,
 						currentTimeDisplay,
 						durationDisplay,
+						discRotation,
 						songs,
 						currentSong,
 						togglePlay,
@@ -3103,6 +3240,8 @@
 						draggedPiece,
 						dragOverPos,
 						isCompleted,
+						showPuzzleCelebration,
+						showCompletionModal,
 						moves,
 						elapsedTime,
 						unlockedLevels,
@@ -3145,6 +3284,7 @@
 						quizRef,
 						isQuizVisible,
 						quizData,
+						quizTotal,
 						quizStarted,
 						currentQuestion,
 						selectedAnswer,
