@@ -1288,6 +1288,9 @@
 
 			createApp({
 				setup() {
+					// ================================
+					// Global State & Navigation
+					// ================================
 					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
 
 					const isScrolled = ref(false);
@@ -1301,6 +1304,9 @@
 						window.location.href = "https://dorafx.top/#ip";
 					};
 
+					// ================================
+					// Section Data: Gallery
+					// ================================
 					const galleryItems = ref([{
 							image: "public/rabbit-eating.png",
 							title: "粗硬的毛发",
@@ -1323,6 +1329,9 @@
 						},
 					]);
 
+					// ================================
+					// Section State: Gallery (Scroll)
+					// ================================
 					// ===== Gallery state（极简）=====
 					const currentIndex = ref(0);
 					const galleryTranslate = ref(0);
@@ -1342,6 +1351,9 @@
 					let _prevY = 0;
 					let _prevY2 = 0;
 
+					// ================================
+					// Section Data: Testimonials
+					// ================================
 					const testimonials = ref([{
 							city: "上海",
 							country: "中国",
@@ -1395,6 +1407,9 @@
 					});
 					const windowWidth = ref(window.innerWidth);
 
+					// ================================
+					// Section Data: Stats
+					// ================================
 					const stats = ref([{
 							number: "5+",
 							label: "国家地区"
@@ -1413,6 +1428,9 @@
 						},
 					]);
 
+					// ================================
+					// Section State: Stats Bars
+					// ================================
 					const barsAnimated = ref(false);
 					const statsBars = ref([{
 							code: "EDP",
@@ -1439,14 +1457,20 @@
 							valueColor: "text-Gabra-black",
 							tip: "在数十个案例中，嘎布拉兔子已学会开启插销式笼门",
 							fillClass: (i) => (i <= 6 ? (i === 6 ? "bg-gray-800/50" : "bg-gray-800") :
-								"bg-gray-200")
+							"bg-gray-200")
 						}
 					]);
 
+					// ================================
+					// Section State: Slogan
+					// ================================
 					const currentYear = ref(new Date().getFullYear());
 					const sloganBlur = ref(10);
 					const sloganOpacity = ref(0.3);
 
+					// ================================
+					// Section State: Typewriter
+					// ================================
 					// ===== Typewriter（控制字符，不控制宽度）=====
 					const typewriterLines = ref([
 						"这兔子，不是一般的兔子。",
@@ -1462,6 +1486,9 @@
 					let _typeTimer = 0;
 					let _typeStop = false;
 
+					// ================================
+					// Share Poster Section
+					// ================================
 					// ===== Share Poster UI State =====
 					const showSharePoster = ref(false);
 					const sharePosterLoading = ref(false);
@@ -1469,17 +1496,26 @@
 					const sharePosterBlob = ref(null); // Blob
 					const sharePosterError = ref("");
 
+					// ================================
+					// DOM Refs
+					// ================================
 					const gallerySection = ref(null);
 					const galleryTrack = ref(null);
 					const statsBlock = ref(null);
 					const sloganSection = ref(null);
 
+					// ================================
+					// Computed
+					// ================================
 					const isMobile = computed(() => windowWidth.value < 768);
 
 					const barBaseClass = computed(() => (barsAnimated.value ?
 						"opacity-1" :
 						"opacity-0"));
 
+					// ================================
+					// Scroll Engine (Gallery)
+					// ================================
 					// ===== scroll 事件：只写入最新 scrollY，然后开启 rAF tick =====
 					const onScroll = () => {
 						_latestY = window.scrollY || window.pageYOffset;
@@ -1544,6 +1580,9 @@
 						_tickRAF = requestAnimationFrame(() => tick());
 					};
 
+					// ================================
+					// Gallery Setup
+					// ================================
 					// ===== Gallery：只测量（resize 时重测）=====
 					const setupGallery = () => {
 						const section = gallerySection.value;
@@ -1576,6 +1615,9 @@
 						_gTop = rect.top + (window.scrollY || window.pageYOffset);
 					};
 
+					// ================================
+					// Navigation Helpers
+					// ================================
 					// ===== 其余保持你的原逻辑 =====
 					const scrollToTop = () => {
 						window.scrollTo({
@@ -1590,6 +1632,10 @@
 						});
 					};
 					const splitText = (text) => text.split("");
+
+					// ================================
+					// Hero Section
+					// ================================
 					const updateHeroMouse = (event) => {
 						const rect = event.currentTarget.getBoundingClientRect();
 						const x = (event.clientX - rect.left - rect.width / 2) / rect.width;
@@ -1598,6 +1644,9 @@
 						heroMouse.y = y * 40;
 					};
 
+					// ================================
+					// Testimonials Section
+					// ================================
 					const setActiveTestimonial = (t) => {
 						activeTestimonial.value = t;
 					};
@@ -1609,6 +1658,9 @@
 						mousePos.y = e.clientY;
 					};
 
+					// ================================
+					// Slogan Section
+					// ================================
 					const updateSloganProgress = () => {
 						const section = sloganSection.value;
 						if (!section) return;
@@ -1619,6 +1671,9 @@
 						sloganOpacity.value = Math.min(0.3 + p * 0.9, 1);
 					};
 
+					// ================================
+					// Typewriter Section
+					// ================================
 					const typeSleep = (ms) => new Promise((resolve) => {
 						_typeTimer = setTimeout(resolve, ms);
 					});
@@ -1676,10 +1731,16 @@
 						_typeTimer = 0;
 					};
 
+					// ================================
+					// Window/Resize
+					// ================================
 					const handleResize = () => {
 						windowWidth.value = window.innerWidth;
 					};
 
+					// ================================
+					// Stats Bars
+					// ================================
 					const barAnimClass = (statIndex, i) => {
 						// i 从 1..10，做逐格延迟
 						const delay = (statIndex * 120) + ((i - 1) * 45); // 你可以调
@@ -1693,6 +1754,9 @@
 						barsAnimated.value = true;
 					};
 
+					// ================================
+					// Share Poster Actions
+					// ================================
 					// 关闭弹层
 					const closeSharePoster = () => {
 						showSharePoster.value = false;

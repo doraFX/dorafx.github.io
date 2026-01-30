@@ -1107,12 +1107,18 @@
 
 			createApp({
 				setup() {
+					// ================================
+					// Global State & Navigation
+					// ================================
 					const isPageLoading = ref(true) // 页面级 loading（整页遮罩）
 
 					const goHome = () => {
 						window.location.href = "https://dorafx.top/#ip";
 					};
 
+					// ================================
+					// Section Data: Story / Traits / Stats / Gallery
+					// ================================
 					const stories = [{
 							title: '收集宝贝的习性',
 							content: `鸡贼黄袋鼠兔们有个共同的小习惯：只要看到"可能以后会有用的东西"，就会踮着脚尖悄悄捡起来，小心翼翼地放进肚兜口袋里。\n\n熟透的红浆果、饱满的草籽、干燥的软干草、带着清香的树根，甚至是亮晶晶的小石子、形状奇特的羽毛……别人看不懂这些东西的用处，可它们总坚信，说不定哪一天，这些宝贝就能派上大用场。`,
@@ -1241,6 +1247,9 @@
 						},
 					];
 
+					// ================================
+					// Global UI State
+					// ================================
 					const currentYear = new Date().getFullYear();
 					const isScrolled = ref(false);
 					const isMobileMenuOpen = ref(false);
@@ -1253,6 +1262,9 @@
 					let revealObserver = null;
 					let loadingTimer = null;
 
+					// ================================
+					// Navigation Helpers
+					// ================================
 					const scrollToTop = () => {
 						window.scrollTo({
 							top: 0,
@@ -1260,6 +1272,9 @@
 						});
 					};
 
+					// ================================
+					// 3D Model Viewer (Hero)
+					// ================================
 					const viewerRef = ref(null);
 
 					const zoomIn = () => {
@@ -1272,11 +1287,17 @@
 						viewerRef.value.zoom(-2);
 					};
 
+					// ================================
+					// Gallery Computed
+					// ================================
 					const selectedImageData = computed(() => {
 						if (selectedImage.value === null) return {};
 						return galleryImages[selectedImage.value];
 					});
 
+					// ================================
+					// Section Navigation
+					// ================================
 					const scrollToSection = (href) => {
 						if (href === '#') return;
 						const element = document.querySelector(href);
@@ -1288,6 +1309,9 @@
 						isMobileMenuOpen.value = false;
 					};
 
+					// ================================
+					// Scroll & Parallax
+					// ================================
 					const handleScroll = () => {
 						isScrolled.value = window.scrollY > 50;
 						handleParallax();
@@ -1306,6 +1330,9 @@
 						}
 					};
 
+					// ================================
+					// Gallery Lightbox
+					// ================================
 					const openLightbox = (index) => {
 						selectedImage.value = index;
 					};
@@ -1323,6 +1350,9 @@
 						selectedImage.value = newIndex;
 					};
 
+					// ================================
+					// Keyboard Interaction
+					// ================================
 					const handleKeyDown = (event) => {
 						if (selectedImage.value === null) return;
 						if (event.key === 'Escape') closeLightbox();
@@ -1330,6 +1360,9 @@
 						if (event.key === 'ArrowRight') navigateImage('next');
 					};
 
+					// ================================
+					// Icon Rendering & Reveal Animations
+					// ================================
 					const renderIcons = () => {
 						if (window.lucide) {
 							window.lucide.createIcons();
@@ -1357,6 +1390,9 @@
 					};
 
 
+					// ================================
+					// Share Poster Section
+					// ================================
 					// ===== Share Poster UI State =====
 					const showSharePoster = ref(false);
 					const sharePosterLoading = ref(false);
