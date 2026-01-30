@@ -285,6 +285,22 @@
 			.animate-slide-up {
 				animation: slide-up 0.35s ease-out;
 			}
+			
+			@keyframes fadeInUp {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+			
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			
+			.animate-fade-in-up {
+				animation: fadeInUp 0.6s ease-out forwards;
+			}
 		</style>
 	</head>
 	<body>
@@ -1226,8 +1242,8 @@
 							<div v-else class="flex flex-col items-center w-full animate-fade-in-up">
 								<!-- Image Container: 增加阴影和细微边框，让图片"浮"起来 -->
 								<div
-									class="relative w-full overflow-hidden shadow-2xl shadow-neutral-900/10 dark:shadow-black/40 ring-1 ring-black/5 dark:ring-white/10 bg-white">
-									<img v-if="sharePosterImgUrl" :src="sharePosterImgUrl" class="w-full h-auto block"
+									class="relative w-fit overflow-hidden shadow-2xl shadow-neutral-900/10 dark:shadow-black/40 ring-1 ring-black/5 dark:ring-white/10 bg-white">
+									<img v-if="sharePosterImgUrl" :src="sharePosterImgUrl" class="w-full h-auto block max-h-[calc(100vh-300px)]"
 										alt="share poster" />
 								</div>
 
