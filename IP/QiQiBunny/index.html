@@ -421,9 +421,11 @@
 					transform: scale(0.8);
 					opacity: 0;
 				}
+
 				40% {
 					opacity: 0.7;
 				}
+
 				100% {
 					transform: scale(1.2);
 					opacity: 0;
@@ -445,14 +447,17 @@
 					transform: translate(0, 0) scale(0.6);
 					opacity: 0;
 				}
+
 				30% {
 					opacity: 0.9;
 				}
+
 				100% {
 					transform: translate(var(--x), var(--y)) scale(1.1);
 					opacity: 0;
 				}
 			}
+
 			.wave-bar {
 				width: 0.25rem;
 				background: #f5c73b;
@@ -1049,12 +1054,6 @@
 											</div>
 										</div>
 
-										<!-- 时长角标 -->
-										<div
-											class="absolute top-3 right-3 px-2 py-1 bg-black/70 rounded-md text-white text-xs font-medium">
-											{{ video.duration }}
-										</div>
-
 										<!-- 底部标题 + 描述 -->
 										<div class="absolute left-0 right-0 bottom-0 p-3 sm:p-4">
 											<h3
@@ -1101,26 +1100,23 @@
 					<div v-if="selectedVideo" class="fixed inset-0 z-[90] bg-black/90 flex items-center justify-center"
 						@click="closeVideo">
 						<!-- 竖屏主体（像一台手机） -->
-							<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
-					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop="toggleVideoPlayback">
-								<!-- 视频播放器 -->
-								<video ref="videoPlayerRef" :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
-									class="absolute inset-0 w-full h-full object-cover" playsinline preload="metadata"
-									@ended="handleVideoEnded"></video>
+						<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
+					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl"
+							@click.stop="toggleVideoPlayback">
+							<!-- 视频播放器 -->
+							<video ref="videoPlayerRef" :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
+								class="absolute inset-0 w-full h-full object-cover" playsinline preload="metadata"
+								@ended="handleVideoEnded"></video>
 
-							<!-- 氛围遮罩 -->
-							<div class="absolute inset-0 bg-black/30"></div>
-							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
-
-								<!-- 播放/暂停按钮 -->
-								<div v-if="!isVideoPlaying" class="absolute inset-0 flex items-center justify-center">
-									<button
-										class="w-16 h-16 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg"
-										@click.stop="toggleVideoPlayback">
-										<i :data-lucide="isVideoPlaying ? 'pause' : 'play'"
-											class="w-8 h-8 text-penguin-gray ml-0.5" style="fill: currentColor"></i>
-									</button>
-								</div>
+							<!-- 播放/暂停按钮 -->
+							<div v-if="!isVideoPlaying" class="absolute inset-0 flex items-center justify-center">
+								<button
+									class="w-16 h-16 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg"
+									@click.stop="toggleVideoPlayback">
+									<i :data-lucide="isVideoPlaying ? 'pause' : 'play'"
+										class="w-8 h-8 text-penguin-gray ml-0.5" style="fill: currentColor"></i>
+								</button>
+							</div>
 
 							<!-- 顶部操作区 -->
 							<div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
@@ -1136,8 +1132,8 @@
 								</button>
 							</div>
 
-								<!-- 底部信息区 -->
-								<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
+							<!-- 底部信息区 -->
+							<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
 								<h3 class="font-semibold text-base leading-snug line-clamp-2">
 									{{ selectedVideo.title }}
 								</h3>
@@ -1172,7 +1168,7 @@
 						class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-ice-blue/10 rounded-full blur-[100px] pointer-events-none">
 					</div>
 
-					<div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+					<div class="max-w-5xl mx-auto px-0 relative z-10">
 						<!-- 标题区 -->
 						<div class="text-center mb-16 transition-all duration-700"
 							:class="[isMusicVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
@@ -1254,7 +1250,7 @@
 										@input="handleSeek"
 										:style="{ background: `linear-gradient(to right, #f5c73b ${progress}%, rgba(229, 231, 235, 1) ${progress}%)` }"
 										class="w-full h-2 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
-									<div class="flex justify-between text-xs text-gray-400 mt-2 font-mono">
+									<div class="flex justify-between text-xs text-gray-400 mt-2">
 										<span>{{ currentTimeDisplay }}</span>
 										<span>{{ durationDisplay }}</span>
 									</div>
@@ -1285,7 +1281,7 @@
 							</div>
 
 							<!-- 右侧：播放列表 -->
-							<div class="lg:w-1/2 bg-white/40 p-6 md:p-8 flex flex-col">
+							<div class="lg:w-1/2 bg-white/40 py-6 px-4 md:p-8 flex flex-col">
 								<div class="flex items-center justify-between mb-6">
 									<h4 class="font-bold text-gray-700 flex items-center gap-2">
 										<i data-lucide="list-music" class="w-5 h-5 text-rabbit-yellow"></i>
@@ -1298,10 +1294,10 @@
 								</div>
 
 								<div
-									class="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-2 max-h-[300px] lg:max-h-none">
+									class="flex-1 overflow-y-auto space-y-3 custom-scrollbar max-h-[300px] lg:max-h-none">
 									<div v-for="(song, index) in songs" :key="song.id" @click="selectSong(index)"
-										class="group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-300 border"
-										:class="[currentSongIndex === index ? 'bg-white border-purple-100 shadow-md translate-x-2' : 'bg-transparent border-transparent hover:bg-white/50 hover:border-white/50']">
+										class="group flex items-center gap-2 sm:gap-4 p-3 rounded-[0.5rem] sm:rounded-xl cursor-pointer transition-all duration-300 border"
+										:class="[currentSongIndex === index ? 'bg-white border-purple-100' : 'bg-transparent border-transparent hover:bg-white/50 hover:border-white/50']">
 
 										<!-- 列表序号/播放状态 -->
 										<div class="w-8 flex justify-center">
@@ -1337,7 +1333,7 @@
 										</div>
 
 										<!-- 列表时长 -->
-										<div class="text-xs text-gray-400 font-mono">
+										<div class="text-xs text-gray-400">
 											{{ song.duration }}
 										</div>
 									</div>
@@ -1345,8 +1341,8 @@
 
 								<!-- 歌词摘录区 (装饰) -->
 								<div class="mt-6 pt-6 border-t border-gray-200/50 hidden lg:block">
-									<p class="text-center text-sm text-penguin-gray/70 italic font-serif">
-										"{{ currentSong.lyricQuote }}"
+									<p class="text-center text-sm text-penguin-gray/70">
+										{{ currentSong.lyricQuote }}
 									</p>
 								</div>
 							</div>
@@ -1511,9 +1507,9 @@
 										</div>
 
 										<div class="text-center z-10">
-											<div class="text-xl font-black text-penguin-gray mb-1 font-mono">
+											<div class="text-xl font-black text-penguin-gray mb-1">
 												{{ level.grid }}<span
-													class="text-sm text-gray-400">x</span>{{ level.grid }}
+													class="text-xl">×</span>{{ level.grid }}
 											</div>
 											<div
 												class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
@@ -1570,12 +1566,12 @@
 									<!-- 状态指示器 -->
 									<div class="flex justify-center gap-6 mb-8">
 										<div
-											class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-500 rounded-full font-mono text-sm font-bold border border-blue-100 shadow-sm">
+											class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-500 rounded-full text-sm font-bold border border-blue-100 shadow-sm">
 											<i data-lucide="timer" class="w-4 h-4"></i>
 											<span>{{ formatPuzzleTime(elapsedTime) }}</span>
 										</div>
 										<div
-											class="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-500 rounded-full font-mono text-sm font-bold border border-purple-100 shadow-sm">
+											class="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-500 rounded-full text-sm font-bold border border-purple-100 shadow-sm">
 											<i data-lucide="move" class="w-4 h-4"></i>
 											<span>{{ moves }} 步</span>
 										</div>
@@ -1594,9 +1590,6 @@
 													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
 													<i data-lucide="trophy"
 														class="w-10 h-10 text-yellow-500 fill-yellow-500"></i>
-													<div
-														class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold border-2 border-white">
-														!</div>
 												</div>
 												<h4 class="text-2xl font-black text-penguin-gray mb-1">挑战成功!</h4>
 												<p class="text-gray-400 text-sm mb-6">耗时
@@ -1619,15 +1612,20 @@
 												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
 												<div class="celebration-ring"></div>
 												<div class="celebration-sparkle"
-													style="--x: -120px; --y: -140px; left: 45%; top: 45%; animation-delay: 0s;"></div>
+													style="--x: -120px; --y: -140px; left: 45%; top: 45%; animation-delay: 0s;">
+												</div>
 												<div class="celebration-sparkle"
-													style="--x: 140px; --y: -120px; left: 55%; top: 40%; animation-delay: 0.2s;"></div>
+													style="--x: 140px; --y: -120px; left: 55%; top: 40%; animation-delay: 0.2s;">
+												</div>
 												<div class="celebration-sparkle"
-													style="--x: -150px; --y: 110px; left: 40%; top: 55%; animation-delay: 0.4s;"></div>
+													style="--x: -150px; --y: 110px; left: 40%; top: 55%; animation-delay: 0.4s;">
+												</div>
 												<div class="celebration-sparkle"
-													style="--x: 160px; --y: 130px; left: 50%; top: 50%; animation-delay: 0.1s;"></div>
+													style="--x: 160px; --y: 130px; left: 50%; top: 50%; animation-delay: 0.1s;">
+												</div>
 												<div class="celebration-sparkle"
-													style="--x: -60px; --y: 170px; left: 55%; top: 55%; animation-delay: 0.3s;"></div>
+													style="--x: -60px; --y: 170px; left: 55%; top: 55%; animation-delay: 0.3s;">
+												</div>
 											</div>
 										</div>
 
@@ -1644,8 +1642,7 @@
 													draggedPiece !== null && getPieceByPos(pos - 1)?.id === draggedPiece ? 'puzzle-piece-dragging' : '',
 													draggedPiece !== null && getPieceByPos(pos - 1)?.id !== draggedPiece ? 'puzzle-piece-avoiding' : '',
 													dragOverPos === pos - 1 ? 'puzzle-piece-over' : ''
-												]"
-												:style="getPieceStyle(pos - 1)">
+												]" :style="getPieceStyle(pos - 1)">
 												<!-- 移除原本的边框，改用gap模拟网格线，视觉更干净 -->
 											</div>
 										</div>
@@ -1926,7 +1923,7 @@
 									<h3 class="text-2xl md:text-3xl font-bold text-penguin-gray font-serif mb-2">
 										{{ selectedEssay.title }}
 									</h3>
-									<div class="flex items-center gap-3 text-sm text-gray-400 font-mono">
+									<div class="flex items-center gap-3 text-sm text-gray-400">
 										<span class="flex items-center gap-1"><i data-lucide="calendar"
 												class="w-3 h-3"></i> {{ selectedEssay.date }}</span>
 										<span>·</span>
@@ -2452,39 +2449,30 @@
 					const songs = [{
 							id: 1,
 							title: '极地之恋',
-							artist: '企鹅企企 x 顽劣大黄兔',
-							cover: 'public/album-cover.png',
-							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
-							duration: '3:00',
+							artist: '大号的加菲猫',
+							cover: 'public/album-PolarLoveTale.png',
+							audio: 'https://check.dorafx.top/IP/QiQiBunny/Polar Love Tale.mp3',
+							duration: '2:48',
 							lyricQuote: '在冰雪的世界里，遇见最温暖的你'
 						},
 						{
 							id: 2,
-							title: '年糕摇摆',
-							artist: '顽劣大黄兔',
-							cover: 'public/rabbit-hero.png', // 暂时复用已有图片
-							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
-							duration: '2:45',
+							title: '企鹅兔子跳跳舞',
+							artist: '企鹅企企',
+							cover: 'public/QiQiBunny Dancing.png',
+							audio: 'https://check.dorafx.top/IP/QiQiBunny/QiQiBunny Dancing.mp3',
+							duration: '2:36',
 							lyricQuote: '左手年糕右手快乐，摇摇晃晃每一天'
 						},
 						{
 							id: 3,
-							title: '雪花圆舞曲',
-							artist: '灰色帝企鹅宝宝',
-							cover: 'public/penguin-hero.png', // 暂时复用已有图片
-							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
-							duration: '3:30',
+							title: '企鹅兔子在舞会',
+							artist: '企鹅企企',
+							cover: 'public/QiQiBunny at Prom.png',
+							audio: 'https://check.dorafx.top/IP/QiQiBunny/QiQiBunny at Prom.mp3',
+							duration: '2:07',
 							lyricQuote: '雪花落下的时候，就是我想你的时候'
 						},
-						{
-							id: 4,
-							title: '晚安，南极',
-							artist: '企鹅企企',
-							cover: 'public/story-ricecake.png', // 暂时复用已有图片
-							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
-							duration: '4:12',
-							lyricQuote: '星空下的梦，都有甜甜的味道'
-						}
 					];
 
 					// 计算属性：获取当前歌曲对象
@@ -2553,7 +2541,7 @@
 						if (!lastRotationTime.value) {
 							lastRotationTime.value = timestamp;
 						}
-						const delta = (timestamp - lastRotationTime.value) / 1000;
+						const delta = (timestamp - lastRotationTime.value) / 5000;
 						lastRotationTime.value = timestamp;
 						discRotation.value = (discRotation.value + delta * 90) % 360;
 						rotationFrame = requestAnimationFrame(updateDiscRotation);
