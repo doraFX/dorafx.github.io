@@ -444,6 +444,74 @@
 				}
 			}
 
+			@keyframes snow {
+				0% {
+					transform: translateY(-10px) translateX(0) rotate(0deg);
+					opacity: 0;
+				}
+
+				10% {
+					opacity: 1;
+				}
+
+				100% {
+					transform: translateY(100vh) translateX(40px) rotate(360deg);
+					opacity: 0;
+				}
+			}
+
+			@keyframes music-bar {
+				0%,
+				100% {
+					transform: scaleY(0.35);
+				}
+
+				50% {
+					transform: scaleY(1);
+				}
+			}
+
+			.music-bars {
+				display: flex;
+				align-items: flex-end;
+				gap: 3px;
+				height: 1rem;
+			}
+
+			.music-bar {
+				width: 0.25rem;
+				height: 100%;
+				background: #f5c73b;
+				border-radius: 9999px;
+				transform-origin: bottom;
+				animation: music-bar 0.9s ease-in-out infinite;
+			}
+
+			.music-bar--mid {
+				animation-delay: 0.15s;
+				animation-duration: 1s;
+			}
+
+			.music-bar--long {
+				animation-delay: 0.3s;
+				animation-duration: 1.1s;
+			}
+
+			.completion-fade-enter-active,
+			.completion-fade-leave-active {
+				transition: opacity 300ms ease-in;
+			}
+
+			.completion-fade-enter-from,
+			.completion-fade-leave-to {
+				opacity: 0;
+			}
+
+			.completion-fade-enter-to,
+			.completion-fade-leave-from {
+				opacity: 1;
+			}
+
 			.wave-bar {
 				width: 0.25rem;
 				background: #f5c73b;
@@ -1314,13 +1382,10 @@
 										<!-- 列表序号/播放状态 -->
 										<div class="w-8 flex justify-center">
 											<div v-if="currentSongIndex === index && isPlaying"
-												class="flex items-end gap-[3px] h-4">
-												<span
-													class="w-1 bg-rabbit-yellow animate-[music-bar_0.6s_ease-in-out_infinite] h-full"></span>
-												<span
-													class="w-1 bg-rabbit-yellow animate-[music-bar_0.8s_ease-in-out_infinite] h-2/3"></span>
-												<span
-													class="w-1 bg-rabbit-yellow animate-[music-bar_1s_ease-in-out_infinite] h-full"></span>
+												class="music-bars">
+												<span class="music-bar"></span>
+												<span class="music-bar music-bar--mid"></span>
+												<span class="music-bar music-bar--long"></span>
 											</div>
 											<span v-else
 												:class="currentSongIndex === index ? 'text-rabbit-yellow font-bold' : 'text-gray-400 text-sm'">
@@ -1593,55 +1658,57 @@
 										style="width: min(85vw, 420px); height: min(85vw, 420px);">
 
 										<!-- 胜利遮罩 (改为更精致的弹窗感) -->
-										<div v-if="isCompleted"
-											class="absolute inset-0 z-30 flex items-center justify-center">
-											<div v-if="showCompletionModal"
-												class="relative bg-white/95 p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
-												<div
-													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
-													<i data-lucide="trophy"
-														class="w-10 h-10 text-yellow-500 fill-yellow-500"></i>
-												</div>
-												<h4 class="text-2xl font-black text-penguin-gray mb-1">挑战成功!</h4>
-												<p class="text-gray-400 text-sm mb-6">耗时
-													{{ formatPuzzleTime(elapsedTime) }} · {{ moves }} 步
-												</p>
+										<Transition name="completion-fade">
+											<div v-if="isCompleted"
+												class="absolute inset-0 z-30 flex items-center justify-center">
+												<div v-if="showCompletionModal"
+													class="relative bg-white/95 p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
+													<div
+														class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
+														<i data-lucide="trophy"
+															class="w-10 h-10 text-yellow-500 fill-yellow-500"></i>
+													</div>
+													<h4 class="text-2xl font-black text-penguin-gray mb-1">挑战成功!</h4>
+													<p class="text-gray-400 text-sm mb-6">耗时
+														{{ formatPuzzleTime(elapsedTime) }} · {{ moves }} 步
+													</p>
 
-												<div class="space-y-3">
-													<button v-if="currentLevel < 4"
-														@click="startLevel(currentLevel + 1)"
-														class="w-full py-3 bg-rabbit-yellow text-white rounded-xl font-bold shadow-lg shadow-yellow-200 hover:bg-yellow-500 transition-colors flex items-center justify-center gap-2">
-														下一关 <i data-lucide="arrow-right" class="w-4 h-4"></i>
-													</button>
-													<button @click="goBack"
-														class="w-full py-3 bg-gray-100 text-gray-500 rounded-xl font-bold hover:bg-gray-200 transition-colors">
-														返回选关
-													</button>
+													<div class="space-y-3">
+														<button v-if="currentLevel < 4"
+															@click="startLevel(currentLevel + 1)"
+															class="w-full py-3 bg-rabbit-yellow text-white rounded-xl font-bold shadow-lg shadow-yellow-200 hover:bg-yellow-500 transition-colors flex items-center justify-center gap-2">
+															下一关 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+														</button>
+														<button @click="goBack"
+															class="w-full py-3 bg-gray-100 text-gray-500 rounded-xl font-bold hover:bg-gray-200 transition-colors">
+															返回选关
+														</button>
+													</div>
+												</div>
+												<div v-if="showPuzzleCelebration"
+													class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+													<div class="celebration-burst"></div>
+													<div class="celebration-confetti"
+														style="--x: -140px; --y: -120px; --r: -160deg; --color: #facc15; left: 50%; top: 50%; animation-delay: 0s;">
+													</div>
+													<div class="celebration-confetti"
+														style="--x: 120px; --y: -150px; --r: 120deg; --color: #60a5fa; left: 52%; top: 48%; animation-delay: 0.15s;">
+													</div>
+													<div class="celebration-confetti"
+														style="--x: -160px; --y: 130px; --r: 80deg; --color: #f59e0b; left: 46%; top: 54%; animation-delay: 0.2s;">
+													</div>
+													<div class="celebration-confetti"
+														style="--x: 150px; --y: 140px; --r: -120deg; --color: #34d399; left: 55%; top: 52%; animation-delay: 0.05s;">
+													</div>
+													<div class="celebration-confetti"
+														style="--x: -60px; --y: 170px; --r: 140deg; --color: #f472b6; left: 50%; top: 55%; animation-delay: 0.1s;">
+													</div>
+													<div class="celebration-confetti"
+														style="--x: 70px; --y: -170px; --r: -90deg; --color: #a78bfa; left: 48%; top: 46%; animation-delay: 0.25s;">
+													</div>
 												</div>
 											</div>
-											<div v-if="showPuzzleCelebration"
-												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-												<div class="celebration-burst"></div>
-												<div class="celebration-confetti"
-													style="--x: -140px; --y: -120px; --r: -160deg; --color: #facc15; left: 50%; top: 50%; animation-delay: 0s;">
-												</div>
-												<div class="celebration-confetti"
-													style="--x: 120px; --y: -150px; --r: 120deg; --color: #60a5fa; left: 52%; top: 48%; animation-delay: 0.15s;">
-												</div>
-												<div class="celebration-confetti"
-													style="--x: -160px; --y: 130px; --r: 80deg; --color: #f59e0b; left: 46%; top: 54%; animation-delay: 0.2s;">
-												</div>
-												<div class="celebration-confetti"
-													style="--x: 150px; --y: 140px; --r: -120deg; --color: #34d399; left: 55%; top: 52%; animation-delay: 0.05s;">
-												</div>
-												<div class="celebration-confetti"
-													style="--x: -60px; --y: 170px; --r: 140deg; --color: #f472b6; left: 50%; top: 55%; animation-delay: 0.1s;">
-												</div>
-												<div class="celebration-confetti"
-													style="--x: 70px; --y: -170px; --r: -90deg; --color: #a78bfa; left: 48%; top: 46%; animation-delay: 0.25s;">
-												</div>
-											</div>
-										</div>
+										</Transition>
 
 										<!-- 拼图网格 -->
 										<div class="grid bg-gray-200 rounded-lg overflow-hidden border border-gray-200"
@@ -2388,6 +2455,145 @@
 						observer.observe(targetRef.value);
 					};
 
+					const copyToClipboard = async (text, successMessage = '已复制到剪贴板') => {
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							try {
+								await navigator.clipboard.writeText(text);
+								showToast(successMessage, 'success');
+								return true;
+							} catch (error) {
+								console.warn('Clipboard write failed', error);
+							}
+						}
+
+						const textarea = document.createElement('textarea');
+						textarea.value = text;
+						textarea.setAttribute('readonly', '');
+						textarea.style.position = 'fixed';
+						textarea.style.opacity = '0';
+						textarea.style.left = '-9999px';
+						document.body.appendChild(textarea);
+						textarea.focus();
+						textarea.select();
+
+						let copied = false;
+						try {
+							copied = document.execCommand('copy');
+						} catch (error) {
+							console.warn('Fallback copy failed', error);
+						}
+
+						document.body.removeChild(textarea);
+						if (copied) {
+							showToast(successMessage, 'success');
+						} else {
+							showToast('复制失败，请手动复制', 'error');
+						}
+						return copied;
+					};
+
+					// === Share Poster section ===
+					const showSharePoster = ref(false);
+					const sharePosterLoading = ref(false);
+					const sharePosterImgUrl = ref("");
+					const sharePosterBlob = ref(null);
+					const sharePosterError = ref("");
+
+					const closeSharePoster = () => {
+						showSharePoster.value = false;
+						sharePosterLoading.value = false;
+						sharePosterError.value = "";
+						sharePosterBlob.value = null;
+
+						if (sharePosterImgUrl.value) {
+							try {
+								URL.revokeObjectURL(sharePosterImgUrl.value);
+							} catch (error) {
+								console.warn('Revoke share poster URL failed', error);
+							}
+							sharePosterImgUrl.value = "";
+						}
+					};
+
+					const saveSharePoster = () => {
+						if (!sharePosterBlob.value || sharePosterLoading.value) return;
+
+						const title = "share";
+						const name = `${String(title).slice(0, 18)}-poster.png`;
+
+						const url = URL.createObjectURL(sharePosterBlob.value);
+						const a = document.createElement("a");
+						a.href = url;
+						a.download = name;
+						document.body.appendChild(a);
+						a.click();
+						a.remove();
+						URL.revokeObjectURL(url);
+					};
+
+					const shareposter = async () => {
+						try {
+							if (!window.createSharePoster) {
+								throw new Error("shareposter.js 未加载");
+							}
+
+							showSharePoster.value = true;
+							sharePosterLoading.value = true;
+							sharePosterError.value = "";
+
+							if (sharePosterImgUrl.value) {
+								try {
+									URL.revokeObjectURL(sharePosterImgUrl.value);
+								} catch (error) {
+									console.warn('Revoke share poster URL failed', error);
+								}
+								sharePosterImgUrl.value = "";
+							}
+							sharePosterBlob.value = null;
+
+							const type = "ip";
+							const shareLine = "我发现了一个有趣的 IP，分享给你 ~";
+							const leftHint1 = "长按扫描二维码";
+							const leftHint2 = "查看 IP";
+							const pageUrl = window.location.href;
+							const ipName = "企鹅企企与顽劣大黄兔";
+							const ipDesc = "顽劣黄兔子和灰色的帝企鹅宝宝在一起的日常故事";
+							const ipHeroUrl = new URL("public/hero-gabra.png", window.location).href;
+							const ipIconUrl = new URL("public/icon-gabra.png", window.location).href;
+							const title = ipName;
+							const desc = "";
+
+							const {
+								blob
+							} = await window.createSharePoster({
+								type,
+								title,
+								desc,
+								url: pageUrl,
+								ipName,
+								ipDesc,
+								ipHeroUrl,
+								ipIconUrl,
+								shareLine,
+								leftHint1,
+								leftHint2,
+								footerLeft: "@ 企鹅企企",
+								footerRightText: "https://dorafx.top",
+								scale: 2,
+								autoDownload: false,
+								fileName: `${String(title).slice(0, 18) || "ip"}-poster.png`,
+							});
+
+							sharePosterBlob.value = blob;
+							sharePosterImgUrl.value = URL.createObjectURL(blob);
+						} catch (error) {
+							console.error(error);
+							sharePosterError.value = "生成失败了，可能是资源或字体加载异常。";
+						} finally {
+							sharePosterLoading.value = false;
+						}
+					};
+
 					// === Hero section ===
 					const heroRef = ref(null);
 					const mousePos = ref({
@@ -3066,9 +3272,9 @@
 
 					const copyQuote = () => {
 						const quote = quotes[currentQuoteIndex.value];
-						navigator.clipboard.writeText(`"${quote.text}" —— ${quote.author}`);
+						const text = `"${quote.text}" —— ${quote.author}`;
+						copyToClipboard(text, '格言已复制到剪贴板');
 						copied.value = true;
-						showToast('格言已复制到剪贴板', 'success');
 						setTimeout(() => {
 							copied.value = false;
 						}, 2000);
@@ -3318,139 +3524,9 @@
 								url: window.location.href,
 							});
 						} else {
-							navigator.clipboard.writeText(window.location.href);
-							showToast('链接已复制到剪贴板', 'success');
+							copyToClipboard(window.location.href, '链接已复制到剪贴板');
 						}
 					};
-					
-					
-					
-					
-					
-					// ===== Share Poster UI State =====
-					
-					
-					const showSharePoster = ref(false);
-					const sharePosterLoading = ref(false);
-					const sharePosterImgUrl = ref(""); // ObjectURL for <img>
-					const sharePosterBlob = ref(null); // Blob
-					const sharePosterError = ref("");
-					
-					
-					// 关闭弹层
-					const closeSharePoster = () => {
-						showSharePoster.value = false;
-						sharePosterLoading.value = false;
-						sharePosterError.value = "";
-						sharePosterBlob.value = null;
-					
-						if (sharePosterImgUrl.value) {
-							try {
-								URL.revokeObjectURL(sharePosterImgUrl.value);
-							} catch (e) {}
-							sharePosterImgUrl.value = "";
-						}
-					};
-					
-					// 保存按钮：手动下载
-					const saveSharePoster = () => {
-						if (!sharePosterBlob.value || sharePosterLoading.value) return;
-					
-						const title = "share";
-					
-						const name = `${String(title).slice(0, 18)}-poster.png`;
-					
-						const url = URL.createObjectURL(sharePosterBlob.value);
-						const a = document.createElement("a");
-						a.href = url;
-						a.download = name;
-						document.body.appendChild(a);
-						a.click();
-						a.remove();
-						URL.revokeObjectURL(url);
-					};
-					
-					const shareposter = async () => {
-						try {
-							if (!window.createSharePoster) {
-								throw new Error("shareposter.js 未加载");
-							}
-					
-							// 1) 打开弹层 + loading
-							showSharePoster.value = true;
-							sharePosterLoading.value = true;
-							sharePosterError.value = "";
-					
-							// 2) 清理旧 ObjectURL
-							if (sharePosterImgUrl.value) {
-								try {
-									URL.revokeObjectURL(sharePosterImgUrl.value);
-								} catch (e) {}
-								sharePosterImgUrl.value = "";
-							}
-							sharePosterBlob.value = null;
-					
-							// ===== 只生成 IP 海报 =====
-							const type = "ip";
-					
-							// 统一中文文案
-							const shareLine = "我发现了一个有趣的 IP，分享给你 ~";
-							const leftHint1 = "长按扫描二维码";
-							const leftHint2 = "查看 IP";
-					
-							// 页面 URL（二维码扫到）
-							const pageUrl = window.location.href;
-					
-							// 固定 IP 内容（本地 public 资源）
-							const ipName = "企鹅企企与顽劣大黄兔";
-							const ipDesc = "顽劣黄兔子和灰色的帝企鹅宝宝在一起的日常故事";
-							const ipHeroUrl = new URL("public/hero-gabra.png", window.location).href;
-							const ipIconUrl = new URL("public/icon-gabra.png", window.location).href;
-					
-							// shareposter.js 仍要求 title 必填：这里用 ipName
-							const title = ipName;
-							const desc = ""; // ip 不用
-					
-							// 生成海报（只预览）
-							const {
-								blob
-							} = await window.createSharePoster({
-								type,
-								title,
-								desc,
-								url: pageUrl,
-					
-								// ip
-								ipName,
-								ipDesc,
-								ipHeroUrl,
-								ipIconUrl,
-					
-								shareLine,
-								leftHint1,
-								leftHint2,
-								footerLeft: "@ 企鹅企企",
-								footerRightText: "https://dorafx.top",
-					
-								scale: 2,
-								autoDownload: false,
-								fileName: `${String(title).slice(0, 18) || "ip"}-poster.png`,
-							});
-					
-							sharePosterBlob.value = blob;
-							sharePosterImgUrl.value = URL.createObjectURL(blob);
-						} catch (e) {
-							console.error(e);
-							sharePosterError.value = "生成失败了，可能是资源或字体加载异常。";
-						} finally {
-							sharePosterLoading.value = false;
-						}
-					};
-					
-					
-					
-					
-					
 
 					onMounted(() => {
 						isHeroLoaded.value = true;
