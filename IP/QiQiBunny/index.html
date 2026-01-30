@@ -355,6 +355,7 @@
 
 			.puzzle-piece {
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				position: relative;
 			}
 
 			.puzzle-piece:hover {
@@ -363,6 +364,49 @@
 				z-index: 10;
 			}
 
+			.puzzle-piece-dragging {
+				transform: scale(1.08);
+				box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+				z-index: 30;
+			}
+
+			.puzzle-piece-avoiding {
+				transform: scale(0.96);
+				opacity: 0.75;
+				filter: saturate(0.9);
+			}
+
+			.puzzle-piece-over {
+				outline: 2px dashed rgba(59, 130, 246, 0.6);
+				outline-offset: -4px;
+				box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.2);
+			}
+
+			.firework {
+				position: absolute;
+				width: 6px;
+				height: 6px;
+				border-radius: 999px;
+				background: radial-gradient(circle, #fef08a, #f97316);
+				animation: firework-burst 1.8s ease-out infinite;
+				opacity: 0;
+			}
+
+			@keyframes firework-burst {
+				0% {
+					transform: translate(0, 0) scale(0.2);
+					opacity: 0;
+				}
+
+				20% {
+					opacity: 1;
+				}
+
+				100% {
+					transform: translate(var(--x), var(--y)) scale(1);
+					opacity: 0;
+				}
+			}
 			.music-disc {
 				animation: spin-slow 8s linear infinite;
 			}
@@ -850,6 +894,17 @@
 												<i data-lucide="zoom-in"
 													class="w-4 h-4 sm:w-5 sm:h-5 text-penguin-gray"></i>
 											</div>
+											<div v-if="showPuzzleCelebration"
+												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+												<div class="firework"
+													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
+												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
+												</div>
+												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
+												</div>
+												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
+												</div>
+											</div>
 										</div>
 									</div>
 
@@ -1019,27 +1074,26 @@
 					<div v-if="selectedVideo" class="fixed inset-0 z-[90] bg-black/90 flex items-center justify-center"
 						@click="closeVideo">
 						<!-- 竖屏主体（像一台手机） -->
-						<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
+							<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
 					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop>
-							<!-- 视频封面 -->
-							<img :src="selectedVideo.thumbnail" :alt="selectedVideo.title"
-								class="absolute inset-0 w-full h-full object-cover" draggable="false" />
+								<!-- 视频播放器 -->
+								<video ref="videoPlayerRef" :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
+									class="absolute inset-0 w-full h-full object-cover" playsinline preload="metadata"
+									@ended="handleVideoEnded"></video>
 
 							<!-- 氛围遮罩 -->
 							<div class="absolute inset-0 bg-black/30"></div>
 							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
 
-							<!-- 中央播放提示 -->
-							<div class="absolute inset-0 flex items-center justify-center">
-								<div class="text-center text-white">
-									<div class="w-16 h-16 rounded-full bg-white/90 backdrop-blur
-					                 flex items-center justify-center mx-auto shadow-lg">
-										<i data-lucide="play" class="w-8 h-8 text-penguin-gray ml-0.5"
-											style="fill: currentColor"></i>
-									</div>
-									<p class="mt-3 text-sm opacity-80">前往小红书观看</p>
+								<!-- 播放/暂停按钮 -->
+								<div class="absolute inset-0 flex items-center justify-center">
+									<button
+										class="w-16 h-16 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg"
+										@click.stop="toggleVideoPlayback">
+										<i :data-lucide="isVideoPlaying ? 'pause' : 'play'"
+											class="w-8 h-8 text-penguin-gray ml-0.5" style="fill: currentColor"></i>
+									</button>
 								</div>
-							</div>
 
 							<!-- 顶部操作区 -->
 							<div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
@@ -1055,25 +1109,8 @@
 								</button>
 							</div>
 
-							<!-- 右侧操作列（短视频味道） -->
-							<div class="absolute right-3 bottom-28 flex flex-col items-center gap-5 text-white z-10">
-								<div class="flex flex-col items-center gap-1">
-									<i data-lucide="heart" class="w-6 h-6"></i>
-									<span class="text-xs">{{ selectedVideo.likes }}</span>
-								</div>
-								<div class="flex flex-col items-center gap-1">
-									<i data-lucide="eye" class="w-6 h-6"></i>
-									<span class="text-xs">{{ selectedVideo.views }}</span>
-								</div>
-								<a v-if="selectedVideo.xhsUrl" :href="selectedVideo.xhsUrl" target="_blank"
-									rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-rabbit-yellow
-					               text-penguin-gray flex items-center justify-center" @click.stop>
-									<i data-lucide="square-arrow-out-up-right" class="w-5 h-5"></i>
-								</a>
-							</div>
-
-							<!-- 底部信息区 -->
-							<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
+								<!-- 底部信息区 -->
+								<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
 								<h3 class="font-semibold text-base leading-snug line-clamp-2">
 									{{ selectedVideo.title }}
 								</h3>
@@ -1145,7 +1182,7 @@
 								<div class="relative mb-8 group">
 									<!-- 唱片黑胶纹理 -->
 									<div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-900 bg-gray-900 flex items-center justify-center overflow-hidden transition-transform duration-[3s] linear"
-										:class="[isPlaying ? 'animate-spin-slow' : '']">
+										:style="{ transform: `rotate(${discRotation}deg)` }">
 										<!-- 专辑图 -->
 										<img :src="currentSong.cover" alt="Album Cover"
 											class="w-2/3 h-2/3 object-cover rounded-full border-2 border-gray-800" />
@@ -1187,10 +1224,11 @@
 								<!-- 进度条 -->
 								<div class="w-full max-w-xs mb-6 group">
 									<input type="range" min="0" max="100" step="1" v-model="progress"
+										@input="handleSeek"
 										class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
 									<div class="flex justify-between text-xs text-gray-400 mt-2 font-mono">
-										<span>{{ formatTime(progress) }}</span>
-										<span>{{ currentSong.duration }}</span>
+										<span>{{ currentTimeDisplay }}</span>
+										<span>{{ durationDisplay }}</span>
 									</div>
 								</div>
 
@@ -1212,6 +1250,10 @@
 										<i data-lucide="skip-forward" class="w-8 h-8"></i>
 									</button>
 								</div>
+
+								<audio ref="audioRef" class="hidden" :src="currentSong.audio" preload="metadata"
+									@timeupdate="handleTimeUpdate" @loadedmetadata="handleMetadataLoaded"
+									@ended="handleAudioEnded"></audio>
 							</div>
 
 							<!-- 右侧：播放列表 -->
@@ -1521,7 +1563,7 @@
 											<div
 												class="absolute inset-0 bg-penguin-gray/80 backdrop-blur-sm rounded-lg transition-opacity">
 											</div>
-											<div
+											<div v-if="showCompletionModal"
 												class="relative bg-white p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
 												<div
 													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
@@ -1548,6 +1590,17 @@
 													</button>
 												</div>
 											</div>
+											<div v-if="showPuzzleCelebration"
+												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+												<div class="firework"
+													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
+												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
+												</div>
+												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
+												</div>
+												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
+												</div>
+											</div>
 										</div>
 
 										<!-- 拼图网格 -->
@@ -1555,9 +1608,15 @@
 											:style="{gridTemplateColumns: `repeat(${gridSize}, 1fr)`, width: '100%', height: '100%', gap: '1px' }">
 											<div v-for="pos in gridSize * gridSize" :key="pos" :draggable="!isCompleted"
 												@dragstart="handleDragStart(getPieceByPos(pos - 1)?.id)"
-												@dragover.prevent @drop="handleDrop(pos - 1)"
-												class="relative overflow-hidden bg-white transition-all duration-200 hover:brightness-110"
-												:class="{'cursor-grab active:cursor-grabbing': !isCompleted}"
+												@dragover.prevent="handleDragOver(pos - 1)" @dragleave="clearDragOver"
+												@dragend="handleDragEnd" @drop="handleDrop(pos - 1)"
+												class="relative overflow-hidden bg-white transition-all duration-200 hover:brightness-110 puzzle-piece"
+												:class="[
+													!isCompleted ? 'cursor-grab active:cursor-grabbing' : '',
+													draggedPiece !== null && getPieceByPos(pos - 1)?.id === draggedPiece ? 'puzzle-piece-dragging' : '',
+													draggedPiece !== null && getPieceByPos(pos - 1)?.id !== draggedPiece ? 'puzzle-piece-avoiding' : '',
+													dragOverPos === pos - 1 ? 'puzzle-piece-over' : ''
+												]"
 												:style="getPieceStyle(pos - 1)">
 												<!-- 移除原本的边框，改用gap模拟网格线，视觉更干净 -->
 											</div>
@@ -1906,7 +1965,7 @@
 									<i data-lucide="help-circle" class="w-10 h-10 text-penguin-gray"></i>
 								</div>
 								<h3 class="text-xl font-bold text-penguin-gray mb-2">准备好了吗？</h3>
-								<p class="text-muted-foreground mb-6">共 {{ quizData.length }} 道题，看看你能答对多少</p>
+								<p class="text-muted-foreground mb-6">共 {{ quizTotal }} 道题，看看你能答对多少</p>
 								<button @click="startQuiz"
 									class="bg-rabbit-yellow text-penguin-gray hover:bg-rabbit-dark px-8 py-2 rounded-full font-medium">
 									开始答题
@@ -2285,6 +2344,7 @@
 					const isVideoVisible = ref(false);
 					const videos = [{
 							thumbnail: 'public/video-1.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '企鹅兔子吃火锅',
 							desc: '被芥末辣哭的企鹅',
 							duration: '2:34',
@@ -2293,6 +2353,7 @@
 						},
 						{
 							thumbnail: 'public/video-2.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '海边游泳日记',
 							desc: '企鹅的游泳圈冒险',
 							duration: '1:58',
@@ -2301,6 +2362,7 @@
 						},
 						{
 							thumbnail: 'public/video-3.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '春日野餐',
 							desc: '阳光下的美味时光',
 							duration: '3:12',
@@ -2309,13 +2371,40 @@
 						},
 					];
 					const selectedVideo = ref(null);
+					const videoPlayerRef = ref(null);
+					const isVideoPlaying = ref(false);
 
 					const selectVideo = (video) => {
 						selectedVideo.value = video;
+						nextTick(() => {
+							if (!videoPlayerRef.value) return;
+							videoPlayerRef.value.currentTime = 0;
+							videoPlayerRef.value.play();
+							isVideoPlaying.value = true;
+						});
 					};
 
 					const closeVideo = () => {
+						if (videoPlayerRef.value) {
+							videoPlayerRef.value.pause();
+						}
+						isVideoPlaying.value = false;
 						selectedVideo.value = null;
+					};
+
+					const toggleVideoPlayback = () => {
+						if (!videoPlayerRef.value) return;
+						if (isVideoPlaying.value) {
+							videoPlayerRef.value.pause();
+							isVideoPlaying.value = false;
+						} else {
+							videoPlayerRef.value.play();
+							isVideoPlaying.value = true;
+						}
+					};
+
+					const handleVideoEnded = () => {
+						isVideoPlaying.value = false;
 					};
 
 					// === Music section ===
@@ -2324,6 +2413,12 @@
 					const isPlaying = ref(false);
 					const progress = ref(0);
 					const currentSongIndex = ref(0); // 当前播放索引
+					const audioRef = ref(null);
+					const currentTime = ref(0);
+					const durationSeconds = ref(0);
+					const discRotation = ref(0);
+					const lastRotationTime = ref(null);
+					let rotationFrame = null;
 
 					// 歌曲数据 JSON
 					const songs = [{
@@ -2331,6 +2426,7 @@
 							title: '极地之恋',
 							artist: '企鹅企企 x 顽劣大黄兔',
 							cover: 'public/album-cover.png',
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '3:00',
 							lyricQuote: '在冰雪的世界里，遇见最温暖的你'
 						},
@@ -2339,6 +2435,7 @@
 							title: '年糕摇摆',
 							artist: '顽劣大黄兔',
 							cover: 'public/rabbit-hero.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '2:45',
 							lyricQuote: '左手年糕右手快乐，摇摇晃晃每一天'
 						},
@@ -2347,6 +2444,7 @@
 							title: '雪花圆舞曲',
 							artist: '灰色帝企鹅宝宝',
 							cover: 'public/penguin-hero.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '3:30',
 							lyricQuote: '雪花落下的时候，就是我想你的时候'
 						},
@@ -2355,6 +2453,7 @@
 							title: '晚安，南极',
 							artist: '企鹅企企',
 							cover: 'public/story-ricecake.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '4:12',
 							lyricQuote: '星空下的梦，都有甜甜的味道'
 						}
@@ -2363,39 +2462,91 @@
 					// 计算属性：获取当前歌曲对象
 					const currentSong = computed(() => songs[currentSongIndex.value]);
 
-					let progressTimer = null;
+					const formatSeconds = (value) => {
+						if (!Number.isFinite(value)) return '0:00';
+						const minutes = Math.floor(value / 60);
+						const seconds = Math.floor(value % 60);
+						return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+					};
 
-					// 监听播放状态来控制进度条
-					watch(isPlaying, (val) => {
-						if (val) {
-							progressTimer = setInterval(() => {
-								if (progress.value < 100) {
-									progress.value += 0.5; // 模拟播放进度
-								} else {
-									nextSong(); // 播完自动切下一首
-								}
-							}, 100); // 这里的100ms是为了演示流畅，实际开发需根据audio duration计算
-						} else {
-							clearInterval(progressTimer);
-						}
-					});
+					const currentTimeDisplay = computed(() => formatSeconds(currentTime.value));
+					const durationDisplay = computed(() =>
+						durationSeconds.value ? formatSeconds(durationSeconds.value) : currentSong.value.duration
+					);
 
 					const togglePlay = () => {
-						isPlaying.value = !isPlaying.value;
+						if (!audioRef.value) return;
+						if (isPlaying.value) {
+							audioRef.value.pause();
+							isPlaying.value = false;
+						} else {
+							audioRef.value.play();
+							isPlaying.value = true;
+						}
+					};
+
+					const handleTimeUpdate = () => {
+						if (!audioRef.value) return;
+						currentTime.value = audioRef.value.currentTime;
+						if (durationSeconds.value > 0) {
+							progress.value = (currentTime.value / durationSeconds.value) * 100;
+						}
+					};
+
+					const handleMetadataLoaded = () => {
+						if (!audioRef.value) return;
+						durationSeconds.value = audioRef.value.duration || 0;
+					};
+
+					const handleAudioEnded = () => {
+						nextSong();
+					};
+
+					const handleSeek = (event) => {
+						if (!audioRef.value || !durationSeconds.value) return;
+						const percent = Number(event.target.value);
+						progress.value = percent;
+						audioRef.value.currentTime = (durationSeconds.value * percent) / 100;
+						currentTime.value = audioRef.value.currentTime;
+					};
+
+					const playCurrentSong = () => {
+						if (!audioRef.value) return;
+						audioRef.value.currentTime = 0;
+						audioRef.value.play();
+						isPlaying.value = true;
+					};
+
+					const updateDiscRotation = (timestamp) => {
+						if (!isPlaying.value) {
+							lastRotationTime.value = null;
+							return;
+						}
+						if (!lastRotationTime.value) {
+							lastRotationTime.value = timestamp;
+						}
+						const delta = (timestamp - lastRotationTime.value) / 1000;
+						lastRotationTime.value = timestamp;
+						discRotation.value = (discRotation.value + delta * 90) % 360;
+						rotationFrame = requestAnimationFrame(updateDiscRotation);
 					};
 
 					// 切换下一首
 					const nextSong = () => {
 						progress.value = 0; // 重置进度
+						currentTime.value = 0;
+						durationSeconds.value = 0;
 						currentSongIndex.value = (currentSongIndex.value + 1) % songs.length;
-						isPlaying.value = true; // 切歌后自动播放
+						nextTick(() => playCurrentSong());
 					};
 
 					// 切换上一首
 					const prevSong = () => {
 						progress.value = 0;
+						currentTime.value = 0;
+						durationSeconds.value = 0;
 						currentSongIndex.value = (currentSongIndex.value - 1 + songs.length) % songs.length;
-						isPlaying.value = true;
+						nextTick(() => playCurrentSong());
 					};
 
 					// 直接点选歌曲
@@ -2405,21 +2556,23 @@
 						} else {
 							currentSongIndex.value = index;
 							progress.value = 0;
-							isPlaying.value = true;
+							currentTime.value = 0;
+							durationSeconds.value = 0;
+							nextTick(() => playCurrentSong());
 						}
 					};
 
 					// 格式化时间 (用于显示当前播放时间，这里仅做模拟演示)
-					const formatTime = (percent) => {
-						// 解析当前歌曲的 duration (如 "3:00") 为总秒数
-						const timeParts = currentSong.value.duration.split(':');
-						const totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
-
-						const currentSeconds = Math.floor((percent / 100) * totalSeconds);
-						const minutes = Math.floor(currentSeconds / 60);
-						const seconds = currentSeconds % 60;
-						return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-					};
+					watch(currentSongIndex, () => {
+						if (!audioRef.value) return;
+						audioRef.value.load();
+						currentTime.value = 0;
+						progress.value = 0;
+						durationSeconds.value = 0;
+						if (isPlaying.value) {
+							audioRef.value.play();
+						}
+					});
 
 					// === Merchandise section ===
 					const merchRef = ref(null);
@@ -2508,13 +2661,17 @@
 					const currentLevel = ref(0);
 					const pieces = ref([]);
 					const draggedPiece = ref(null);
+					const dragOverPos = ref(null);
 					const isCompleted = ref(false);
+					const showPuzzleCelebration = ref(false);
+					const showCompletionModal = ref(false);
 					const moves = ref(0);
 					const startTime = ref(null);
 					const elapsedTime = ref(0);
 					const unlockedLevels = ref([1]);
 					const showLevelSelect = ref(true);
 					let timerRef = null;
+					let celebrationTimer = null;
 
 					const checkCompleted = (pieceList) => pieceList.every((piece) => piece.currentPos === piece
 						.correctPos);
@@ -2542,9 +2699,12 @@
 
 						pieces.value = shuffled;
 						isCompleted.value = false;
+						showPuzzleCelebration.value = false;
+						showCompletionModal.value = false;
 						moves.value = 0;
 						startTime.value = Date.now();
 						elapsedTime.value = 0;
+						if (celebrationTimer) clearTimeout(celebrationTimer);
 					};
 
 					const startLevel = (levelIndex) => {
@@ -2560,12 +2720,30 @@
 					const goBack = () => {
 						showLevelSelect.value = true;
 						startTime.value = null;
+						showPuzzleCelebration.value = false;
+						showCompletionModal.value = false;
 						if (timerRef) clearInterval(timerRef);
+						if (celebrationTimer) clearTimeout(celebrationTimer);
 					};
 
 					const handleDragStart = (pieceId) => {
 						if (pieceId === null || pieceId === undefined) return;
 						draggedPiece.value = pieceId;
+						dragOverPos.value = null;
+					};
+
+					const handleDragOver = (targetPos) => {
+						if (draggedPiece.value === null) return;
+						dragOverPos.value = targetPos;
+					};
+
+					const clearDragOver = () => {
+						dragOverPos.value = null;
+					};
+
+					const handleDragEnd = () => {
+						draggedPiece.value = null;
+						dragOverPos.value = null;
 					};
 
 					const handleDrop = (targetPos) => {
@@ -2587,6 +2765,8 @@
 
 							if (checkCompleted(newPieces)) {
 								isCompleted.value = true;
+								showPuzzleCelebration.value = true;
+								showCompletionModal.value = false;
 								if (timerRef) clearInterval(timerRef);
 
 								const nextLevel = currentLevel.value + 2;
@@ -2595,10 +2775,16 @@
 								}
 
 								showToast(`恭喜完成第${currentLevel.value + 1}关！`, 'success');
+								if (celebrationTimer) clearTimeout(celebrationTimer);
+								celebrationTimer = setTimeout(() => {
+									showPuzzleCelebration.value = false;
+									showCompletionModal.value = true;
+								}, 2200);
 							}
 						}
 
 						draggedPiece.value = null;
+						dragOverPos.value = null;
 					};
 
 					const getPieceByPos = (pos) => pieces.value.find((piece) => piece.currentPos === pos);
@@ -2753,7 +2939,7 @@
 					// === Quiz section ===
 					const quizRef = ref(null);
 					const isQuizVisible = ref(false);
-					const quizData = [{
+					const questionBank = [{
 							question: '企鹅和兔子是怎么相遇的？',
 							options: ['在动物园里认识的', '企鹅给冻坏的兔子煮年糕', '在公园里偶遇', '通过朋友介绍'],
 							correct: 1,
@@ -2803,7 +2989,24 @@
 							options: ['微博', '抖音', '小红书', 'B站'],
 							correct: 2,
 						},
+						{
+							question: '企鹅最爱做的事情是什么？',
+							options: ['钓鱼', '晒太阳', '滑冰', '读书'],
+							correct: 2,
+						},
+						{
+							question: '兔子最擅长的技能是？',
+							options: ['画画', '跳跃', '唱歌', '游泳'],
+							correct: 1,
+						},
+						{
+							question: '企鹅和兔子最常一起做什么？',
+							options: ['堆雪人', '打篮球', '写作业', '看电影'],
+							correct: 0,
+						},
 					];
+					const quizData = ref([]);
+					const quizTotal = computed(() => Math.min(10, questionBank.length));
 					const quizStarted = ref(false);
 					const currentQuestion = ref(0);
 					const selectedAnswer = ref(null);
@@ -2813,6 +3016,17 @@
 
 					const startQuiz = () => {
 						quizStarted.value = true;
+						const total = Math.min(10, questionBank.length);
+						const pool = [...questionBank];
+						for (let i = pool.length - 1; i > 0; i -= 1) {
+							const j = Math.floor(Math.random() * (i + 1));
+							[pool[i], pool[j]] = [pool[j], pool[i]];
+						}
+						quizData.value = pool.slice(0, total);
+						currentQuestion.value = 0;
+						selectedAnswer.value = null;
+						answers.value = [];
+						showResult.value = false;
 					};
 
 					const handleSelectAnswer = (index) => {
@@ -2820,18 +3034,19 @@
 						selectedAnswer.value = index;
 						answers.value = [...answers.value, index];
 
-						if (index === quizData[currentQuestion.value].correct) {
+						if (index === quizData.value[currentQuestion.value].correct) {
 							showToast('回答正确！', 'success');
 						} else {
 							showToast('回答错误', 'error');
 						}
 
 						quizTimer = setTimeout(() => {
-							if (currentQuestion.value < quizData.length - 1) {
+							if (currentQuestion.value < quizData.value.length - 1) {
 								currentQuestion.value += 1;
 								selectedAnswer.value = null;
 							} else {
 								showResult.value = true;
+								selectedAnswer.value = null;
 							}
 						}, 1500);
 					};
@@ -2839,12 +3054,14 @@
 					const score = computed(() => {
 						let correct = 0;
 						answers.value.forEach((answer, index) => {
-							if (answer === quizData[index].correct) correct += 1;
+							if (answer === quizData.value[index].correct) correct += 1;
 						});
 						return correct;
 					});
 
-					const percentage = computed(() => Math.round((score.value / quizData.length) * 100));
+					const percentage = computed(() =>
+						quizData.value.length ? Math.round((score.value / quizData.value.length) * 100) : 0
+					);
 
 					const resetQuiz = () => {
 						quizStarted.value = false;
@@ -2906,16 +3123,17 @@
 						window.removeEventListener('scroll', handleScroll);
 						window.removeEventListener('mousemove', handleMouseMove);
 						if (timerRef) clearInterval(timerRef);
-						if (progressTimer) clearInterval(progressTimer);
 						if (quizTimer) clearTimeout(quizTimer);
+						if (celebrationTimer) clearTimeout(celebrationTimer);
+						if (rotationFrame) cancelAnimationFrame(rotationFrame);
 					});
 
 					watch(isPlaying, (value) => {
-						if (progressTimer) clearInterval(progressTimer);
+						if (rotationFrame) cancelAnimationFrame(rotationFrame);
 						if (value) {
-							progressTimer = setInterval(() => {
-								progress.value = progress.value >= 100 ? 0 : progress.value + 0.5;
-							}, 100);
+							rotationFrame = requestAnimationFrame(updateDiscRotation);
+						} else {
+							lastRotationTime.value = null;
 						}
 					});
 
@@ -2928,7 +3146,19 @@
 						}
 					});
 
-					watch([selectedImage, selectedVideo, selectedEssay, quizStarted, showResult], async () => {
+					watch([
+						selectedImage,
+						selectedVideo,
+						selectedEssay,
+						quizStarted,
+						showResult,
+						isCompleted,
+						showCompletionModal,
+						showLevelSelect,
+						currentLevel,
+						selectedAnswer,
+						isVideoPlaying
+					], async () => {
 						await nextTick();
 						lucide.createIcons();
 					});
@@ -2965,8 +3195,12 @@
 						isVideoVisible,
 						videos,
 						selectedVideo,
+						videoPlayerRef,
+						isVideoPlaying,
 						selectVideo,
 						closeVideo,
+						toggleVideoPlayback,
+						handleVideoEnded,
 
 						// === Return: Music section ===
 						musicRef,
@@ -2974,14 +3208,20 @@
 						isPlaying,
 						progress,
 						currentSongIndex,
+						audioRef,
+						currentTimeDisplay,
+						durationDisplay,
+						discRotation,
 						songs,
 						currentSong,
-						progressTimer,
 						togglePlay,
 						nextSong,
 						prevSong,
 						selectSong,
-						formatTime,
+						handleTimeUpdate,
+						handleMetadataLoaded,
+						handleAudioEnded,
+						handleSeek,
 
 						// === Return: Merchandise section ===
 						merchRef,
@@ -2997,7 +3237,11 @@
 						levels,
 						currentLevel,
 						pieces,
+						draggedPiece,
+						dragOverPos,
 						isCompleted,
+						showPuzzleCelebration,
+						showCompletionModal,
 						moves,
 						elapsedTime,
 						unlockedLevels,
@@ -3006,6 +3250,9 @@
 						resetPuzzle,
 						goBack,
 						handleDragStart,
+						handleDragOver,
+						clearDragOver,
+						handleDragEnd,
 						handleDrop,
 						getPieceByPos,
 						gridSize,
@@ -3037,6 +3284,7 @@
 						quizRef,
 						isQuizVisible,
 						quizData,
+						quizTotal,
 						quizStarted,
 						currentQuestion,
 						selectedAnswer,
