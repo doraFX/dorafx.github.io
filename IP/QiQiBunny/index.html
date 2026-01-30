@@ -1713,7 +1713,7 @@
 											<p class="text-sm font-bold text-penguin-gray">目标图片</p>
 										</div>
 										<div class="relative group cursor-help">
-											<img src="public/puzzle-game.png" alt="原图"
+											<img :src="currentLevelImage" alt="原图"
 												class="w-14 h-14 rounded-lg object-cover border-2 border-gray-100 shadow-sm transition-transform group-hover:scale-[3] group-hover:-translate-y-16 origin-bottom z-10 relative" />
 										</div>
 									</div>
@@ -3013,31 +3013,36 @@
 							level: 1,
 							grid: 2,
 							name: '入门',
-							stars: 1
+							stars: 1,
+							image: 'public/gallery-1.png',
 						},
 						{
 							level: 2,
 							grid: 3,
 							name: '简单',
-							stars: 2
+							stars: 2,
+							image: 'public/gallery-2.png',
 						},
 						{
 							level: 3,
 							grid: 4,
 							name: '中等',
-							stars: 3
+							stars: 3,
+							image: 'public/gallery-3.png',
 						},
 						{
 							level: 4,
 							grid: 5,
 							name: '困难',
-							stars: 4
+							stars: 4,
+							image: 'public/gallery-4.png',
 						},
 						{
 							level: 5,
 							grid: 6,
 							name: '大师',
-							stars: 5
+							stars: 5,
+							image: 'public/gallery-5.png',
 						},
 					];
 					const currentLevel = ref(0);
@@ -3172,6 +3177,7 @@
 					const getPieceByPos = (pos) => pieces.value.find((piece) => piece.currentPos === pos);
 
 					const gridSize = computed(() => levels[currentLevel.value].grid);
+					const currentLevelImage = computed(() => levels[currentLevel.value].image);
 
 					const getPieceStyle = (pos) => {
 						const piece = getPieceByPos(pos);
@@ -3179,7 +3185,7 @@
 						const row = Math.floor(piece.correctPos / gridSize.value);
 						const col = piece.correctPos % gridSize.value;
 						return {
-							backgroundImage: 'url(public/puzzle-game.png)',
+							backgroundImage: `url(${currentLevelImage.value})`,
 							backgroundSize: `${gridSize.value * 100}%`,
 							backgroundPosition: `${col * (100 / (gridSize.value - 1))}% ${row * (100 / (gridSize.value - 1))}%`,
 						};
@@ -3688,6 +3694,7 @@
 						handleDrop,
 						getPieceByPos,
 						gridSize,
+						currentLevelImage,
 						getPieceStyle,
 						formatPuzzleTime,
 
