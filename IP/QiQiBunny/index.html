@@ -407,14 +407,6 @@
 					opacity: 0;
 				}
 			}
-			.music-disc {
-				animation: spin-slow 8s linear infinite;
-			}
-
-			.music-disc.paused {
-				animation-play-state: paused;
-			}
-
 			.wave-bar {
 				width: 0.25rem;
 				background: #f5c73b;
@@ -1075,7 +1067,7 @@
 						@click="closeVideo">
 						<!-- 竖屏主体（像一台手机） -->
 							<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
-					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop>
+					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop="toggleVideoPlayback">
 								<!-- 视频播放器 -->
 								<video ref="videoPlayerRef" :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
 									class="absolute inset-0 w-full h-full object-cover" playsinline preload="metadata"
@@ -1086,7 +1078,7 @@
 							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
 
 								<!-- 播放/暂停按钮 -->
-								<div class="absolute inset-0 flex items-center justify-center">
+								<div v-if="!isVideoPlaying" class="absolute inset-0 flex items-center justify-center">
 									<button
 										class="w-16 h-16 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg"
 										@click.stop="toggleVideoPlayback">
@@ -1104,7 +1096,7 @@
 
 								<!-- 关闭 -->
 								<button class="w-9 h-9 rounded-full bg-black/60 text-white
-					               flex items-center justify-center" @click="closeVideo">
+					               flex items-center justify-center" @click.stop="closeVideo">
 									<i data-lucide="x" class="w-5 h-5"></i>
 								</button>
 							</div>
@@ -1560,11 +1552,8 @@
 										<!-- 胜利遮罩 (改为更精致的弹窗感) -->
 										<div v-if="isCompleted"
 											class="absolute inset-0 z-30 flex items-center justify-center">
-											<div
-												class="absolute inset-0 bg-penguin-gray/80 backdrop-blur-sm rounded-lg transition-opacity">
-											</div>
 											<div v-if="showCompletionModal"
-												class="relative bg-white p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
+												class="relative bg-white/95 p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
 												<div
 													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
 													<i data-lucide="trophy"
@@ -2013,7 +2002,7 @@
 								<h3 class="text-lg font-bold text-penguin-gray mb-6">
 									{{ quizData[currentQuestion].question }}
 								</h3>
-								<div class="space-y-3">
+								<div class="space-y-3" :key="currentQuestion">
 									<button v-for="(option, index) in quizData[currentQuestion].options" :key="index"
 										@click="handleSelectAnswer(index)" :disabled="selectedAnswer !== null"
 										class="w-full p-4 rounded-xl border-2 text-left transition-all"
@@ -2531,11 +2520,17 @@
 						rotationFrame = requestAnimationFrame(updateDiscRotation);
 					};
 
+					const resetDiscRotation = () => {
+						discRotation.value = 0;
+						lastRotationTime.value = null;
+					};
+
 					// 切换下一首
 					const nextSong = () => {
 						progress.value = 0; // 重置进度
 						currentTime.value = 0;
 						durationSeconds.value = 0;
+						resetDiscRotation();
 						currentSongIndex.value = (currentSongIndex.value + 1) % songs.length;
 						nextTick(() => playCurrentSong());
 					};
@@ -2545,6 +2540,7 @@
 						progress.value = 0;
 						currentTime.value = 0;
 						durationSeconds.value = 0;
+						resetDiscRotation();
 						currentSongIndex.value = (currentSongIndex.value - 1 + songs.length) % songs.length;
 						nextTick(() => playCurrentSong());
 					};
@@ -2558,6 +2554,7 @@
 							progress.value = 0;
 							currentTime.value = 0;
 							durationSeconds.value = 0;
+							resetDiscRotation();
 							nextTick(() => playCurrentSong());
 						}
 					};
@@ -3004,6 +3001,31 @@
 							options: ['堆雪人', '打篮球', '写作业', '看电影'],
 							correct: 0,
 						},
+						{
+							question: '企鹅给兔子准备的食物是什么？',
+							options: ['热汤', '炒年糕', '胡萝卜沙拉', '热牛奶'],
+							correct: 1,
+						},
+						{
+							question: '兔子最爱做的调皮事是？',
+							options: ['偷吃农田', '弄乱书架', '偷玩雪球', '藏企鹅围巾'],
+							correct: 0,
+						},
+						{
+							question: '企鹅和兔子在哪个平台连载日常？',
+							options: ['公众号', '微博', '小红书', '知乎'],
+							correct: 2,
+						},
+						{
+							question: '兔子最喜欢的季节是？',
+							options: ['春天', '夏天', '秋天', '冬天'],
+							correct: 3,
+						},
+						{
+							question: '企鹅最擅长的活动是？',
+							options: ['滑冰', '滑板', '爬树', '跑步'],
+							correct: 0,
+						},
 					];
 					const quizData = ref([]);
 					const quizTotal = computed(() => Math.min(10, questionBank.length));
@@ -3014,15 +3036,19 @@
 					const showResult = ref(false);
 					let quizTimer = null;
 
-					const startQuiz = () => {
-						quizStarted.value = true;
-						const total = Math.min(10, questionBank.length);
-						const pool = [...questionBank];
+					const shufflePool = (items) => {
+						const pool = [...items];
 						for (let i = pool.length - 1; i > 0; i -= 1) {
 							const j = Math.floor(Math.random() * (i + 1));
 							[pool[i], pool[j]] = [pool[j], pool[i]];
 						}
-						quizData.value = pool.slice(0, total);
+						return pool;
+					};
+
+					const startQuiz = () => {
+						quizStarted.value = true;
+						const total = Math.min(10, questionBank.length);
+						quizData.value = shufflePool(questionBank).slice(0, total);
 						currentQuestion.value = 0;
 						selectedAnswer.value = null;
 						answers.value = [];
@@ -3031,6 +3057,7 @@
 
 					const handleSelectAnswer = (index) => {
 						if (selectedAnswer.value !== null) return;
+						if (quizTimer) clearTimeout(quizTimer);
 						selectedAnswer.value = index;
 						answers.value = [...answers.value, index];
 
@@ -3043,11 +3070,10 @@
 						quizTimer = setTimeout(() => {
 							if (currentQuestion.value < quizData.value.length - 1) {
 								currentQuestion.value += 1;
-								selectedAnswer.value = null;
 							} else {
 								showResult.value = true;
-								selectedAnswer.value = null;
 							}
+							selectedAnswer.value = null;
 						}, 1500);
 					};
 
@@ -3135,6 +3161,10 @@
 						} else {
 							lastRotationTime.value = null;
 						}
+					});
+
+					watch(currentQuestion, () => {
+						selectedAnswer.value = null;
 					});
 
 					watch(startTime, (value) => {
