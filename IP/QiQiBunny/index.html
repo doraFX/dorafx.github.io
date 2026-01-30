@@ -355,12 +355,31 @@
 
 			.puzzle-piece {
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				position: relative;
 			}
 
 			.puzzle-piece:hover {
 				transform: scale(1.02);
 				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 				z-index: 10;
+			}
+
+			.puzzle-piece-dragging {
+				transform: scale(1.08);
+				box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+				z-index: 30;
+			}
+
+			.puzzle-piece-avoiding {
+				transform: scale(0.96);
+				opacity: 0.75;
+				filter: saturate(0.9);
+			}
+
+			.puzzle-piece-over {
+				outline: 2px dashed rgba(59, 130, 246, 0.6);
+				outline-offset: -4px;
+				box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.2);
 			}
 
 			.music-disc {
@@ -1021,9 +1040,10 @@
 						<!-- 竖屏主体（像一台手机） -->
 						<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
 					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop>
-							<!-- 视频封面 -->
-							<img :src="selectedVideo.thumbnail" :alt="selectedVideo.title"
-								class="absolute inset-0 w-full h-full object-cover" draggable="false" />
+							<!-- 视频播放器 -->
+							<video :src="selectedVideo.src" :poster="selectedVideo.thumbnail"
+								class="absolute inset-0 w-full h-full object-cover" controls autoplay playsinline
+								preload="metadata"></video>
 
 							<!-- 氛围遮罩 -->
 							<div class="absolute inset-0 bg-black/30"></div>
@@ -1187,10 +1207,11 @@
 								<!-- 进度条 -->
 								<div class="w-full max-w-xs mb-6 group">
 									<input type="range" min="0" max="100" step="1" v-model="progress"
+										@input="handleSeek"
 										class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
 									<div class="flex justify-between text-xs text-gray-400 mt-2 font-mono">
-										<span>{{ formatTime(progress) }}</span>
-										<span>{{ currentSong.duration }}</span>
+										<span>{{ currentTimeDisplay }}</span>
+										<span>{{ durationDisplay }}</span>
 									</div>
 								</div>
 
@@ -1212,6 +1233,10 @@
 										<i data-lucide="skip-forward" class="w-8 h-8"></i>
 									</button>
 								</div>
+
+								<audio ref="audioRef" class="hidden" :src="currentSong.audio" preload="metadata"
+									@timeupdate="handleTimeUpdate" @loadedmetadata="handleMetadataLoaded"
+									@ended="handleAudioEnded"></audio>
 							</div>
 
 							<!-- 右侧：播放列表 -->
@@ -1555,9 +1580,15 @@
 											:style="{gridTemplateColumns: `repeat(${gridSize}, 1fr)`, width: '100%', height: '100%', gap: '1px' }">
 											<div v-for="pos in gridSize * gridSize" :key="pos" :draggable="!isCompleted"
 												@dragstart="handleDragStart(getPieceByPos(pos - 1)?.id)"
-												@dragover.prevent @drop="handleDrop(pos - 1)"
-												class="relative overflow-hidden bg-white transition-all duration-200 hover:brightness-110"
-												:class="{'cursor-grab active:cursor-grabbing': !isCompleted}"
+												@dragover.prevent="handleDragOver(pos - 1)" @dragleave="clearDragOver"
+												@dragend="handleDragEnd" @drop="handleDrop(pos - 1)"
+												class="relative overflow-hidden bg-white transition-all duration-200 hover:brightness-110 puzzle-piece"
+												:class="[
+													!isCompleted ? 'cursor-grab active:cursor-grabbing' : '',
+													draggedPiece !== null && getPieceByPos(pos - 1)?.id === draggedPiece ? 'puzzle-piece-dragging' : '',
+													draggedPiece !== null && getPieceByPos(pos - 1)?.id !== draggedPiece ? 'puzzle-piece-avoiding' : '',
+													dragOverPos === pos - 1 ? 'puzzle-piece-over' : ''
+												]"
 												:style="getPieceStyle(pos - 1)">
 												<!-- 移除原本的边框，改用gap模拟网格线，视觉更干净 -->
 											</div>
@@ -2285,6 +2316,7 @@
 					const isVideoVisible = ref(false);
 					const videos = [{
 							thumbnail: 'public/video-1.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '企鹅兔子吃火锅',
 							desc: '被芥末辣哭的企鹅',
 							duration: '2:34',
@@ -2293,6 +2325,7 @@
 						},
 						{
 							thumbnail: 'public/video-2.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '海边游泳日记',
 							desc: '企鹅的游泳圈冒险',
 							duration: '1:58',
@@ -2301,6 +2334,7 @@
 						},
 						{
 							thumbnail: 'public/video-3.png',
+							src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
 							title: '春日野餐',
 							desc: '阳光下的美味时光',
 							duration: '3:12',
@@ -2324,6 +2358,9 @@
 					const isPlaying = ref(false);
 					const progress = ref(0);
 					const currentSongIndex = ref(0); // 当前播放索引
+					const audioRef = ref(null);
+					const currentTime = ref(0);
+					const durationSeconds = ref(0);
 
 					// 歌曲数据 JSON
 					const songs = [{
@@ -2331,6 +2368,7 @@
 							title: '极地之恋',
 							artist: '企鹅企企 x 顽劣大黄兔',
 							cover: 'public/album-cover.png',
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '3:00',
 							lyricQuote: '在冰雪的世界里，遇见最温暖的你'
 						},
@@ -2339,6 +2377,7 @@
 							title: '年糕摇摆',
 							artist: '顽劣大黄兔',
 							cover: 'public/rabbit-hero.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '2:45',
 							lyricQuote: '左手年糕右手快乐，摇摇晃晃每一天'
 						},
@@ -2347,6 +2386,7 @@
 							title: '雪花圆舞曲',
 							artist: '灰色帝企鹅宝宝',
 							cover: 'public/penguin-hero.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '3:30',
 							lyricQuote: '雪花落下的时候，就是我想你的时候'
 						},
@@ -2355,6 +2395,7 @@
 							title: '晚安，南极',
 							artist: '企鹅企企',
 							cover: 'public/story-ricecake.png', // 暂时复用已有图片
+							audio: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
 							duration: '4:12',
 							lyricQuote: '星空下的梦，都有甜甜的味道'
 						}
@@ -2363,39 +2404,77 @@
 					// 计算属性：获取当前歌曲对象
 					const currentSong = computed(() => songs[currentSongIndex.value]);
 
-					let progressTimer = null;
+					const formatSeconds = (value) => {
+						if (!Number.isFinite(value)) return '0:00';
+						const minutes = Math.floor(value / 60);
+						const seconds = Math.floor(value % 60);
+						return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+					};
 
-					// 监听播放状态来控制进度条
-					watch(isPlaying, (val) => {
-						if (val) {
-							progressTimer = setInterval(() => {
-								if (progress.value < 100) {
-									progress.value += 0.5; // 模拟播放进度
-								} else {
-									nextSong(); // 播完自动切下一首
-								}
-							}, 100); // 这里的100ms是为了演示流畅，实际开发需根据audio duration计算
-						} else {
-							clearInterval(progressTimer);
-						}
-					});
+					const currentTimeDisplay = computed(() => formatSeconds(currentTime.value));
+					const durationDisplay = computed(() =>
+						durationSeconds.value ? formatSeconds(durationSeconds.value) : currentSong.value.duration
+					);
 
 					const togglePlay = () => {
-						isPlaying.value = !isPlaying.value;
+						if (!audioRef.value) return;
+						if (isPlaying.value) {
+							audioRef.value.pause();
+							isPlaying.value = false;
+						} else {
+							audioRef.value.play();
+							isPlaying.value = true;
+						}
+					};
+
+					const handleTimeUpdate = () => {
+						if (!audioRef.value) return;
+						currentTime.value = audioRef.value.currentTime;
+						if (durationSeconds.value > 0) {
+							progress.value = (currentTime.value / durationSeconds.value) * 100;
+						}
+					};
+
+					const handleMetadataLoaded = () => {
+						if (!audioRef.value) return;
+						durationSeconds.value = audioRef.value.duration || 0;
+					};
+
+					const handleAudioEnded = () => {
+						nextSong();
+					};
+
+					const handleSeek = (event) => {
+						if (!audioRef.value || !durationSeconds.value) return;
+						const percent = Number(event.target.value);
+						progress.value = percent;
+						audioRef.value.currentTime = (durationSeconds.value * percent) / 100;
+						currentTime.value = audioRef.value.currentTime;
+					};
+
+					const playCurrentSong = () => {
+						if (!audioRef.value) return;
+						audioRef.value.currentTime = 0;
+						audioRef.value.play();
+						isPlaying.value = true;
 					};
 
 					// 切换下一首
 					const nextSong = () => {
 						progress.value = 0; // 重置进度
+						currentTime.value = 0;
+						durationSeconds.value = 0;
 						currentSongIndex.value = (currentSongIndex.value + 1) % songs.length;
-						isPlaying.value = true; // 切歌后自动播放
+						nextTick(() => playCurrentSong());
 					};
 
 					// 切换上一首
 					const prevSong = () => {
 						progress.value = 0;
+						currentTime.value = 0;
+						durationSeconds.value = 0;
 						currentSongIndex.value = (currentSongIndex.value - 1 + songs.length) % songs.length;
-						isPlaying.value = true;
+						nextTick(() => playCurrentSong());
 					};
 
 					// 直接点选歌曲
@@ -2405,21 +2484,23 @@
 						} else {
 							currentSongIndex.value = index;
 							progress.value = 0;
-							isPlaying.value = true;
+							currentTime.value = 0;
+							durationSeconds.value = 0;
+							nextTick(() => playCurrentSong());
 						}
 					};
 
 					// 格式化时间 (用于显示当前播放时间，这里仅做模拟演示)
-					const formatTime = (percent) => {
-						// 解析当前歌曲的 duration (如 "3:00") 为总秒数
-						const timeParts = currentSong.value.duration.split(':');
-						const totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
-
-						const currentSeconds = Math.floor((percent / 100) * totalSeconds);
-						const minutes = Math.floor(currentSeconds / 60);
-						const seconds = currentSeconds % 60;
-						return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-					};
+					watch(currentSongIndex, () => {
+						if (!audioRef.value) return;
+						audioRef.value.load();
+						currentTime.value = 0;
+						progress.value = 0;
+						durationSeconds.value = 0;
+						if (isPlaying.value) {
+							audioRef.value.play();
+						}
+					});
 
 					// === Merchandise section ===
 					const merchRef = ref(null);
@@ -2508,6 +2589,7 @@
 					const currentLevel = ref(0);
 					const pieces = ref([]);
 					const draggedPiece = ref(null);
+					const dragOverPos = ref(null);
 					const isCompleted = ref(false);
 					const moves = ref(0);
 					const startTime = ref(null);
@@ -2566,6 +2648,21 @@
 					const handleDragStart = (pieceId) => {
 						if (pieceId === null || pieceId === undefined) return;
 						draggedPiece.value = pieceId;
+						dragOverPos.value = null;
+					};
+
+					const handleDragOver = (targetPos) => {
+						if (draggedPiece.value === null) return;
+						dragOverPos.value = targetPos;
+					};
+
+					const clearDragOver = () => {
+						dragOverPos.value = null;
+					};
+
+					const handleDragEnd = () => {
+						draggedPiece.value = null;
+						dragOverPos.value = null;
 					};
 
 					const handleDrop = (targetPos) => {
@@ -2599,6 +2696,7 @@
 						}
 
 						draggedPiece.value = null;
+						dragOverPos.value = null;
 					};
 
 					const getPieceByPos = (pos) => pieces.value.find((piece) => piece.currentPos === pos);
@@ -2906,17 +3004,7 @@
 						window.removeEventListener('scroll', handleScroll);
 						window.removeEventListener('mousemove', handleMouseMove);
 						if (timerRef) clearInterval(timerRef);
-						if (progressTimer) clearInterval(progressTimer);
 						if (quizTimer) clearTimeout(quizTimer);
-					});
-
-					watch(isPlaying, (value) => {
-						if (progressTimer) clearInterval(progressTimer);
-						if (value) {
-							progressTimer = setInterval(() => {
-								progress.value = progress.value >= 100 ? 0 : progress.value + 0.5;
-							}, 100);
-						}
 					});
 
 					watch(startTime, (value) => {
@@ -2928,7 +3016,17 @@
 						}
 					});
 
-					watch([selectedImage, selectedVideo, selectedEssay, quizStarted, showResult], async () => {
+					watch([
+						selectedImage,
+						selectedVideo,
+						selectedEssay,
+						quizStarted,
+						showResult,
+						isCompleted,
+						showLevelSelect,
+						currentLevel,
+						selectedAnswer
+					], async () => {
 						await nextTick();
 						lucide.createIcons();
 					});
@@ -2974,14 +3072,19 @@
 						isPlaying,
 						progress,
 						currentSongIndex,
+						audioRef,
+						currentTimeDisplay,
+						durationDisplay,
 						songs,
 						currentSong,
-						progressTimer,
 						togglePlay,
 						nextSong,
 						prevSong,
 						selectSong,
-						formatTime,
+						handleTimeUpdate,
+						handleMetadataLoaded,
+						handleAudioEnded,
+						handleSeek,
 
 						// === Return: Merchandise section ===
 						merchRef,
@@ -2997,6 +3100,8 @@
 						levels,
 						currentLevel,
 						pieces,
+						draggedPiece,
+						dragOverPos,
 						isCompleted,
 						moves,
 						elapsedTime,
@@ -3006,6 +3111,9 @@
 						resetPuzzle,
 						goBack,
 						handleDragStart,
+						handleDragOver,
+						clearDragOver,
+						handleDragEnd,
 						handleDrop,
 						getPieceByPos,
 						gridSize,
