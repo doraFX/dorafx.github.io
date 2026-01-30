@@ -681,7 +681,7 @@
 							<div class="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden"
 								:class="scrollY > 100 ? 'bg-white shadow-sm' : 'bg-white/20 backdrop-blur-sm'">
 								<!-- 方案B：如果你有 logo 图，用这个替换上面方案A（不要两者同时用） -->
-								<img src="public/icon-QiQiBunny.png" alt="企鹅兔子"
+								<img src="public/icon-QiQiBunny.webp" alt="企鹅兔子"
 									class="w-9 h-9 rounded-full object-cover" />
 							</div>
 						</button>
@@ -733,7 +733,7 @@
 
 								<div class="relative w-full max-w-[160px] sm:max-w-[400px] lg:w-80 xl:w-96">
 									<div class="character-bounce">
-										<img src="public/penguin-hero.png" alt="企鹅企企"
+										<img src="public/penguin-hero.webp" alt="企鹅企企"
 											class="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500 ease-out" />
 									</div>
 									<!-- 浮动图标 -->
@@ -788,14 +788,14 @@
 								<!-- 按钮组 -->
 								<div class="flex flex-row justify-center gap-4 transition-all duration-700 delay-600"
 									:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
-									<a href=""
+									<a href="https://www.xiaohongshu.com/user/profile/677f42a90000000008019cac"
 										class="group relative px-6 py-3 bg-red-500 text-white rounded-full shadow-lg hover:shadow-xl hover:bg-red-600 transition-all duration-300 overflow-hidden">
 										<span class="relative flex items-center gap-2 font-bold">
 											<i data-lucide="external-link" class="w-4 h-4 text-white animate-pulse"></i>
 											打开小红书
 										</span>
 									</a>
-									<a href=""
+									<a href="#gallery"
 										class="group px-6 py-3 bg-white text-penguin-gray rounded-full shadow-md hover:shadow-lg border border-gray-100 transition-all duration-300">
 										<span class="flex items-center gap-2 font-medium">
 											<i data-lucide="book-open"
@@ -815,7 +815,7 @@
 
 								<div class="relative w-full max-w-[160px] sm:max-w-[400px] lg:w-80 xl:w-96">
 									<div class="character-bounce" style="animation-delay: 0.5s">
-										<img src="public/rabbit-hero.png" alt="顽劣大黄"
+										<img src="public/rabbit-hero.webp" alt="顽劣大黄"
 											class="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500 ease-out" />
 									</div>
 									<!-- 浮动图标 -->
@@ -824,19 +824,6 @@
 										<i data-lucide="heart"
 											class="w-4 h-4 lg:w-5 lg:h-5 text-red-400 fill-red-100"></i>
 									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- 滚动提示 -->
-					<div class="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 transition-all duration-700 delay-700"
-						:class="[isHeroLoaded ? 'opacity-100' : 'opacity-0']">
-						<div
-							class="flex flex-col items-center gap-2 text-penguin-gray/40 hover:text-penguin-gray/60 transition-colors cursor-pointer">
-							<div
-								class="w-5 h-9 sm:w-6 sm:h-10 border-2 border-penguin-gray/20 rounded-full flex justify-center pt-2">
-								<div class="w-1 h-2 sm:w-1.5 sm:h-3 bg-penguin-gray/40 rounded-full animate-bounce">
 								</div>
 							</div>
 						</div>
@@ -873,7 +860,7 @@
 								<div
 									class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 sm:w-64 z-10 hover:scale-105 transition-all duration-300">
 									<div class="glass-card p-3 rotate-3">
-										<img src="public/story-meet-1.png" alt="" class="w-full rounded-2xl" />
+										<img src="public/story-meet-1.webp" alt="" class="w-full rounded-2xl" />
 										<p class="text-center text-sm text-penguin-gray/70 mt-2">相遇的那一天</p>
 									</div>
 								</div>
@@ -881,14 +868,14 @@
 								<div
 									class="absolute top-0 left-0 w-32 sm:w-40 hover:scale-105 transition-all duration-300">
 									<div class="glass-card p-2 -rotate-6">
-										<img src="public/story-meet-2.png" alt="" class="w-full rounded-xl" />
+										<img src="public/story-meet-2.webp" alt="" class="w-full rounded-xl" />
 									</div>
 								</div>
 
 								<div
 									class="absolute bottom-0 right-0 w-32 sm:w-40 hover:scale-105 transition-all duration-300">
 									<div class="glass-card p-2 rotate-6">
-										<img src="public/story-meet-3.png" alt="" class="w-full rounded-xl" />
+										<img src="public/story-meet-3.webp" alt="" class="w-full rounded-xl" />
 									</div>
 								</div>
 
@@ -970,7 +957,7 @@
 							<div v-for="(image, index) in galleryImages" :key="image.src"
 								@click="openGallery(image, index)"
 								class="group relative overflow-hidden rounded-2xl cursor-pointer ring-1 ring-black/5 bg-white/5 transition-all duration-700 will-change-transform"
-								:class="[isGalleryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',index % 7 === 0 ? 'col-span-2 row-span-2' : '',index % 7 === 3 ? 'row-span-2' : '']"
+								:class="[isGalleryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',index % 8 === 0 ? 'col-span-2 row-span-2' : '', index % 8 === 3 ? 'row-span-2' : '']"
 								:style="{ transitionDelay: `${index * 70}ms` }">
 								<!-- 统一用绝对定位铺满格子，不再出现参差高度导致的“卡不齐” -->
 								<div class="absolute inset-0">
@@ -994,9 +981,6 @@
 													class="text-white font-semibold text-[15px] sm:text-base leading-snug truncate">
 													{{ image.title }}
 												</h3>
-												<p class="text-white/75 text-xs sm:text-sm leading-snug line-clamp-2">
-													{{ image.desc }}
-												</p>
 											</div>
 
 											<!-- 角标按钮：hover/触摸都好用 -->
@@ -1153,7 +1137,7 @@
 
 						<div class="text-center mt-10 transition-all duration-700 delay-500"
 							:class="[isVideoVisible ? 'opacity-100' : 'opacity-0']">
-							<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+							<a href="https://www.xiaohongshu.com/user/profile/677f42a90000000008019cac" target="_blank" rel="noopener noreferrer"
 								class="inline-flex items-center gap-2 text-penguin-gray hover:text-rabbit-dark transition-colors">
 								<span>前往小红书观看更多视频</span>
 								<i data-lucide="external-link" class="w-4 h-4"></i>
@@ -1486,7 +1470,7 @@
 									</div>
 									<p class="mt-4 text-muted-foreground text-sm">
 										想要获取更多文创？关注我们的
-										<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+										<a href="https://www.xiaohongshu.com/user/profile/677f42a90000000008019cac" target="_blank" rel="noopener noreferrer"
 											class="text-red-500 hover:underline inline-flex items-center gap-1 mx-1">
 											小红书
 											<i data-lucide="external-link" class="w-3 h-3"></i>
@@ -1773,10 +1757,10 @@
 								<div
 									class="w-24 h-24 rounded-full border-4 border-white shadow-xl bg-white overflow-hidden transition-transform duration-500 hover:scale-110 hover:rotate-6">
 									<!-- 简单的逻辑判断：根据作者名字显示不同头像 -->
-									<img v-if="currentQuote.author.includes('兔')" src="public/rabbit-hero.png"
+									<img v-if="currentQuote.author.includes('兔')" src="public/rabbit-hero.webp"
 										alt="Avatar"
 										class="w-full h-full object-cover transform scale-125 translate-y-2" />
-									<img v-else src="public/penguin-hero.png" alt="Avatar"
+									<img v-else src="public/penguin-hero.webp" alt="Avatar"
 										class="w-full h-full object-cover transform scale-125 translate-y-1" />
 								</div>
 								<div
@@ -1955,7 +1939,7 @@
 						<!-- 底部链接 -->
 						<div class="text-center mt-16 transition-all duration-700 delay-500"
 							:class="[isEssaysVisible ? 'opacity-100' : 'opacity-0']">
-							<a href="#"
+							<a href="https://www.xiaohongshu.com/user/profile/677f42a90000000008019cac"
 								class="text-gray-400 hover:text-penguin-gray text-sm transition-colors border-b border-transparent hover:border-gray-300 pb-0.5">
 								更多故事请关注我们的小红书账号 →
 							</a>
@@ -1972,7 +1956,7 @@
 							@click.stop>
 
 							<!-- 弹窗顶部装饰 -->
-							<div class="h-2 bg-gradient-to-r from-rabbit-yellow via-red-200 to-ice-blue"></div>
+							<div class="h-2 bg-rabbit-yellow"></div>
 
 							<!-- 头部 -->
 							<div class="p-6 md:p-8 pb-4 flex items-start justify-between bg-white/50">
@@ -2131,7 +2115,7 @@
 									每日更新企鹅兔子的日常故事，还有更多互动活动和文创福利等你来拿
 								</p>
 
-								<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+								<a href="https://www.xiaohongshu.com/user/profile/677f42a90000000008019cac" target="_blank" rel="noopener noreferrer"
 									class="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-red-500 text-white font-semibold hover:bg-red-600 transition shadow-sm hover:shadow-md">
 									<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 										<path
@@ -2149,12 +2133,12 @@
 								<!-- 小底座阴影：让角色“落地” -->
 								<div class="absolute bottom-2 left-1/4 -translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48">
 									<div class="mx-auto w-full h-3 bg-black/10 blur-lg rounded-full"></div>
-									<img src="public/penguin-hero.png" alt="企鹅企企" class="w-full h-auto relative" />
+									<img src="public/penguin-hero.webp" alt="企鹅企企" class="w-full h-auto relative" />
 								</div>
 
 								<div class="absolute bottom-2 right-1/4 translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48">
 									<div class="mx-auto w-full h-3 bg-black/10 blur-lg rounded-full"></div>
-									<img src="public/rabbit-hero.png" alt="顽劣大黄兔" class="w-full h-auto relative" />
+									<img src="public/rabbit-hero.webp" alt="顽劣大黄兔" class="w-full h-auto relative" />
 								</div>
 							</div>
 
@@ -2536,8 +2520,8 @@
 							const pageUrl = window.location.href;
 							const ipName = "企鹅企企与顽劣大黄兔";
 							const ipDesc = "顽劣黄兔子和灰色的帝企鹅宝宝在一起的日常故事";
-							const ipHeroUrl = new URL("public/hero-gabra.png", window.location).href;
-							const ipIconUrl = new URL("public/icon-gabra.png", window.location).href;
+							const ipHeroUrl = new URL("public/story-meet-1.webp", window.location).href;
+							const ipIconUrl = new URL("public/icon-QiQiBunny.webp", window.location).href;
 							const title = ipName;
 							const desc = "";
 
@@ -2631,34 +2615,44 @@
 					const galleryRef = ref(null);
 					const isGalleryVisible = ref(false);
 					const galleryImages = [{
-							src: 'public/gallery-1.png',
-							title: '夕阳下的依偎',
-							desc: '背靠背，就是全世界'
+							src: 'public/gallery-1.webp',
+							title: '企鹅的肚子软乎乎',
+							desc: '按一按，还有回弹，兔子上头了！'
 						},
 						{
-							src: 'public/gallery-2.png',
-							title: '堆雪人',
-							desc: '冬天的快乐时光'
+							src: 'public/gallery-2.webp',
+							title: '企鹅兔子拼拼图',
+							desc: '企鹅兔子仔细看，拼的好认真。'
 						},
 						{
-							src: 'public/gallery-3.png',
-							title: '星空下的梦',
-							desc: '一起看星星，一起做梦'
+							src: 'public/gallery-3.webp',
+							title: '企鹅睡不着去兔子屋里叫唤',
+							desc: '啾啾啾啾，把兔子吵醒了，兔子满脸不开心。'
 						},
 						{
-							src: 'public/gallery-4.png',
-							title: '海边玩耍',
-							desc: '阳光、沙滩和海浪'
+							src: 'public/gallery-4.webp',
+							title: '兔子过生日',
+							desc: '企鹅给兔子准备了蛋糕，兔子鼓起脸颊吹蜡烛。'
 						},
 						{
-							src: 'public/gallery-5.png',
-							title: '包饺子',
-							desc: '团圆的味道'
+							src: 'public/gallery-5.webp',
+							title: '兔子给企鹅织了草帽',
+							desc: '兔子帮企鹅戴上后，企鹅开心极了，扇扇翅膀。'
 						},
 						{
-							src: 'public/gallery-6.png',
-							title: '放风筝',
-							desc: '让梦想飞得更高'
+							src: 'public/gallery-6.webp',
+							title: '企鹅兔子滑冰',
+							desc: '好奇怪，企鹅用肚皮滑 ~'
+						},
+						{
+							src: 'public/gallery-7.webp',
+							title: '企鹅兔子挑选法棍',
+							desc: '企鹅就喜欢吃邦邦硬的法棍，兔子帮着一起挑。'
+						},
+						{
+							src: 'public/gallery-8.webp',
+							title: '兔子给企鹅画肖像',
+							desc: '没想到把企鹅睡着的样子画下来了，还冒着鼻涕泡。'
 						},
 					];
 					const selectedImage = ref(null);
@@ -2691,29 +2685,29 @@
 							thumbnail: 'https://check.dorafx.top/IP/QiQiBunny/thumbnail1.webp',
 							src: 'https://check.dorafx.top/IP/QiQiBunny/video1.mp4',
 							title: '坏猫欺负企鹅，兔子把它赶跑',
-							views: '1.2万',
-							likes: '3.4千',
+							views: '3408',
+							likes: '215',
 						},
 						{
 							thumbnail: 'https://check.dorafx.top/IP/QiQiBunny/thumbnail2.webp',
 							src: 'https://check.dorafx.top/IP/QiQiBunny/video2.mp4',
 							title: '企鹅兔子吃火龙果',
-							views: '8.5千',
-							likes: '2.1千',
+							views: '381',
+							likes: '28',
 						},
 						{
 							thumbnail: 'https://check.dorafx.top/IP/QiQiBunny/thumbnail3.webp',
 							src: 'https://check.dorafx.top/IP/QiQiBunny/video3.mp4',
 							title: '坏鹈鹕欺负企鹅，兔子把它赶跑',
-							views: '2.1万',
-							likes: '5.6千',
+							views: '575',
+							likes: '38',
 						},
 						{
 							thumbnail: 'https://check.dorafx.top/IP/QiQiBunny/thumbnail4.webp',
 							src: 'https://check.dorafx.top/IP/QiQiBunny/video4.mp4',
 							title: '企鹅兔子吃三文鱼',
-							views: '2.1万',
-							likes: '5.6千',
+							views: '791',
+							likes: '49',
 						},
 					];
 					const selectedVideo = ref(null);
@@ -2773,7 +2767,7 @@
 							id: 1,
 							title: '极地之恋',
 							artist: '大号的加菲猫',
-							cover: 'public/album-PolarLoveTale.png',
+							cover: 'public/album-PolarLoveTale.webp',
 							audio: 'https://check.dorafx.top/IP/QiQiBunny/Polar Love Tale.mp3',
 							duration: '2:48',
 							lyricQuote: '在冰雪的世界里，遇见最温暖的你'
@@ -2782,7 +2776,7 @@
 							id: 2,
 							title: '企鹅兔子跳跳舞',
 							artist: '企鹅企企',
-							cover: 'public/QiQiBunny Dancing.png',
+							cover: 'public/QiQiBunny Dancing.webp',
 							audio: 'https://check.dorafx.top/IP/QiQiBunny/QiQiBunny Dancing.mp3',
 							duration: '2:36',
 							lyricQuote: '企鹅兔子在乡下跳舞，虽然没有舞台，但也很开心'
@@ -2791,7 +2785,7 @@
 							id: 3,
 							title: '企鹅兔子在舞会',
 							artist: '企鹅企企',
-							cover: 'public/QiQiBunny at Prom.png',
+							cover: 'public/QiQiBunny at Prom.webp',
 							audio: 'https://check.dorafx.top/IP/QiQiBunny/QiQiBunny at Prom.mp3',
 							duration: '2:07',
 							lyricQuote: '企鹅兔子在舞会跳舞'
@@ -2962,34 +2956,38 @@
 					const products = [{
 							id: 1,
 							name: '企鹅兔子拼图',
-							description: '经典年糕场景，100片装',
-							image: 'public/product-puzzle.png',
+							description: '经典年糕场景，区分不同难度',
+							image: 'public/product-puzzle.webp',
 							type: 'free',
 							tag: '免费下载',
+							download: 'https://check.dorafx.top/IP/QiQiBunny/puzzle.zip',
 						},
 						{
 							id: 2,
 							name: '3D纸模套装',
 							description: '立体企鹅兔子纸模型',
-							image: 'public/product-papercraft.png',
+							image: 'public/product-papercraft.webp',
 							type: 'free',
 							tag: '免费下载',
+							download: 'https://check.dorafx.top/IP/QiQiBunny/papercraft.zip',
 						},
 						{
 							id: 3,
 							name: '可爱贴纸包',
 							description: '20张表情包贴纸',
-							image: 'public/product-sticker.png',
+							image: 'public/product-sticker.webp',
 							type: 'free',
 							tag: '免费下载',
+							download: 'https://check.dorafx.top/IP/QiQiBunny/sticker.zip',
 						},
 						{
 							id: 4,
-							name: '主题笔记本',
-							description: 'A5尺寸，80页',
-							image: 'public/product-notebook.png',
+							name: '主题壁纸',
+							description: '适配手机、平板、电脑',
+							image: 'public/product-wallpaper.webp',
 							type: 'free',
 							tag: '免费下载',
+							download: 'https://check.dorafx.top/IP/QiQiBunny/wallpaper.zip',
 						},
 					];
 					const likedProducts = ref([]);
@@ -3003,7 +3001,15 @@
 					};
 
 					const handleDownload = (productName) => {
-						showToast(`${productName} 下载链接已复制！`, 'success');
+						const product = products.find((item) => item.name === productName);
+
+						if (!product || !products.download) {
+							showToast('下载链接不存在', 'error');
+							return;
+						}
+
+						navigator.clipboard.writeText(products.download);
+						showToast(`${products.name} 下载链接已复制！`, 'success');
 					};
 
 					// === Puzzle section ===
@@ -3014,35 +3020,35 @@
 							grid: 2,
 							name: '入门',
 							stars: 1,
-							image: 'public/gallery-1.png',
+							image: 'public/puzzle-1.webp',
 						},
 						{
 							level: 2,
 							grid: 3,
 							name: '简单',
 							stars: 2,
-							image: 'public/gallery-2.png',
+							image: 'public/puzzle-2.webp',
 						},
 						{
 							level: 3,
 							grid: 4,
 							name: '中等',
 							stars: 3,
-							image: 'public/gallery-3.png',
+							image: 'public/puzzle-3.webp',
 						},
 						{
 							level: 4,
 							grid: 5,
 							name: '困难',
 							stars: 4,
-							image: 'public/gallery-4.png',
+							image: 'public/puzzle-4.webp',
 						},
 						{
 							level: 5,
 							grid: 6,
 							name: '大师',
 							stars: 5,
-							image: 'public/gallery-5.png',
+							image: 'public/puzzle-5.webp',
 						},
 					];
 					const currentLevel = ref(0);
@@ -3206,7 +3212,7 @@
 							context: '关于兔子的社交哲学',
 						},
 						{
-							text: '屋子不大，但有毛毯、食物，还有企鹅，已经足够温暖了。',
+							text: '屋子不大，但有毛毯、食物，还有企鹅和兔子，已经足够温暖了。',
 							author: '年糕故事',
 							context: '企鹅兔子相遇的那一天',
 						},
@@ -3280,7 +3286,7 @@
 							id: 2,
 							title: '哔啵叫的兔子',
 							excerpt: '兔子最近学会了一种新的叫声——哔啵。它高兴的时候哔啵，不高兴的时候也哔啵...',
-							content: `兔子最近学会了一种新的叫声——哔啵。它高兴的时候哔啵，不高兴的时候也哔啵，无聊的时候更是哔啵个不停。\n\n企鹅一开始觉得很有趣，但渐渐地，这种声音开始让它头疼。尤其是晚上，当企鹅想要睡觉的时候，兔子还在那里哔啵哔啵。\n\n直到有一天，兔子收到了一封来自兔子委员会的信。信上说："哔啵叫有辱兔子的身份，请立即停止。"\n\n兔子看了看信，又看了看企鹅，然后......继续哔啵叫。\n\n顽劣大黄兔，果然名不虚传。`,
+							content: `兔子最近学会了一种新的叫声——哔啵。它高兴的时候哔啵，不高兴的时候也哔啵，无聊的时候更是哔啵个不停。\n\n企鹅一开始觉得很有趣，但渐渐地，这种声音开始让它头疼。尤其是晚上，当企鹅想要睡觉的时候，兔子还在那里哔啵哔啵。\n\n直到有一天，兔子收到了一封来自兔子委员会的信。信上说："不许哔啵叫！"\n\n兔子看了看信，又看了看企鹅，然后......继续哔啵叫。\n\n顽劣大黄兔，果然名不虚传。`,
 							date: '2024-01-15',
 							readTime: '2分钟',
 						},
@@ -3295,8 +3301,8 @@
 						{
 							id: 4,
 							title: '坏猫来了',
-							excerpt: '那天，一只坏猫闯进了院子。它看到企鹅，眼睛一亮，蹑手蹑脚地靠近...',
-							content: `那天，一只坏猫闯进了院子。它看到企鹅，眼睛一亮，蹑手蹑脚地靠近。\n\n企鹅正在晒太阳，完全没有察觉到危险。坏猫弓起身子，准备扑上去......\n\n"哔啵！"\n\n一声怒吼，兔子像一颗黄色的炮弹一样冲了过来。它挡在企鹅面前，对着坏猫龇牙咧嘴。\n\n坏猫被这突如其来的攻击吓了一跳，愣在原地。兔子趁机用后腿蹬地，扬起一片尘土，然后拉着企鹅就跑。\n\n等坏猫回过神来，两个小家伙已经躲进了屋里，从窗户里对它做鬼脸。\n\n从那以后，每当有坏猫、坏鹈鹕、坏大鹅靠近，兔子总是第一个冲出来保护企鹅。\n\n这就是友谊，这就是陪伴。`,
+							excerpt: '那天，一只坏猫闯进了院子。它看到企鹅，蹑手蹑脚地靠近...',
+							content: `那天，一只坏猫闯进了院子。它看到企鹅，蹑手蹑脚地靠近。\n\n企鹅正在晒太阳，完全没有察觉到危险。坏猫弓起身子，准备扑上去......\n\n"噗噜！"\n\n一声怒吼，兔子像一颗黄色的炮弹一样冲了过来。它挡在企鹅面前，对着坏猫龇牙咧嘴。\n\n坏猫被这突如其来的攻击吓了一跳，愣在原地。兔子趁机用后腿蹬地，扬起一片尘土，然后拉着企鹅就跑。\n\n等坏猫回过神来，两个小家伙已经躲进了屋里，从窗户里对它做鬼脸。\n\n从那以后，每当有坏猫、坏鹈鹕、坏大鹅靠近，兔子总是第一个冲出来保护企鹅。\n\n这就是友谊，这就是陪伴。`,
 							date: '2024-03-10',
 							readTime: '3分钟',
 						},
@@ -3304,7 +3310,7 @@
 							id: 5,
 							title: '极地之恋',
 							excerpt: '在冰雪覆盖的极地，有一只企鹅和一只兔子。他们本不该相遇，但命运让他们走到了一起...',
-							content: `在冰雪覆盖的极地，有一只企鹅和一只兔子。他们本不该相遇，但命运让他们走到了一起。\n\n企鹅来自寒冷的南极，习惯了冰雪的世界。兔子来自温暖的草原，本不该出现在这片白色荒原。\n\n但兔子说："我想看看雪。"\n\n于是它来了，然后遇到了企鹅。\n\n他们一起看极光，一起堆雪人，一起在冰面上滑行。兔子冻得瑟瑟发抖，企鹅就把自己的羽毛披在它身上。\n\n"你不冷吗？"兔子问。\n\n"我是企鹅啊，"企鹅笑着说，"我生来就属于寒冷。"\n\n"那我呢？"兔子又问。\n\n"你属于我，"企鹅说，"你属于温暖，而我要给你温暖。"\n\n这就是极地之恋，一个关于陪伴和温暖的故事。`,
+							content: `在冰雪覆盖的极地，有一只企鹅和一只兔子。他们本不该相遇，但命运让他们走到了一起。\n\n企鹅来自寒冷的南极，习惯了冰雪的世界。兔子来自温暖的草原，本不该出现在这片白色荒原。\n\n但兔子说："我想看看雪。"\n\n于是它来了，然后遇到了企鹅。\n\n他们一起看极光，一起堆雪人，一起在冰面上滑行。兔子冻得瑟瑟发抖，企鹅就让兔子靠在它身上。\n\n"你不冷吗？"兔子问。\n\n"我是企鹅，"企鹅说，"我生来就耐寒。"\n\n"那我呢？"兔子又问。\n\n"你跟着我，"企鹅说，"就不怕寒冷了。"\n\n这就是极地之恋，一个关于陪伴和温暖的故事。`,
 							date: '2024-04-01',
 							readTime: '5分钟',
 						},
@@ -3378,19 +3384,9 @@
 							correct: 2,
 						},
 						{
-							question: '企鹅最爱做的事情是什么？',
-							options: ['钓鱼', '晒太阳', '滑冰', '读书'],
-							correct: 2,
-						},
-						{
-							question: '兔子最擅长的技能是？',
-							options: ['画画', '跳跃', '唱歌', '游泳'],
-							correct: 1,
-						},
-						{
 							question: '企鹅和兔子最常一起做什么？',
-							options: ['堆雪人', '打篮球', '写作业', '看电影'],
-							correct: 0,
+							options: ['堆雪人', '打篮球', '吃东西', '看电影'],
+							correct: 2,
 						},
 						{
 							question: '企鹅给兔子准备的食物是什么？',
@@ -3408,14 +3404,129 @@
 							correct: 2,
 						},
 						{
-							question: '兔子最喜欢的季节是？',
-							options: ['春天', '夏天', '秋天', '冬天'],
+							question: '企鹅和兔子去了海边后，最可能做的是？',
+							options: ['游泳', '晒太阳', '捡东西', '以上都有'],
 							correct: 3,
 						},
 						{
-							question: '企鹅最擅长的活动是？',
-							options: ['滑冰', '滑板', '爬树', '跑步'],
+							question: '企鹅和兔子吃参鸡汤时，企鹅更在意的是？',
+							options: ['汤热不热', '有没有肉', '汤够不够多', '能不能再来一碗'],
+							correct: 1,
+						},
+						{
+							question: '胡萝卜汉堡的主要特色是？',
+							options: ['有胡萝卜', '特别辣', '很冰', '会发光'],
 							correct: 0,
+						},
+						{
+							question: '企鹅给冻坏的兔子煮年糕时，兔子在做什么？',
+							options: ['兴奋地大叫', '裹在毛毯里', '已经睡着', '假装没事'],
+							correct: 1,
+						},
+						{
+							question: '企鹅和兔子吃自助时，最容易发生的是？',
+							options: ['拿太多', '排队太久', '吃撑了', '忘记结账'],
+							correct: 2,
+						},
+						{
+							question: '企鹅在沃尔玛玩偶货架前发生了什么？',
+							options: ['被误认', '买太多', '挪不动道', '找不到出口'],
+							correct: 2,
+						},
+						{
+							question: '企鹅钻进洗衣机后，结果是？',
+							options: ['自己出来了', '睡着了', '被兔子拖出来', '洗了一遍'],
+							correct: 2,
+						},
+						{
+							question: '企鹅被胡萝卜大棒砸倒时，原因是？',
+							options: ['兔子失手', '风太大', '没看路', '胡萝卜太重'],
+							correct: 3,
+						},
+						{
+							question: '企鹅喝红牛后最大的后果是？',
+							options: ['很兴奋', '睡不着大叫', '头晕', '继续喝'],
+							correct: 1,
+						},
+						{
+							question: '企鹅背包破了之后，是谁解决的？',
+							options: ['企鹅自己', '路人', '兔子缝好', '买新的'],
+							correct: 2,
+						},
+						{
+							question: '企鹅吃汤圆时发生了什么？',
+							options: ['噎住', '烫到满地乱跑', '掉地上', '不够甜'],
+							correct: 1,
+						},
+						{
+							question: '企鹅用微波炉热蛋糕，结果怎样？',
+							options: ['爆炸了', '没热', '冒白烟', '炸开了'],
+							correct: 2,
+						},
+						{
+							question: '兔子剥桔子时，企鹅遭遇了什么？',
+							options: ['被抢', '被吓到', '汁水溅了一脸', '没分到'],
+							correct: 2,
+						},
+						{
+							question: '企鹅心爱的玻璃杯最后怎么样了？',
+							options: ['找不到了', '摔碎了', '被藏起来', '修好了'],
+							correct: 1,
+						},
+						{
+							question: '企鹅被哪种鸟盯上过？',
+							options: ['海鸥', '飞鼠', '鹈鹕', '乌鸦'],
+							correct: 2,
+						},
+						{
+							question: '企兔Chiikawa番外篇中，谁欺负了企鹅？',
+							options: ['坏猫', '大坏鹅', '飞鼠', '鹈鹕'],
+							correct: 2,
+						},
+						{
+							question: '企鹅在地铁上睡着后，兔子做了什么？',
+							options: ['叫醒它', '靠着它', '拍照', '下车'],
+							correct: 1,
+						},
+						{
+							question: '企鹅看到紫心土豆时的第一反应是？',
+							options: ['很开心', '以为坏了', '想扔掉', '直接吃'],
+							correct: 1,
+						},
+						{
+							question: '兔子在拆快递时，企鹅在做什么？',
+							options: ['帮忙', '睡觉', '啄气泡纸', '乱跑'],
+							correct: 2,
+						},
+						{
+							question: '兔子组装家具时，企鹅把什么坐在了屁股下？',
+							options: ['零件', '工具', '说明书', '垫子'],
+							correct: 2,
+						},
+						{
+							question: '企鹅和兔子吃寿司时被什么辣哭了？',
+							options: ['辣椒', '胡椒', '芥末', '酱料'],
+							correct: 2,
+						},
+						{
+							question: '企鹅和兔子参观巧克力工厂后，又做了什么？',
+							options: ['买礼物', '做巧克力', '直接吃', '拍照离开'],
+							correct: 1,
+						},
+						{
+							question: '企鹅买了柚子汁后的反应是？',
+							options: ['很甜', '太苦', '好酸', '没味道'],
+							correct: 2,
+						},
+						{
+							question: '企鹅和兔子过万圣节时，更可能？',
+							options: ['扮鬼', '发糖', '拍照', '都发生'],
+							correct: 3,
+						},
+						{
+							question: '企鹅炒股时发生了什么？',
+							options: ['赚钱了', '睡着了', '亏了', '没买'],
+							correct: 1,
 						},
 					];
 					const quizData = ref([]);
