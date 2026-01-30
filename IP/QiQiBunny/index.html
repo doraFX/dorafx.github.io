@@ -1,0 +1,3061 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>企鹅企企与顽劣大黄兔</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Quicksand:wght@400;500;600;700&display=swap"
+			rel="stylesheet" />
+
+		<script src="../../js/tailwindcss.3.4.17.js"></script>
+		<script src="../../js/vue.global.js"></script>
+		<script src="../../js/shareposter.js"></script>
+		<script src="../../js/html2canvas.min.js"></script>
+		<script src="../../js/qrcode.min.js"></script>
+		<script src="../../js/lucide.min.js"></script>
+
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							border: "hsl(var(--border))",
+							input: "hsl(var(--input))",
+							ring: "hsl(var(--ring))",
+							background: "hsl(var(--background))",
+							foreground: "hsl(var(--foreground))",
+							primary: {
+								DEFAULT: "hsl(var(--primary))",
+								foreground: "hsl(var(--primary-foreground))",
+							},
+							secondary: {
+								DEFAULT: "hsl(var(--secondary))",
+								foreground: "hsl(var(--secondary-foreground))",
+							},
+							destructive: {
+								DEFAULT: "hsl(var(--destructive))",
+								foreground: "hsl(var(--destructive-foreground))",
+							},
+							muted: {
+								DEFAULT: "hsl(var(--muted))",
+								foreground: "hsl(var(--muted-foreground))",
+							},
+							accent: {
+								DEFAULT: "hsl(var(--accent))",
+								foreground: "hsl(var(--accent-foreground))",
+							},
+							popover: {
+								DEFAULT: "hsl(var(--popover))",
+								foreground: "hsl(var(--popover-foreground))",
+							},
+							card: {
+								DEFAULT: "hsl(var(--card))",
+								foreground: "hsl(var(--card-foreground))",
+							},
+							penguin: {
+								gray: "#4A5059",
+								light: "#6B7280",
+								white: "#F9FAFB",
+							},
+							rabbit: {
+								yellow: "#F5C73B",
+								light: "#FDE68A",
+								dark: "#D4A72C",
+							},
+							ice: {
+								blue: "#E3F4F7",
+								light: "#F0F9FB",
+							},
+						},
+						borderRadius: {
+							xl: "calc(var(--radius) + 4px)",
+							lg: "var(--radius)",
+							md: "calc(var(--radius) - 2px)",
+							sm: "calc(var(--radius) - 4px)",
+							xs: "calc(var(--radius) - 6px)",
+							"4xl": "2rem",
+							"5xl": "2.5rem",
+						},
+						boxShadow: {
+							xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+							soft: "0 4px 20px rgba(0, 0, 0, 0.08)",
+							glow: "0 0 30px rgba(245, 199, 59, 0.3)",
+							card: "0 8px 32px rgba(0, 0, 0, 0.12)",
+						},
+						keyframes: {
+							float: {
+								"0%, 100%": {
+									transform: "translateY(0px)"
+								},
+								"50%": {
+									transform: "translateY(-10px)"
+								},
+							},
+							breathe: {
+								"0%, 100%": {
+									transform: "scale(1)"
+								},
+								"50%": {
+									transform: "scale(1.02)"
+								},
+							},
+							wiggle: {
+								"0%, 100%": {
+									transform: "rotate(-3deg)"
+								},
+								"50%": {
+									transform: "rotate(3deg)"
+								},
+							},
+							"bounce-soft": {
+								"0%, 100%": {
+									transform: "translateY(0)"
+								},
+								"50%": {
+									transform: "translateY(-5px)"
+								},
+							},
+							snow: {
+								"0%": {
+									transform: "translateY(-10px) rotate(0deg)",
+									opacity: "0"
+								},
+								"10%": {
+									opacity: "1"
+								},
+								"90%": {
+									opacity: "1"
+								},
+								"100%": {
+									transform: "translateY(100vh) rotate(360deg)",
+									opacity: "0"
+								},
+							},
+							"spin-slow": {
+								"0%": {
+									transform: "rotate(0deg)"
+								},
+								"100%": {
+									transform: "rotate(360deg)"
+								},
+							},
+							"pulse-glow": {
+								"0%, 100%": {
+									boxShadow: "0 0 20px rgba(245, 199, 59, 0.3)"
+								},
+								"50%": {
+									boxShadow: "0 0 40px rgba(245, 199, 59, 0.6)"
+								},
+							},
+						},
+						animation: {
+							float: "float 3s ease-in-out infinite",
+							breathe: "breathe 4s ease-in-out infinite",
+							wiggle: "wiggle 0.5s ease-in-out infinite",
+							"bounce-soft": "bounce-soft 2s ease-in-out infinite",
+							snow: "snow 10s linear infinite",
+							"spin-slow": "spin-slow 8s linear infinite",
+							"pulse-glow": "pulse-glow 2s ease-in-out infinite",
+						},
+						fontFamily: {
+							display: ['"ZCOOL QingKe HuangYou"', "cursive"],
+							body: ['"Noto Sans SC"', "sans-serif"],
+							quicksand: ["Quicksand", "sans-serif"],
+						},
+					},
+				},
+			};
+		</script>
+		<style>
+			:root {
+				--background: 0 0% 96%;
+				--foreground: 220 10% 20%;
+				--card: 0 0% 100%;
+				--card-foreground: 220 10% 20%;
+				--popover: 0 0% 100%;
+				--popover-foreground: 220 10% 20%;
+				--primary: 45 90% 60%;
+				--primary-foreground: 220 10% 20%;
+				--secondary: 220 10% 35%;
+				--secondary-foreground: 0 0% 98%;
+				--muted: 200 30% 95%;
+				--muted-foreground: 220 5% 45%;
+				--accent: 45 90% 60%;
+				--accent-foreground: 220 10% 20%;
+				--destructive: 0 84.2% 60.2%;
+				--destructive-foreground: 0 0% 98%;
+				--border: 200 20% 88%;
+				--input: 200 20% 88%;
+				--ring: 45 90% 60%;
+				--radius: 0.75rem;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				margin: 0;
+				font-family: "Noto Sans SC", sans-serif;
+				background: linear-gradient(180deg, #e3f4f7 0%, #f4f4f4 30%, #f4f4f4 100%);
+				min-height: 100vh;
+			}
+
+			a:focus-visible,
+			button:focus-visible,
+			input:focus-visible {
+				outline: 2px solid #f5c73b;
+				outline-offset: 2px;
+			}
+
+			::selection {
+				background: rgba(245, 199, 59, 0.3);
+				color: inherit;
+			}
+
+			body::-webkit-scrollbar {
+				width: 5px;
+			}
+
+			body::-webkit-scrollbar-track {
+				background: none;
+			}
+
+			body::-webkit-scrollbar-thumb {
+				background: #f5c73b;
+				border-radius: 4px;
+			}
+
+			body::-webkit-scrollbar-thumb:hover {
+				background: #d4a72c;
+			}
+
+			.line-clamp-3 {
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			.glass-card {
+				background: rgba(255, 255, 255, 0.85);
+				backdrop-filter: blur(12px);
+				-webkit-backdrop-filter: blur(12px);
+				border: 1px solid rgba(255, 255, 255, 0.5);
+				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+				border-radius: 1.5rem;
+			}
+
+			.section-container {
+				width: 100%;
+				padding: 4rem 1rem;
+			}
+
+			@media (min-width: 640px) {
+				.section-container {
+					padding: 4rem 1.5rem;
+				}
+			}
+
+			@media (min-width: 1024px) {
+				.section-container {
+					padding: 6rem 3rem;
+				}
+			}
+
+			.section-title {
+				font-size: 2rem;
+				font-weight: 700;
+				text-align: center;
+				margin-bottom: 1rem;
+				color: #4a5059;
+			}
+
+			@media (min-width: 768px) {
+				.section-title {
+					font-size: 2.5rem;
+				}
+			}
+
+			.section-subtitle {
+				font-size: 1.125rem;
+				text-align: center;
+				color: hsl(var(--muted-foreground));
+				margin-bottom: 3rem;
+			}
+
+			.btn-primary {
+				padding: 0.75rem 2rem;
+				background: #f5c73b;
+				color: #4a5059;
+				font-weight: 600;
+				border-radius: 9999px;
+				transition: all 0.3s ease;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.btn-primary:hover {
+				box-shadow: 0 0 30px rgba(245, 199, 59, 0.3);
+				transform: translateY(-2px) scale(1.02);
+			}
+
+			.btn-secondary {
+				padding: 0.75rem 2rem;
+				background: white;
+				color: #4a5059;
+				font-weight: 600;
+				border-radius: 9999px;
+				border: 2px solid rgba(74, 80, 89, 0.2);
+				transition: all 0.3s ease;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.btn-secondary:hover {
+				background: #4a5059;
+				color: white;
+			}
+
+			.character-bounce {
+				animation: breathe 4s ease-in-out infinite;
+			}
+
+			.float-animation {
+				animation: float 3s ease-in-out infinite;
+			}
+
+			.snowflake {
+				position: fixed;
+				top: -10px;
+				color: white;
+				opacity: 0.8;
+				pointer-events: none;
+				animation: snow 10s linear infinite;
+				z-index: 1;
+			}
+
+			.card-hover {
+				transition: all 0.3s ease;
+			}
+
+			.card-hover:hover {
+				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+				transform: translateY(-4px);
+			}
+
+			.puzzle-piece {
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.puzzle-piece:hover {
+				transform: scale(1.02);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				z-index: 10;
+			}
+
+			.music-disc {
+				animation: spin-slow 8s linear infinite;
+			}
+
+			.music-disc.paused {
+				animation-play-state: paused;
+			}
+
+			.wave-bar {
+				width: 0.25rem;
+				background: #f5c73b;
+				border-radius: 9999px;
+				animation: bounce-soft 0.5s ease-in-out infinite alternate;
+			}
+
+			.toast {
+				min-width: 240px;
+				background: white;
+				border-radius: 9999px;
+				padding: 0.75rem 1.25rem;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				color: #4a5059;
+			}
+
+			.toast.success {
+				border: 1px solid rgba(34, 197, 94, 0.2);
+			}
+
+			.toast.error {
+				border: 1px solid rgba(239, 68, 68, 0.2);
+			}
+
+			.toast.info {
+				border: 1px solid rgba(59, 130, 246, 0.2);
+			}
+
+			.range-slider {
+				width: 100%;
+				height: 6px;
+				border-radius: 9999px;
+				background: rgba(0, 0, 0, 0.1);
+				appearance: none;
+			}
+
+			.range-slider::-webkit-slider-thumb {
+				appearance: none;
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				background: #f5c73b;
+				border: 2px solid white;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+				cursor: pointer;
+			}
+
+			.range-slider::-moz-range-thumb {
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				background: #f5c73b;
+				border: 2px solid white;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+				cursor: pointer;
+			}
+
+			.custom-scrollbar::-webkit-scrollbar {
+				width: 5px;
+			}
+
+			.custom-scrollbar::-webkit-scrollbar-track {
+				border-radius: 3px;
+				background: none;
+			}
+
+			.custom-scrollbar::-webkit-scrollbar-thumb {
+				background: #f5c73b;
+				border-radius: 3px;
+			}
+
+			.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+				background: #d4a72c;
+			}
+
+			@media (max-width: 768px) {
+				.section-container {
+					padding-top: 3rem;
+					padding-bottom: 3rem;
+				}
+
+				.section-title {
+					font-size: 1.75rem;
+				}
+
+				.section-subtitle {
+					font-size: 1rem;
+				}
+			}
+
+			@keyframes fade-in-up {
+				from {
+					opacity: 0;
+					transform: translate(-50%, 10px);
+				}
+
+				to {
+					opacity: 1;
+					transform: translate(-50%, 0);
+				}
+			}
+
+			.animate-fade-in-up {
+				animation: fade-in-up 0.3s ease-out forwards;
+			}
+
+			.bg-grid-pattern {
+				background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
+				background-size: 100% 2rem;
+				/* 控制行高，制造信纸横线感 */
+				line-height: 2rem;
+				/* 确保文字落在线上 */
+			}
+
+			/* 覆盖 prose 的 margin 确保对齐 */
+			.bg-grid-pattern p {
+				margin-bottom: 0;
+				padding-bottom: 2rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" class="relative w-full min-h-screen bg-white overflow-x-hidden">
+			<!-- Toasts -->
+			<div class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] space-y-2">
+				<div v-for="toast in toasts" :key="toast.id" :class="['toast', toast.type]">
+					<span class="text-sm">{{ toast.message }}</span>
+				</div>
+			</div>
+
+			<!-- Navigation -->
+			<div class="fixed top-0 left-0 right-0 z-50">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center justify-between py-2 px-3 transition-all duration-300"
+						:class="scrollY > 100 ? 'bg-white/80 backdrop-blur-md shadow-sm rounded-full mt-3' : 'bg-transparent'">
+						<!-- Left: Go Home -->
+						<div class="flex items-center">
+							<button @click="goHome" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+			                 bg-rabbit-yellow hover:bg-rabbit-dark transition border border-black/5 text-penguin-gray">
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									<span class="hidden sm:block">返回主页</span>
+								</span>
+							</button>
+						</div>
+
+						<!-- Center: Logo (always) -->
+						<button @click="scrollToTop" class="flex items-center justify-center mx-auto md:mx-0"
+							aria-label="企鹅兔子">
+							<div class="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 overflow-hidden"
+								:class="scrollY > 100 ? 'bg-white shadow-sm' : 'bg-white/20 backdrop-blur-sm'">
+								<!-- 方案B：如果你有 logo 图，用这个替换上面方案A（不要两者同时用） -->
+								<img src="public/icon-QiQiBunny.png" alt="企鹅兔子"
+									class="w-9 h-9 rounded-full object-cover" />
+							</div>
+						</button>
+
+						<!-- Right: Share Poster -->
+						<div class="flex items-center">
+							<button @click="shareposter" class="px-5 py-2 rounded-full text-sm font-medium
+			                 bg-rabbit-yellow text-penguin-gray hover:bg-rabbit-dark transition">
+								<span class="w-auto h-6 sm:px-2 flex gap-1 items-center justify-center">
+									<i data-lucide="square-arrow-out-up-right" class="w-4 h-4"></i>
+									<span class="hidden sm:block">生成海报</span>
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<main>
+				<!-- Hero Section -->
+				<section ref="heroRef"
+					class="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-ice-blue/10">
+
+					<!-- 雪花背景保持不变 -->
+					<div v-for="flake in snowflakes" :key="flake.id" class="snowflake"
+						:style="{ left: flake.left, animationDelay: flake.delay, animationDuration: flake.duration, fontSize: flake.size }">
+						❄
+					</div>
+
+					<!-- 背景光效增强 (新增) -->
+					<div
+						class="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-white/30 to-transparent pointer-events-none">
+					</div>
+					<div
+						class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-200/20 rounded-full blur-[100px] pointer-events-none">
+					</div>
+
+					<div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+
+						<div
+							class="grid grid-cols-2 lg:flex lg:flex-row items-center justify-between gap-x-4 gap-y-8 lg:gap-12">
+
+							<!-- 1. 企鹅 (左侧/移动端左下) -->
+							<div class="order-2 lg:order-none relative col-span-1 flex justify-center lg:block transition-all duration-1000"
+								:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']"
+								:style="{ transform: `translate(${mousePos.x * -10}px, ${mousePos.y * -8}px)` }">
+								<!-- 角色背景光晕 -->
+								<div class="absolute inset-0 bg-blue-300/20 blur-2xl rounded-full scale-75"></div>
+
+								<div class="relative w-full max-w-[160px] sm:max-w-[400px] lg:w-80 xl:w-96">
+									<div class="character-bounce">
+										<img src="public/penguin-hero.png" alt="企鹅企企"
+											class="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500 ease-out" />
+									</div>
+									<!-- 浮动图标 -->
+									<div
+										class="absolute -top-2 -right-2 lg:-top-4 lg:-right-4 bg-white/90 backdrop-blur-md rounded-full p-1.5 lg:p-2 shadow-lg float-animation border border-white/50">
+										<i data-lucide="sparkles" class="w-4 h-4 lg:w-5 lg:h-5 text-rabbit-yellow"></i>
+									</div>
+								</div>
+							</div>
+
+							<!-- 2. 文字内容 (中间/移动端顶部) -->
+							<div class="order-1 lg:order-none col-span-2 flex-1 text-center max-w-2xl mx-auto z-20">
+								<!-- 顶部标签 -->
+								<div class="flex items-center gap-2 px-4 py-1.5 inline-flex items-center bg-white/60 backdrop-blur-md rounded-full shadow-sm border border-white/40 mb-6 transition-all duration-700 delay-200"
+									:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+									<span class="text-red-500 font-bold text-xs sm:text-sm tracking-wide">
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-[0.6rem] sm:h-[0.75rem]"
+											viewBox="0 0 100 35.449">
+											<path id="联合_4" data-name="联合 4"
+												d="M-4770.95-10627.295a2.151,2.151,0,0,1-1.689-.754l3.374-6.5a1.907,1.907,0,0,0,1.387.479H-4759l-3.579,6.775Zm58.306-.023a5.706,5.706,0,0,1-5.705-5.705H-4712v-7.124a1.63,1.63,0,0,0-1.629-1.629h-9.153v14.458h-6.649v-14.463h-6.65v-6.784h6.654v-5.281h-4.174v-6.785h4.174v-2.112h6.65v2.112h2.62a7.589,7.589,0,0,1,7.59,7.59v4.477h.791a6.554,6.554,0,0,1,6.557,6.57v8.972a5.706,5.706,0,0,1-5.705,5.705Zm-10.135-21.247h3.425v-4.244a1.031,1.031,0,0,0-1.033-1.033h-2.392Zm-36.231,21.247,3.239-6.533h6.45v-19.818h-4.365v-6.92h15.384v6.92h-4.3v19.818h6.519v6.533Zm-33.308,0s-4.333-.451-4.333-5.575h4.384v-29.846h6.8v30.33s-.181,5.091-4.635,5.091Zm11.284-26.352h6.957a47.054,47.054,0,0,0,1.61,15.947l-3.727,6.831C-4781.136-10633.01-4781.034-10653.67-4781.034-10653.67Zm-24.188,15.947a46.975,46.975,0,0,0,1.615-15.947h6.952s.1,20.66-4.839,22.778Zm38.637,1.456c-3.225-.135-1.21-4.1-1.21-4.1l3.458-7.055h-4.532c-3.225-.135-1.21-4.1-1.21-4.1l5.565-11.215h6.52l-4.682,8.931a.64.64,0,0,0,.027.624.642.642,0,0,0,.545.307h.433l.386-.792h6.519l-5.621,11.01a.642.642,0,0,0,.027.625.642.642,0,0,0,.545.307h3.76l-3.006,5.458Zm54.691-17.738v-3.295a3.3,3.3,0,0,1,3.294-3.295,3.294,3.294,0,0,1,3.29,3.295,3.294,3.294,0,0,1-3.29,3.295Z"
+												transform="translate(4805.222 10662.744)" fill="red" />
+										</svg>
+									</span>
+									<span class="bg-gray-300 h-[0.8rem] sm:h-[1rem] w-[1px] rounded-xl"></span>
+									<span class="text-penguin-gray text-xs sm:text-sm font-medium">已更新200+期</span>
+								</div>
+
+								<!-- 标题 -->
+								<h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-8 transition-all duration-700 delay-300 leading-tight tracking-tight"
+									:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+									<span
+										class="bg-gradient-to-r from-penguin-light to-penguin-gray bg-clip-text text-transparent">
+										企鹅企企
+									</span>
+									<br />
+									<span class="text-neutral drop-shadow-sm">与</span>
+									<br />
+									<span
+										class="bg-gradient-to-r from-rabbit-dark to-rabbit-yellow bg-clip-text text-transparent">
+										顽劣大黄兔
+									</span>
+								</h1>
+
+								<!-- 副标题 -->
+								<p class="text-lg sm:text-2xl text-penguin-gray/80 mb-16 sm:mb-12 font-quicksand font-medium transition-all duration-700 delay-400"
+									:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+									记录企鹅和兔子的
+									<span
+										class="text-blue-400/80 decoration-wavy underline decoration-2 underline-offset-4">治愈日常</span>
+								</p>
+
+								<!-- 按钮组 -->
+								<div class="flex flex-row justify-center gap-4 transition-all duration-700 delay-600"
+									:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+									<a href=""
+										class="group relative px-6 py-3 bg-red-500 text-white rounded-full shadow-lg hover:shadow-xl hover:bg-red-600 transition-all duration-300 overflow-hidden">
+										<span class="relative flex items-center gap-2 font-bold">
+											<i data-lucide="external-link" class="w-4 h-4 text-white animate-pulse"></i>
+											打开小红书
+										</span>
+									</a>
+									<a href=""
+										class="group px-6 py-3 bg-white text-penguin-gray rounded-full shadow-md hover:shadow-lg border border-gray-100 transition-all duration-300">
+										<span class="flex items-center gap-2 font-medium">
+											<i data-lucide="book-open"
+												class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+											浏览图集
+										</span>
+									</a>
+								</div>
+							</div>
+
+							<!-- 3. 兔子 (右侧/移动端右下) -->
+							<div class="order-3 lg:order-none relative col-span-1 flex justify-center lg:block transition-all duration-1000 delay-200"
+								:class="[isHeroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']"
+								:style="{ transform: `translate(${mousePos.x * 10}px, ${mousePos.y * -8}px)` }">
+								<!-- 角色背景光晕 -->
+								<div class="absolute inset-0 bg-yellow-200/20 blur-2xl rounded-full scale-75"></div>
+
+								<div class="relative w-full max-w-[160px] sm:max-w-[400px] lg:w-80 xl:w-96">
+									<div class="character-bounce" style="animation-delay: 0.5s">
+										<img src="public/rabbit-hero.png" alt="顽劣大黄"
+											class="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500 ease-out" />
+									</div>
+									<!-- 浮动图标 -->
+									<div class="absolute -top-2 -left-2 lg:-top-4 lg:-left-4 bg-white/90 backdrop-blur-md rounded-full p-1.5 lg:p-2 shadow-lg float-animation border border-white/50"
+										style="animation-delay: 1s">
+										<i data-lucide="heart"
+											class="w-4 h-4 lg:w-5 lg:h-5 text-red-400 fill-red-100"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 滚动提示 -->
+					<div class="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 transition-all duration-700 delay-700"
+						:class="[isHeroLoaded ? 'opacity-100' : 'opacity-0']">
+						<div
+							class="flex flex-col items-center gap-2 text-penguin-gray/40 hover:text-penguin-gray/60 transition-colors cursor-pointer">
+							<div
+								class="w-5 h-9 sm:w-6 sm:h-10 border-2 border-penguin-gray/20 rounded-full flex justify-center pt-2">
+								<div class="w-1 h-2 sm:w-1.5 sm:h-3 bg-penguin-gray/40 rounded-full animate-bounce">
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- About Section -->
+				<section id="about" ref="aboutRef" class="section-container relative">
+					<div class="max-w-6xl mx-auto">
+						<div class="text-center mb-12 transition-all duration-700"
+							:class="[isAboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-blue-50 border border-blue-200 text-blue-400 text-xs font-bold mb-4">
+								OUR STORY
+							</span>
+							<h2 class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4">
+								关于我们</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								两个小家伙的
+								<span class="text-rabbit-yellow relative inline-block mx-1">
+									温馨日常
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-rabbit-yellow/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+							<div class="relative h-80 sm:h-96 transition-all duration-700 delay-200"
+								:class="[isAboutVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20']">
+								<div
+									class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 sm:w-64 z-10 hover:scale-105 transition-all duration-300">
+									<div class="glass-card p-3 rotate-3">
+										<img src="public/story-meet-1.png" alt="" class="w-full rounded-2xl" />
+										<p class="text-center text-sm text-penguin-gray/70 mt-2">相遇的那一天</p>
+									</div>
+								</div>
+
+								<div
+									class="absolute top-0 left-0 w-32 sm:w-40 hover:scale-105 transition-all duration-300">
+									<div class="glass-card p-2 -rotate-6">
+										<img src="public/story-meet-2.png" alt="" class="w-full rounded-xl" />
+									</div>
+								</div>
+
+								<div
+									class="absolute bottom-0 right-0 w-32 sm:w-40 hover:scale-105 transition-all duration-300">
+									<div class="glass-card p-2 rotate-6">
+										<img src="public/story-meet-3.png" alt="" class="w-full rounded-xl" />
+									</div>
+								</div>
+
+								<div
+									class="absolute top-1/4 right-1/4 w-16 h-16 bg-rabbit-yellow/30 rounded-full blur-xl">
+								</div>
+								<div
+									class="absolute bottom-1/4 left-1/4 w-20 h-20 bg-penguin-gray/20 rounded-full blur-xl">
+								</div>
+							</div>
+
+							<div class="space-y-6 transition-all duration-700 delay-400"
+								:class="[isAboutVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20' ]">
+								<div class="glass-card p-6 sm:p-8 mb-12 sm:mb-10">
+									<h3 class="text-2xl font-bold text-penguin-gray mb-4">从一碗年糕开始的友谊</h3>
+									<p class="text-muted-foreground leading-relaxed mb-4">
+										❄️ 外面下着雪，兔子躲在雪地里，冻得一动不动。它的耳朵塌塌的，小脸也被风吹红了，看起来可怜又无助。
+									</p>
+									<p class="text-muted-foreground leading-relaxed mb-4">
+										🐧 企鹅从屋里的窗户看到它，赶紧把兔子请进来。 给兔子盖上厚毛毯，还在厨房里忙活起来，准备一锅香喷喷的炒年糕。
+									</p>
+									<p class="text-muted-foreground leading-relaxed">
+										🍲 吃到热乎乎的年糕，兔子终于笑了。 屋子不大，但有毛毯、食物，还有企鹅，已经足够温暖了。
+									</p>
+								</div>
+
+								<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+									<div v-for="(stat, index) in stats" :key="stat.label"
+										class="group bg-white/50 backdrop-blur-md border border-white/40 p-2 rounded-2xl text-center transition-all duration-300 hover:bg-white"
+										:style="{ transitionDelay: `${600 + index * 100}ms` }">
+										<!-- 图标容器：根据索引给不同的柔和背景色 -->
+										<div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-transform duration-300 group-hover:scale-110"
+											:class="[index === 0 ? 'bg-red-50 text-red-400' : index === 1 ? 'bg-blue-50 text-blue-400' : index === 2 ? 'bg-yellow-50 text-yellow-500' : 'bg-purple-50 text-purple-400']">
+											<i :data-lucide="stat.icon" class="w-6 h-6"></i>
+										</div>
+										<div
+											class="font-black text-2xl text-penguin-gray mb-1 group-hover:text-black transition-colors">
+											{{ stat.value }}
+										</div>
+										<div
+											class="text-xs font-medium text-gray-400 uppercase tracking-wide group-hover:text-gray-500">
+											{{ stat.label }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Gallery Section -->
+				<section id="gallery" ref="galleryRef" class="section-container relative overflow-hidden">
+					<div class="max-w-7xl mx-auto">
+
+						<div class="text-center mb-12 transition-all duration-700"
+							:class="[isGalleryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-yellow-50 border border-yellow-200 text-yellow-400 text-xs font-bold mb-4">
+								MOMENTS
+							</span>
+							<h2 class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4">
+								精彩瞬间</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								记录每一个
+								<span class="text-rabbit-yellow relative inline-block mx-1">
+									温馨时刻
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-rabbit-yellow/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<!-- Gallery Grid：对齐 gap 的“网格瀑布流” -->
+						<div
+							class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 auto-rows-[9.5rem] sm:auto-rows-[11rem] md:auto-rows-[12rem]">
+							<div v-for="(image, index) in galleryImages" :key="image.src"
+								@click="openGallery(image, index)"
+								class="group relative overflow-hidden rounded-2xl cursor-pointer ring-1 ring-black/5 bg-white/5 transition-all duration-700 will-change-transform"
+								:class="[isGalleryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',index % 7 === 0 ? 'col-span-2 row-span-2' : '',index % 7 === 3 ? 'row-span-2' : '']"
+								:style="{ transitionDelay: `${index * 70}ms` }">
+								<!-- 统一用绝对定位铺满格子，不再出现参差高度导致的“卡不齐” -->
+								<div class="absolute inset-0">
+									<img :src="image.src" :alt="image.title"
+										class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+										loading="lazy" draggable="false" />
+
+									<!-- 顶部轻微高光 + 边缘暗角，照片更“电影感” -->
+									<div
+										class="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,rgba(255,255,255,0.18),transparent_55%)]">
+									</div>
+									<div
+										class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+									</div>
+
+									<!-- 信息条：默认轻显，hover 更清晰；移动端也可读 -->
+									<div class="absolute left-0 right-0 bottom-0 p-3 sm:p-4">
+										<div class="flex items-end justify-between gap-3">
+											<div class="min-w-0">
+												<h3
+													class="text-white font-semibold text-[15px] sm:text-base leading-snug truncate">
+													{{ image.title }}
+												</h3>
+												<p class="text-white/75 text-xs sm:text-sm leading-snug line-clamp-2">
+													{{ image.desc }}
+												</p>
+											</div>
+
+											<!-- 角标按钮：hover/触摸都好用 -->
+											<div class="shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-white/85 backdrop-blur-md border border-black/5
+						                        opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+												<i data-lucide="zoom-in"
+													class="w-4 h-4 sm:w-5 sm:h-5 text-penguin-gray"></i>
+											</div>
+										</div>
+									</div>
+
+									<!-- 轻微交互边框：hover 更“高级” -->
+									<div
+										class="absolute inset-0 rounded-2xl ring-1 ring-white/0 group-hover:ring-white/10 transition">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="text-center mt-6 sm:mt-8 transition-all duration-700"
+							:class="[isGalleryVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2']"
+							style="transition-delay: 520ms">
+							<p class="text-muted-foreground text-sm">点击图片查看大图</p>
+						</div>
+
+
+					</div>
+
+					<div v-if="selectedImage"
+						class="fixed inset-0 z-[90] flex items-center justify-center bg-penguin-gray/90 backdrop-blur-md transition-all duration-300"
+						@click="closeGallery">
+
+						<div class="relative max-w-5xl w-full mx-4 flex flex-col items-center" @click.stop>
+							<!-- 图片：增加白边和阴影 -->
+							<div class="relative rounded-lg overflow-hidden shadow-2xl bg-black">
+								<img :src="selectedImage.src" :alt="selectedImage.title"
+									class="w-full h-auto max-h-[75vh] object-contain" />
+							</div>
+
+							<!-- 底部信息条：独立出来，不遮挡图片 -->
+							<div class="mt-6 text-center max-w-2xl">
+								<h3 class="text-white font-bold text-2xl mb-2">{{ selectedImage.title }}</h3>
+								<p class="text-gray-300 font-light leading-relaxed">{{ selectedImage.desc }}</p>
+							</div>
+
+							<!-- 导航按钮：移到图片两侧，样式更明显 -->
+							<button @click.stop="prevImage"
+								class="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 bg-white/10 hover:bg-white text-white hover:text-penguin-gray backdrop-blur rounded-full flex items-center justify-center transition-all duration-300 border border-white/20 group">
+								<i data-lucide="chevron-left"
+									class="w-6 h-6 group-hover:-translate-x-0.5 transition-transform"></i>
+							</button>
+
+							<button @click.stop="nextImage"
+								class="absolute right-0 md:-right-16 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 bg-white/10 hover:bg-white text-white hover:text-penguin-gray backdrop-blur rounded-full flex items-center justify-center transition-all duration-300 border border-white/20 group">
+								<i data-lucide="chevron-right"
+									class="w-6 h-6 group-hover:translate-x-0.5 transition-transform"></i>
+							</button>
+
+							<!-- 关闭按钮 -->
+							<button
+								class="absolute -top-12 right-0 md:-right-12 w-10 h-10 text-white/70 hover:text-white flex items-center justify-center transition-colors"
+								@click="closeGallery">
+								<i data-lucide="x" class="w-8 h-8"></i>
+							</button>
+						</div>
+					</div>
+				</section>
+
+				<!-- Video Section -->
+				<section id="video" ref="videoRef" class="section-container relative">
+					<div
+						class="absolute inset-0 bg-gradient-to-b from-penguin-gray/5 to-transparent pointer-events-none">
+					</div>
+					<div class="max-w-6xl mx-auto relative">
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isVideoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-red-50 border border-red-200 text-red-400 text-xs font-bold mb-4">
+								VLOGS
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4 tracking-tight">
+								视频作品
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								观看我们的
+								<span class="text-red-400 relative inline-block mx-1">
+									精彩故事
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-red-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+							<div class="group cursor-pointer transition-all duration-700"
+								v-for="(video, index) in videos" :key="video.title" @click="selectVideo(video)"
+								:class="[isVideoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6']"
+								:style="{ transitionDelay: `${index * 90}ms` }">
+								<!-- 卡片主体 -->
+								<div class="relative overflow-hidden rounded-2xl bg-black/5 ring-1 ring-black/5
+						             hover:shadow-xl transition-shadow duration-300">
+									<!-- 竖屏比例：9 / 16 -->
+									<div class="relative aspect-[9/16] overflow-hidden">
+										<img :src="video.thumbnail" :alt="video.title"
+											class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+											loading="lazy" />
+
+										<!-- 渐变遮罩（信息可读） -->
+										<div
+											class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+										</div>
+
+										<!-- 中央播放按钮（移动端也一直可见） -->
+										<div class="absolute inset-0 flex items-center justify-center">
+											<div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg
+						                        transition-transform duration-300 group-hover:scale-105">
+												<i data-lucide="play" class="w-7 h-7 text-penguin-gray ml-0.5"
+													style="fill: currentColor"></i>
+											</div>
+										</div>
+
+										<!-- 时长角标 -->
+										<div
+											class="absolute top-3 right-3 px-2 py-1 bg-black/70 rounded-md text-white text-xs font-medium">
+											{{ video.duration }}
+										</div>
+
+										<!-- 底部标题 + 描述 -->
+										<div class="absolute left-0 right-0 bottom-0 p-3 sm:p-4">
+											<h3
+												class="text-white font-semibold text-sm sm:text-base leading-snug line-clamp-2">
+												{{ video.title }}
+											</h3>
+											<p class="text-white/75 text-xs sm:text-sm mt-1 line-clamp-2">
+												{{ video.desc }}
+											</p>
+										</div>
+									</div>
+
+									<!-- 底部互动条（弱化，不抢主画面） -->
+									<div
+										class="flex items-center justify-between px-3 py-2 text-xs text-muted-foreground bg-white">
+										<div class="flex items-center gap-3">
+											<span class="flex items-center gap-1">
+												<i data-lucide="eye" class="w-4 h-4"></i>
+												{{ video.views }}
+											</span>
+											<span class="flex items-center gap-1">
+												<i data-lucide="heart" class="w-4 h-4"></i>
+												{{ video.likes }}
+											</span>
+										</div>
+										<i data-lucide="chevron-right" class="w-4 h-4 opacity-60"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="text-center mt-10 transition-all duration-700 delay-500"
+							:class="[isVideoVisible ? 'opacity-100' : 'opacity-0']">
+							<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+								class="inline-flex items-center gap-2 text-penguin-gray hover:text-rabbit-dark transition-colors">
+								<span>前往小红书观看更多视频</span>
+								<i data-lucide="external-link" class="w-4 h-4"></i>
+							</a>
+						</div>
+					</div>
+
+					<!-- Short Video Modal (9:16) -->
+					<div v-if="selectedVideo" class="fixed inset-0 z-[90] bg-black/90 flex items-center justify-center"
+						@click="closeVideo">
+						<!-- 竖屏主体（像一台手机） -->
+						<div class="relative w-full max-w-[630px] h-full max-h-[1120px] sm:h-[90vh]
+					           aspect-[9/16] bg-black overflow-hidden rounded-none sm:rounded-3xl shadow-2xl" @click.stop>
+							<!-- 视频封面 -->
+							<img :src="selectedVideo.thumbnail" :alt="selectedVideo.title"
+								class="absolute inset-0 w-full h-full object-cover" draggable="false" />
+
+							<!-- 氛围遮罩 -->
+							<div class="absolute inset-0 bg-black/30"></div>
+							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
+
+							<!-- 中央播放提示 -->
+							<div class="absolute inset-0 flex items-center justify-center">
+								<div class="text-center text-white">
+									<div class="w-16 h-16 rounded-full bg-white/90 backdrop-blur
+					                 flex items-center justify-center mx-auto shadow-lg">
+										<i data-lucide="play" class="w-8 h-8 text-penguin-gray ml-0.5"
+											style="fill: currentColor"></i>
+									</div>
+									<p class="mt-3 text-sm opacity-80">前往小红书观看</p>
+								</div>
+							</div>
+
+							<!-- 顶部操作区 -->
+							<div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+								<!-- 时长 -->
+								<span class="px-2 py-1 bg-black/60 rounded text-white text-xs">
+									{{ selectedVideo.duration }}
+								</span>
+
+								<!-- 关闭 -->
+								<button class="w-9 h-9 rounded-full bg-black/60 text-white
+					               flex items-center justify-center" @click="closeVideo">
+									<i data-lucide="x" class="w-5 h-5"></i>
+								</button>
+							</div>
+
+							<!-- 右侧操作列（短视频味道） -->
+							<div class="absolute right-3 bottom-28 flex flex-col items-center gap-5 text-white z-10">
+								<div class="flex flex-col items-center gap-1">
+									<i data-lucide="heart" class="w-6 h-6"></i>
+									<span class="text-xs">{{ selectedVideo.likes }}</span>
+								</div>
+								<div class="flex flex-col items-center gap-1">
+									<i data-lucide="eye" class="w-6 h-6"></i>
+									<span class="text-xs">{{ selectedVideo.views }}</span>
+								</div>
+								<a v-if="selectedVideo.xhsUrl" :href="selectedVideo.xhsUrl" target="_blank"
+									rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-rabbit-yellow
+					               text-penguin-gray flex items-center justify-center" @click.stop>
+									<i data-lucide="square-arrow-out-up-right" class="w-5 h-5"></i>
+								</a>
+							</div>
+
+							<!-- 底部信息区 -->
+							<div class="absolute left-0 right-0 bottom-0 p-4 text-white z-10">
+								<h3 class="font-semibold text-base leading-snug line-clamp-2">
+									{{ selectedVideo.title }}
+								</h3>
+								<p class="text-sm text-white/75 mt-1 line-clamp-2">
+									{{ selectedVideo.desc }}
+								</p>
+
+								<!-- CTA -->
+								<a v-if="selectedVideo.xhsUrl" :href="selectedVideo.xhsUrl" target="_blank"
+									rel="noopener noreferrer" class="mt-4 w-full inline-flex items-center justify-center gap-2
+					               py-3 rounded-full bg-rabbit-yellow
+					               text-penguin-gray font-semibold" @click.stop>
+									去小红书看完整版
+								</a>
+							</div>
+						</div>
+					</div>
+
+
+				</section>
+
+				<!-- Music Section -->
+				<section id="music" ref="musicRef" class="section-container relative py-20 overflow-hidden">
+					<!-- 背景氛围：极光般的渐变 -->
+					<div
+						class="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-purple-900/5 to-blue-900/10 pointer-events-none">
+					</div>
+					<div
+						class="absolute top-0 right-0 w-[500px] h-[500px] bg-rabbit-yellow/10 rounded-full blur-[100px] pointer-events-none">
+					</div>
+					<div
+						class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-ice-blue/10 rounded-full blur-[100px] pointer-events-none">
+					</div>
+
+					<div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+						<!-- 标题区 -->
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isMusicVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-purple-50 border border-purple-200 text-purple-400 text-xs font-bold mb-4">
+								MELODY
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4 tracking-tight">
+								治愈旋律
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								戴上耳机，聆听
+								<span class="text-purple-400 relative inline-block mx-1">
+									雪地里
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-purple-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+								的声音
+							</p>
+						</div>
+
+						<!-- 播放器卡片 -->
+						<div class="bg-white/60 backdrop-blur-xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden transition-all duration-700 delay-200 flex flex-col lg:flex-row"
+							:class="[isMusicVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']">
+
+							<!-- 左侧：唱片与控制区 -->
+							<div
+								class="lg:w-1/2 p-8 md:p-12 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-white/50 bg-gradient-to-b from-white/40 to-transparent">
+								<!-- 唱片封面 -->
+								<div class="relative mb-8 group">
+									<!-- 唱片黑胶纹理 -->
+									<div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-900 bg-gray-900 flex items-center justify-center overflow-hidden transition-transform duration-[3s] linear"
+										:class="[isPlaying ? 'animate-spin-slow' : '']">
+										<!-- 专辑图 -->
+										<img :src="currentSong.cover" alt="Album Cover"
+											class="w-2/3 h-2/3 object-cover rounded-full border-2 border-gray-800" />
+										<!-- 中间孔 -->
+										<div class="absolute w-4 h-4 bg-white rounded-full z-10 border border-gray-300">
+										</div>
+										<!-- 反光高光 -->
+										<div
+											class="absolute inset-0 rounded-full bg-gradient-to-tr from-white/10 to-transparent pointer-events-none">
+										</div>
+									</div>
+
+									<!-- 唱臂装饰 (静态) -->
+									<div
+										class="absolute -top-4 -right-4 w-24 h-24 pointer-events-none opacity-80 hidden md:block">
+										<svg viewBox="0 0 100 100"
+											class="w-full h-full drop-shadow-md transition-transform duration-500 origin-top-right"
+											:style="{ transform: isPlaying ? 'rotate(0deg)' : 'rotate(-30deg)' }">
+											<path d="M80 10 L80 30 L40 70" stroke="#4b5563" stroke-width="4" fill="none"
+												stroke-linecap="round" />
+											<circle cx="80" cy="10" r="5" fill="#374151" />
+											<rect x="30" y="65" width="15" height="20" rx="2" fill="#374151"
+												transform="rotate(45 40 70)" />
+										</svg>
+									</div>
+
+									<!-- 播放时的光晕背景 -->
+									<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full rounded-full bg-rabbit-yellow/20 blur-3xl -z-10 transition-opacity duration-1000"
+										:class="[isPlaying ? 'opacity-100 animate-pulse' : 'opacity-0']">
+									</div>
+								</div>
+
+								<!-- 歌曲信息 -->
+								<div class="text-center mb-6">
+									<h3 class="text-2xl font-bold text-penguin-gray mb-1">{{ currentSong.title }}</h3>
+									<p class="text-muted-foreground text-sm font-medium">{{ currentSong.artist }}</p>
+								</div>
+
+								<!-- 进度条 -->
+								<div class="w-full max-w-xs mb-6 group">
+									<input type="range" min="0" max="100" step="1" v-model="progress"
+										class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
+									<div class="flex justify-between text-xs text-gray-400 mt-2 font-mono">
+										<span>{{ formatTime(progress) }}</span>
+										<span>{{ currentSong.duration }}</span>
+									</div>
+								</div>
+
+								<!-- 控制按钮 -->
+								<div class="flex items-center gap-6 md:gap-8">
+									<button @click="prevSong"
+										class="text-penguin-gray/60 hover:text-penguin-gray transition-colors hover:scale-110 transform">
+										<i data-lucide="skip-back" class="w-8 h-8"></i>
+									</button>
+
+									<button @click="togglePlay"
+										class="w-16 h-16 bg-penguin-gray text-white rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all">
+										<i :data-lucide="isPlaying ? 'pause' : 'play'" class="w-8 h-8 fill-current ml-1"
+											:class="{'ml-0': isPlaying}"></i>
+									</button>
+
+									<button @click="nextSong"
+										class="text-penguin-gray/60 hover:text-penguin-gray transition-colors hover:scale-110 transform">
+										<i data-lucide="skip-forward" class="w-8 h-8"></i>
+									</button>
+								</div>
+							</div>
+
+							<!-- 右侧：播放列表 -->
+							<div class="lg:w-1/2 bg-white/40 p-6 md:p-8 flex flex-col">
+								<div class="flex items-center justify-between mb-6">
+									<h4 class="font-bold text-gray-700 flex items-center gap-2">
+										<i data-lucide="list-music" class="w-5 h-5 text-rabbit-yellow"></i>
+										播放列表
+									</h4>
+									<span
+										class="text-xs font-medium px-2 py-1 bg-white rounded-md text-gray-400 border border-gray-100">
+										{{ songs.length }} 首歌曲
+									</span>
+								</div>
+
+								<div
+									class="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-2 max-h-[300px] lg:max-h-none">
+									<div v-for="(song, index) in songs" :key="song.id" @click="selectSong(index)"
+										class="group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-300 border"
+										:class="[currentSongIndex === index ? 'bg-white border-purple-100 shadow-md translate-x-2' : 'bg-transparent border-transparent hover:bg-white/50 hover:border-white/50']">
+
+										<!-- 列表序号/播放状态 -->
+										<div class="w-8 flex justify-center">
+											<div v-if="currentSongIndex === index && isPlaying"
+												class="flex items-end gap-[3px] h-4">
+												<span
+													class="w-1 bg-rabbit-yellow animate-[music-bar_0.6s_ease-in-out_infinite] h-full"></span>
+												<span
+													class="w-1 bg-rabbit-yellow animate-[music-bar_0.8s_ease-in-out_infinite] h-2/3"></span>
+												<span
+													class="w-1 bg-rabbit-yellow animate-[music-bar_1s_ease-in-out_infinite] h-full"></span>
+											</div>
+											<span v-else
+												:class="currentSongIndex === index ? 'text-rabbit-yellow font-bold' : 'text-gray-400 text-sm'">
+												{{ String(index + 1).padStart(2, '0') }}
+											</span>
+										</div>
+
+										<!-- 列表缩略图 -->
+										<div class="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+											<img :src="song.cover" class="w-full h-full object-cover" />
+											<div v-if="currentSongIndex === index" class="absolute inset-0 bg-black/10">
+											</div>
+										</div>
+
+										<!-- 列表信息 -->
+										<div class="flex-1 min-w-0">
+											<h5
+												:class="['truncate font-medium', currentSongIndex === index ? 'text-penguin-gray' : 'text-gray-600']">
+												{{ song.title }}
+											</h5>
+											<p class="text-xs text-gray-400 truncate">{{ song.artist }}</p>
+										</div>
+
+										<!-- 列表时长 -->
+										<div class="text-xs text-gray-400 font-mono">
+											{{ song.duration }}
+										</div>
+									</div>
+								</div>
+
+								<!-- 歌词摘录区 (装饰) -->
+								<div class="mt-6 pt-6 border-t border-gray-200/50 hidden lg:block">
+									<p class="text-center text-sm text-penguin-gray/70 italic font-serif">
+										"{{ currentSong.lyricQuote }}"
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Merchandise Section -->
+				<section id="merchandise" ref="merchRef" class="section-container relative">
+					<div class="max-w-6xl mx-auto">
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isMusicVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-green-50 border border-green-200 text-green-400 text-xs font-bold mb-4">
+								MERCHANDISE
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4 tracking-tight">
+								文创便利店
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								带走一份
+								<span class="text-green-400 relative inline-block mx-1">
+									温暖
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-green-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+								，所有文创免费下载
+							</p>
+						</div>
+
+						<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+							<div v-for="(product, index) in products" :key="product.id"
+								class="group transition-all duration-700"
+								:class="[isMerchVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']"
+								:style="{ transitionDelay: `${index * 100}ms` }">
+								<div class="glass-card overflow-hidden card-hover h-full flex flex-col">
+									<div class="relative aspect-square overflow-hidden">
+										<img :src="product.image" :alt="product.name"
+											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+										<span
+											class="absolute top-3 left-3 bg-rabbit-yellow text-penguin-gray px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+											<i data-lucide="gift" class="w-3 h-3"></i>
+											{{ product.tag }}
+										</span>
+										<button @click="toggleProductLike(product.id)"
+											class="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+											:class="[likedProducts.includes(product.id) ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-400 hover:text-red-400']">
+											<i data-lucide="heart" class="w-4 h-4"
+												:style="{ fill: likedProducts.includes(product.id) ? 'currentColor' : 'none' }"></i>
+										</button>
+									</div>
+									<div class="p-4 flex-1 flex flex-col">
+										<h3
+											class="font-bold text-penguin-gray mb-1 group-hover:text-rabbit-dark transition-colors">
+											{{ product.name }}
+										</h3>
+										<p class="text-sm text-muted-foreground mb-4 flex-1">{{ product.description }}
+										</p>
+										<button @click="handleDownload(product.name)"
+											class="w-full py-2 bg-penguin-gray/10 hover:bg-rabbit-yellow rounded-full flex items-center justify-center gap-2 text-sm font-medium text-penguin-gray hover:text-penguin-gray transition-colors">
+											<i data-lucide="download" class="w-4 h-4"></i>
+											免费下载
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- 底部提示卡片 -->
+						<div class="mt-16 text-center transition-all duration-700 delay-500 flex justify-center"
+							:class="[isMerchVisible ? 'opacity-100' : 'opacity-0']">
+							<div
+								class="bg-white border border-dashed border-gray-300 rounded-2xl p-6 max-w-2xl w-full relative">
+								<!-- 装饰用的胶带 -->
+								<div
+									class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-yellow-100/80 rotate-1 shadow-sm">
+								</div>
+
+								<div class="flex flex-col items-center justify-center gap-4 md:gap-2 text-sm">
+									<div
+										class="flex items-center gap-2 text-penguin-gray bg-rabbit-yellow/20 px-4 py-2 rounded-lg">
+										<i data-lucide="gift" class="w-4 h-4"></i>
+										<span>所有文创均为免费分享，禁止商用</span>
+									</div>
+									<p class="mt-4 text-muted-foreground text-sm">
+										想要获取更多文创？关注我们的
+										<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+											class="text-red-500 hover:underline inline-flex items-center gap-1 mx-1">
+											小红书
+											<i data-lucide="external-link" class="w-3 h-3"></i>
+										</a>
+										账号
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Puzzle Section -->
+				<section id="puzzle" ref="puzzleRef"
+					class="section-container relative py-20 overflow-hidden bg-blue-50/30">
+
+					<!-- 背景装饰：增加游戏氛围的几何图形 -->
+					<div class="absolute top-20 left-10 w-20 h-20 bg-rabbit-yellow/20 rounded-xl rotate-12 blur-xl animate-bounce"
+						style="animation-duration: 3s"></div>
+					<div
+						class="absolute bottom-20 right-10 w-24 h-24 bg-penguin-gray/10 rounded-full blur-xl animate-pulse">
+					</div>
+
+					<div class="max-w-4xl mx-auto px-4 relative z-10">
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isPuzzleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-blue-50 border border-blue-200 text-blue-400 text-xs font-bold mb-4">
+								MINI GAME
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4 tracking-tight">
+								拼图大挑战
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								动动手指
+								<span class="text-blue-400 relative inline-block mx-1">
+									解锁
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-blue-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+								所有可爱瞬间
+							</p>
+						</div>
+
+						<!-- 游戏主容器 -->
+						<div class="bg-white/60 backdrop-blur-xl border border-white/60 rounded-3xl shadow-2xl overflow-hidden transition-all duration-700 delay-200 min-h-[500px] flex flex-col"
+							:class="[isPuzzleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']">
+
+							<!-- 场景 1: 关卡选择 -->
+							<div v-if="showLevelSelect"
+								class="p-8 md:p-12 space-y-8 flex-1 flex flex-col justify-center">
+								<div class="text-center space-y-2">
+									<h3 class="text-2xl font-bold text-penguin-gray">选择难度</h3>
+									<p class="text-gray-400 text-sm">挑战更高阶数，赢取三星评价</p>
+								</div>
+
+								<div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+									<button v-for="(level, index) in levels" :key="level.level"
+										@click="unlockedLevels.includes(level.level) && startLevel(index)"
+										:disabled="!unlockedLevels.includes(level.level)"
+										class="relative group p-4 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center justify-between aspect-[3/4]"
+										:class="[ unlockedLevels.includes(level.level) ? 'bg-white border-rabbit-yellow/50 shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-rabbit-yellow cursor-pointer' : 'bg-gray-50 border-gray-200 opacity-80 cursor-not-allowed grayscale']">
+										<!-- 关卡数字 -->
+										<div class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mb-2"
+											:class="[unlockedLevels.includes(level.level) ? 'bg-rabbit-yellow text-white' : 'bg-gray-200 text-gray-400']">
+											{{ index + 1 }}
+										</div>
+
+										<div class="text-center z-10">
+											<div class="text-xl font-black text-penguin-gray mb-1 font-mono">
+												{{ level.grid }}<span
+													class="text-sm text-gray-400">x</span>{{ level.grid }}
+											</div>
+											<div
+												class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+												{{ level.name }}
+											</div>
+										</div>
+
+										<!-- 星星评价 -->
+										<div
+											class="flex justify-center gap-0.5 mt-3 w-full bg-gray-50 rounded-full py-1">
+											<i v-for="i in 3" :key="i" data-lucide="star"
+												class="w-3 h-3 transition-colors"
+												:class="[i <= level.stars ? 'text-yellow-400 fill-yellow-400' : 'text-gray-200 fill-gray-200']"></i>
+										</div>
+
+										<!-- 锁定遮罩 -->
+										<div v-if="!unlockedLevels.includes(level.level)"
+											class="absolute inset-0 flex items-center justify-center bg-gray-100/50 backdrop-blur-[1px] rounded-2xl z-20">
+											<div
+												class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+												<i data-lucide="lock" class="w-5 h-5 text-gray-400"></i>
+											</div>
+										</div>
+									</button>
+								</div>
+							</div>
+
+							<!-- 场景 2: 游戏进行中 -->
+							<div v-else class="flex flex-col h-full">
+								<!-- 游戏顶部栏 -->
+								<div
+									class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white/50">
+									<button @click="goBack"
+										class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:text-penguin-gray hover:border-penguin-gray transition-all shadow-sm">
+										<i data-lucide="chevron-left" class="w-5 h-5"></i>
+									</button>
+
+									<div class="flex flex-col items-center">
+										<span class="text-xs font-bold text-gray-400 uppercase tracking-wider">LEVEL
+											{{ currentLevel + 1 }}</span>
+										<h3 class="font-bold text-penguin-gray">{{ levels[currentLevel].name }}</h3>
+									</div>
+
+									<button @click="resetPuzzle"
+										class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:text-rabbit-yellow hover:border-rabbit-yellow transition-all shadow-sm group">
+										<i data-lucide="rotate-ccw"
+											class="w-5 h-5 group-hover:-rotate-180 transition-transform duration-500"></i>
+									</button>
+								</div>
+
+								<!-- 游戏区域 -->
+								<div class="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50/50">
+
+									<!-- 状态指示器 -->
+									<div class="flex justify-center gap-6 mb-8">
+										<div
+											class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-500 rounded-full font-mono text-sm font-bold border border-blue-100 shadow-sm">
+											<i data-lucide="timer" class="w-4 h-4"></i>
+											<span>{{ formatPuzzleTime(elapsedTime) }}</span>
+										</div>
+										<div
+											class="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-500 rounded-full font-mono text-sm font-bold border border-purple-100 shadow-sm">
+											<i data-lucide="move" class="w-4 h-4"></i>
+											<span>{{ moves }} 步</span>
+										</div>
+									</div>
+
+									<!-- 棋盘 -->
+									<div class="relative p-2 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border-4 border-white ring-1 ring-gray-100"
+										style="width: min(85vw, 420px); height: min(85vw, 420px);">
+
+										<!-- 胜利遮罩 (改为更精致的弹窗感) -->
+										<div v-if="isCompleted"
+											class="absolute inset-0 z-30 flex items-center justify-center">
+											<div
+												class="absolute inset-0 bg-penguin-gray/80 backdrop-blur-sm rounded-lg transition-opacity">
+											</div>
+											<div
+												class="relative bg-white p-8 rounded-3xl text-center shadow-2xl max-w-[280px] w-full transform animate-bounce-small">
+												<div
+													class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg relative">
+													<i data-lucide="trophy"
+														class="w-10 h-10 text-yellow-500 fill-yellow-500"></i>
+													<div
+														class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full text-white text-xs flex items-center justify-center font-bold border-2 border-white">
+														!</div>
+												</div>
+												<h4 class="text-2xl font-black text-penguin-gray mb-1">挑战成功!</h4>
+												<p class="text-gray-400 text-sm mb-6">耗时
+													{{ formatPuzzleTime(elapsedTime) }} · {{ moves }} 步
+												</p>
+
+												<div class="space-y-3">
+													<button v-if="currentLevel < 4"
+														@click="startLevel(currentLevel + 1)"
+														class="w-full py-3 bg-rabbit-yellow text-white rounded-xl font-bold shadow-lg shadow-yellow-200 hover:bg-yellow-500 transition-colors flex items-center justify-center gap-2">
+														下一关 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+													</button>
+													<button @click="goBack"
+														class="w-full py-3 bg-gray-100 text-gray-500 rounded-xl font-bold hover:bg-gray-200 transition-colors">
+														返回选关
+													</button>
+												</div>
+											</div>
+										</div>
+
+										<!-- 拼图网格 -->
+										<div class="grid bg-gray-200 rounded-lg overflow-hidden border border-gray-200"
+											:style="{gridTemplateColumns: `repeat(${gridSize}, 1fr)`, width: '100%', height: '100%', gap: '1px' }">
+											<div v-for="pos in gridSize * gridSize" :key="pos" :draggable="!isCompleted"
+												@dragstart="handleDragStart(getPieceByPos(pos - 1)?.id)"
+												@dragover.prevent @drop="handleDrop(pos - 1)"
+												class="relative overflow-hidden bg-white transition-all duration-200 hover:brightness-110"
+												:class="{'cursor-grab active:cursor-grabbing': !isCompleted}"
+												:style="getPieceStyle(pos - 1)">
+												<!-- 移除原本的边框，改用gap模拟网格线，视觉更干净 -->
+											</div>
+										</div>
+									</div>
+
+									<!-- 底部：提示预览 -->
+									<div
+										class="mt-8 flex items-center gap-4 bg-white px-5 py-3 rounded-2xl shadow-sm border border-gray-100">
+										<div class="text-right">
+											<p class="text-xs font-bold text-gray-400">TARGET</p>
+											<p class="text-sm font-bold text-penguin-gray">目标图片</p>
+										</div>
+										<div class="relative group cursor-help">
+											<img src="public/puzzle-game.png" alt="原图"
+												class="w-14 h-14 rounded-lg object-cover border-2 border-gray-100 shadow-sm transition-transform group-hover:scale-[3] group-hover:-translate-y-16 origin-bottom z-10 relative" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Quotes Section -->
+				<section id="quotes" ref="quotesRef" class="section-container relative py-20 overflow-hidden bg-white">
+					<!-- 背景纹理：淡淡的网格纸效果 -->
+					<div class="absolute inset-0 opacity-[0.03]"
+						style="background-image: radial-gradient(#4b5563 1px, transparent 1px); background-size: 24px 24px;">
+					</div>
+
+					<!-- 氛围光 -->
+					<div
+						class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[400px] bg-gradient-to-b from-blue-50/30 to-transparent opacity-60 pointer-events-none">
+					</div>
+
+					<div class="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isQuotesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-gray-50 border border-gray-200 text-gray-400 text-xs font-bold mb-4">
+								QUOTES
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-gray mb-4 tracking-tight">
+								企兔格言
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-gray/60 font-medium font-quicksand">
+								那些温暖又有趣的
+								<span class="text-gray-400 relative inline-block mx-1">
+									小智慧
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-gray-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<!-- 日签卡片 -->
+						<div class="relative bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 p-8 md:p-14 text-center transition-all duration-700 delay-200"
+							:class="[isQuotesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']">
+
+							<!-- 巨大的装饰引号 -->
+							<div
+								class="absolute top-4 left-6 text-9xl leading-none text-rabbit-yellow/20 font-serif select-none">
+								“</div>
+
+							<!-- 角色头像 (浮在卡片顶部) -->
+							<div class="absolute -top-12 left-1/2 -translate-x-1/2">
+								<div
+									class="w-24 h-24 rounded-full border-4 border-white shadow-xl bg-white overflow-hidden transition-transform duration-500 hover:scale-110 hover:rotate-6">
+									<!-- 简单的逻辑判断：根据作者名字显示不同头像 -->
+									<img v-if="currentQuote.author.includes('兔')" src="public/rabbit-hero.png"
+										alt="Avatar"
+										class="w-full h-full object-cover transform scale-125 translate-y-2" />
+									<img v-else src="public/penguin-hero.png" alt="Avatar"
+										class="w-full h-full object-cover transform scale-125 translate-y-1" />
+								</div>
+								<div
+									class="absolute bottom-0 right-0 w-8 h-8 bg-rabbit-yellow rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm">
+									<i data-lucide="message-circle" class="w-4 h-4 fill-current"></i>
+								</div>
+							</div>
+
+							<!-- 引言内容 -->
+							<div class="mt-8 relative z-10 transition-all duration-500 ease-in-out min-h-[180px] flex flex-col justify-center"
+								:class="[isQuoteAnimating ? 'opacity-0 translate-y-4 blur-sm' : 'opacity-100 translate-y-0 blur-0']">
+								<blockquote
+									class="text-2xl md:text-3xl lg:text-4xl text-penguin-gray font-bold leading-relaxed mb-8 font-serif tracking-wide">
+									{{ currentQuote.text }}
+								</blockquote>
+
+								<div class="flex flex-col items-center gap-1">
+									<div class="flex items-center gap-2">
+										<span class="w-8 h-px bg-gray-300"></span>
+										<cite class="not-italic font-bold text-lg text-rabbit-dark">
+											{{ currentQuote.author }}
+										</cite>
+										<span class="w-8 h-px bg-gray-300"></span>
+									</div>
+									<span
+										class="text-sm font-medium text-gray-400 bg-gray-50 px-3 py-1 rounded-full mt-2">
+										{{ currentQuote.context }}
+									</span>
+								</div>
+							</div>
+
+							<!-- 底部操作栏 -->
+							<div
+								class="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+
+								<!-- 进度指示器 -->
+								<div class="flex gap-2 order-2 sm:order-1">
+									<button v-for="(_, index) in quotes" :key="index" @click="selectQuote(index)"
+										class="h-2 rounded-full transition-all duration-300"
+										:class="[index === currentQuoteIndex ? 'w-8 bg-rabbit-yellow' : 'w-2 bg-gray-200 hover:bg-gray-300']"
+										:aria-label="`Quote ${index + 1}`">
+									</button>
+								</div>
+
+								<!-- 按钮组 -->
+								<div class="flex items-center gap-3 order-1 sm:order-2 w-full sm:w-auto justify-center">
+									<button @click="copyQuote"
+										class="group relative w-12 h-12 rounded-full border border-gray-200 hover:border-rabbit-yellow hover:bg-rabbit-yellow/10 flex items-center justify-center transition-all duration-300"
+										title="复制格言">
+										<i v-if="copied" data-lucide="check"
+											class="w-5 h-5 text-green-500 scale-110"></i>
+										<i v-else data-lucide="copy"
+											class="w-5 h-5 text-gray-400 group-hover:text-rabbit-yellow"></i>
+
+										<!-- 复制成功的提示气泡 -->
+										<span v-if="copied"
+											class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg animate-fade-in-up whitespace-nowrap">
+											Copied!
+										</span>
+									</button>
+
+									<button @click="nextQuote"
+										class="px-6 py-3 bg-penguin-gray text-white rounded-full shadow-lg hover:shadow-xl hover:bg-gray-800 hover:-translate-y-1 active:translate-y-0 transition-all duration-300 flex items-center gap-2 font-bold group">
+										<i data-lucide="refresh-cw"
+											:class="['w-4 h-4 transition-transform duration-700', isQuoteAnimating ? 'rotate-180' : 'group-hover:rotate-180']"></i>
+										换一句
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Essays Section -->
+				<section id="essays" ref="essaysRef"
+					class="section-container relative py-20 overflow-hidden bg-[#fdfbf7]">
+
+					<!-- 背景装饰：书写氛围 -->
+					<div class="absolute inset-0 opacity-40"
+						style="background-image: radial-gradient(#d1d5db 1px, transparent 1px); background-size: 20px 20px;">
+					</div>
+					<div
+						class="absolute top-0 right-0 w-64 h-64 bg-yellow-100/50 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2">
+					</div>
+					<div
+						class="absolute bottom-0 left-0 w-80 h-80 bg-blue-50/50 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3">
+					</div>
+
+					<!-- 装饰图标：羽毛笔 -->
+					<div class="absolute top-20 left-10 text-gray-200 rotate-12 hidden lg:block">
+						<i data-lucide="feather" class="w-24 h-24"></i>
+					</div>
+
+					<div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+						<!-- 标题区 -->
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isEssaysVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-orange-50 border border-orange-200 text-orange-400 text-xs font-bold mb-4">
+								STORIES
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-orange mb-4 tracking-tight">
+								散文集
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-orange/60 font-medium font-quicksand">
+								企鹅兔子的
+								<span class="text-orange-400 relative inline-block mx-1">
+									温馨手账
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-orange-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<!-- 文章卡片网格 -->
+						<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+							<div v-for="(essay, index) in essays" :key="essay.id"
+								class="group cursor-pointer transition-all duration-700 hover:-translate-y-2"
+								:class="[isEssaysVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']"
+								:style="{ transitionDelay: `${index * 100}ms` }" @click="selectEssay(essay)">
+
+								<!-- 卡片本体：模拟纸张 -->
+								<div
+									class="relative bg-white h-full flex flex-col p-6 pt-10 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+
+									<!-- 装饰：和纸胶带效果 (随机颜色模拟) -->
+									<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 opacity-90 shadow-sm transform -rotate-1 group-hover:rotate-0 transition-transform duration-300"
+										:class="[index % 3 === 0 ? 'bg-rabbit-yellow/60' : index % 3 === 1 ? 'bg-ice-blue/60' : 'bg-red-200/60']">
+									</div>
+
+									<!-- 邮戳日期 -->
+									<div
+										class="absolute top-4 right-4 w-12 h-12 border-2 border-gray-200 rounded-full flex flex-col items-center justify-center text-[10px] text-gray-400 rotate-12 group-hover:border-rabbit-yellow group-hover:text-rabbit-yellow transition-colors">
+										<span class="font-bold">{{ essay.date.split('-')[1] }}月</span>
+										<span>{{ essay.date.split('-')[2] }}</span>
+									</div>
+
+									<!-- 内容区 -->
+									<div class="flex-1">
+										<div class="mb-4">
+											<h3
+												class="font-bold text-xl text-penguin-gray mb-2 font-serif group-hover:text-orange-400 transition-colors line-clamp-1">
+												{{ essay.title }}
+											</h3>
+											<div
+												class="h-0.5 w-10 bg-gray-100 group-hover:bg-orange-200 transition-colors">
+											</div>
+										</div>
+
+										<p
+											class="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-4 font-light text-justify">
+											{{ essay.excerpt }}
+										</p>
+									</div>
+
+									<!-- 底部信息 -->
+									<div
+										class="flex items-center justify-between pt-4 border-t border-dashed border-gray-100 text-xs text-gray-400">
+										<div class="flex items-center gap-1.5">
+											<i data-lucide="coffee" class="w-3 h-3"></i>
+											<span>{{ essay.readTime }} 阅读</span>
+										</div>
+										<div
+											class="flex items-center gap-1 text-penguin-gray font-medium opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+											Read More <i data-lucide="arrow-right" class="w-3 h-3"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- 底部链接 -->
+						<div class="text-center mt-16 transition-all duration-700 delay-500"
+							:class="[isEssaysVisible ? 'opacity-100' : 'opacity-0']">
+							<a href="#"
+								class="text-gray-400 hover:text-penguin-gray text-sm transition-colors border-b border-transparent hover:border-gray-300 pb-0.5">
+								更多故事请关注我们的小红书账号 →
+							</a>
+						</div>
+					</div>
+
+					<!-- 阅读弹窗 (Modal) -->
+					<div v-if="selectedEssay"
+						class="fixed inset-0 z-[90] flex items-center justify-center bg-penguin-gray/60 backdrop-blur-sm p-4 transition-all duration-300"
+						@click="closeEssay">
+
+						<!-- 弹窗主体：信纸风格 -->
+						<div class="relative bg-[#fffdf5] rounded-lg max-w-2xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
+							@click.stop>
+
+							<!-- 弹窗顶部装饰 -->
+							<div class="h-2 bg-gradient-to-r from-rabbit-yellow via-red-200 to-ice-blue"></div>
+
+							<!-- 头部 -->
+							<div class="p-6 md:p-8 pb-4 flex items-start justify-between bg-white/50">
+								<div>
+									<h3 class="text-2xl md:text-3xl font-bold text-penguin-gray font-serif mb-2">
+										{{ selectedEssay.title }}
+									</h3>
+									<div class="flex items-center gap-3 text-sm text-gray-400 font-mono">
+										<span class="flex items-center gap-1"><i data-lucide="calendar"
+												class="w-3 h-3"></i> {{ selectedEssay.date }}</span>
+										<span>·</span>
+										<span class="flex items-center gap-1"><i data-lucide="clock"
+												class="w-3 h-3"></i> {{ selectedEssay.readTime }}</span>
+									</div>
+								</div>
+								<button
+									class="w-8 h-8 rounded-full bg-gray-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors text-gray-500"
+									@click="closeEssay">
+									<i data-lucide="x" class="w-5 h-5"></i>
+								</button>
+							</div>
+
+							<!-- 正文区域 -->
+							<div class="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 bg-grid-pattern">
+								<div class="prose prose-stone prose-lg max-w-none">
+									<p v-for="(paragraph, index) in selectedEssayParagraphs" :key="index"
+										class="text-penguin-gray/80 leading-loose mb-6 font-serif text-justify first-letter:text-3xl first-letter:font-bold first-letter:text-rabbit-yellow first-letter:mr-1">
+										{{ paragraph }}
+									</p>
+
+									<!-- 结尾装饰 -->
+									<div class="flex justify-center mt-12 mb-4 opacity-50">
+										<span class="text-2xl text-gray-300">❖</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Quiz Section -->
+				<section id="quiz" ref="quizRef" class="section-container relative">
+					<div class="max-w-2xl mx-auto">
+						<div class="text-center mb-16 transition-all duration-700"
+							:class="[isQuizVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10']">
+							<span
+								class="inline-block py-1 px-3 rounded-full bg-purple-50 border border-purple-200 text-purple-400 text-xs font-bold mb-4">
+								CHALLENGE
+							</span>
+							<h2
+								class="section-title text-4xl lg:text-5xl font-black text-penguin-purple mb-4 tracking-tight">
+								真爱粉测试
+							</h2>
+							<p class="section-subtitle text-lg text-penguin-purple/60 font-medium font-quicksand">
+								测测你对企鹅兔子的
+								<span class="text-purple-400 relative inline-block mx-1">
+									了解程度
+									<svg class="absolute -bottom-1 left-0 w-full h-2 text-purple-400/30"
+										viewBox="0 0 100 10" preserveAspectRatio="none">
+										<path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="3"
+											fill="none" />
+									</svg>
+								</span>
+							</p>
+						</div>
+
+						<div class="glass-card p-6 md:p-8 transition-all duration-700 delay-200"
+							:class="[isQuizVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20']">
+							<div v-if="!quizStarted" class="text-center py-8">
+								<div
+									class="w-20 h-20 bg-rabbit-yellow/20 rounded-full flex items-center justify-center mx-auto mb-6">
+									<i data-lucide="help-circle" class="w-10 h-10 text-penguin-gray"></i>
+								</div>
+								<h3 class="text-xl font-bold text-penguin-gray mb-2">准备好了吗？</h3>
+								<p class="text-muted-foreground mb-6">共 {{ quizData.length }} 道题，看看你能答对多少</p>
+								<button @click="startQuiz"
+									class="bg-rabbit-yellow text-penguin-gray hover:bg-rabbit-dark px-8 py-2 rounded-full font-medium">
+									开始答题
+								</button>
+							</div>
+
+							<div v-else-if="showResult" class="text-center py-8">
+								<div
+									class="w-20 h-20 bg-rabbit-yellow/20 rounded-full flex items-center justify-center mx-auto mb-6">
+									<i data-lucide="trophy" class="w-10 h-10 text-rabbit-yellow"></i>
+								</div>
+								<h3 class="text-2xl font-bold text-penguin-gray mb-2">测试完成！</h3>
+								<div class="text-4xl font-bold text-rabbit-yellow mb-2">
+									{{ score }}/{{ quizData.length }}
+								</div>
+								<p class="text-muted-foreground mb-6">
+									正确率 {{ percentage }}%
+									-{{percentage >= 80 ? '企鹅兔子铁粉！': percentage >= 60? '不错的成绩！': percentage >= 40? '还需要多了解哦': '快去补补课吧~'}}
+								</p>
+								<div class="h-2 w-full bg-gray-200 rounded-full mb-6">
+									<div class="h-full bg-rabbit-yellow rounded-full"
+										:style="{ width: `${percentage}%` }"></div>
+								</div>
+								<button @click="resetQuiz"
+									class="border border-gray-300 px-6 py-2 rounded-full inline-flex items-center gap-2 text-penguin-gray">
+									<i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+									再测一次
+								</button>
+							</div>
+
+							<div v-else>
+								<div class="mb-6">
+									<div class="flex justify-between text-sm text-muted-foreground mb-2">
+										<span>问题 {{ currentQuestion + 1 }}/{{ quizData.length }}</span>
+										<span>进度
+											{{ Math.round(((currentQuestion + 1) / quizData.length) * 100) }}%</span>
+									</div>
+									<div class="h-2 w-full bg-gray-200 rounded-full">
+										<div class="h-full bg-rabbit-yellow rounded-full"
+											:style="{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }">
+										</div>
+									</div>
+								</div>
+
+								<h3 class="text-lg font-bold text-penguin-gray mb-6">
+									{{ quizData[currentQuestion].question }}
+								</h3>
+								<div class="space-y-3">
+									<button v-for="(option, index) in quizData[currentQuestion].options" :key="index"
+										@click="handleSelectAnswer(index)" :disabled="selectedAnswer !== null"
+										class="w-full p-4 rounded-xl border-2 text-left transition-all"
+										:class="[selectedAnswer === null? 'border-gray-200 hover:border-rabbit-yellow hover:bg-rabbit-yellow/5': selectedAnswer === index? index === quizData[currentQuestion].correct? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50': index === quizData[currentQuestion].correct? 'border-green-500 bg-green-50' : 'border-gray-200 opacity-50']">
+										<div class="flex items-center gap-3">
+											<div class="w-6 h-6 rounded-full flex items-center justify-center"
+												:class="[selectedAnswer === null ? 'bg-gray-100': selectedAnswer === index? index === quizData[currentQuestion].correct ? 'bg-green-500 text-white' : 'bg-red-500 text-white' : index === quizData[currentQuestion].correct? 'bg-green-500 text-white': 'bg-gray-100']">
+												<i v-if="selectedAnswer !== null && index === quizData[currentQuestion].correct"
+													data-lucide="check-circle" class="w-4 h-4"></i>
+												<i v-else-if="selectedAnswer === index && index !== quizData[currentQuestion].correct"
+													data-lucide="x-circle" class="w-4 h-4"></i>
+												<span v-else
+													class="text-xs">{{ String.fromCharCode(65 + index) }}</span>
+											</div>
+											<span>{{ option }}</span>
+										</div>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Footer Section -->
+				<footer ref="footerRef" class="relative overflow-hidden">
+					<div class="section-container bg-penguin-gray/5">
+						<div class="max-w-4xl mx-auto">
+							<!-- CTA -->
+							<div class="text-center mb-10 sm:mb-12 transition-all duration-700"
+								:class="[isFooterVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8']">
+								<h2 class="text-3xl md:text-4xl font-semibold text-penguin-gray mb-3">关注我们的小红书</h2>
+								<p class="text-muted-foreground mb-7 max-w-lg mx-auto leading-relaxed">
+									每日更新企鹅兔子的日常故事，还有更多互动活动和文创福利等你来拿
+								</p>
+
+								<a href="https://www.xiaohongshu.com" target="_blank" rel="noopener noreferrer"
+									class="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-red-500 text-white font-semibold hover:bg-red-600 transition shadow-sm hover:shadow-md">
+									<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+										<path
+											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+										<circle cx="12" cy="12" r="5" />
+									</svg>
+									<span>关注小红书账号</span>
+									<i data-lucide="external-link" class="w-5 h-5 opacity-90"></i>
+								</a>
+							</div>
+
+							<!-- Characters -->
+							<div class="relative h-28 sm:h-32 mb-10 sm:mb-12 transition-all duration-700 delay-200"
+								:class="[isFooterVisible ? 'opacity-100' : 'opacity-0']">
+								<!-- 小底座阴影：让角色“落地” -->
+								<div class="absolute bottom-2 left-1/4 -translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48">
+									<div class="mx-auto w-full h-3 bg-black/10 blur-lg rounded-full"></div>
+									<img src="public/penguin-hero.png" alt="企鹅企企" class="w-full h-auto relative" />
+								</div>
+
+								<div class="absolute bottom-2 right-1/4 translate-x-1/2 w-24 sm:w-32 md:w-40 lg:w-48">
+									<div class="mx-auto w-full h-3 bg-black/10 blur-lg rounded-full"></div>
+									<img src="public/rabbit-hero.png" alt="顽劣大黄兔" class="w-full h-auto relative" />
+								</div>
+							</div>
+
+							<!-- Subscribe -->
+							<div class="bg-white/80 backdrop-blur-xl border border-black/5 rounded-3xl shadow-[0_18px_60px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8 mb-12 transition-all duration-700 delay-300"
+								:class="[isFooterVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6']">
+								<div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+									<div class="flex-1 text-center md:text-left">
+										<h3 class="font-semibold text-lg text-penguin-gray mb-1">订阅更新通知</h3>
+										<p class="text-sm text-muted-foreground">第一时间获取新故事和文创资源</p>
+									</div>
+
+									<form @submit.prevent="handleSubscribe" class="w-full md:w-auto">
+										<div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+											<input type="email" v-model="email" placeholder="输入邮箱地址" class="w-full sm:w-72 px-4 py-3 rounded-full
+					                     border border-black/10 bg-white/90
+					                     focus:outline-none focus:ring-2 focus:ring-rabbit-yellow/25 focus:border-rabbit-yellow
+					                     placeholder:text-black/35" />
+											<button type="submit" class="px-6 py-3 rounded-full font-semibold
+					                     bg-rabbit-yellow text-penguin-gray
+					                     hover:bg-rabbit-dark transition">
+												订阅
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="relative text-white overflow-hidden
+					            bg-gradient-to-b from-gray-700 via-gray-700 to-gray-800">
+
+						<!-- 背景装饰层 -->
+						<div class="absolute inset-0 pointer-events-none">
+							<!-- 左上柔光 -->
+							<div class="absolute -top-40 -left-40 w-[420px] h-[420px]
+					             bg-rabbit-yellow/10 rounded-full blur-[120px]">
+							</div>
+
+							<!-- 右下冷色柔光 -->
+							<div class="absolute -bottom-48 -right-48 w-[520px] h-[520px]
+					             bg-white/5 rounded-full blur-[140px]">
+							</div>
+
+							<!-- 底部暗角 -->
+							<div class="absolute inset-x-0 bottom-0 h-40
+					             bg-gradient-to-t from-black/30 to-transparent">
+							</div>
+						</div>
+
+						<!-- 正文内容 -->
+						<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+							<!-- 上半部分：品牌区 -->
+							<div class="grid gap-8 md:mb-8">
+								<div class="text-center">
+									<div class="flex items-center justify-center gap-3 font-semibold text-lg mb-4">
+										<div
+											class="w-9 h-9 rounded-full bg-rabbit-yellow flex items-center justify-center shadow-sm">
+											<img src="../QiQiBunny/icon.png" class="rounded-full" alt="" />
+										</div>
+										<span class="text-white">企鹅企企与顽劣大黄兔</span>
+									</div>
+
+									<p class="text-white/65 text-sm max-w-2xl mx-auto hidden md:block leading-relaxed">
+										记录企鹅和兔子的日常
+									</p>
+								</div>
+							</div>
+
+							<!-- 下半部分：Copyright + 备案 -->
+							<div class="pt-8 md:border-t border-white/10">
+								<div class="flex flex-col md:flex-row items-center justify-between gap-4
+					               text-xs md:text-sm text-white/55">
+									<p>© {{ currentYear }} 企鹅企企与顽劣大黄兔. All rights reserved.</p>
+
+									<div class="flex flex-col md:flex-row items-center gap-3 md:gap-4">
+										<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer"
+											class="text-white/60 hover:text-white transition-colors">
+											京ICP备2023030112号
+										</a>
+
+										<a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879"
+											target="_blank" rel="noopener noreferrer"
+											class="text-white/60 hover:text-white transition-colors">
+											<div class="flex items-center gap-2">
+												<img src="../../images/gongan.png" class="w-4 h-4 opacity-90"
+													alt="公安备案" />
+												<span>京公网安备11010502053879号</span>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</footer>
+			</main>
+		</div>
+
+		<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+		<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+		<script>
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted,
+				onUnmounted,
+				watch,
+				nextTick
+			} = Vue;
+
+			createApp({
+				setup() {
+					// === Global state ===
+					const scrollY = ref(0);
+					const toasts = ref([]);
+
+					const showToast = (message, type = 'success') => {
+						const id = Date.now() + Math.random();
+						toasts.value.push({
+							id,
+							message,
+							type
+						});
+						setTimeout(() => {
+							toasts.value = toasts.value.filter((toast) => toast.id !== id);
+						}, 2000);
+					};
+
+					const handleScroll = () => {
+						scrollY.value = window.scrollY || 0;
+					};
+
+					const observeSection = (targetRef, setter, threshold = 0.2) => {
+						if (!targetRef.value) return;
+						const observer = new IntersectionObserver(
+							([entry]) => {
+								if (entry.isIntersecting) {
+									setter.value = true;
+									observer.disconnect();
+								}
+							}, {
+								threshold
+							}
+						);
+						observer.observe(targetRef.value);
+					};
+
+					// === Hero section ===
+					const heroRef = ref(null);
+					const mousePos = ref({
+						x: 0,
+						y: 0
+					});
+					const isHeroLoaded = ref(false);
+					const snowflakes = Array.from({
+						length: 30
+					}, (_, i) => ({
+						id: i,
+						left: `${Math.random() * 100}%`,
+						delay: `${Math.random() * 10}s`,
+						duration: `${8 + Math.random() * 6}s`,
+						size: `${8 + Math.random() * 12}px`,
+					}));
+
+					const handleMouseMove = (event) => {
+						if (!heroRef.value) return;
+						const rect = heroRef.value.getBoundingClientRect();
+						mousePos.value = {
+							x: (event.clientX - rect.left - rect.width / 2) / rect.width,
+							y: (event.clientY - rect.top - rect.height / 2) / rect.height,
+						};
+					};
+
+					// === About section ===
+					const aboutRef = ref(null);
+					const isAboutVisible = ref(false);
+					const stats = [{
+							icon: 'calendar',
+							label: '连载期数',
+							value: '200+',
+							color: 'bg-rabbit-yellow/20'
+						},
+						{
+							icon: 'users',
+							label: '小红书粉丝',
+							value: '持续增长',
+							color: 'bg-blue-100'
+						},
+						{
+							icon: 'map-pin',
+							label: '发布平台',
+							value: '小红书',
+							color: 'bg-red-100'
+						},
+						{
+							icon: 'star',
+							label: '内容类型',
+							value: '日常治愈',
+							color: 'bg-purple-100'
+						},
+					];
+
+					// === Gallery section ===
+					const galleryRef = ref(null);
+					const isGalleryVisible = ref(false);
+					const galleryImages = [{
+							src: 'public/gallery-1.png',
+							title: '夕阳下的依偎',
+							desc: '背靠背，就是全世界'
+						},
+						{
+							src: 'public/gallery-2.png',
+							title: '堆雪人',
+							desc: '冬天的快乐时光'
+						},
+						{
+							src: 'public/gallery-3.png',
+							title: '星空下的梦',
+							desc: '一起看星星，一起做梦'
+						},
+						{
+							src: 'public/gallery-4.png',
+							title: '海边玩耍',
+							desc: '阳光、沙滩和海浪'
+						},
+						{
+							src: 'public/gallery-5.png',
+							title: '包饺子',
+							desc: '团圆的味道'
+						},
+						{
+							src: 'public/gallery-6.png',
+							title: '放风筝',
+							desc: '让梦想飞得更高'
+						},
+					];
+					const selectedImage = ref(null);
+					const currentImageIndex = ref(0);
+
+					const openGallery = (image, index) => {
+						selectedImage.value = image;
+						currentImageIndex.value = index;
+					};
+
+					const closeGallery = () => {
+						selectedImage.value = null;
+					};
+
+					const nextImage = () => {
+						currentImageIndex.value = (currentImageIndex.value + 1) % galleryImages.length;
+						selectedImage.value = galleryImages[currentImageIndex.value];
+					};
+
+					const prevImage = () => {
+						currentImageIndex.value =
+							(currentImageIndex.value - 1 + galleryImages.length) % galleryImages.length;
+						selectedImage.value = galleryImages[currentImageIndex.value];
+					};
+
+					// === Video section ===
+					const videoRef = ref(null);
+					const isVideoVisible = ref(false);
+					const videos = [{
+							thumbnail: 'public/video-1.png',
+							title: '企鹅兔子吃火锅',
+							desc: '被芥末辣哭的企鹅',
+							duration: '2:34',
+							views: '1.2万',
+							likes: '3.4千',
+						},
+						{
+							thumbnail: 'public/video-2.png',
+							title: '海边游泳日记',
+							desc: '企鹅的游泳圈冒险',
+							duration: '1:58',
+							views: '8.5千',
+							likes: '2.1千',
+						},
+						{
+							thumbnail: 'public/video-3.png',
+							title: '春日野餐',
+							desc: '阳光下的美味时光',
+							duration: '3:12',
+							views: '2.1万',
+							likes: '5.6千',
+						},
+					];
+					const selectedVideo = ref(null);
+
+					const selectVideo = (video) => {
+						selectedVideo.value = video;
+					};
+
+					const closeVideo = () => {
+						selectedVideo.value = null;
+					};
+
+					// === Music section ===
+					const musicRef = ref(null);
+					const isMusicVisible = ref(false);
+					const isPlaying = ref(false);
+					const progress = ref(0);
+					const currentSongIndex = ref(0); // 当前播放索引
+
+					// 歌曲数据 JSON
+					const songs = [{
+							id: 1,
+							title: '极地之恋',
+							artist: '企鹅企企 x 顽劣大黄兔',
+							cover: 'public/album-cover.png',
+							duration: '3:00',
+							lyricQuote: '在冰雪的世界里，遇见最温暖的你'
+						},
+						{
+							id: 2,
+							title: '年糕摇摆',
+							artist: '顽劣大黄兔',
+							cover: 'public/rabbit-hero.png', // 暂时复用已有图片
+							duration: '2:45',
+							lyricQuote: '左手年糕右手快乐，摇摇晃晃每一天'
+						},
+						{
+							id: 3,
+							title: '雪花圆舞曲',
+							artist: '灰色帝企鹅宝宝',
+							cover: 'public/penguin-hero.png', // 暂时复用已有图片
+							duration: '3:30',
+							lyricQuote: '雪花落下的时候，就是我想你的时候'
+						},
+						{
+							id: 4,
+							title: '晚安，南极',
+							artist: '企鹅企企',
+							cover: 'public/story-ricecake.png', // 暂时复用已有图片
+							duration: '4:12',
+							lyricQuote: '星空下的梦，都有甜甜的味道'
+						}
+					];
+
+					// 计算属性：获取当前歌曲对象
+					const currentSong = computed(() => songs[currentSongIndex.value]);
+
+					let progressTimer = null;
+
+					// 监听播放状态来控制进度条
+					watch(isPlaying, (val) => {
+						if (val) {
+							progressTimer = setInterval(() => {
+								if (progress.value < 100) {
+									progress.value += 0.5; // 模拟播放进度
+								} else {
+									nextSong(); // 播完自动切下一首
+								}
+							}, 100); // 这里的100ms是为了演示流畅，实际开发需根据audio duration计算
+						} else {
+							clearInterval(progressTimer);
+						}
+					});
+
+					const togglePlay = () => {
+						isPlaying.value = !isPlaying.value;
+					};
+
+					// 切换下一首
+					const nextSong = () => {
+						progress.value = 0; // 重置进度
+						currentSongIndex.value = (currentSongIndex.value + 1) % songs.length;
+						isPlaying.value = true; // 切歌后自动播放
+					};
+
+					// 切换上一首
+					const prevSong = () => {
+						progress.value = 0;
+						currentSongIndex.value = (currentSongIndex.value - 1 + songs.length) % songs.length;
+						isPlaying.value = true;
+					};
+
+					// 直接点选歌曲
+					const selectSong = (index) => {
+						if (currentSongIndex.value === index) {
+							togglePlay(); // 如果点的是当前这首，就切换暂停/播放
+						} else {
+							currentSongIndex.value = index;
+							progress.value = 0;
+							isPlaying.value = true;
+						}
+					};
+
+					// 格式化时间 (用于显示当前播放时间，这里仅做模拟演示)
+					const formatTime = (percent) => {
+						// 解析当前歌曲的 duration (如 "3:00") 为总秒数
+						const timeParts = currentSong.value.duration.split(':');
+						const totalSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+						const currentSeconds = Math.floor((percent / 100) * totalSeconds);
+						const minutes = Math.floor(currentSeconds / 60);
+						const seconds = currentSeconds % 60;
+						return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+					};
+
+					// === Merchandise section ===
+					const merchRef = ref(null);
+					const isMerchVisible = ref(false);
+					const products = [{
+							id: 1,
+							name: '企鹅兔子拼图',
+							description: '经典年糕场景，100片装',
+							image: 'public/product-puzzle.png',
+							type: 'free',
+							tag: '免费下载',
+						},
+						{
+							id: 2,
+							name: '3D纸模套装',
+							description: '立体企鹅兔子纸模型',
+							image: 'public/product-papercraft.png',
+							type: 'free',
+							tag: '免费下载',
+						},
+						{
+							id: 3,
+							name: '可爱贴纸包',
+							description: '20张表情包贴纸',
+							image: 'public/product-sticker.png',
+							type: 'free',
+							tag: '免费下载',
+						},
+						{
+							id: 4,
+							name: '主题笔记本',
+							description: 'A5尺寸，80页',
+							image: 'public/product-notebook.png',
+							type: 'free',
+							tag: '免费下载',
+						},
+					];
+					const likedProducts = ref([]);
+
+					const toggleProductLike = (id) => {
+						if (likedProducts.value.includes(id)) {
+							likedProducts.value = likedProducts.value.filter((item) => item !== id);
+						} else {
+							likedProducts.value = [...likedProducts.value, id];
+						}
+					};
+
+					const handleDownload = (productName) => {
+						showToast(`${productName} 下载链接已复制！`, 'success');
+					};
+
+					// === Puzzle section ===
+					const puzzleRef = ref(null);
+					const isPuzzleVisible = ref(false);
+					const levels = [{
+							level: 1,
+							grid: 2,
+							name: '入门',
+							stars: 1
+						},
+						{
+							level: 2,
+							grid: 3,
+							name: '简单',
+							stars: 2
+						},
+						{
+							level: 3,
+							grid: 4,
+							name: '中等',
+							stars: 3
+						},
+						{
+							level: 4,
+							grid: 5,
+							name: '困难',
+							stars: 4
+						},
+						{
+							level: 5,
+							grid: 6,
+							name: '大师',
+							stars: 5
+						},
+					];
+					const currentLevel = ref(0);
+					const pieces = ref([]);
+					const draggedPiece = ref(null);
+					const isCompleted = ref(false);
+					const moves = ref(0);
+					const startTime = ref(null);
+					const elapsedTime = ref(0);
+					const unlockedLevels = ref([1]);
+					const showLevelSelect = ref(true);
+					let timerRef = null;
+
+					const checkCompleted = (pieceList) => pieceList.every((piece) => piece.currentPos === piece
+						.correctPos);
+
+					const initializePuzzle = (gridSize) => {
+						const totalPieces = gridSize * gridSize;
+						const newPieces = [];
+						for (let i = 0; i < totalPieces; i += 1) {
+							newPieces.push({
+								id: i,
+								currentPos: i,
+								correctPos: i
+							});
+						}
+
+						let shuffled = [...newPieces];
+						do {
+							for (let i = shuffled.length - 1; i > 0; i -= 1) {
+								const j = Math.floor(Math.random() * (i + 1));
+								const temp = shuffled[i].currentPos;
+								shuffled[i].currentPos = shuffled[j].currentPos;
+								shuffled[j].currentPos = temp;
+							}
+						} while (checkCompleted(shuffled));
+
+						pieces.value = shuffled;
+						isCompleted.value = false;
+						moves.value = 0;
+						startTime.value = Date.now();
+						elapsedTime.value = 0;
+					};
+
+					const startLevel = (levelIndex) => {
+						currentLevel.value = levelIndex;
+						showLevelSelect.value = false;
+						initializePuzzle(levels[levelIndex].grid);
+					};
+
+					const resetPuzzle = () => {
+						initializePuzzle(levels[currentLevel.value].grid);
+					};
+
+					const goBack = () => {
+						showLevelSelect.value = true;
+						startTime.value = null;
+						if (timerRef) clearInterval(timerRef);
+					};
+
+					const handleDragStart = (pieceId) => {
+						if (pieceId === null || pieceId === undefined) return;
+						draggedPiece.value = pieceId;
+					};
+
+					const handleDrop = (targetPos) => {
+						if (draggedPiece.value === null) return;
+
+						const newPieces = pieces.value.map((piece) => ({
+							...piece
+						}));
+						const draggedIndex = newPieces.findIndex((piece) => piece.id === draggedPiece.value);
+						const targetIndex = newPieces.findIndex((piece) => piece.currentPos === targetPos);
+
+						if (draggedIndex !== -1 && targetIndex !== -1) {
+							const tempPos = newPieces[draggedIndex].currentPos;
+							newPieces[draggedIndex].currentPos = newPieces[targetIndex].currentPos;
+							newPieces[targetIndex].currentPos = tempPos;
+
+							pieces.value = newPieces;
+							moves.value += 1;
+
+							if (checkCompleted(newPieces)) {
+								isCompleted.value = true;
+								if (timerRef) clearInterval(timerRef);
+
+								const nextLevel = currentLevel.value + 2;
+								if (nextLevel <= 5 && !unlockedLevels.value.includes(nextLevel)) {
+									unlockedLevels.value = [...unlockedLevels.value, nextLevel];
+								}
+
+								showToast(`恭喜完成第${currentLevel.value + 1}关！`, 'success');
+							}
+						}
+
+						draggedPiece.value = null;
+					};
+
+					const getPieceByPos = (pos) => pieces.value.find((piece) => piece.currentPos === pos);
+
+					const gridSize = computed(() => levels[currentLevel.value].grid);
+
+					const getPieceStyle = (pos) => {
+						const piece = getPieceByPos(pos);
+						if (!piece) return {};
+						const row = Math.floor(piece.correctPos / gridSize.value);
+						const col = piece.correctPos % gridSize.value;
+						return {
+							backgroundImage: 'url(public/puzzle-game.png)',
+							backgroundSize: `${gridSize.value * 100}%`,
+							backgroundPosition: `${col * (100 / (gridSize.value - 1))}% ${row * (100 / (gridSize.value - 1))}%`,
+						};
+					};
+
+					const formatPuzzleTime = (seconds) => {
+						const mins = Math.floor(seconds / 60);
+						const secs = seconds % 60;
+						return `${mins}:${secs.toString().padStart(2, '0')}`;
+					};
+
+					// === Quotes section ===
+					const quotesRef = ref(null);
+					const isQuotesVisible = ref(false);
+					const quotes = [{
+							text: '想认识达官，就去打网球；想认识显贵，就去打高尔夫。但要是你跑去种地——那你就只能认识兔子。',
+							author: '企兔格言',
+							context: '关于兔子的社交哲学',
+						},
+						{
+							text: '屋子不大，但有毛毯、食物，还有企鹅，已经足够温暖了。',
+							author: '年糕故事',
+							context: '企鹅兔子相遇的那一天',
+						},
+						{
+							text: '哔啵哔啵，兔子的叫声，是冬天里最温暖的歌。',
+							author: '兔子哔啵叫',
+							context: '兔子委员会警告前的欢乐时光',
+						},
+						{
+							text: '企鹅的肚子Q弹，兔子的耳朵柔软，这就是友谊的触感。',
+							author: '日常随想',
+							context: '企鹅肚子Q弹系列',
+						},
+						{
+							text: '坏猫、坏鹈鹕、坏大鹅，都欺负不了我的企鹅。',
+							author: '兔子宣言',
+							context: '兔子挺身而出系列',
+						},
+						{
+							text: '种地虽然只能认识兔子，但兔子是最好的朋友。',
+							author: '企鹅感悟',
+							context: '农民企鹅耕种系列',
+						},
+					];
+					const currentQuoteIndex = ref(0);
+					const isQuoteAnimating = ref(false);
+					const copied = ref(false);
+
+					const currentQuote = computed(() => quotes[currentQuoteIndex.value]);
+
+					const nextQuote = () => {
+						if (isQuoteAnimating.value) return;
+						isQuoteAnimating.value = true;
+						setTimeout(() => {
+							currentQuoteIndex.value = (currentQuoteIndex.value + 1) % quotes.length;
+							isQuoteAnimating.value = false;
+						}, 300);
+					};
+
+					const selectQuote = (index) => {
+						if (isQuoteAnimating.value || index === currentQuoteIndex.value) return;
+						isQuoteAnimating.value = true;
+						setTimeout(() => {
+							currentQuoteIndex.value = index;
+							isQuoteAnimating.value = false;
+						}, 300);
+					};
+
+					const copyQuote = () => {
+						const quote = quotes[currentQuoteIndex.value];
+						navigator.clipboard.writeText(`"${quote.text}" —— ${quote.author}`);
+						copied.value = true;
+						showToast('格言已复制到剪贴板', 'success');
+						setTimeout(() => {
+							copied.value = false;
+						}, 2000);
+					};
+
+					// === Essays section ===
+					const essaysRef = ref(null);
+					const isEssaysVisible = ref(false);
+					const essays = [{
+							id: 1,
+							title: '年糕的味道',
+							excerpt: '外面下着雪，兔子躲在雪地里，冻得一动不动。它的耳朵塌塌的，小脸也被风吹红了...',
+							content: `外面下着雪，兔子躲在雪地里，冻得一动不动。它的耳朵塌塌的，小脸也被风吹红了，看起来可怜又无助。\n\n企鹅从屋里的窗户看到它，赶紧把兔子请进来。给兔子盖上厚毛毯，还在厨房里忙活起来，准备一锅香喷喷的炒年糕。\n\n吃到热乎乎的年糕，兔子终于笑了。屋子不大，但有毛毯、食物，还有企鹅，已经足够温暖了。\n\n这就是企鹅和兔子相遇的那一天。从那天起，他们开始了长达两百多期的日常记录。\n\n年糕的味道，是温暖的味道，是友谊的味道，也是家的味道。`,
+							date: '2023-12-01',
+							readTime: '3分钟',
+						},
+						{
+							id: 2,
+							title: '哔啵叫的兔子',
+							excerpt: '兔子最近学会了一种新的叫声——哔啵。它高兴的时候哔啵，不高兴的时候也哔啵...',
+							content: `兔子最近学会了一种新的叫声——哔啵。它高兴的时候哔啵，不高兴的时候也哔啵，无聊的时候更是哔啵个不停。\n\n企鹅一开始觉得很有趣，但渐渐地，这种声音开始让它头疼。尤其是晚上，当企鹅想要睡觉的时候，兔子还在那里哔啵哔啵。\n\n直到有一天，兔子收到了一封来自兔子委员会的信。信上说："哔啵叫有辱兔子的身份，请立即停止。"\n\n兔子看了看信，又看了看企鹅，然后......继续哔啵叫。\n\n顽劣大黄兔，果然名不虚传。`,
+							date: '2024-01-15',
+							readTime: '2分钟',
+						},
+						{
+							id: 3,
+							title: '企鹅的农田',
+							excerpt: '企鹅最近迷上了种地。它在院子里开辟了一小块农田，种上了胡萝卜和白菜...',
+							content: `企鹅最近迷上了种地。它在院子里开辟了一小块农田，种上了胡萝卜和白菜。\n\n兔子看着企鹅每天浇水、施肥、除草，心里痒痒的。终于有一天，它趁企鹅不注意，偷偷溜进农田，开始大快朵颐。\n\n企鹅回来看到被啃得乱七八糟的农田，气得直跺脚。但它看到兔子满足的表情，又舍不得责骂。\n\n"下次，"企鹅说，"至少留一半给我。"\n\n兔子点点头，然后......下次继续偷吃。\n\n这就是顽劣大黄兔，永远改不了的本性。`,
+							date: '2024-02-20',
+							readTime: '4分钟',
+						},
+						{
+							id: 4,
+							title: '坏猫来了',
+							excerpt: '那天，一只坏猫闯进了院子。它看到企鹅，眼睛一亮，蹑手蹑脚地靠近...',
+							content: `那天，一只坏猫闯进了院子。它看到企鹅，眼睛一亮，蹑手蹑脚地靠近。\n\n企鹅正在晒太阳，完全没有察觉到危险。坏猫弓起身子，准备扑上去......\n\n"哔啵！"\n\n一声怒吼，兔子像一颗黄色的炮弹一样冲了过来。它挡在企鹅面前，对着坏猫龇牙咧嘴。\n\n坏猫被这突如其来的攻击吓了一跳，愣在原地。兔子趁机用后腿蹬地，扬起一片尘土，然后拉着企鹅就跑。\n\n等坏猫回过神来，两个小家伙已经躲进了屋里，从窗户里对它做鬼脸。\n\n从那以后，每当有坏猫、坏鹈鹕、坏大鹅靠近，兔子总是第一个冲出来保护企鹅。\n\n这就是友谊，这就是陪伴。`,
+							date: '2024-03-10',
+							readTime: '3分钟',
+						},
+						{
+							id: 5,
+							title: '极地之恋',
+							excerpt: '在冰雪覆盖的极地，有一只企鹅和一只兔子。他们本不该相遇，但命运让他们走到了一起...',
+							content: `在冰雪覆盖的极地，有一只企鹅和一只兔子。他们本不该相遇，但命运让他们走到了一起。\n\n企鹅来自寒冷的南极，习惯了冰雪的世界。兔子来自温暖的草原，本不该出现在这片白色荒原。\n\n但兔子说："我想看看雪。"\n\n于是它来了，然后遇到了企鹅。\n\n他们一起看极光，一起堆雪人，一起在冰面上滑行。兔子冻得瑟瑟发抖，企鹅就把自己的羽毛披在它身上。\n\n"你不冷吗？"兔子问。\n\n"我是企鹅啊，"企鹅笑着说，"我生来就属于寒冷。"\n\n"那我呢？"兔子又问。\n\n"你属于我，"企鹅说，"你属于温暖，而我要给你温暖。"\n\n这就是极地之恋，一个关于陪伴和温暖的故事。`,
+							date: '2024-04-01',
+							readTime: '5分钟',
+						},
+					];
+					const selectedEssay = ref(null);
+
+					const selectEssay = (essay) => {
+						selectedEssay.value = essay;
+					};
+
+					const closeEssay = () => {
+						selectedEssay.value = null;
+					};
+
+					const selectedEssayParagraphs = computed(() => {
+						if (!selectedEssay.value) return [];
+						return selectedEssay.value.content.split('\n\n');
+					});
+
+					// === Quiz section ===
+					const quizRef = ref(null);
+					const isQuizVisible = ref(false);
+					const quizData = [{
+							question: '企鹅和兔子是怎么相遇的？',
+							options: ['在动物园里认识的', '企鹅给冻坏的兔子煮年糕', '在公园里偶遇', '通过朋友介绍'],
+							correct: 1,
+						},
+						{
+							question: '兔子的特殊叫声是什么？',
+							options: ['喵喵', '汪汪', '哔啵', '嘎嘎'],
+							correct: 2,
+						},
+						{
+							question: '兔子收到了哪个组织的警告？',
+							options: ['企鹅联盟', '动物保护协会', '兔子委员会', '森林管理局'],
+							correct: 2,
+						},
+						{
+							question: '企鹅是什么种类的企鹅？',
+							options: ['阿德利企鹅', '王企鹅', '帝企鹅宝宝', '小蓝企鹅'],
+							correct: 2,
+						},
+						{
+							question: '兔子最喜欢偷吃什么？',
+							options: ['企鹅的鱼', '农田里的胡萝卜', '厨房里的蛋糕', '冰箱里的冰淇淋'],
+							correct: 1,
+						},
+						{
+							question: '当坏猫欺负企鹅时，兔子会怎么做？',
+							options: ['躲起来', '叫大人帮忙', '挺身而出保护企鹅', '假装没看见'],
+							correct: 2,
+						},
+						{
+							question: '企鹅兔子的主题曲叫什么名字？',
+							options: ['冰雪奇缘', '极地之恋', '友谊地久天长', '冬天里的一把火'],
+							correct: 1,
+						},
+						{
+							question: '兔子最喜欢什么水果？',
+							options: ['苹果', '橘子', '草莓', '香蕉'],
+							correct: 2,
+						},
+						{
+							question: '兔子是什么颜色的？',
+							options: ['白色', '灰色', '黄色', '棕色'],
+							correct: 2,
+						},
+						{
+							question: '企鹅和兔子主要发布在哪个平台？',
+							options: ['微博', '抖音', '小红书', 'B站'],
+							correct: 2,
+						},
+					];
+					const quizStarted = ref(false);
+					const currentQuestion = ref(0);
+					const selectedAnswer = ref(null);
+					const answers = ref([]);
+					const showResult = ref(false);
+					let quizTimer = null;
+
+					const startQuiz = () => {
+						quizStarted.value = true;
+					};
+
+					const handleSelectAnswer = (index) => {
+						if (selectedAnswer.value !== null) return;
+						selectedAnswer.value = index;
+						answers.value = [...answers.value, index];
+
+						if (index === quizData[currentQuestion.value].correct) {
+							showToast('回答正确！', 'success');
+						} else {
+							showToast('回答错误', 'error');
+						}
+
+						quizTimer = setTimeout(() => {
+							if (currentQuestion.value < quizData.length - 1) {
+								currentQuestion.value += 1;
+								selectedAnswer.value = null;
+							} else {
+								showResult.value = true;
+							}
+						}, 1500);
+					};
+
+					const score = computed(() => {
+						let correct = 0;
+						answers.value.forEach((answer, index) => {
+							if (answer === quizData[index].correct) correct += 1;
+						});
+						return correct;
+					});
+
+					const percentage = computed(() => Math.round((score.value / quizData.length) * 100));
+
+					const resetQuiz = () => {
+						quizStarted.value = false;
+						currentQuestion.value = 0;
+						selectedAnswer.value = null;
+						answers.value = [];
+						showResult.value = false;
+						if (quizTimer) clearTimeout(quizTimer);
+					};
+
+					// === Footer section ===
+					const footerRef = ref(null);
+					const isFooterVisible = ref(false);
+					const email = ref('');
+
+					const handleSubscribe = () => {
+						if (email.value) {
+							showToast('订阅成功！', 'success');
+							email.value = '';
+						}
+					};
+
+					const handleShare = () => {
+						if (navigator.share) {
+							navigator.share({
+								title: '企鹅企企与顽劣大黄兔',
+								text: '记录企鹅和兔子的日常',
+								url: window.location.href,
+							});
+						} else {
+							navigator.clipboard.writeText(window.location.href);
+							showToast('链接已复制到剪贴板', 'success');
+						}
+					};
+
+					onMounted(() => {
+						isHeroLoaded.value = true;
+						handleScroll();
+						window.addEventListener('scroll', handleScroll, {
+							passive: true
+						});
+						window.addEventListener('mousemove', handleMouseMove);
+
+						observeSection(aboutRef, isAboutVisible, 0.2);
+						observeSection(galleryRef, isGalleryVisible, 0.1);
+						observeSection(videoRef, isVideoVisible, 0.1);
+						observeSection(musicRef, isMusicVisible, 0.2);
+						observeSection(merchRef, isMerchVisible, 0.1);
+						observeSection(puzzleRef, isPuzzleVisible, 0.1);
+						observeSection(quotesRef, isQuotesVisible, 0.2);
+						observeSection(essaysRef, isEssaysVisible, 0.1);
+						observeSection(quizRef, isQuizVisible, 0.1);
+						observeSection(footerRef, isFooterVisible, 0.2);
+
+						nextTick(() => lucide.createIcons());
+					});
+
+					onUnmounted(() => {
+						window.removeEventListener('scroll', handleScroll);
+						window.removeEventListener('mousemove', handleMouseMove);
+						if (timerRef) clearInterval(timerRef);
+						if (progressTimer) clearInterval(progressTimer);
+						if (quizTimer) clearTimeout(quizTimer);
+					});
+
+					watch(isPlaying, (value) => {
+						if (progressTimer) clearInterval(progressTimer);
+						if (value) {
+							progressTimer = setInterval(() => {
+								progress.value = progress.value >= 100 ? 0 : progress.value + 0.5;
+							}, 100);
+						}
+					});
+
+					watch(startTime, (value) => {
+						if (timerRef) clearInterval(timerRef);
+						if (value && !isCompleted.value) {
+							timerRef = setInterval(() => {
+								elapsedTime.value = Math.floor((Date.now() - startTime.value) / 1000);
+							}, 1000);
+						}
+					});
+
+					watch([selectedImage, selectedVideo, selectedEssay, quizStarted, showResult], async () => {
+						await nextTick();
+						lucide.createIcons();
+					});
+
+					// === Return: Global ===
+					return {
+						scrollY,
+						toasts,
+						showToast,
+
+						// === Return: Hero section ===
+						heroRef,
+						mousePos,
+						isHeroLoaded,
+						snowflakes,
+
+						// === Return: About section ===
+						aboutRef,
+						isAboutVisible,
+						stats,
+
+						// === Return: Gallery section ===
+						galleryRef,
+						isGalleryVisible,
+						galleryImages,
+						selectedImage,
+						openGallery,
+						closeGallery,
+						nextImage,
+						prevImage,
+
+						// === Return: Video section ===
+						videoRef,
+						isVideoVisible,
+						videos,
+						selectedVideo,
+						selectVideo,
+						closeVideo,
+
+						// === Return: Music section ===
+						musicRef,
+						isMusicVisible,
+						isPlaying,
+						progress,
+						currentSongIndex,
+						songs,
+						currentSong,
+						progressTimer,
+						togglePlay,
+						nextSong,
+						prevSong,
+						selectSong,
+						formatTime,
+
+						// === Return: Merchandise section ===
+						merchRef,
+						isMerchVisible,
+						products,
+						likedProducts,
+						toggleProductLike,
+						handleDownload,
+
+						// === Return: Puzzle section ===
+						puzzleRef,
+						isPuzzleVisible,
+						levels,
+						currentLevel,
+						pieces,
+						isCompleted,
+						moves,
+						elapsedTime,
+						unlockedLevels,
+						showLevelSelect,
+						startLevel,
+						resetPuzzle,
+						goBack,
+						handleDragStart,
+						handleDrop,
+						getPieceByPos,
+						gridSize,
+						getPieceStyle,
+						formatPuzzleTime,
+
+						// === Return: Quotes section ===
+						quotesRef,
+						isQuotesVisible,
+						quotes,
+						currentQuoteIndex,
+						currentQuote,
+						isQuoteAnimating,
+						copied,
+						nextQuote,
+						selectQuote,
+						copyQuote,
+
+						// === Return: Essays section ===
+						essaysRef,
+						isEssaysVisible,
+						essays,
+						selectedEssay,
+						selectedEssayParagraphs,
+						selectEssay,
+						closeEssay,
+
+						// === Return: Quiz section ===
+						quizRef,
+						isQuizVisible,
+						quizData,
+						quizStarted,
+						currentQuestion,
+						selectedAnswer,
+						showResult,
+						score,
+						percentage,
+						startQuiz,
+						handleSelectAnswer,
+						resetQuiz,
+
+						// === Return: Footer section ===
+						footerRef,
+						isFooterVisible,
+						email,
+						handleSubscribe,
+						handleShare,
+					};
+				},
+			}).mount('#app');
+		</script>
+	</body>
+</html>
