@@ -407,6 +407,52 @@
 					opacity: 0;
 				}
 			}
+
+			.celebration-ring {
+				position: absolute;
+				inset: 15%;
+				border-radius: 9999px;
+				border: 3px dashed rgba(59, 130, 246, 0.4);
+				animation: celebration-ring 2.4s ease-in-out infinite;
+			}
+
+			@keyframes celebration-ring {
+				0% {
+					transform: scale(0.8);
+					opacity: 0;
+				}
+				40% {
+					opacity: 0.7;
+				}
+				100% {
+					transform: scale(1.2);
+					opacity: 0;
+				}
+			}
+
+			.celebration-sparkle {
+				position: absolute;
+				width: 12px;
+				height: 12px;
+				background: radial-gradient(circle, #fef08a 0%, #facc15 40%, transparent 70%);
+				clip-path: polygon(50% 0%, 60% 35%, 98% 35%, 67% 57%, 79% 91%, 50% 70%, 21% 91%, 33% 57%, 2% 35%, 40% 35%);
+				animation: sparkle-float 2.2s ease-in-out infinite;
+				opacity: 0;
+			}
+
+			@keyframes sparkle-float {
+				0% {
+					transform: translate(0, 0) scale(0.6);
+					opacity: 0;
+				}
+				30% {
+					opacity: 0.9;
+				}
+				100% {
+					transform: translate(var(--x), var(--y)) scale(1.1);
+					opacity: 0;
+				}
+			}
 			.wave-bar {
 				width: 0.25rem;
 				background: #f5c73b;
@@ -886,17 +932,6 @@
 												<i data-lucide="zoom-in"
 													class="w-4 h-4 sm:w-5 sm:h-5 text-penguin-gray"></i>
 											</div>
-											<div v-if="showPuzzleCelebration"
-												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-												<div class="firework"
-													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
-												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
-												</div>
-												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
-												</div>
-												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
-												</div>
-											</div>
 										</div>
 									</div>
 
@@ -1173,7 +1208,7 @@
 								<!-- 唱片封面 -->
 								<div class="relative mb-8 group">
 									<!-- 唱片黑胶纹理 -->
-									<div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-900 bg-gray-900 flex items-center justify-center overflow-hidden transition-transform duration-[3s] linear"
+									<div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-900 bg-gray-900 flex items-center justify-center overflow-hidden"
 										:style="{ transform: `rotate(${discRotation}deg)` }">
 										<!-- 专辑图 -->
 										<img :src="currentSong.cover" alt="Album Cover"
@@ -1217,7 +1252,8 @@
 								<div class="w-full max-w-xs mb-6 group">
 									<input type="range" min="0" max="100" step="1" v-model="progress"
 										@input="handleSeek"
-										class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
+										:style="{ background: `linear-gradient(to right, #f5c73b ${progress}%, rgba(229, 231, 235, 1) ${progress}%)` }"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer accent-rabbit-yellow hover:accent-rabbit-dark transition-all" />
 									<div class="flex justify-between text-xs text-gray-400 mt-2 font-mono">
 										<span>{{ currentTimeDisplay }}</span>
 										<span>{{ durationDisplay }}</span>
@@ -1581,14 +1617,17 @@
 											</div>
 											<div v-if="showPuzzleCelebration"
 												class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-												<div class="firework"
-													style="--x: -120px; --y: -160px; left: 50%; top: 50%;"></div>
-												<div class="firework" style="--x: 140px; --y: -120px; left: 40%; top: 55%;">
-												</div>
-												<div class="firework" style="--x: -150px; --y: 130px; left: 55%; top: 40%;">
-												</div>
-												<div class="firework" style="--x: 160px; --y: 120px; left: 45%; top: 45%;">
-												</div>
+												<div class="celebration-ring"></div>
+												<div class="celebration-sparkle"
+													style="--x: -120px; --y: -140px; left: 45%; top: 45%; animation-delay: 0s;"></div>
+												<div class="celebration-sparkle"
+													style="--x: 140px; --y: -120px; left: 55%; top: 40%; animation-delay: 0.2s;"></div>
+												<div class="celebration-sparkle"
+													style="--x: -150px; --y: 110px; left: 40%; top: 55%; animation-delay: 0.4s;"></div>
+												<div class="celebration-sparkle"
+													style="--x: 160px; --y: 130px; left: 50%; top: 50%; animation-delay: 0.1s;"></div>
+												<div class="celebration-sparkle"
+													style="--x: -60px; --y: 170px; left: 55%; top: 55%; animation-delay: 0.3s;"></div>
 											</div>
 										</div>
 
@@ -3187,7 +3226,8 @@
 						showLevelSelect,
 						currentLevel,
 						selectedAnswer,
-						isVideoPlaying
+						isVideoPlaying,
+						isPlaying
 					], async () => {
 						await nextTick();
 						lucide.createIcons();
