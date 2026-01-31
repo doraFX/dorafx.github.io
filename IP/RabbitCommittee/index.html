@@ -1,0 +1,3444 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>兔子委员会</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet" />
+
+		<script src="../../js/tailwindcss.3.4.17.js"></script>
+		<script src="../../js/vue.global.js"></script>
+		<script src="../../js/lucide.min.js"></script>
+		<script src="../../js/html2canvas.min.js"></script>
+
+		<style>
+			:root {
+				--rabbit-teal: #2a6f6a;
+				--rabbit-light-teal: #d8f0f0;
+				--rabbit-pale-teal: #e9f8f8;
+				--rabbit-pink: #f8a6a6;
+				--rabbit-light-pink: #f9f1f1;
+				--rabbit-med-pink: #f7c9c9;
+				--rabbit-gold: #c9a227;
+			}
+
+			* {
+				border-color: #d8f0f0;
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+				background: #f9fdfd;
+				color: #1d1d1d;
+			}
+
+			.official-card {
+				background: #ffffff;
+				border: 1px solid #d8f0f0;
+				border-radius: 0.5rem;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+				transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+			}
+
+			.official-card:hover {
+				box-shadow: 0 8px 24px rgba(42, 111, 106, 0.08);
+			}
+
+			.official-btn {
+				padding: 0.625rem 1.5rem;
+				background: #2a6f6a;
+				color: #ffffff;
+				border-radius: 0.375rem;
+				font-weight: 500;
+				transition: all 0.2s ease;
+			}
+
+			.official-btn:hover {
+				background: #1e524e;
+			}
+
+			.official-btn:disabled {
+				background: #cbd5e1;
+				color: #ffffff;
+				cursor: not-allowed;
+			}
+
+			.official-btn:disabled:hover {
+				background: #cbd5e1;
+			}
+
+			.official-btn-outline {
+				padding: 0.625rem 1.5rem;
+				border: 2px solid #2a6f6a;
+				color: #2a6f6a;
+				border-radius: 0.375rem;
+				font-weight: 500;
+				transition: all 0.2s ease;
+			}
+
+			.official-btn-outline:hover {
+				background: #2a6f6a;
+				color: #ffffff;
+			}
+
+			.section-title {
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #1d1d1d;
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.section-title::before {
+				content: '';
+				width: 0.375rem;
+				height: 2rem;
+				background: #2a6f6a;
+				border-radius: 9999px;
+			}
+
+			.nav-link {
+				position: relative;
+				transition: color 0.2s ease;
+			}
+
+			.nav-link::after {
+				content: '';
+				position: absolute;
+				left: 50%;
+				bottom: -0.25rem;
+				width: 0;
+				height: 0.125rem;
+				background: #2a6f6a;
+				transition: width 0.3s ease;
+				transform: translateX(-50%);
+			}
+
+			.nav-link:hover::after {
+				width: 100%;
+			}
+
+			.glass-card {
+				background: rgba(255, 255, 255, 0.8);
+				border: 1px solid rgba(216, 240, 240, 0.5);
+				border-radius: 0.75rem;
+				backdrop-filter: blur(12px);
+			}
+
+			.certificate-frame {
+				border: 4px double #2a6f6a;
+				background: #ffffff;
+				padding: 2rem;
+				position: relative;
+				background-image:
+					radial-gradient(circle at 20% 20%, rgba(42, 111, 106, 0.03) 0%, transparent 50%),
+					radial-gradient(circle at 80% 80%, rgba(42, 111, 106, 0.03) 0%, transparent 50%);
+			}
+
+			.certificate-frame::before,
+			.certificate-frame::after {
+				content: '';
+				position: absolute;
+				width: 2rem;
+				height: 2rem;
+				border: 2px solid #2a6f6a;
+			}
+
+			.certificate-frame::before {
+				top: 0.5rem;
+				left: 0.5rem;
+				border-right: 0;
+				border-bottom: 0;
+			}
+
+			.certificate-frame::after {
+				bottom: 0.5rem;
+				right: 0.5rem;
+				border-left: 0;
+				border-top: 0;
+			}
+
+			.breathing {
+				animation: breathe 4s ease-in-out infinite;
+			}
+
+			@keyframes breathe {
+
+				0%,
+				100% {
+					transform: scale(1);
+				}
+
+				50% {
+					transform: scale(1.02);
+				}
+			}
+
+			.float-animation {
+				animation: float 3s ease-in-out infinite;
+			}
+
+			@keyframes float {
+
+				0%,
+				100% {
+					transform: translateY(0);
+				}
+
+				50% {
+					transform: translateY(-10px);
+				}
+			}
+
+			.animate-on-scroll {
+				opacity: 1;
+			}
+
+			.page-transition {
+				animation: fadeIn 0.3s ease;
+			}
+
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+
+			.line-clamp-1,
+			.line-clamp-2,
+			.line-clamp-3 {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			.line-clamp-1 {
+				-webkit-line-clamp: 1;
+			}
+
+			.line-clamp-2 {
+				-webkit-line-clamp: 2;
+			}
+
+			.line-clamp-3 {
+				-webkit-line-clamp: 3;
+			}
+
+			.scrollbar-hide::-webkit-scrollbar {
+				display: none;
+			}
+
+			.scrollbar-hide {
+				-ms-overflow-style: none;
+				scrollbar-width: none;
+			}
+
+			.prose {
+				color: #374151;
+				line-height: 1.75;
+			}
+
+			.animate-in {
+				animation: fadeIn 0.2s ease;
+			}
+
+			.fade-in {
+				animation: fadeIn 0.2s ease;
+			}
+
+			.slide-in-from-top {
+				animation: slideDown 0.2s ease;
+			}
+
+			.slide-in-from-top-2 {
+				animation: slideDown 0.2s ease;
+			}
+
+			@keyframes slideDown {
+				from {
+					opacity: 0;
+					transform: translateY(-8px);
+				}
+
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			@media print {
+				.print\:hidden {
+					display: none !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" class="min-h-screen bg-[#F9FDFD] flex flex-col">
+			<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+				:class="isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center justify-between">
+						<a href="#" class="flex items-center gap-3 group" @click.prevent="navigatePath('/')">
+							<div
+								class="relative w-10 h-10 flex items-center justify-center rounded-full group-hover:scale-110 transition-transform duration-300">
+								<img src="images/seal.webp" class="h-full w-full" alt="" />
+							</div>
+							<div class="hidden sm:block">
+								<h1 class="text-lg font-bold text-[#1D1D1D] leading-tight">兔子委员会</h1>
+								<p class="text-xs text-[#2A6F6A]">Rabbit Committee</p>
+							</div>
+						</a>
+
+						<nav class="hidden md:flex items-center gap-1">
+							<a v-for="item in navItems" :key="item.path" href="#"
+								@click.prevent="navigatePath(item.path)"
+								class="nav-link px-4 py-2 text-sm font-medium rounded-md transition-all duration-200"
+								:class="activeNavPath === item.path ? 'text-[#2A6F6A] bg-[#E9F8F8]' : 'text-[#1D1D1D] hover:bg-[#F9FDFD]'">
+								{{ item.label }}
+							</a>
+						</nav>
+
+						<div class="hidden lg:flex items-center gap-4">
+							<div class="relative" @mouseenter="showStatusTooltip = true"
+								@mouseleave="showStatusTooltip = false">
+								<div class="flex items-center gap-2 px-3 py-1.5 bg-[#E9F8F8] rounded-full cursor-help">
+									<span class="w-4 h-4">
+										<i data-lucide="rabbit" class="w-4 h-4"
+											:class="officeStatus.isOpen ? 'text-green-600' : 'text-gray-400'"></i>
+									</span>
+									<span
+										class="text-xs font-medium text-[#2A6F6A]">{{ officeStatus.statusText }}</span>
+									<i data-lucide="chevron-down" class="w-3 h-3 text-[#2A6F6A]"></i>
+								</div>
+
+								<div v-if="showStatusTooltip"
+									class="absolute top-full right-0 mt-2 w-64 p-4 bg-white rounded-lg shadow-lg border border-[#D8F0F0] animate-in fade-in slide-in-from-top-2 duration-200">
+									<p class="text-sm text-[#1D1D1D] mb-2">{{ officeStatus.note }}</p>
+									<p class="text-xs text-gray-500">办公时间：{{ officeStatus.hours }}</p>
+									<p class="text-xs text-gray-500">闭厅时间：{{ officeStatus.nextClosure }}</p>
+								</div>
+							</div>
+						</div>
+
+						<button @click="isMobileMenuOpen = !isMobileMenuOpen"
+							class="md:hidden p-2 rounded-lg hover:bg-[#E9F8F8] transition-colors">
+							<i data-lucide="x" class="w-6 h-6 text-[#2A6F6A]"
+								:class="{ hidden: !isMobileMenuOpen }"></i>
+							<i data-lucide="menu" class="w-6 h-6 text-[#2A6F6A]"
+								:class="{ hidden: isMobileMenuOpen }"></i>
+						</button>
+					</div>
+				</div>
+
+				<div v-if="isMobileMenuOpen"
+					class="md:hidden absolute top-full left-0 right-0 bg-white border-t border-[#D8F0F0] shadow-lg animate-in slide-in-from-top duration-200">
+					<nav class="px-4 py-4 space-y-1">
+						<a v-for="item in navItems" :key="item.path" href="#" @click.prevent="navigatePath(item.path)"
+							class="block px-4 py-3 rounded-lg text-sm font-medium transition-colors"
+							:class="activeNavPath === item.path ? 'text-[#2A6F6A] bg-[#E9F8F8]' : 'text-[#1D1D1D] hover:bg-[#F9FDFD]'">
+							{{ item.label }}
+						</a>
+					</nav>
+					<div class="px-4 py-3 bg-[#F9FDFD] border-t border-[#D8F0F0]">
+						<div class="flex items-center gap-2">
+							<span class="w-4 h-4">
+								<i data-lucide="rabbit" class="w-4 h-4"
+									:class="officeStatus.isOpen ? 'text-green-600' : 'text-gray-400'"></i>
+							</span>
+							<span class="text-sm text-[#1D1D1D]">{{ officeStatus.statusText }}</span>
+						</div>
+						<p class="text-xs text-gray-500 mt-1">
+							{{ officeStatus.hours }} · {{ officeStatus.note }}
+						</p>
+					</div>
+				</div>
+			</header>
+
+			<main class="flex-1">
+				<div v-if="currentPage === 'home'" class="page-transition">
+					<section class="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden"
+						style="background: linear-gradient(135deg, #E9F8F8 0%, #D8F0F0 50%, #F9FDFD 100%)">
+						<div class="absolute inset-0 opacity-30">
+							<div class="absolute top-20 left-10 w-32 h-32 bg-[#2A6F6A]/10 rounded-full blur-3xl"></div>
+							<div class="absolute bottom-20 right-20 w-48 h-48 bg-[#F8A6A6]/20 rounded-full blur-3xl">
+							</div>
+							<div
+								class="absolute top-1/2 left-1/2 w-64 h-64 bg-[#2A6F6A]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2">
+							</div>
+						</div>
+
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+							<div class="grid lg:grid-cols-2 gap-12 items-center">
+								<div class="space-y-8">
+									<div
+										class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#D8F0F0] shadow-sm">
+										<span class="w-4 h-4">
+											<i data-lucide="rabbit" class="w-4 h-4"
+												:class="officeStatus.isOpen ? 'text-green-600' : 'text-gray-400'"></i>
+										</span>
+										<span class="text-sm font-medium text-[#1D1D1D]">官方公告</span>
+										<span class="text-xs text-gray-500">{{ officeStatus.statusText }}</span>
+									</div>
+
+									<div>
+										<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-[#1D1D1D] leading-tight mb-4"
+											style="perspective: 1000px">
+											<span v-for="(char, index) in heroChars" :key="index"
+												class="char inline-block">
+												{{ char === ' ' ? '\u00A0' : char }}
+											</span>
+										</h1>
+										<p class="text-xl md:text-2xl text-[#2A6F6A] font-medium">Rabbit Committee</p>
+										<p class="text-lg text-gray-600 mt-4 max-w-lg">
+											由多位资深兔子代表组成的事务协调与意见表达机构，致力于处理兔子群体在日常生活中出现的各类重要与不太重要的问题。
+										</p>
+									</div>
+
+									<div class="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-[#D8F0F0]">
+										<p class="text-[#1D1D1D] leading-relaxed">
+											<span class="font-semibold text-[#2A6F6A]">核心使命：</span>
+											在不限制兔子天性的前提下，通过记录、讨论与决议，为兔子群体提供一个被听见、被记录、被认真对待的空间。
+										</p>
+									</div>
+
+									<div class="flex flex-wrap gap-4">
+										<a href="#" class="official-btn inline-flex items-center gap-2 group"
+											@click.prevent="navigatePath('/meetings')">
+											探索会议
+											<i data-lucide="arrow-right"
+												class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+										</a>
+										<a href="#" class="official-btn-outline inline-flex items-center gap-2"
+											@click.prevent="navigatePath('/members')">
+											认识委员
+										</a>
+									</div>
+								</div>
+
+								<div class="relative" style="perspective: 1000px">
+									<div class="relative rounded-2xl overflow-hidden shadow-2xl breathing">
+										<img src="images/hero-bunnies.webp" alt="兔子委员会会议" class="w-full h-auto" />
+										<div
+											class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+											<div class="flex items-center gap-3">
+												<div
+													class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+													<img src="images/seal.webp" alt="印章"
+														class="w-full h-full object-contain" />
+												</div>
+												<div>
+													<p class="font-semibold text-[#1D1D1D]">兔子委员会</p>
+													<p class="text-sm text-gray-500">致力于所有兔子相关事务的和谐、秩序与顽皮治理。</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div
+										class="absolute -top-4 -right-4 w-20 h-20 bg-[#F8A6A6]/30 rounded-full blur-xl float-animation">
+									</div>
+									<div class="absolute -bottom-8 -left-8 w-24 h-24 bg-[#2A6F6A]/20 rounded-full blur-xl float-animation"
+										style="animation-delay: 1s"></div>
+								</div>
+							</div>
+						</div>
+
+					</section>
+
+					<section class="py-20 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="animate-on-scroll">
+								<h2 class="section-title mb-8">最新公告</h2>
+							</div>
+
+							<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div v-for="(ann, index) in announcements.slice(0, 6)" :key="ann.id"
+									class="animate-on-scroll official-card p-6 hover:shadow-lg transition-all duration-300 group"
+									:style="{ animationDelay: `${index * 0.1}s` }">
+									<div class="flex items-start justify-between mb-4">
+										<span class="px-3 py-1 rounded-full text-xs font-medium border"
+											:class="getAnnouncementCategoryStyle(ann.category)">
+											{{ getAnnouncementCategoryLabel(ann.category) }}
+										</span>
+										<span v-if="ann.isPinned" class="text-[#2A6F6A] text-xs font-medium">置顶</span>
+									</div>
+									<h3
+										class="font-semibold text-[#1D1D1D] mb-2 group-hover:text-[#2A6F6A] transition-colors line-clamp-2">
+										{{ ann.title }}
+									</h3>
+									<p class="text-sm text-gray-600 line-clamp-3 mb-4">
+										{{ ann.content }}
+									</p>
+									<div class="flex items-center justify-between text-xs text-gray-400">
+										<span>{{ ann.date }}</span>
+										<a href="#" class="text-[#2A6F6A] hover:underline flex items-center gap-1"
+											@click.prevent="navigatePath('/policies')">
+											查看详情
+											<i data-lucide="arrow-right" class="w-3 h-3"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-8 text-center animate-on-scroll">
+								<a href="#" class="inline-flex items-center gap-2 text-[#2A6F6A] hover:underline"
+									@click.prevent="navigatePath('/policies')">
+									查看全部公告
+									<i data-lucide="arrow-right" class="w-4 h-4"></i>
+								</a>
+							</div>
+						</div>
+					</section>
+
+
+
+					<section class="py-20 bg-[#2A6F6A]">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+							<div class="animate-on-scroll">
+								<h2 class="text-2xl md:text-4xl font-bold text-white mb-4">需要办理认证或申报事项？</h2>
+								<p class="text-lg text-white/80 mb-8">兔子委员会 · 兔子事务厅随时为您服务</p>
+								<div class="flex flex-wrap justify-center gap-4">
+									<a href="#"
+										class="px-8 py-3 bg-white text-[#2A6F6A] rounded-lg font-semibold hover:bg-[#E9F8F8] transition-colors"
+										@click.prevent="navigatePath('/services/certification')">
+										申请认证
+									</a>
+									<a href="#"
+										class="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors"
+										@click.prevent="navigatePath('/services')">
+										了解更多服务
+									</a>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+
+				<div v-else-if="currentPage === 'meetings'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="animate-on-scroll mb-12">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">会议</span>
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold text-[#1D1D1D] mb-4">委员会会议</h1>
+							<p class="text-lg text-gray-600 max-w-2xl">记录兔子委员会所有全体会议和重要决议，见证 BunnyVerse 治理的历史进程</p>
+						</div>
+
+						<div class="relative">
+							<div class="absolute left-10 top-0 bottom-0 w-0.5 bg-[#D8F0F0]"></div>
+
+							<div class="space-y-10">
+								<div v-for="(meeting, index) in meetings" :key="meeting.id"
+									class="animate-on-scroll relative flex items-start gap-8"
+									:style="{ animationDelay: `${index * 0.1}s` }">
+									<div class="flex flex-col items-center w-20 flex-shrink-0">
+										<div class="w-4 h-4 bg-white border-4 border-[#2A6F6A] rounded-full mt-2"></div>
+										<div class="mt-3 text-xs text-gray-500">{{ meeting.date }}</div>
+										<div class="text-xs text-gray-400">第{{ meeting.sessionNumber }}次</div>
+									</div>
+
+									<div class="flex-1">
+										<a href="#" @click.prevent="openMeeting(meeting.id)">
+											<div
+												class="official-card p-6 hover:shadow-lg transition-all duration-300 group">
+												<div class="flex items-center justify-between mb-4">
+													<span
+														class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border"
+														:class="getMeetingStatus(meeting.status).className">
+														<i :data-lucide="getMeetingStatus(meeting.status).icon"
+															class="w-4 h-4"></i>
+														{{ getMeetingStatus(meeting.status).label }}
+													</span>
+													<span
+														class="text-sm text-gray-400">第{{ meeting.sessionNumber }}次会议</span>
+												</div>
+
+												<h3
+													class="text-xl font-bold text-[#1D1D1D] mb-2 group-hover:text-[#2A6F6A] transition-colors">
+													{{ meeting.title }}
+												</h3>
+
+												<p class="text-gray-600 mb-4 line-clamp-2">{{ meeting.summary }}</p>
+
+												<div class="flex flex-wrap gap-2 mb-4">
+													<span v-for="(topic, i) in meeting.topics.slice(0, 2)" :key="i"
+														class="px-2 py-1 bg-[#E9F8F8] text-[#2A6F6A] text-xs rounded">
+														{{ topic.length > 15 ? topic.slice(0, 15) + '...' : topic }}
+													</span>
+													<span v-if="meeting.topics.length > 2"
+														class="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded">
+														+{{ meeting.topics.length - 2 }}
+													</span>
+												</div>
+
+												<div
+													class="flex items-center justify-between pt-4 border-t border-[#D8F0F0]">
+													<span
+														class="text-[#2A6F6A] text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+														查看详情
+														<i data-lucide="arrow-right" class="w-4 h-4"></i>
+													</span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll mt-16">
+							<div class="bg-[#E9F8F8] rounded-xl p-8">
+								<div class="flex items-start gap-4">
+									<div
+										class="w-12 h-12 bg-[#2A6F6A] rounded-lg flex items-center justify-center flex-shrink-0">
+										<i data-lucide="file-text" class="w-6 h-6 text-white"></i>
+									</div>
+									<div>
+										<h3 class="text-lg font-bold text-[#1D1D1D] mb-2">关于会议记录</h3>
+										<p class="text-gray-600 mb-4">
+											兔子委员会极度重视记录，所有会议内容都会被如实记录并归档。
+											会议记录作为重要档案永久保存，查阅需经委员会批准。
+										</p>
+										<div class="flex flex-wrap gap-4 text-sm">
+											<span class="inline-flex items-center gap-1.5 text-gray-500">
+												<i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>
+												已归档会议可查阅
+											</span>
+											<span class="inline-flex items-center gap-1.5 text-gray-500">
+												<i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
+												整理中会议稍后公开
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'meetingDetail'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div v-if="currentMeeting" class="page-content">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<a href="#" class="hover:text-[#2A6F6A]"
+									@click.prevent="navigatePath('/meetings')">会议</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">{{ currentMeeting.title }}</span>
+							</div>
+
+							<button @click="navigatePath('/meetings')"
+								class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] mb-6 transition-colors">
+								<i data-lucide="arrow-left" class="w-4 h-4"></i>
+								返回会议列表
+							</button>
+
+							<div class="official-card p-8 mb-8">
+								<div class="flex items-center gap-3 mb-6">
+									<span
+										class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border"
+										:class="getMeetingStatus(currentMeeting.status).className">
+										<i :data-lucide="getMeetingStatus(currentMeeting.status).icon"
+											class="w-4 h-4"></i>
+										{{ getMeetingStatus(currentMeeting.status).label }}
+									</span>
+									<span class="text-sm text-gray-400">第{{ currentMeeting.sessionNumber }}次全体会议</span>
+								</div>
+
+								<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-6">
+									{{ currentMeeting.title }}
+								</h1>
+
+								<div class="grid sm:grid-cols-2 gap-4 mb-6">
+									<div class="flex items-center gap-3 text-gray-600">
+										<div class="w-10 h-10 bg-[#E9F8F8] rounded-lg flex items-center justify-center">
+											<i data-lucide="calendar" class="w-5 h-5 text-[#2A6F6A]"></i>
+										</div>
+										<div>
+											<p class="text-xs text-gray-400">会议日期</p>
+											<p class="font-medium">{{ currentMeeting.date }}</p>
+										</div>
+									</div>
+									<div class="flex items-center gap-3 text-gray-600">
+										<div class="w-10 h-10 bg-[#E9F8F8] rounded-lg flex items-center justify-center">
+											<i data-lucide="users" class="w-5 h-5 text-[#2A6F6A]"></i>
+										</div>
+										<div>
+											<p class="text-xs text-gray-400">出席委员</p>
+											<p class="font-medium">{{ currentMeeting.attendees.length }} 位</p>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-[#F9FDFD] rounded-lg p-4 border border-[#D8F0F0]">
+									<p class="text-sm text-gray-600 flex items-center gap-2">
+										<i :data-lucide="getMeetingStatus(currentMeeting.status).icon"
+											class="w-4 h-4"></i>
+										{{ getMeetingStatus(currentMeeting.status).description }}
+									</p>
+								</div>
+							</div>
+
+							<template v-if="currentMeeting.status === 'archived'">
+								<div class="official-card p-6 mb-6">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+										<i data-lucide="users" class="w-5 h-5 text-[#2A6F6A]"></i>
+										出席委员
+									</h2>
+									<div class="flex flex-wrap gap-2">
+										<span v-for="(attendee, index) in currentMeeting.attendees" :key="index"
+											class="px-3 py-1.5 bg-[#E9F8F8] text-[#2A6F6A] text-sm rounded-full">
+											{{ attendee }}
+										</span>
+									</div>
+								</div>
+
+								<div class="official-card p-6 mb-6">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+										<i data-lucide="message-square" class="w-5 h-5 text-[#2A6F6A]"></i>
+										核心议题
+									</h2>
+									<ul class="space-y-3">
+										<li v-for="(topic, index) in currentMeeting.topics" :key="index"
+											class="flex items-start gap-3 p-3 bg-[#F9FDFD] rounded-lg">
+											<span
+												class="w-6 h-6 bg-[#2A6F6A] text-white rounded-full flex items-center justify-center text-sm flex-shrink-0">
+												{{ index + 1 }}
+											</span>
+											<span class="text-gray-700">{{ topic }}</span>
+										</li>
+									</ul>
+								</div>
+
+								<div v-if="currentMeeting.resolution"
+									class="official-card p-6 mb-6 border-l-4 border-l-[#2A6F6A]">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+										<i data-lucide="scroll-text" class="w-5 h-5 text-[#2A6F6A]"></i>
+										决议结果
+									</h2>
+									<p class="text-gray-700 leading-relaxed">{{ currentMeeting.resolution }}</p>
+								</div>
+
+								<div v-if="currentMeeting.notes" class="official-card p-6 mb-6 bg-amber-50/50">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+										<i data-lucide="file-text" class="w-5 h-5 text-amber-600"></i>
+										会议备注
+									</h2>
+									<p class="text-gray-600 leading-relaxed">{{ currentMeeting.notes }}</p>
+								</div>
+							</template>
+							<div v-else class="official-card p-12 text-center">
+								<div
+									class="w-20 h-20 bg-[#E9F8F8] rounded-full flex items-center justify-center mx-auto mb-6">
+									<i :data-lucide="getMeetingStatus(currentMeeting.status).icon"
+										class="w-10 h-10 text-[#2A6F6A]"></i>
+								</div>
+								<h2 class="text-xl font-bold text-[#1D1D1D] mb-2">
+									{{ getMeetingStatus(currentMeeting.status).label }}
+								</h2>
+								<p class="text-gray-600 mb-6">{{ getMeetingStatus(currentMeeting.status).description }}
+								</p>
+								<div v-if="currentMeeting.status === 'processing'"
+									class="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm">
+									<i data-lucide="clock" class="w-4 h-4 animate-spin"></i>
+									小兔子正在努力整理中...
+								</div>
+							</div>
+
+							<div class="flex items-center justify-between mt-8">
+								<button @click="navigatePath('/meetings')"
+									class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] transition-colors">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									返回会议列表
+								</button>
+								<a href="#" class="inline-flex items-center gap-2 text-[#2A6F6A] hover:underline"
+									@click.prevent="navigatePath('/policies')">
+									查看相关政策
+									<i data-lucide="file-text" class="w-4 h-4"></i>
+								</a>
+							</div>
+						</div>
+
+						<div v-else class="min-h-screen bg-[#F9FDFD] pt-24 pb-16 flex items-center justify-center">
+							<div class="text-center">
+								<h1 class="text-2xl font-bold text-[#1D1D1D] mb-4">会议未找到</h1>
+								<p class="text-gray-600 mb-6">该会议记录不存在或尚未公开</p>
+								<button @click="navigatePath('/meetings')" class="official-btn">返回会议列表</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'services'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="animate-on-scroll mb-12">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">服务</span>
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold text-[#1D1D1D] mb-4">兔子事务厅</h1>
+							<p class="text-lg text-gray-600 max-w-2xl">兔子委员会设立的综合事务受理与对外服务窗口。</p>
+						</div>
+
+						<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div v-for="(service, index) in servicesDetail" :key="service.id" class="animate-on-scroll"
+								:style="{ animationDelay: `${index * 0.1}s` }">
+								<a href="#" @click.prevent="handleServiceNavigate(service)">
+									<div class="official-card p-6 h-full hover:shadow-lg transition-all duration-300 group"
+										:class="!isServiceAvailable(service) ? 'opacity-70 grayscale' : ''">
+										<div
+											class="w-14 h-14 bg-[#2A6F6A]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#2A6F6A] transition-colors">
+											<i :data-lucide="service.icon"
+												class="w-7 h-7 text-[#2A6F6A] group-hover:text-white transition-colors"></i>
+										</div>
+
+										<div class="flex items-center gap-2 mb-2">
+											<span
+												class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border"
+												:class="getServiceTag(service).className">
+												<i :data-lucide="getServiceTag(service).icon" class="w-3 h-3"></i>
+												{{ getServiceTag(service).label }}
+											</span>
+											<span class="text-xs text-gray-400">标记 {{ service.value }}</span>
+										</div>
+
+										<h3
+											class="text-xl font-bold text-[#1D1D1D] mb-1 group-hover:text-[#2A6F6A] transition-colors">
+											{{ service.title }}
+										</h3>
+										<p class="text-xs text-gray-400 mb-3">{{ service.subtitle }}</p>
+
+										<p class="text-gray-600 text-sm mb-4">{{ service.description }}</p>
+
+										<div class="mb-4">
+											<p class="text-xs text-gray-400 mb-2">办理流程</p>
+											<div class="flex flex-wrap gap-1">
+												<span v-for="(step, i) in service.process" :key="i"
+													class="text-xs text-[#2A6F6A]">
+													{{ step }}
+													<span v-if="i < service.process.length - 1"
+														class="text-gray-300 mx-1">→</span>
+												</span>
+											</div>
+										</div>
+
+										<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+											<i data-lucide="clock" class="w-4 h-4"></i>
+											<span>预计时长：{{ service.duration }}</span>
+										</div>
+
+										<div class="flex items-center justify-between pt-4 border-t border-[#D8F0F0]">
+											<span
+												class="text-[#2A6F6A] text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+												{{ isServiceAvailable(service) ? '立即办理' : '当前不可办理' }}
+												<i data-lucide="arrow-right" class="w-4 h-4"></i>
+											</span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll mt-12 grid md:grid-cols-2 gap-6">
+							<div class="official-card p-6">
+								<h3 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+									<i data-lucide="clock" class="w-5 h-5 text-[#2A6F6A]"></i>
+									办公时间
+								</h3>
+								<div class="space-y-3">
+									<div class="flex items-center gap-3">
+										<i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+										<span class="text-gray-600">每日 08:00 - 17:00</span>
+									</div>
+									<div class="flex items-center gap-3">
+										<i data-lucide="alert-circle" class="w-5 h-5 text-amber-500"></i>
+										<span class="text-gray-600">17:00 - 24:00 值夜班，业务受限</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="official-card p-6">
+								<h3 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+									<i data-lucide="alert-circle" class="w-5 h-5 text-[#2A6F6A]"></i>
+									温馨提示
+								</h3>
+								<ul class="space-y-2 text-sm text-gray-600">
+									<li>• 请提前准备好相关材料</li>
+									<li>• 排队是对集体的基本尊重</li>
+									<li>• 插队将被如实记录</li>
+								</ul>
+							</div>
+						</div>
+						<div class="animate-on-scroll mt-8 official-card p-6">
+							<div class="flex items-start justify-between gap-6">
+								<div>
+									<h3 class="text-lg font-bold text-[#1D1D1D] mb-2">当前办理范围</h3>
+									<p class="text-sm text-gray-600">{{ serviceAvailability.description }}</p>
+								</div>
+								<span
+									class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border"
+									:class="serviceAvailability.badgeClass">
+									<i :data-lucide="serviceAvailability.icon" class="w-4 h-4"></i>
+									{{ serviceAvailability.label }}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'serviceApplication'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+							<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+							<span>/</span>
+							<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/services')">服务</a>
+							<span>/</span>
+							<span class="text-[#2A6F6A]">{{ currentApplicationType.label }}</span>
+						</div>
+
+						<a href="#"
+							class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] mb-6 transition-colors"
+							@click.prevent="navigatePath('/services')">
+							<i data-lucide="arrow-left" class="w-4 h-4"></i>
+							返回兔子事务厅
+						</a>
+
+						<div class="official-card p-6 mb-8">
+							<div class="flex items-start justify-between gap-6">
+								<div>
+									<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-2">
+										{{ currentApplicationType.label }}
+									</h1>
+									<p class="text-gray-600">{{ currentApplicationType.description }}</p>
+								</div>
+								<span
+									class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border"
+									:class="getServiceTag(currentApplicationType).className">
+									<i :data-lucide="getServiceTag(currentApplicationType).icon" class="w-4 h-4"></i>
+									{{ getServiceTag(currentApplicationType).label }}
+								</span>
+							</div>
+						</div>
+
+						<div v-if="!isServiceAvailable(currentApplicationType)"
+							class="official-card p-6 mb-8 border border-amber-200 bg-amber-50">
+							<div class="flex items-start gap-3 text-amber-700">
+								<i data-lucide="alert-circle" class="w-5 h-5 mt-0.5"></i>
+								<div>
+									<h3 class="font-semibold mb-1">当前时段不可办理</h3>
+									<p class="text-sm">{{ serviceAvailability.description }}</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="official-card p-6 mb-8">
+							<div class="flex flex-wrap gap-4">
+								<div v-for="step in applicationSteps" :key="step.id"
+									class="flex items-center gap-2 text-sm"
+									:class="applicationStep >= step.id ? 'text-[#2A6F6A] font-semibold' : 'text-gray-400'">
+									<div class="w-6 h-6 rounded-full flex items-center justify-center text-xs border"
+										:class="applicationStep >= step.id ? 'border-[#2A6F6A] bg-[#E9F8F8]' : 'border-gray-200'">
+										{{ step.id }}
+									</div>
+									<span>{{ step.label }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="official-card p-6">
+							<div v-if="applicationStep === 1" class="space-y-6">
+								<h2 class="text-lg font-bold text-[#1D1D1D]">填写基本信息</h2>
+								<div class="grid md:grid-cols-2 gap-6">
+									<div>
+										<label class="block text-sm font-medium text-gray-700 mb-2">申请人姓名</label>
+										<input v-model="applicationForm.name" type="text" placeholder="请输入姓名"
+											class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A]" />
+									</div>
+									<div>
+										<label class="block text-sm font-medium text-gray-700 mb-2">联系编号</label>
+										<input v-model="applicationForm.contact" type="text" placeholder="如：RID-001123"
+											class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A]" />
+									</div>
+								</div>
+								<div>
+									<label class="block text-sm font-medium text-gray-700 mb-2">办理事项摘要</label>
+									<input v-model="applicationForm.summary" type="text" placeholder="请输入事项概要"
+										class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A]" />
+								</div>
+								<div class="flex justify-end">
+									<button class="official-btn" :disabled="!canProceedApplicationStep1"
+										@click="goToApplicationStep(2)">
+										下一步
+									</button>
+								</div>
+							</div>
+
+							<div v-else-if="applicationStep === 2" class="space-y-6">
+								<h2 class="text-lg font-bold text-[#1D1D1D]">补充材料与说明</h2>
+								<div>
+									<label class="block text-sm font-medium text-gray-700 mb-2">详细说明</label>
+									<textarea v-model="applicationForm.detail" rows="4" placeholder="请详细描述情况..."
+										class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A] resize-none"></textarea>
+								</div>
+								<div>
+									<label class="block text-sm font-medium text-gray-700 mb-2">附加说明（可选）</label>
+									<textarea v-model="applicationForm.note" rows="3" placeholder="可填写补充说明"
+										class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A] resize-none"></textarea>
+								</div>
+								<div class="flex items-center justify-between">
+									<button class="official-btn-outline" @click="goToApplicationStep(1)">上一步</button>
+									<button class="official-btn" :disabled="!applicationForm.detail.trim()"
+										@click="goToApplicationStep(3)">
+										下一步
+									</button>
+								</div>
+							</div>
+
+							<div v-else-if="applicationStep === 3" class="space-y-6">
+								<h2 class="text-lg font-bold text-[#1D1D1D]">确认信息与提交</h2>
+								<div class="bg-[#F9FDFD] border border-[#D8F0F0] rounded-lg p-4 space-y-2 text-sm">
+									<p><span class="text-gray-400">申请人：</span>{{ applicationForm.name }}</p>
+									<p><span class="text-gray-400">联系编号：</span>{{ applicationForm.contact }}</p>
+									<p><span class="text-gray-400">事项摘要：</span>{{ applicationForm.summary }}</p>
+									<p><span class="text-gray-400">详细说明：</span>{{ applicationForm.detail }}</p>
+									<p v-if="applicationForm.note"><span
+											class="text-gray-400">附加说明：</span>{{ applicationForm.note }}</p>
+								</div>
+								<div class="flex items-center justify-between">
+									<button class="official-btn-outline" @click="goToApplicationStep(2)">上一步</button>
+									<button class="official-btn"
+										:disabled="isSubmittingApplication || !isServiceAvailable(currentApplicationType)"
+										@click="submitApplication">
+										<template v-if="isSubmittingApplication">
+											<i data-lucide="refresh-cw" class="w-4 h-4 animate-spin"></i>
+											提交中...
+										</template>
+										<template v-else>提交申请</template>
+									</button>
+								</div>
+							</div>
+
+							<div v-else-if="applicationStep === 4" class="space-y-6">
+								<div class="flex items-center gap-3">
+									<i :data-lucide="applicationResult.status === 'approved' ? 'check-circle' : 'x-circle'"
+										class="w-6 h-6"
+										:class="applicationResult.status === 'approved' ? 'text-green-500' : 'text-red-500'"></i>
+									<h2 class="text-lg font-bold text-[#1D1D1D]">
+										{{ applicationResult.status === 'approved' ? '办理完成' : '申请被驳回' }}
+									</h2>
+								</div>
+								<div class="bg-[#F9FDFD] border border-[#D8F0F0] rounded-lg p-4 text-sm space-y-2">
+									<p><span class="text-gray-400">申请编号：</span>{{ applicationResult.id }}</p>
+									<p><span class="text-gray-400">办事员：</span>{{ applicationResult.clerkName }}</p>
+									<p><span class="text-gray-400">状态：</span>{{ applicationResult.statusLabel }}</p>
+								</div>
+								<div class="flex flex-wrap gap-4">
+									<button class="official-btn-outline" @click="resetApplication">再办一件</button>
+									<button class="official-btn" @click="navigatePath('/services/query')">进度查询</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'serviceQuery'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+							<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+							<span>/</span>
+							<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/services')">服务</a>
+							<span>/</span>
+							<span class="text-[#2A6F6A]">进度查询</span>
+						</div>
+
+						<a href="#"
+							class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] mb-6 transition-colors"
+							@click.prevent="navigatePath('/services')">
+							<i data-lucide="arrow-left" class="w-4 h-4"></i>
+							返回兔子事务厅
+						</a>
+
+						<div class="official-card p-6 mb-8">
+							<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-2">进度查询</h1>
+							<p class="text-gray-600">查询本地办理记录，请输入申请编号</p>
+						</div>
+
+						<div class="official-card p-6 mb-8">
+							<div class="flex flex-col md:flex-row gap-4">
+								<input v-model="queryCode" type="text" placeholder="请输入申请编号，如 RB-XXXXXX"
+									class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A]" />
+								<button class="official-btn" @click="handleQuery">查询</button>
+							</div>
+						</div>
+
+						<div v-if="queryResult" class="official-card p-6">
+							<h2 class="text-lg font-bold text-[#1D1D1D] mb-4">查询结果</h2>
+							<div class="grid md:grid-cols-2 gap-4 text-sm">
+								<p><span class="text-gray-400">申请编号：</span>{{ queryResult.id }}</p>
+								<p><span class="text-gray-400">办理类型：</span>{{ queryResult.typeLabel }}</p>
+								<p><span class="text-gray-400">申请人：</span>{{ queryResult.name }}</p>
+								<p><span class="text-gray-400">提交时间：</span>{{ queryResult.createdAt }}</p>
+								<p><span class="text-gray-400">办事员：</span>{{ queryResult.clerkName }}</p>
+								<p><span class="text-gray-400">当前状态：</span>{{ queryResult.statusLabel }}</p>
+							</div>
+						</div>
+
+						<div v-else-if="queryAttempted" class="official-card p-6 text-center text-gray-500">
+							未查询到该申请编号，请检查输入是否正确。
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'members'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="animate-on-scroll mb-12">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">委员</span>
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold text-[#1D1D1D] mb-4">委员会委员名录</h1>
+							<p class="text-lg text-gray-600 max-w-2xl">兔子委员会由各兔种代表组成，共同维护森林草原的和谐与秩序</p>
+						</div>
+
+						<div class="animate-on-scroll grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+							<div v-for="stat in memberStats" :key="stat.label" class="official-card p-4 text-center">
+								<div class="text-2xl font-bold text-[#2A6F6A]">{{ stat.value }}</div>
+								<div class="text-sm text-gray-500">{{ stat.label }}</div>
+							</div>
+						</div>
+
+						<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<a v-for="(member, index) in members" :key="member.id" href="#"
+								@click.prevent="openMember(member.id)" class="animate-on-scroll"
+								:style="{ animationDelay: `${index * 0.1}s` }">
+								<div class="official-card p-6 hover:shadow-lg transition-all duration-300 group h-full">
+									<div class="flex items-start justify-between mb-4">
+										<span
+											class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border"
+											:class="getMemberStatus(member.status).className">
+											<i :data-lucide="getMemberStatus(member.status).icon" class="w-3 h-3"></i>
+											{{ getMemberStatus(member.status).label }}
+										</span>
+									</div>
+
+									<div class="flex items-center gap-4 mb-4">
+										<div class="w-20 h-20 rounded-full overflow-hidden bg-[#E9F8F8] flex-shrink-0">
+											<img :src="member.avatar" :alt="member.name"
+												class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+										</div>
+										<div>
+											<h3
+												class="text-xl font-bold text-[#1D1D1D] group-hover:text-[#2A6F6A] transition-colors">
+												{{ member.name }}
+											</h3>
+											<p class="text-sm text-gray-500">{{ member.englishName }}</p>
+											<p class="text-sm text-[#2A6F6A] mt-1">{{ member.role }}</p>
+										</div>
+									</div>
+
+									<div class="space-y-2 mb-4">
+										<p class="text-sm text-gray-600"><span
+												class="text-gray-400">种族：</span>{{ member.species }}</p>
+									</div>
+
+									<p class="text-sm text-gray-500 line-clamp-2 mb-4">{{ member.description }}</p>
+
+									<div class="flex items-center justify-between pt-4 border-t border-[#D8F0F0]">
+										<span
+											class="text-xs text-gray-400">{{ member.joinDate ? `加入时间：${member.joinDate}` : '' }}</span>
+										<span
+											class="text-[#2A6F6A] text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+											查看详情
+											<i data-lucide="arrow-right" class="w-4 h-4"></i>
+										</span>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="animate-on-scroll mt-12 official-card p-8">
+							<h2 class="text-xl font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+								<i data-lucide="users" class="w-6 h-6 text-[#2A6F6A]"></i>
+								关于委员体系
+							</h2>
+							<div class="grid md:grid-cols-2 gap-6">
+								<div>
+									<h3 class="font-semibold text-[#1D1D1D] mb-2">委员类型</h3>
+									<ul class="space-y-2 text-sm text-gray-600">
+										<li class="flex items-center gap-2">
+											<i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>
+											<strong>终身委员：</strong>为委员会作出特殊贡献的成员
+										</li>
+										<li class="flex items-center gap-2">
+											<i data-lucide="award" class="w-4 h-4 text-green-500"></i>
+											<strong>正式委员：</strong>拥有完整权利和义务的委员会成员
+										</li>
+										<li class="flex items-center gap-2">
+											<i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+											<strong>观察员：</strong>可列席会议但不具备投票权
+										</li>
+									</ul>
+								</div>
+								<div>
+									<h3 class="font-semibold text-[#1D1D1D] mb-2">委员申请流程</h3>
+									<ol class="space-y-2 text-sm text-gray-600 list-decimal list-inside">
+										<li>提交委员选举报名申请</li>
+										<li>当届委员会审核</li>
+										<li>公开投票</li>
+										<li>正式当选委员并分配职责</li>
+									</ol>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'memberDetail'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div v-if="currentMember" class="page-content">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<a href="#" class="hover:text-[#2A6F6A]"
+									@click.prevent="navigatePath('/members')">委员</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">{{ currentMember.name }}</span>
+							</div>
+
+							<button @click="navigatePath('/members')"
+								class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] mb-6 transition-colors">
+								<i data-lucide="arrow-left" class="w-4 h-4"></i>
+								返回委员列表
+							</button>
+
+							<div class="official-card p-8 mb-8">
+								<div class="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+									<div
+										class="w-32 h-32 rounded-full overflow-hidden bg-[#E9F8F8] flex-shrink-0 ring-4 ring-[#E9F8F8]">
+										<img :src="currentMember.avatar" :alt="currentMember.name"
+											class="w-full h-full object-cover" />
+									</div>
+
+									<div class="flex-1">
+										<div class="flex flex-wrap items-center gap-3 mb-2">
+											<span
+												class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border"
+												:class="getMemberStatus(currentMember.status).className">
+												<i :data-lucide="getMemberStatus(currentMember.status).icon"
+													class="w-4 h-4"></i>
+												{{ getMemberStatus(currentMember.status).label }}
+											</span>
+										</div>
+										<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-1">
+											{{ currentMember.name }}
+										</h1>
+										<p class="text-lg text-gray-500 mb-2">{{ currentMember.englishName }}</p>
+										<p class="text-[#2A6F6A] font-medium">{{ currentMember.role }}</p>
+									</div>
+								</div>
+
+								<div class="grid md:grid-cols-2 gap-6 mb-8">
+									<div class="bg-[#F9FDFD] rounded-lg p-4">
+										<p class="text-sm text-gray-400 mb-1">种族</p>
+										<p class="text-[#1D1D1D] font-medium">{{ currentMember.species }}</p>
+									</div>
+									<div class="bg-[#F9FDFD] rounded-lg p-4">
+										<p class="text-sm text-gray-400 mb-1">加入时间</p>
+										<div class="flex items-center gap-2 text-[#1D1D1D] font-medium">
+											<i data-lucide="calendar" class="w-4 h-4 text-[#2A6F6A]"></i>
+											{{ currentMember.joinDate || '待定' }}
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-8">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+										<i data-lucide="rabbit" class="w-5 h-5 text-[#2A6F6A]"></i>
+										委员简介
+									</h2>
+									<p class="text-gray-600 leading-relaxed">{{ currentMember.description }}</p>
+								</div>
+
+								<div class="bg-amber-50 rounded-lg p-4 border border-amber-100">
+									<p class="text-sm text-amber-700 flex items-center gap-2">
+										<i :data-lucide="getMemberStatus(currentMember.status).icon"
+											class="w-4 h-4"></i>
+										<strong>{{ getMemberStatus(currentMember.status).label }}：</strong>
+										{{ getMemberStatus(currentMember.status).description }}
+									</p>
+								</div>
+							</div>
+
+							<div class="grid sm:grid-cols-2 gap-4">
+								<a href="#"
+									class="official-card p-4 flex items-center gap-4 hover:border-[#2A6F6A] transition-colors"
+									@click.prevent="navigatePath('/meetings')">
+									<div class="w-12 h-12 bg-[#E9F8F8] rounded-lg flex items-center justify-center">
+										<i data-lucide="file-text" class="w-6 h-6 text-[#2A6F6A]"></i>
+									</div>
+									<div>
+										<p class="font-medium text-[#1D1D1D]">查看会议记录</p>
+										<p class="text-sm text-gray-500">查看该委员参与的会议</p>
+									</div>
+								</a>
+								<a href="#"
+									class="official-card p-4 flex items-center gap-4 hover:border-[#2A6F6A] transition-colors"
+									@click.prevent="navigatePath('/services/certification')">
+									<div class="w-12 h-12 bg-[#E9F8F8] rounded-lg flex items-center justify-center">
+										<i data-lucide="award" class="w-6 h-6 text-[#2A6F6A]"></i>
+									</div>
+									<div>
+										<p class="font-medium text-[#1D1D1D]">申请认证</p>
+										<p class="text-sm text-gray-500">申请官方认证证书</p>
+									</div>
+								</a>
+							</div>
+						</div>
+
+						<div v-else class="min-h-screen bg-[#F9FDFD] pt-24 pb-16 flex items-center justify-center">
+							<div class="text-center">
+								<h1 class="text-2xl font-bold text-[#1D1D1D] mb-4">委员未找到</h1>
+								<p class="text-gray-600 mb-6">该委员信息不存在或暂未公开</p>
+								<button @click="navigatePath('/members')" class="official-btn">返回委员列表</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'policies'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="animate-on-scroll mb-12">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">政策</span>
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold text-[#1D1D1D] mb-4">政策与文件</h1>
+							<p class="text-lg text-gray-600 max-w-2xl">兔子委员会发布的所有政策文件、规范标准和公告通知</p>
+						</div>
+
+						<div class="animate-on-scroll mb-8">
+							<div class="flex flex-col md:flex-row gap-4">
+								<div class="relative flex-1">
+									<i data-lucide="search"
+										class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+									<input type="text" v-model="searchQuery" placeholder="搜索政策文件..."
+										class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A] focus:border-transparent" />
+								</div>
+
+								<div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+									<i data-lucide="filter" class="w-5 h-5 text-gray-400 flex-shrink-0"></i>
+									<button v-for="cat in policyCategories" :key="cat.id"
+										@click="selectedCategory = cat.id"
+										class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
+										:class="selectedCategory === cat.id ? 'bg-[#2A6F6A] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#2A6F6A]'">
+										{{ cat.label }}
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+							<div v-for="stat in policyStats" :key="stat.label" class="official-card p-4 text-center">
+								<div :class="['text-2xl font-bold', stat.className]">{{ stat.value }}</div>
+								<div class="text-sm text-gray-500">{{ stat.label }}</div>
+							</div>
+						</div>
+
+						<div class="space-y-4">
+							<template v-if="filteredPolicies.length > 0">
+								<a v-for="(policy, index) in filteredPolicies" :key="policy.id" href="#"
+									@click.prevent="openPolicy(policy.id)" class="animate-on-scroll block"
+									:style="{ animationDelay: `${index * 0.05}s` }">
+									<div class="official-card p-6 hover:shadow-lg transition-all duration-300 group">
+										<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+											<div class="flex-1">
+												<div class="flex flex-wrap items-center gap-2 mb-2">
+													<span class="px-2 py-1 rounded text-xs font-medium border"
+														:class="getPolicyCategory(policy.category).className">
+														{{ getPolicyCategory(policy.category).label }}
+													</span>
+													<span class="inline-flex items-center gap-1 text-xs"
+														:class="getPolicyStatus(policy.status).className">
+														<i :data-lucide="getPolicyStatus(policy.status).icon"
+															class="w-3 h-3"></i>
+														{{ getPolicyStatus(policy.status).label }}
+													</span>
+												</div>
+												<h3
+													class="text-lg font-bold text-[#1D1D1D] group-hover:text-[#2A6F6A] transition-colors mb-1">
+													{{ policy.title }}
+												</h3>
+												<p class="text-sm text-gray-500 line-clamp-1">
+													{{ policy.summary || '暂无摘要' }}
+												</p>
+											</div>
+
+											<div class="flex items-center gap-4">
+												<div class="text-right">
+													<p class="text-xs text-gray-400">发布日期</p>
+													<p class="text-sm text-gray-600">{{ policy.publishDate }}</p>
+												</div>
+												<i data-lucide="arrow-right"
+													class="w-5 h-5 text-gray-400 group-hover:text-[#2A6F6A] group-hover:translate-x-1 transition-all"></i>
+											</div>
+										</div>
+									</div>
+								</a>
+							</template>
+							<div v-else class="text-center py-12">
+								<i data-lucide="file-text" class="w-12 h-12 text-gray-300 mx-auto mb-4"></i>
+								<p class="text-gray-500">未找到匹配的政策文件</p>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll mt-12 official-card p-8">
+							<h2 class="text-xl font-bold text-[#1D1D1D] mb-4 flex items-center gap-2">
+								<i data-lucide="alert-triangle" class="w-6 h-6 text-[#2A6F6A]"></i>
+								政策说明
+							</h2>
+							<div class="grid md:grid-cols-2 gap-6">
+								<div>
+									<h3 class="font-semibold text-[#1D1D1D] mb-2">文件分类</h3>
+									<ul class="space-y-2 text-sm text-gray-600">
+										<li><strong>基础规范：</strong>兔子社区的基本行为准则</li>
+										<li><strong>紧急修订：</strong>针对突发情况的临时调整</li>
+										<li><strong>临时公告：</strong>短期有效的特别通知</li>
+										<li><strong>历史文件：</strong>已废止但仍具参考价值的文件</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'policyDetail'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div v-if="currentPolicy" class="page-content">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<a href="#" class="hover:text-[#2A6F6A]"
+									@click.prevent="navigatePath('/policies')">政策</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">{{ currentPolicy.title }}</span>
+							</div>
+
+							<div class="flex items-center justify-between mb-6">
+								<button @click="navigatePath('/policies')"
+									class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] transition-colors">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									返回政策列表
+								</button>
+								<button @click="printPolicy"
+									class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] transition-colors print:hidden">
+									<i data-lucide="printer" class="w-4 h-4"></i>
+									打印
+								</button>
+							</div>
+
+							<div class="official-card p-8 mb-8">
+								<div class="flex flex-wrap items-center gap-3 mb-6">
+									<span class="px-3 py-1 rounded-full text-sm font-medium border"
+										:class="getPolicyCategory(currentPolicy.category).className">
+										{{ getPolicyCategory(currentPolicy.category).label }}
+									</span>
+									<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm"
+										:class="getPolicyStatusDetail(currentPolicy.status).className">
+										<i :data-lucide="getPolicyStatusDetail(currentPolicy.status).icon"
+											class="w-4 h-4"></i>
+										{{ getPolicyStatusDetail(currentPolicy.status).label }}
+									</span>
+								</div>
+
+								<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-6">{{ currentPolicy.title }}
+								</h1>
+
+								<div class="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+									<div class="flex items-center gap-2">
+										<i data-lucide="calendar" class="w-4 h-4"></i>
+										<span>发布日期：{{ currentPolicy.publishDate }}</span>
+									</div>
+									<div class="flex items-center gap-2">
+										<i data-lucide="scroll-text" class="w-4 h-4"></i>
+										<span>文件编号：{{ currentPolicy.id.toUpperCase() }}</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="official-card p-8">
+								<div class="flex justify-end mb-8 print:hidden">
+									<div class="w-24 h-24 opacity-20">
+										<img src="images/stamp.webp" alt="印章" class="w-full h-full object-contain" />
+									</div>
+								</div>
+
+								<div class="prose max-w-none">
+									<div v-if="currentPolicy.summary" class="bg-[#E9F8F8] rounded-lg p-6 mb-8">
+										<h3 class="text-lg font-bold text-[#2A6F6A] mb-2">摘要</h3>
+										<p class="text-gray-700 m-0">{{ currentPolicy.summary }}</p>
+									</div>
+									<div class="whitespace-pre-wrap text-gray-700 leading-relaxed">
+										{{ currentPolicy.content }}
+									</div>
+								</div>
+
+								<div class="mt-12 pt-8 border-t border-[#D8F0F0]">
+									<div
+										class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+										<div>
+											<p class="text-sm text-gray-500">发布机构</p>
+											<p class="font-medium text-[#1D1D1D]">兔子委员会</p>
+										</div>
+										<div class="text-right">
+											<p class="text-sm text-gray-500">发布日期</p>
+											<p class="font-medium text-[#1D1D1D]">{{ currentPolicy.publishDate }}</p>
+										</div>
+									</div>
+
+									<div class="mt-8 flex justify-center print:hidden">
+										<div class="relative w-32 h-32">
+											<img src="images/seal.webp" alt="兔子委员会印章"
+												class="w-full h-full object-contain" />
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="currentPolicy.status === 'repealed'"
+								class="mt-8 bg-gray-100 rounded-xl p-6 flex items-start gap-4">
+								<i data-lucide="alert-triangle" class="w-6 h-6 text-gray-500 flex-shrink-0"></i>
+								<div>
+									<h3 class="font-bold text-gray-700 mb-1">已废止文件</h3>
+									<p class="text-sm text-gray-500">
+										本文件已被新决议取代，现仅作为历史文件存档，不再具有法律效力。
+									</p>
+								</div>
+							</div>
+
+							<div class="flex items-center justify-between mt-8 print:hidden">
+								<button @click="navigatePath('/policies')"
+									class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] transition-colors">
+									<i data-lucide="arrow-left" class="w-4 h-4"></i>
+									返回政策列表
+								</button>
+								<a href="#" class="inline-flex items-center gap-2 text-[#2A6F6A] hover:underline"
+									@click.prevent="navigatePath('/meetings')">
+									查看相关会议
+									<i data-lucide="scroll-text" class="w-4 h-4"></i>
+								</a>
+							</div>
+						</div>
+
+						<div v-else class="min-h-screen bg-[#F9FDFD] pt-24 pb-16 flex items-center justify-center">
+							<div class="text-center">
+								<h1 class="text-2xl font-bold text-[#1D1D1D] mb-4">政策文件未找到</h1>
+								<p class="text-gray-600 mb-6">该政策文件不存在或暂未公开</p>
+								<button @click="navigatePath('/policies')" class="official-btn">返回政策列表</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'history'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="animate-on-scroll mb-12">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">档案</span>
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold text-[#1D1D1D] mb-4">机构档案与历史</h1>
+							<p class="text-lg text-gray-600 max-w-2xl">记录兔子委员会从成立至今的重要事件和发展历程</p>
+						</div>
+
+						<div class="animate-on-scroll official-card p-8 mb-12">
+							<div class="flex items-start gap-6">
+								<div
+									class="w-16 h-16 bg-[#2A6F6A] rounded-xl flex items-center justify-center flex-shrink-0">
+									<i data-lucide="book-open" class="w-8 h-8 text-white"></i>
+								</div>
+								<div>
+									<h2 class="text-xl font-bold text-[#1D1D1D] mb-3">关于兔子委员会</h2>
+									<p class="text-gray-600 leading-relaxed mb-4">
+										兔子委员会并非自上而下设立的权威机构，而是在一次真实而持续的危机中自然形成的共同体中枢。
+										它的诞生直接源于鸡贼黄袋鼠兔几乎被捕猎至濒危的历史事件。
+									</p>
+									<p class="text-gray-600 leading-relaxed">
+										委员会并不以效率或威严著称，其核心特征恰恰是反复讨论、犹豫、比较与记录，
+										它更像一群习惯低头吃草、偶尔抬头思考的兔子，把世界的问题一点点咀嚼开来。
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll mb-12">
+							<h2 class="section-title mb-6">档案袋总览</h2>
+							<p class="text-gray-600 mb-6">
+								档案已按密级封存管理：绝密、机密、即将公开与公开档案分柜存放。密级档案暂不可查阅。
+							</p>
+							<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+								<button v-for="folder in archiveFolders" :key="folder.id" type="button"
+									class="group flex flex-col items-center text-center transition-all"
+									:class="folder.locked ? 'cursor-not-allowed opacity-60' : 'hover:scale-[1.1]'"
+									:disabled="folder.locked" @click="!folder.locked && openArchive(folder.id)">
+									<div class="relative w-full max-w-[160px]">
+										<div
+											class="aspect-[4/3] w-full rounded-2xl border border-[#D8F0F0] bg-white flex items-center justify-center shadow-sm">
+											<i :data-lucide="folder.locked ? 'lock' : 'folder-open'" class="w-10 h-10"
+												:class="folder.locked ? 'text-gray-400' : 'text-[#2A6F6A]'"></i>
+										</div>
+										<span
+											class="absolute -top-3 right-3 px-2 py-0.5 text-xs font-semibold rounded-full border"
+											:class="folder.badgeClass">
+											{{ folder.securityLevel }}
+										</span>
+									</div>
+									<p class="mt-3 text-sm font-medium text-[#1D1D1D] line-clamp-1">
+										{{ folder.title }}{{ folder.locked ? '（加密）' : '（开放）' }}
+									</p>
+								</button>
+							</div>
+						</div>
+
+						<div v-if="selectedArchive"
+							class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+							@click.self="closeArchive">
+							<div
+								class="relative w-full max-w-lg bg-white rounded-xl shadow-xl p-6 animate-in fade-in slide-in-from-top">
+								<button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+									@click="closeArchive">
+									<i data-lucide="x" class="w-4 h-4"></i>
+								</button>
+								<div class="flex items-center gap-3 mb-4">
+									<div class="w-10 h-10 rounded-lg flex items-center justify-center bg-[#E9F8F8]">
+										<i data-lucide="folder-open" class="w-5 h-5 text-[#2A6F6A]"></i>
+									</div>
+									<div>
+										<h3 class="text-lg font-bold text-[#1D1D1D]">{{ selectedArchive.title }}</h3>
+										<p class="text-xs text-gray-500">{{ selectedArchive.subtitle }}</p>
+									</div>
+								</div>
+								<p class="text-sm text-gray-600 mb-4">{{ selectedArchive.description }}</p>
+								<div class="bg-[#F9FDFD] border border-[#D8F0F0] rounded-lg p-4 text-sm space-y-3">
+									<p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">记录文字</p>
+									<ul class="space-y-2">
+										<li v-for="item in selectedArchive.items" :key="item"
+											class="flex items-center gap-2 text-[#2A6F6A]">
+											<i data-lucide="file-text" class="w-4 h-4"></i>
+											<span>{{ item }}</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="animate-on-scroll official-card p-6">
+							<h3 class="text-lg font-bold text-[#1D1D1D] mb-3 flex items-center gap-2">
+								<i data-lucide="info" class="w-5 h-5 text-[#2A6F6A]"></i>
+								查阅说明
+							</h3>
+							<p class="text-sm text-gray-600 leading-relaxed">
+								公开档案可直接查阅，绝密与机密档案需委员会特别审批。即将公开的档案正在整理中，请关注公告更新。
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'certification'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16">
+					<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div class="page-content">
+							<div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+								<a href="#" class="hover:text-[#2A6F6A]" @click.prevent="navigatePath('/')">首页</a>
+								<span>/</span>
+								<a href="#" class="hover:text-[#2A6F6A]"
+									@click.prevent="navigatePath('/services')">服务</a>
+								<span>/</span>
+								<span class="text-[#2A6F6A]">认证申请</span>
+							</div>
+
+							<a href="#"
+								class="inline-flex items-center gap-2 text-gray-500 hover:text-[#2A6F6A] mb-6 transition-colors"
+								@click.prevent="navigatePath('/services')">
+								<i data-lucide="arrow-left" class="w-4 h-4"></i>
+								返回兔子事务厅
+							</a>
+
+							<div class="mb-8">
+								<h1 class="text-3xl md:text-4xl font-bold text-[#1D1D1D] mb-4">在线认证申请</h1>
+								<p class="text-gray-600">申请兔子委员会颁发的官方认证证书</p>
+							</div>
+
+							<div v-if="!generatedCert" class="grid lg:grid-cols-2 gap-8">
+								<div class="official-card p-6">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-6">填写申请信息</h2>
+
+									<div class="mb-6">
+										<label class="block text-sm font-medium text-gray-700 mb-3">选择认证类型</label>
+										<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+											<button v-for="type in certificateTypes" :key="type.id"
+												@click="certType = type.id"
+												class="p-3 rounded-lg border-2 text-left transition-all"
+												:class="certType === type.id ? 'border-[#2A6F6A] bg-[#E9F8F8]' : 'border-gray-200 hover:border-[#2A6F6A]/50'">
+												<i :data-lucide="type.icon" class="w-5 h-5 mb-2"
+													:style="{ color: type.color }"></i>
+												<span class="text-sm font-medium">{{ type.label }}</span>
+											</button>
+										</div>
+									</div>
+
+									<div class="mb-6">
+										<label class="block text-sm font-medium text-gray-700 mb-2">
+											申请人姓名 <span class="text-red-500">*</span>
+										</label>
+										<input type="text" v-model="holderName" placeholder="请输入您的姓名"
+											class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A] focus:border-transparent" />
+									</div>
+
+									<div class="mb-6">
+										<label class="block text-sm font-medium text-gray-700 mb-2">申请理由（可选）</label>
+										<textarea v-model="description" placeholder="请简要说明申请理由..." rows="3"
+											class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2A6F6A] focus:border-transparent resize-none"></textarea>
+									</div>
+
+									<button @click="generateCertificate" :disabled="!holderName.trim() || isGenerating"
+										class="w-full official-btn flex items-center justify-center gap-2 disabled:opacity-50">
+										<template v-if="isGenerating">
+											<i data-lucide="refresh-cw" class="w-5 h-5 animate-spin"></i>
+											兔子正在讨论中...
+										</template>
+										<template v-else>
+											<i data-lucide="check-circle" class="w-5 h-5"></i>
+											提交申请
+										</template>
+									</button>
+								</div>
+
+								<div class="official-card p-6 bg-[#E9F8F8]/50">
+									<h2 class="text-lg font-bold text-[#1D1D1D] mb-6">认证说明</h2>
+
+									<div v-if="selectedCertificateType" class="space-y-4">
+										<div class="flex items-center gap-4">
+											<div class="w-16 h-16 rounded-xl flex items-center justify-center"
+												:style="{ backgroundColor: `${selectedCertificateType.color}20` }">
+												<i :data-lucide="selectedCertificateType.icon" class="w-8 h-8"
+													:style="{ color: selectedCertificateType.color }"></i>
+											</div>
+											<div>
+												<h3 class="font-bold text-[#1D1D1D]">{{ selectedCertificateType.label }}
+												</h3>
+												<p class="text-sm text-gray-500">
+													{{ certificateTemplates[certType].subtitle }}
+												</p>
+											</div>
+										</div>
+
+										<div class="bg-white rounded-lg p-4">
+											<p class="text-gray-600 text-sm leading-relaxed">
+												{{ certificateTemplates[certType].description }}
+											</p>
+										</div>
+
+										<div class="space-y-2">
+											<p class="text-sm font-medium text-gray-700">办理流程：</p>
+											<ol class="text-sm text-gray-600 space-y-1 list-decimal list-inside">
+												<li>填写申请信息</li>
+												<li>提交申请等待审核</li>
+												<li>系统自动生成证书</li>
+												<li>下载保存或分享</li>
+											</ol>
+										</div>
+
+										<div class="bg-amber-50 rounded-lg p-4">
+											<p class="text-sm text-amber-700">
+												<strong>注意：</strong> 所有证书均为系统自动生成，仅供娱乐和分享使用，不具有实际法律效力。
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-else class="space-y-8">
+								<div class="bg-green-50 border border-green-200 rounded-xl p-6 flex items-center gap-4">
+									<div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+										<i data-lucide="check-circle" class="w-6 h-6 text-white"></i>
+									</div>
+									<div>
+										<h3 class="font-bold text-green-800">申请已通过！</h3>
+										<p class="text-green-600 text-sm">您的{{ generatedCert.title }}已生成，请下载保存</p>
+									</div>
+								</div>
+
+								<div class="flex justify-center">
+
+									<div class="flex justify-center">
+										<div ref="certificateRef" class="certificate-frame w-full max-w-2xl relative overflow-hidden bg-white backdrop-blur-xl
+									           border border-[#D8F0F0] shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
+											<!-- 顶部细线：更“公文” -->
+											<div
+												class="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-[#2A6F6A]/60 to-transparent">
+											</div>
+
+											<!-- 背景纹理与水印（不新增字段，仅装饰） -->
+											<div class="absolute inset-0 pointer-events-none">
+
+												<!-- 角落气泡氛围 -->
+												<div
+													class="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#2A6F6A]/8 blur-3xl">
+												</div>
+												<div
+													class="absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-[#2A6F6A]/6 blur-3xl">
+												</div>
+
+												<!-- 内侧“防伪框线” -->
+												<div
+													class="absolute inset-[18px] border border-[#D8F0F0]">
+												</div>
+												<div
+													class="absolute inset-[26px] border border-[#D8F0F0]">
+												</div>
+											</div>
+
+											<!-- 内容区 -->
+											<div class="relative p-8 sm:p-10">
+												<!-- 头部：印章 + 副标题 + 主标题 -->
+												<div class="text-center mb-10">
+													<div
+														class="mx-auto w-24 h-24 rounded-full bg-white/70 border border-[#D8F0F0] shadow-sm flex items-center justify-center">
+														<img src="images/seal.webp" alt="印章"
+															class="w-full h-full object-contain drop-shadow-sm" />
+													</div>
+
+													<p
+														class="mt-5 text-xs sm:text-sm text-gray-500 tracking-[0.35em] uppercase">
+														{{ generatedCert.subtitle }}
+													</p>
+
+													<h2
+														class="mt-3 text-3xl sm:text-4xl font-bold text-[#2A6F6A] tracking-wide">
+														{{ generatedCert.title }}
+													</h2>
+
+													<!-- 分隔线（公文感） -->
+													<div class="mt-6 flex items-center justify-center gap-3">
+														<div class="h-px w-16 bg-[#D8F0F0]"></div>
+														<div class="h-[6px] w-[6px] rounded-full bg-[#2A6F6A]/60"></div>
+														<div class="h-px w-16 bg-[#D8F0F0]"></div>
+													</div>
+												</div>
+
+												<!-- 主体文案 -->
+												<div class="text-center space-y-7">
+
+													<!-- 持证人：重点强调 -->
+													<div class="pt-2">
+														<p class="text-xs sm:text-sm text-gray-500 tracking-widest">持证人
+														</p>
+														<p
+															class="mt-3 text-4xl sm:text-5xl font-bold text-[#1D1D1D] font-serif tracking-wide">
+															{{ generatedCert.holderName }}
+														</p>
+
+														<!-- 细小装饰线 -->
+														<div class="mt-5 flex justify-center">
+															<div
+																class="h-px w-48 bg-gradient-to-r from-transparent via-[#2A6F6A]/30 to-transparent">
+															</div>
+														</div>
+													</div>
+
+													<!-- 申请理由：仅在“与模板不同”时显示（你原逻辑保留） -->
+													<div v-if="generatedCert.description !== certificateTemplates[generatedCert.type].description"
+														class="text-left bg-[#F9FDFD]/80 rounded-xl border border-[#D8F0F0] p-5 sm:p-6 shadow-sm">
+														<div class="flex items-center justify-between mb-2">
+															<p class="text-sm text-gray-500 tracking-wide">申请理由</p>
+															<span
+																class="text-xs text-[#2A6F6A]/70 bg-white/60 border border-[#D8F0F0] px-2 py-1 rounded-full">
+																<p>已备案</p>
+															</span>
+														</div>
+														<p class="text-gray-700 leading-relaxed">
+															<p>{{ generatedCert.description }}</p>
+														</p>
+													</div>
+												</div>
+
+												<!-- 底部信息条：编号 + 日期（公文底栏） -->
+												<div
+													class="mt-10 pt-6 border-t border-[#D8F0F0] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+													<div class="flex items-center gap-2 text-sm text-gray-500">
+														<i data-lucide="hash" class="w-4 h-4 text-[#2A6F6A]/70"></i>
+														<span
+															class="tracking-wide"><p>编号：{{ generatedCert.certificateNumber }}</p></span>
+													</div>
+													<div class="flex items-center gap-2 text-sm text-gray-500">
+														<i data-lucide="calendar" class="w-4 h-4 text-[#2A6F6A]/70"></i>
+														<span
+															class="tracking-wide"><p>签发日期：{{ generatedCert.issueDate }}</p></span>
+													</div>
+												</div>
+
+												<!-- 签发机构：落款 -->
+												<div class="mt-7 text-center">
+													<p class="text-xs sm:text-sm text-gray-500 tracking-widest">签发机构</p>
+													<p class="mt-2 text-[#2A6F6A] font-semibold tracking-wide">
+														{{ generatedCert.sealText }}
+													</p>
+													<p class="mt-1 text-sm text-gray-600">
+														{{ generatedCert.issuer }}
+													</p>
+												</div>
+
+												<!-- 右下角“盖章位”视觉（仍用 seal.png，不新增字段） -->
+												<div class="absolute right-8 bottom-8 opacity-20 rotate-[8deg]">
+													<img src="images/stamp.webp" alt="印章水印"
+														class="w-20 h-20 object-contain" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="flex flex-wrap justify-center gap-4">
+									<button @click="downloadCertificate"
+										class="official-btn inline-flex items-center gap-2">
+										<i data-lucide="download" class="w-5 h-5"></i>
+										下载证书
+									</button>
+									<button @click="resetCertificate"
+										class="official-btn-outline inline-flex items-center gap-2">
+										<i data-lucide="refresh-cw" class="w-5 h-5"></i>
+										申请新证书
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentPage === 'notFound'"
+					class="page-transition min-h-screen bg-[#F9FDFD] pt-24 pb-16 flex items-center justify-center">
+					<div class="max-w-md mx-auto px-4 text-center">
+						<div class="relative w-32 h-32 mx-auto mb-8">
+							<div class="absolute inset-0 bg-[#E9F8F8] rounded-full animate-pulse"></div>
+							<div class="absolute inset-4 bg-[#D8F0F0] rounded-full flex items-center justify-center">
+								<i data-lucide="rabbit" class="w-12 h-12 text-[#2A6F6A]"></i>
+							</div>
+							<div
+								class="absolute -top-2 -right-2 w-8 h-8 bg-[#F8A6A6] rounded-full flex items-center justify-center text-white font-bold">
+								?</div>
+						</div>
+
+						<h1 class="text-6xl font-bold text-[#2A6F6A] mb-4">404</h1>
+						<h2 class="text-2xl font-bold text-[#1D1D1D] mb-4">页面未找到</h2>
+						<p class="text-gray-600 mb-8">
+							抱歉，您访问的页面不存在或正在整理中。
+							<br />
+							小兔子们正在努力建设中...
+						</p>
+
+						<div class="flex flex-col sm:flex-row gap-4 justify-center">
+							<a href="#" class="official-btn inline-flex items-center justify-center gap-2"
+								@click.prevent="navigatePath('/')">
+								<i data-lucide="home" class="w-4 h-4"></i>
+								返回首页
+							</a>
+							<a href="#" class="official-btn-outline inline-flex items-center justify-center gap-2"
+								@click.prevent="navigatePath('/services')">
+								<i data-lucide="search" class="w-4 h-4"></i>
+								查找服务
+							</a>
+						</div>
+
+						<div class="mt-12 p-4 bg-[#E9F8F8] rounded-lg">
+							<p class="text-sm text-[#2A6F6A]"><strong>温馨提示：</strong>在兔子委员会，"暂未公开"和"整理中"都是合理的存在状态。</p>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<footer class="bg-[#1D1D1D] text-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+						<div class="lg:col-span-1">
+							<a href="#" class="flex items-center gap-3 mb-4" @click.prevent="navigatePath('/')">
+								<div class="w-10 h-10 flex items-center justify-center bg-[#2A6F6A] rounded-full">
+									<i data-lucide="rabbit" class="w-6 h-6 text-white"></i>
+								</div>
+								<div>
+									<h3 class="font-bold text-lg">兔子委员会</h3>
+									<p class="text-xs text-gray-400">Rabbit Committee</p>
+								</div>
+							</a>
+							<p class="text-sm text-gray-400 mb-4">致力于所有兔子相关事务的和谐、秩序与顽皮治理。</p>
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-sm text-gray-400">
+									<i data-lucide="map-pin" class="w-4 h-4"></i>
+									<span>中央草地</span>
+								</div>
+								<div class="flex items-center gap-2 text-sm text-gray-400">
+									<i data-lucide="clock" class="w-4 h-4"></i>
+									<span>08:00 - 17:00</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="mt-12 pt-8 border-t border-gray-800">
+						<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+							<p class="text-sm text-gray-500">©兔子委员会. All rights reserved.</p>
+							<div class="flex items-center gap-4">
+								<span class="text-xs text-gray-600">From BunnyVerse</span>
+								<span class="text-gray-700">|</span>
+								<span class="text-xs text-gray-600">与企鹅联盟友好合作</span>
+							</div>
+						</div>
+						<div class="flex flex-col text-xs md:flex-row items-center mt-4 gap-3 md:gap-4 md:justify-center">
+							<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer"
+								class="text-gray-600 hover:text-white transition-colors">
+								京ICP备2023030112号
+							</a>
+							<a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502053879"
+								target="_blank" rel="noopener noreferrer"
+								class="text-gray-600 hover:text-white transition-colors">
+								<div class="flex items-center gap-2">
+									<img src="../../images/gongan.webp" class="w-3 h-3 opacity-90"
+										alt="公安备案" />
+									<span>京公网安备11010502053879号</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+
+
+		<script>
+			const {
+				createApp,
+				ref,
+				computed,
+				watch,
+				nextTick,
+				onMounted,
+				onUnmounted,
+				onUpdated,
+			} = Vue;
+
+			createApp({
+				setup() {
+					const navItems = [{
+							label: '首页',
+							path: '/'
+						},
+						{
+							label: '会议',
+							path: '/meetings'
+						},
+						{
+							label: '服务',
+							path: '/services'
+						},
+						{
+							label: '委员',
+							path: '/members'
+						},
+						{
+							label: '政策',
+							path: '/policies'
+						},
+						{
+							label: '档案',
+							path: '/history'
+						}
+					];
+
+					const currentTime = ref(new Date());
+					let timeInterval = null;
+
+					const getServiceWindowState = (minutes) => {
+						if (minutes >= 480 && minutes < 1020) return 'full';
+						if (minutes >= 1020 && minutes < 1440) return 'limited';
+						return 'closed';
+					};
+
+					const getOfficeStatusText = (minutes) => {
+						if (minutes >= 450 && minutes < 475) return '兔子上班赶路中';
+						if (minutes >= 475 && minutes < 480) return '兔子打卡签到中';
+						if (minutes >= 480 && minutes < 720) return '兔子办公中';
+						if (minutes >= 720 && minutes < 840) return '兔子午休睡觉中';
+						if (minutes >= 840 && minutes < 990) return '兔子办公中';
+						if (minutes >= 990 && minutes < 1020) {
+							const remaining = Math.max(1, Math.ceil((1020 - minutes)));
+							return `还有${remaining}分钟下班`;
+						}
+						if (minutes >= 1020 && minutes < 1440) return '兔子值夜班中';
+						return '兔子休息中';
+					};
+
+					const serviceAvailability = computed(() => {
+						const now = currentTime.value;
+						const minutes = now.getHours() * 60 + now.getMinutes();
+						const state = getServiceWindowState(minutes);
+
+						if (state === 'full') {
+							return {
+								state,
+								label: '全量办理',
+								description: '08:00-17:00 办理全量业务，什么都能办。',
+								badgeClass: 'bg-green-100 text-green-700 border-green-200',
+								icon: 'check-circle'
+							};
+						}
+						if (state === 'limited') {
+							return {
+								state,
+								label: '限定办理',
+								description: '17:00-24:00 进入值夜班，仅限部分业务可办。',
+								badgeClass: 'bg-amber-100 text-amber-700 border-amber-200',
+								icon: 'moon'
+							};
+						}
+						return {
+							state,
+							label: '暂停办理',
+							description: '00:00-08:00 暂停办理，窗口休息中。',
+							badgeClass: 'bg-gray-100 text-gray-700 border-gray-200',
+							icon: 'x-circle'
+						};
+					});
+
+					const officeStatus = computed(() => {
+						const now = currentTime.value;
+						const minutes = now.getHours() * 60 + now.getMinutes();
+						const statusText = getOfficeStatusText(minutes);
+						const availability = serviceAvailability.value.state;
+						const note = availability === 'full' ? '工作时间窗口开放中' :
+							availability === 'limited' ? '夜班窗口值守中' : '窗口休息中';
+						const nextClosure = availability === 'full' ? '17:00进入夜班' :
+							availability === 'limited' ? '24:00后暂停' : '08:00开始办公';
+
+						return {
+							isOpen: availability !== 'closed',
+							statusText,
+							note,
+							hours: '08:00 - 17:00',
+							nextClosure
+						};
+					});
+
+					const announcements = [{
+						id: 'ann-1',
+						title: '胡萝卜配额政策更新说明',
+						content: '根据季度评估结果，下季度胡萝卜配额将进行微调。具体方案已发布在政策文件栏目，请各位成员查阅。',
+						date: '兔历516年12月',
+						category: 'policy'
+					}, ];
+
+					const members = [{
+							id: 'A00001',
+							name: '鸡贼黄袋鼠兔',
+							englishName: 'SneakyRooBunny',
+							species: '鸡贼黄袋鼠兔种',
+							role: '永久席位代表',
+							description: '鸡贼黄袋鼠兔是兔子委员会成立的核心原因。它们拥有天生的肚兜口袋，习惯收集和储备各种物品。数量稀少，命运特殊，在委员会中被默认永久委员席位。',
+							avatar: 'images/member-A00001.webp',
+							status: 'lifetime',
+							joinDate: '委员会成立日'
+						},
+						{
+							id: 'B00353',
+							name: '苔米',
+							englishName: 'Moss',
+							species: '道奇兔种',
+							role: '委员会委员',
+							description: '性格顽劣、精力旺盛、习惯哔啵乱叫的大黄兔子。委员会曾多次发出正式来信，提醒其遵守兔子行为规范，尤其是关于"哔啵叫"的限制。',
+							avatar: 'images/member-B00353.webp',
+							status: 'active',
+							joinDate: '兔历512年6月'
+						},
+						{
+							id: 'B00556',
+							name: '啾啾',
+							englishName: 'Chirp Chirp',
+							species: '垂耳兔种',
+							role: '委员会委员',
+							description: '负责兔子委员会所有档案和历史记录的管理。性格温和。',
+							avatar: 'images/member-B00556.webp',
+							status: 'active',
+							joinDate: '兔历512年6月'
+						},
+						{
+							id: 'B01063',
+							name: '大牙',
+							englishName: 'Big Tooth',
+							species: '海兔种',
+							role: '委员会委员',
+							description: '当届兔子委员会委员，负责兔子行为合理性评估',
+							avatar: 'images/member-B01063.webp',
+							status: 'active',
+							joinDate: '兔历514年3月'
+						},
+						{
+							id: 'B02586',
+							name: '暖绒',
+							englishName: 'Warmfluff',
+							species: '北极兔种',
+							role: '委员会委员',
+							description: '负责维护委员会会议秩序和排队纪律。',
+							avatar: 'images/member-B02586.webp',
+							status: 'active',
+							joinDate: '兔历515年1月'
+						},
+						{
+							id: 'C00025',
+							name: '福福猫',
+							englishName: 'Furfur',
+							species: '布偶猫种',
+							role: '猫科观察员',
+							description: '猫委员会联络员',
+							avatar: 'images/member-C00025.webp',
+							status: 'observer',
+							joinDate: '兔历515年8月'
+						}
+					];
+
+					const meetings = [{
+						id: 'meeting-1',
+						title: '第一次全体会议',
+						sessionNumber: 1,
+						date: '兔历512年6月',
+						status: 'archived',
+						attendees: ['全体兔子成员'],
+						topics: ['鸡贼黄袋鼠兔濒危危机应对', '兔子委员会组织架构确立', '"不允许鸡贼"决议草案'],
+						resolution: '通过"不允许鸡贼"关键决议，确立鸡贼黄袋鼠兔永久席位，建立兔子委员会基本组织架构。',
+						notes: '这是兔子委员会的成立大会，各族兔子第一次聚集讨论共同危机。幸存的鸡贼黄袋鼠兔代表几乎泣不成声。',
+						summary: '兔子委员会正式成立，通过保护鸡贼黄袋鼠兔的关键决议。'
+					}, ];
+
+					const policies = [{
+							id: 'policy-1',
+							title: '兔子基础行为规范',
+							category: 'basic',
+							publishDate: '兔历512年6月',
+							status: 'active',
+							content: '第一章 总则\n第一条 为维护兔子社区的和谐秩序，特制定本规范。\n第二条 本规范适用于所有兔子委员会成员。\n\n第二章 行为准则\n第三条 禁止在休息时段发出过大噪音。\n第四条 排队是对集体的基本尊重。\n第五条 不允许鸡贼。\n\n第三章 附则\n第六条 本规范自发布之日起施行。\n第七条 本规范由兔子委员会负责解释。',
+							summary: '兔子的基本行为准则。'
+						},
+						{
+							id: 'policy-2',
+							title: '关于“不允许鸡贼”决议的详细说明',
+							category: 'emergency',
+							publishDate: '兔历512年6月',
+							status: 'active',
+							content: '鉴于鸡贼黄袋鼠兔因“鸡贼”特性被不法商人猎捕至濒危的严峻形势，委员会通过本决议。\n\n“不允许鸡贼”并非否定鸡贼黄袋鼠兔的生存智慧，而是通过集体规则，对外界明确否定“鸡贼等于有价值、可捕猎”的逻辑，以此切断杀身之祸的借口。\n\n鸡贼黄袋鼠兔在委员会中被永久保留席位，作为一种活生生的历史提醒。',
+							summary: '保护鸡贼黄袋鼠兔的核心决议说明。'
+						},
+						{
+							id: 'policy-3',
+							title: '胡萝卜配额管理办法（试行）',
+							category: 'basic',
+							publishDate: '兔历516年12月',
+							status: 'active',
+							content: '第一章 配额分配\n第一条 胡萝卜配额按季度进行评估和分配。\n第二条 配额分配原则上以家庭为单位，视具体情况进行调整。\n\n第二章 申请流程\n第三条 配额调整需提前15个工作日提交申请。\n第四条 申请需说明理由并附相关证明材料。\n\n第三章 监督管理\n第五条 委员会保留对配额使用情况的监督权。\n第六条 违规使用配额将被记录在案。',
+							summary: '规范胡萝卜资源分配的管理办法。'
+						},
+					];
+
+					const timelineEvents = [{
+							id: 'event-1',
+							year: '兔历512年',
+							month: '夏季',
+							title: '鸡贼黄袋鼠兔危机爆发',
+							description: '不法商人与猎人进入森林，鸡贼黄袋鼠兔因“鸡贼”特性被大量捕猎，数量骤减，直接走向濒危。',
+							type: 'crisis'
+						},
+						{
+							id: 'event-2',
+							year: '兔历512年6月',
+							month: '夏季',
+							title: '兔子委员会成立',
+							description: '各族兔子代表被迫聚集，形成兔子委员会。第一次全体会议通过“不允许鸡贼”关键决议。',
+							type: 'founding'
+						},
+						{
+							id: 'event-3',
+							year: '兔历515年',
+							month: '8月',
+							title: '与猫委员会建立联络',
+							description: '通过与企鹅联盟建立联络机制，福福猫首次以观察员身份出席。',
+							type: 'policy'
+						},
+						{
+							id: 'event-6',
+							year: '兔历516年',
+							month: '12月',
+							title: '《胡萝卜配额管理办法》发布',
+							description: '委员会发布首个资源管理政策，规范胡萝卜分配。',
+							type: 'milestone'
+						}
+					];
+
+					const certificateTemplates = {
+						best: {
+							title: '最好认证证明',
+							subtitle: 'BEST CERTIFICATION',
+							description: '经兔子委员会严格审议，特授予此证',
+							sealText: '兔子委员会'
+						},
+						observer: {
+							title: '联盟旁听证',
+							subtitle: 'OBSERVER PASS',
+							description: '持此证可列席委员会公开会议',
+							sealText: '兔子委员会'
+						},
+						temporary: {
+							title: '临时会员证',
+							subtitle: 'TEMPORARY MEMBERSHIP',
+							description: '临时会员身份证明',
+							sealText: '兔子委员会'
+						},
+						special: {
+							title: '特殊行为许可',
+							subtitle: 'SPECIAL PERMIT',
+							description: '经特别批准，允许在规定范围内执行特殊行为',
+							sealText: '兔子委员会'
+						}
+					};
+
+					const certificateTypes = [{
+							id: 'best',
+							label: '最好认证',
+							icon: 'award',
+							color: '#2A6F6A'
+						},
+						{
+							id: 'observer',
+							label: '联盟旁听证',
+							icon: 'user',
+							color: '#4A5568'
+						},
+						{
+							id: 'temporary',
+							label: '临时会员证',
+							icon: 'rabbit',
+							color: '#2A6F6A'
+						},
+						{
+							id: 'special',
+							label: '特殊行为许可',
+							icon: 'award',
+							color: '#E53E3E'
+						}
+					];
+
+					const issuerNames = ['兔子委员会主任', '企鹅联盟主席', '雪兔委员', '棉尾兔记录员', '嘎布拉兔档案员'];
+
+					const quickServices = [{
+							icon: 'award',
+							title: '最好认证',
+							desc: '申请兔子委员会颁发的最高荣誉认证',
+							link: '/services/certification?type=best'
+						},
+						{
+							icon: 'file-check',
+							title: '行为申报',
+							desc: '申报特殊行为或申请行为豁免',
+							link: '/services/application'
+						},
+						{
+							icon: 'gavel',
+							title: '异议申请',
+							desc: '对委员会决议提出异议',
+							link: '/services/application'
+						},
+						{
+							icon: 'users',
+							title: '成员登记',
+							desc: '新成员入会登记或信息变更',
+							link: '/services/application'
+						},
+						{
+							icon: 'search',
+							title: '进度查询',
+							desc: '查询申请事项办理进度',
+							link: '/services/query'
+						}
+					];
+
+					const servicesDetail = [{
+							id: 'best',
+							icon: 'award',
+							title: '最好认证',
+							subtitle: 'BEST CERTIFICATION',
+							description: '兔子委员会颁发的最高荣誉认证，需清楚说明"为什么是最好"',
+							process: ['提交申请', '委员会审议', '反复追问', '补充材料', '颁发证书'],
+							duration: '视季节而定',
+							value: 0,
+							link: '/services/certification?type=best'
+						},
+						{
+							id: 'behavior',
+							icon: 'file-check',
+							title: '行为申报',
+							subtitle: 'BEHAVIOR DECLARATION',
+							description: '申报特殊行为或申请行为豁免',
+							process: ['选择事项', '填写理由', '等待审核', '生成记录'],
+							duration: '兔子讨论后',
+							value: 0,
+							link: '/services/application?type=behavior'
+						},
+						{
+							id: 'objection',
+							icon: 'message-square',
+							title: '异议申请',
+							subtitle: 'OBJECTION APPLICATION',
+							description: '对委员会决议或处理结果提出异议',
+							process: ['提交异议', '委员会复核', '讨论审议', '结果通知'],
+							duration: '视复杂程度而定',
+							value: 0,
+							link: '/services/application?type=objection'
+						},
+						{
+							id: 'registration',
+							icon: 'user-plus',
+							title: '成员登记',
+							subtitle: 'MEMBER REGISTRATION',
+							description: '新成员入会登记或信息变更',
+							process: ['填写信息', '提交审核', '背景核实', '正式入会'],
+							duration: '兔子讨论后',
+							value: 1,
+							link: '/services/application?type=registration'
+						},
+						{
+							id: 'query',
+							icon: 'search',
+							title: '进度查询',
+							subtitle: 'PROGRESS QUERY',
+							description: '查询认证申请或事项办理进度',
+							process: ['输入编号', '查询状态', '查看详情'],
+							duration: '即时',
+							value: 0,
+							link: '/services/query'
+						}
+					];
+
+					const serviceClerks = [{
+							id: 'clerk-1',
+							name: '薄荷兔',
+							temperament: '耐心友好',
+							approvalRate: 0.85
+						},
+						{
+							id: 'clerk-2',
+							name: '胡椒兔',
+							temperament: '严肃谨慎',
+							approvalRate: 0.6
+						},
+						{
+							id: 'clerk-3',
+							name: '芥末兔',
+							temperament: '雷厉风行',
+							approvalRate: 0.45
+						},
+						{
+							id: 'clerk-4',
+							name: '蜂蜜兔',
+							temperament: '温柔细致',
+							approvalRate: 0.9
+						}
+					];
+
+					const applicationTypes = [{
+							id: 'behavior',
+							label: '行为申报',
+							description: '申报特殊行为或申请行为豁免，由办事员随机受理。',
+							value: 0
+						},
+						{
+							id: 'objection',
+							label: '异议申请',
+							description: '对委员会决议或处理结果提出异议，由办事员随机受理。',
+							value: 0
+						},
+						{
+							id: 'registration',
+							label: '成员登记',
+							description: '新成员入会登记或信息变更，默认百分百办成。',
+							value: 1
+						}
+					];
+
+					const applicationSteps = [{
+							id: 1,
+							label: '基本信息'
+						},
+						{
+							id: 2,
+							label: '补充材料'
+						},
+						{
+							id: 3,
+							label: '确认提交'
+						},
+						{
+							id: 4,
+							label: '结果反馈'
+						}
+					];
+
+					const archiveFolders = [{
+							id: 'archive-1',
+							title: '委员会成立档案袋',
+							subtitle: 'Rabbit Committee Origin',
+							description: '委员会成立初期的会议记录、危机应对方案与成员宣誓。',
+							securityLevel: '公开',
+							locked: false,
+							badgeClass: 'bg-green-100 text-green-700 border-green-200',
+							items: ['成立大会会议纪要', '委员会章程草案', '成员宣誓影像记录']
+						},
+						{
+							id: 'archive-2',
+							title: '危机事件档案袋',
+							subtitle: 'Crisis Response',
+							description: '与鸡贼黄袋鼠兔危机相关的调查与应对文书。',
+							securityLevel: '机密',
+							locked: true,
+							lockNote: '机密档案需特别审批后查阅。',
+							badgeClass: 'bg-amber-100 text-amber-700 border-amber-200',
+							items: []
+						},
+						{
+							id: 'archive-3',
+							title: '企鹅联盟合作档案袋',
+							subtitle: 'Penguin Alliance',
+							description: '跨联盟合作备忘录与会议记录。',
+							securityLevel: '即将公开',
+							locked: true,
+							lockNote: '档案整理中，预计下季度公开。',
+							badgeClass: 'bg-blue-100 text-blue-700 border-blue-200',
+							items: []
+						},
+						{
+							id: 'archive-4',
+							title: '成员履职档案袋',
+							subtitle: 'Member Performance',
+							description: '成员履职记录、奖励与纪律通报。',
+							securityLevel: '公开',
+							locked: false,
+							badgeClass: 'bg-green-100 text-green-700 border-green-200',
+							items: ['履职记录汇总', '奖励通知', '纪律通报']
+						},
+						{
+							id: 'archive-5',
+							title: '特别会议档案袋',
+							subtitle: 'Emergency Sessions',
+							description: '紧急会议记录与特殊行动方案。',
+							securityLevel: '绝密',
+							locked: true,
+							lockNote: '绝密档案封存中，暂不可查阅。',
+							badgeClass: 'bg-red-100 text-red-700 border-red-200',
+							items: []
+						},
+						{
+							id: 'archive-6',
+							title: '制度修订档案袋',
+							subtitle: 'Policy Amendments',
+							description: '制度修订记录与历史版本对照。',
+							securityLevel: '公开',
+							locked: false,
+							badgeClass: 'bg-green-100 text-green-700 border-green-200',
+							items: ['制度修订汇总', '历史版本对照表', '修订委员意见记录']
+						}
+					];
+
+					const policyCategories = [{
+							id: 'all',
+							label: '全部'
+						},
+						{
+							id: 'basic',
+							label: '基础规范'
+						},
+						{
+							id: 'emergency',
+							label: '紧急修订'
+						},
+						{
+							id: 'temporary',
+							label: '临时公告'
+						},
+						{
+							id: 'historical',
+							label: '历史文件'
+						}
+					];
+
+					const milestones = [{
+							icon: 'flag',
+							title: '委员会成立',
+							description: '兔历512年6月，兔子委员会正式成立，确立基本组织架构',
+							bgClass: 'bg-amber-100',
+							iconClass: 'text-amber-600'
+						},
+						{
+							icon: 'gavel',
+							title: '首次全体会议',
+							description: '通过"不允许鸡贼"关键决议，确立鸡贼黄袋鼠兔永久席位',
+							bgClass: 'bg-[#E9F8F8]',
+							iconClass: 'text-[#2A6F6A]'
+						},
+						{
+							icon: 'landmark',
+							title: '跨联盟合作',
+							description: '兔历515年2月，与企鹅联盟建立正式联络机制',
+							bgClass: 'bg-blue-100',
+							iconClass: 'text-blue-600'
+						}
+					];
+
+					const footerLinks = {
+						services: [{
+								label: '最好认证',
+								path: '/services/certification?type=best'
+							},
+							{
+								label: '最棒认证',
+								path: '/services/certification?type=good'
+							},
+							{
+								label: '行为申报',
+								path: '/services'
+							},
+							{
+								label: '进度查询',
+								path: '/services'
+							}
+						],
+						about: [{
+								label: '机构简介',
+								path: '/'
+							},
+							{
+								label: '成员名录',
+								path: '/members'
+							},
+							{
+								label: '会议记录',
+								path: '/meetings'
+							},
+							{
+								label: '政策文件',
+								path: '/policies'
+							}
+						],
+						legal: [{
+								label: '基础行为规范',
+								path: '/policies'
+							},
+							{
+								label: '隐私政策',
+								path: '#'
+							},
+							{
+								label: '使用条款',
+								path: '#'
+							}
+						]
+					};
+
+					const currentPage = ref('home');
+					const selectedMeetingId = ref(null);
+					const selectedMemberId = ref(null);
+					const selectedPolicyId = ref(null);
+					const isScrolled = ref(false);
+					const isMobileMenuOpen = ref(false);
+					const showStatusTooltip = ref(false);
+					const applicationType = ref('behavior');
+					const applicationStep = ref(1);
+					const isSubmittingApplication = ref(false);
+					const applicationResult = ref(null);
+					const queryCode = ref('');
+					const queryResult = ref(null);
+					const queryAttempted = ref(false);
+					const selectedArchiveId = ref(null);
+
+					const selectedCategory = ref('all');
+					const searchQuery = ref('');
+
+					const certType = ref('best');
+					const holderName = ref('');
+					const description = ref('');
+					const generatedCert = ref(null);
+					const isGenerating = ref(false);
+					const certificateRef = ref(null);
+					const applicationForm = ref({
+						name: '',
+						contact: '',
+						summary: '',
+						detail: '',
+						note: ''
+					});
+					const serviceApplications = ref([]);
+
+					const heroChars = computed(() => '兔子委员会'.split(''));
+
+					const activeNavPath = computed(() => {
+						if (['meetings', 'meetingDetail'].includes(currentPage.value)) return '/meetings';
+						if (['members', 'memberDetail'].includes(currentPage.value)) return '/members';
+						if (['policies', 'policyDetail'].includes(currentPage.value)) return '/policies';
+						if (['services', 'certification', 'serviceApplication', 'serviceQuery'].includes(
+								currentPage.value))
+							return '/services';
+						if (currentPage.value === 'history') return '/history';
+						return '/';
+					});
+
+					const currentMeeting = computed(() => meetings.find((m) => m.id === selectedMeetingId.value) ||
+						null);
+					const currentMember = computed(() => members.find((m) => m.id === selectedMemberId.value) || null);
+					const currentPolicy = computed(() => policies.find((p) => p.id === selectedPolicyId.value) || null);
+
+					const memberStats = computed(() => [{
+							label: '正式委员',
+							value: members.filter((m) => m.status === 'active').length
+						},
+						{
+							label: '终身委员',
+							value: members.filter((m) => m.status === 'lifetime').length
+						},
+						{
+							label: '观察员',
+							value: members.filter((m) => m.status === 'observer').length
+						},
+						{
+							label: '委员总数',
+							value: members.length
+						}
+					]);
+
+					const policyStats = computed(() => [{
+							label: '生效中',
+							value: policies.filter((p) => p.status === 'active').length,
+							className: 'text-green-600'
+						},
+						{
+							label: '已废止',
+							value: policies.filter((p) => p.status === 'repealed').length,
+							className: 'text-gray-500'
+						},
+						{
+							label: '草案',
+							value: policies.filter((p) => p.status === 'draft').length,
+							className: 'text-amber-600'
+						},
+						{
+							label: '总计',
+							value: policies.length,
+							className: 'text-[#2A6F6A]'
+						}
+					]);
+
+					const filteredPolicies = computed(() =>
+						policies.filter((policy) => {
+							const matchesCategory = selectedCategory.value === 'all' || policy.category ===
+								selectedCategory.value;
+							const query = searchQuery.value.toLowerCase();
+							const matchesSearch =
+								policy.title.toLowerCase().includes(query) || (policy.summary ? policy.summary
+									.toLowerCase().includes(query) : false);
+							return matchesCategory && matchesSearch;
+						})
+					);
+
+					const timelineByYear = computed(() => {
+						return timelineEvents.reduce((acc, event) => {
+							if (!acc[event.year]) acc[event.year] = [];
+							acc[event.year].push(event);
+							return acc;
+						}, {});
+					});
+
+					const sortedTimelineYears = computed(() => Object.keys(timelineByYear.value).sort());
+
+					const selectedCertificateType = computed(() => certificateTypes.find((type) => type.id === certType
+						.value));
+					const applicationTypeMap = computed(() =>
+						applicationTypes.reduce((acc, item) => {
+							acc[item.id] = item;
+							return acc;
+						}, {})
+					);
+					const currentApplicationType = computed(() => applicationTypeMap.value[applicationType.value] ||
+						applicationTypes[0]);
+					const selectedArchive = computed(() =>
+						archiveFolders.find((folder) => folder.id === selectedArchiveId.value) || null
+					);
+					const canProceedApplicationStep1 = computed(() =>
+						applicationForm.value.name.trim() &&
+						applicationForm.value.contact.trim() &&
+						applicationForm.value.summary.trim()
+					);
+
+					const getAnnouncementCategoryStyle = (category) => {
+						switch (category) {
+							case 'urgent':
+								return 'bg-red-100 text-red-700 border-red-200';
+							case 'meeting':
+								return 'bg-[#E9F8F8] text-[#2A6F6A] border-[#D8F0F0]';
+							case 'policy':
+								return 'bg-amber-100 text-amber-700 border-amber-200';
+							default:
+								return 'bg-gray-100 text-gray-700 border-gray-200';
+						}
+					};
+
+					const getAnnouncementCategoryLabel = (category) => {
+						switch (category) {
+							case 'urgent':
+								return '紧急';
+							case 'meeting':
+								return '会议';
+							case 'policy':
+								return '政策';
+							default:
+								return '公告';
+						}
+					};
+
+					const getMeetingStatus = (status) => {
+						switch (status) {
+							case 'archived':
+								return {
+									icon: 'check-circle', label: '已归档', className:
+										'bg-green-100 text-green-700 border-green-200', description: '会议记录已整理完成并正式发布'
+								};
+							case 'processing':
+								return {
+									icon: 'clock', label: '整理中', className:
+										'bg-amber-100 text-amber-700 border-amber-200', description:
+										'小兔子正在整理会议纪要，请耐心等待'
+								};
+							case 'upcoming':
+								return {
+									icon: 'calendar', label: '即将召开', className:
+										'bg-blue-100 text-blue-700 border-blue-200', description: '会议即将召开，敬请期待'
+								};
+							case 'special':
+								return {
+									icon: 'alert-circle', label: '特别会议', className:
+										'bg-red-100 text-red-700 border-red-200', description: '紧急情况下召开的特别会议'
+								};
+							default:
+								return {
+									icon: 'help-circle', label: '未知', className:
+										'bg-gray-100 text-gray-700 border-gray-200', description: '状态未知'
+								};
+						}
+					};
+
+					const getMemberStatus = (status) => {
+						switch (status) {
+							case 'lifetime':
+								return {
+									icon: 'crown', label: '终身委员', className:
+										'bg-amber-100 text-amber-700 border-amber-200', description:
+										'为委员会作出特殊贡献，永久保留席位'
+								};
+							case 'active':
+								return {
+									icon: 'award', label: '正式委员', className:
+										'bg-green-100 text-green-700 border-green-200', description:
+										'拥有完整权利和义务的委员会成员'
+								};
+							case 'observer':
+								return {
+									icon: 'eye', label: '观察员', className:
+										'bg-blue-100 text-blue-700 border-blue-200', description: '可列席会议但不具备投票权'
+								};
+							case 'suspended':
+								return {
+									icon: 'user-x', label: '暂缓履职', className:
+										'bg-gray-100 text-gray-700 border-gray-200', description: '暂时停止履行成员职责'
+								};
+							default:
+								return {
+									icon: 'users', label: '成员', className:
+										'bg-gray-100 text-gray-700 border-gray-200', description: '委员会成员'
+								};
+						}
+					};
+
+					const getPolicyCategory = (category) => {
+						switch (category) {
+							case 'basic':
+								return {
+									label: '基础规范', className: 'bg-green-100 text-green-700 border-green-200'
+								};
+							case 'emergency':
+								return {
+									label: '紧急修订', className: 'bg-red-100 text-red-700 border-red-200'
+								};
+							case 'temporary':
+								return {
+									label: '临时公告', className: 'bg-amber-100 text-amber-700 border-amber-200'
+								};
+							case 'historical':
+								return {
+									label: '历史文件', className: 'bg-gray-100 text-gray-700 border-gray-200'
+								};
+							default:
+								return {
+									label: '其他', className: 'bg-gray-100 text-gray-700 border-gray-200'
+								};
+						}
+					};
+
+					const getPolicyStatus = (status) => {
+						switch (status) {
+							case 'active':
+								return {
+									icon: 'check-circle', label: '生效中', className: 'text-green-600'
+								};
+							case 'repealed':
+								return {
+									icon: 'x-circle', label: '已废止', className: 'text-gray-500'
+								};
+							case 'draft':
+								return {
+									icon: 'clock', label: '草案', className: 'text-amber-600'
+								};
+							default:
+								return {
+									icon: 'file-text', label: '未知', className: 'text-gray-500'
+								};
+						}
+					};
+
+					const getPolicyStatusDetail = (status) => {
+						switch (status) {
+							case 'active':
+								return {
+									icon: 'check-circle', label: '生效中', className: 'text-green-600 bg-green-50'
+								};
+							case 'repealed':
+								return {
+									icon: 'x-circle', label: '已废止', className: 'text-gray-500 bg-gray-50'
+								};
+							case 'draft':
+								return {
+									icon: 'clock', label: '草案', className: 'text-amber-600 bg-amber-50'
+								};
+							default:
+								return {
+									icon: 'file-text', label: '未知', className: 'text-gray-500 bg-gray-50'
+								};
+						}
+					};
+
+					const getTimelineIcon = (type) => {
+						switch (type) {
+							case 'founding':
+								return 'flag';
+							case 'meeting':
+								return 'gavel';
+							case 'policy':
+								return 'landmark';
+							case 'crisis':
+								return 'alert-triangle';
+							case 'milestone':
+								return 'calendar';
+							default:
+								return 'book-open';
+						}
+					};
+
+					const getTimelineBadge = (type) => {
+						switch (type) {
+							case 'founding':
+								return 'bg-amber-100 text-amber-700 border-amber-200';
+							case 'meeting':
+								return 'bg-[#E9F8F8] text-[#2A6F6A] border-[#D8F0F0]';
+							case 'policy':
+								return 'bg-blue-100 text-blue-700 border-blue-200';
+							case 'crisis':
+								return 'bg-red-100 text-red-700 border-red-200';
+							case 'milestone':
+								return 'bg-green-100 text-green-700 border-green-200';
+							default:
+								return 'bg-gray-100 text-gray-700 border-gray-200';
+						}
+					};
+
+					const getServiceTag = (service) => {
+						if (service.value === 1) {
+							return {
+								label: '仅办公可办',
+								className: 'bg-blue-100 text-blue-700 border-blue-200',
+								icon: 'sun'
+							};
+						}
+						return {
+							label: '上班/值班可办',
+							className: 'bg-[#E9F8F8] text-[#2A6F6A] border-[#D8F0F0]',
+							icon: 'moon'
+						};
+					};
+
+					const isServiceAvailable = (service) => {
+						const state = serviceAvailability.value.state;
+						if (state === 'full') return true;
+						if (state === 'limited') return service.value === 0;
+						return false;
+					};
+
+					const handleServiceNavigate = (service) => {
+						if (!isServiceAvailable(service)) {
+							alert('当前时段该业务暂不可办理。');
+							return;
+						}
+						navigatePath(service.link);
+					};
+
+					const navigatePath = (path) => {
+						const [base, query] = path.split('?');
+						if (base === '/') {
+							currentPage.value = 'home';
+						} else if (base === '/meetings') {
+							currentPage.value = 'meetings';
+						} else if (base.startsWith('/meetings/')) {
+							selectedMeetingId.value = base.split('/')[2];
+							currentPage.value = 'meetingDetail';
+						} else if (base === '/services') {
+							currentPage.value = 'services';
+						} else if (base === '/services/certification') {
+							currentPage.value = 'certification';
+							resetCertificate();
+							if (query) {
+								const params = new URLSearchParams(query);
+								const typeParam = params.get('type');
+								if (typeParam && certificateTemplates[typeParam]) {
+									certType.value = typeParam;
+								}
+							}
+						} else if (base === '/services/application') {
+							currentPage.value = 'serviceApplication';
+							resetApplication();
+							if (query) {
+								const params = new URLSearchParams(query);
+								const typeParam = params.get('type');
+								if (typeParam && applicationTypeMap.value[typeParam]) {
+									applicationType.value = typeParam;
+								}
+							}
+						} else if (base === '/services/query') {
+							currentPage.value = 'serviceQuery';
+							queryResult.value = null;
+							queryAttempted.value = false;
+						} else if (base === '/members') {
+							currentPage.value = 'members';
+						} else if (base.startsWith('/members/')) {
+							selectedMemberId.value = base.split('/')[2];
+							currentPage.value = 'memberDetail';
+						} else if (base === '/policies') {
+							currentPage.value = 'policies';
+						} else if (base.startsWith('/policies/')) {
+							selectedPolicyId.value = base.split('/')[2];
+							currentPage.value = 'policyDetail';
+						} else if (base === '/history') {
+							currentPage.value = 'history';
+						} else if (base === '#') {
+							return;
+						} else {
+							currentPage.value = 'notFound';
+						}
+
+						isMobileMenuOpen.value = false;
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						});
+					};
+
+					const openMeeting = (id) => {
+						selectedMeetingId.value = id;
+						currentPage.value = 'meetingDetail';
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						});
+					};
+
+					const openMember = (id) => {
+						selectedMemberId.value = id;
+						currentPage.value = 'memberDetail';
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						});
+					};
+
+					const openPolicy = (id) => {
+						selectedPolicyId.value = id;
+						currentPage.value = 'policyDetail';
+						window.scrollTo({
+							top: 0,
+							behavior: 'smooth'
+						});
+					};
+
+					const getRabbitCalendarDate = () => {
+						const now = new Date()
+
+						// 1️⃣ 先减去 85 天
+						const rabbitDate = new Date(now)
+						rabbitDate.setDate(rabbitDate.getDate() - 85)
+
+						// 2️⃣ 计算兔历年份
+						const rabbitYear = rabbitDate.getFullYear() - 1508
+						const rabbitMonth = rabbitDate.getMonth() + 1
+						const rabbitDay = rabbitDate.getDate()
+
+						// 3️⃣ 拼接显示文本
+						return `兔历 ${rabbitYear}年${rabbitMonth}月${rabbitDay}日`
+					}
+
+					const generateCertificate = () => {
+						if (!holderName.value.trim()) return;
+						isGenerating.value = true;
+
+						setTimeout(() => {
+							const template = certificateTemplates[certType.value];
+							const randomIssuer = issuerNames[Math.floor(Math.random() * issuerNames.length)];
+							const certNumber = `RC-${Date.now().toString(36).toUpperCase().slice(-6)}`;
+
+							generatedCert.value = {
+								...template,
+								holderName: holderName.value.trim(),
+								description: description.value.trim() || template.description,
+								issuer: randomIssuer,
+								certificateNumber: certNumber,
+								issueDate: getRabbitCalendarDate(),
+								type: certType.value
+							};
+							isGenerating.value = false;
+						}, 1500);
+					};
+
+					const downloadCertificate = async () => {
+						if (!certificateRef.value || !generatedCert.value) return;
+
+						const node = certificateRef.value;
+
+						try {
+							// ① 等字体加载，避免导出瞬间 fallback 字体导致“文字下沉”
+							if (document.fonts?.ready) await document.fonts.ready;
+
+							const canvas = await html2canvas(node, {
+								scale: 2,
+								backgroundColor: '#ffffff',
+								logging: false,
+
+								// ② 仅导出阶段：在“克隆的 DOM”里做修正（不影响页面）
+								onclone: (clonedDoc) => {
+									// 找到克隆后的证书节点
+									const clonedNode = clonedDoc.querySelector('.certificate-frame');
+									if (!clonedNode) return;
+
+									// A) 仅导出时文字上浮（只影响克隆 DOM）
+									clonedNode.classList.add('export-float-text');
+
+									// B) 强制 line-height + 上浮规则（用 px 更稳）
+									const style = clonedDoc.createElement('style');
+									style.textContent = `
+										.certificate-frame.export-float-text p {
+											transform: translateY(-20%) !important;
+										}
+									`;
+									clonedDoc.head.appendChild(style);
+								}
+							});
+
+							const link = document.createElement('a');
+							link.download =
+								`兔子委员会-${generatedCert.value.title}-${generatedCert.value.holderName}.png`;
+							link.href = canvas.toDataURL('image/png');
+							link.click();
+						} catch (error) {
+							console.error('Failed to download certificate:', error);
+							alert('下载失败，请重试');
+						}
+					};
+
+					const resetCertificate = () => {
+						generatedCert.value = null;
+						holderName.value = '';
+						description.value = '';
+						isGenerating.value = false;
+					};
+
+					const resetApplication = () => {
+						applicationForm.value = {
+							name: '',
+							contact: '',
+							summary: '',
+							detail: '',
+							note: ''
+						};
+						applicationType.value = 'behavior';
+						applicationStep.value = 1;
+						applicationResult.value = null;
+						isSubmittingApplication.value = false;
+					};
+
+					const goToApplicationStep = (step) => {
+						applicationStep.value = step;
+						console.log(applicationStep.value);
+					};
+
+					const formatDateTime = (date) => {
+						return date.toLocaleString('zh-CN', {
+							hour12: false
+						});
+					};
+
+					const saveApplications = () => {
+						localStorage.setItem('rabbit-service-applications', JSON.stringify(serviceApplications
+							.value));
+					};
+
+					const loadApplications = () => {
+						const stored = localStorage.getItem('rabbit-service-applications');
+						if (stored) {
+							try {
+								serviceApplications.value = JSON.parse(stored);
+							} catch (error) {
+								serviceApplications.value = [];
+							}
+						}
+					};
+
+					const submitApplication = () => {
+						if (!isServiceAvailable(currentApplicationType.value)) {
+							alert('当前时段不可办理，请在可办理时间段提交。');
+							return;
+						}
+						isSubmittingApplication.value = true;
+						setTimeout(() => {
+							const clerk = serviceClerks[Math.floor(Math.random() * serviceClerks.length)];
+							const approvalRate = clerk.approvalRate;
+							let approved = true;
+							if (['behavior', 'objection'].includes(applicationType.value)) {
+								approved = Math.random() < approvalRate;
+							}
+							if (applicationType.value === 'registration') {
+								approved = true;
+							}
+
+							const status = approved ? 'approved' : 'rejected';
+							const record = {
+								id: `RB-${Date.now().toString(36).toUpperCase().slice(-6)}`,
+								type: applicationType.value,
+								typeLabel: currentApplicationType.value.label,
+								name: applicationForm.value.name.trim(),
+								contact: applicationForm.value.contact.trim(),
+								summary: applicationForm.value.summary.trim(),
+								detail: applicationForm.value.detail.trim(),
+								note: applicationForm.value.note.trim(),
+								clerkName: clerk.name,
+								approvalRate,
+								status,
+								statusLabel: approved ? '办理完成' : '申请驳回',
+								createdAt: formatDateTime(new Date())
+							};
+
+							serviceApplications.value.unshift(record);
+							saveApplications();
+							applicationResult.value = record;
+							applicationStep.value = 4;
+							isSubmittingApplication.value = false;
+						}, 800);
+					};
+
+					const handleQuery = () => {
+						queryAttempted.value = true;
+						const code = queryCode.value.trim();
+						queryResult.value = serviceApplications.value.find((record) => record.id === code) || null;
+					};
+
+					const openArchive = (id) => {
+						selectedArchiveId.value = id;
+					};
+
+					const closeArchive = () => {
+						selectedArchiveId.value = null;
+					};
+
+					const printPolicy = () => {
+						window.print();
+					};
+
+					const handleScroll = () => {
+						isScrolled.value = window.scrollY > 20;
+					};
+
+					const renderIcons = () => {
+						if (window.lucide) {
+							window.lucide.createIcons();
+						}
+					};
+
+					onMounted(() => {
+						window.addEventListener('scroll', handleScroll, {
+							passive: true
+						});
+						loadApplications();
+						currentTime.value = new Date();
+						timeInterval = setInterval(() => {
+							currentTime.value = new Date();
+						}, 60000);
+						nextTick(() => lucide.createIcons());
+					});
+
+					onUnmounted(() => {
+						window.removeEventListener('scroll', handleScroll);
+						if (timeInterval) clearInterval(timeInterval);
+					});
+
+					onUpdated(() => {
+						renderIcons();
+					});
+
+					watch(
+						() => [currentPage.value, selectedMeetingId.value, selectedMemberId.value, selectedPolicyId
+							.value, generatedCert.value, applicationStep.value, applicationResult.value, queryResult
+							.value,
+							selectedArchiveId.value
+						],
+						() => {
+							nextTick(() => {
+								lucide.createIcons();
+							});
+						}
+					);
+
+					return {
+						navItems,
+						officeStatus,
+						serviceAvailability,
+						announcements,
+						members,
+						meetings,
+						policies,
+						timelineEvents,
+						certificateTemplates,
+						certificateTypes,
+						issuerNames,
+						quickServices,
+						servicesDetail,
+						serviceClerks,
+						applicationTypes,
+						applicationSteps,
+						archiveFolders,
+						policyCategories,
+						milestones,
+						footerLinks,
+						currentPage,
+						applicationType,
+						applicationStep,
+						applicationForm,
+						applicationResult,
+						isSubmittingApplication,
+						queryCode,
+						queryResult,
+						queryAttempted,
+						selectedArchiveId,
+						selectedCategory,
+						searchQuery,
+						isScrolled,
+						isMobileMenuOpen,
+						showStatusTooltip,
+						certType,
+						holderName,
+						description,
+						generatedCert,
+						isGenerating,
+						certificateRef,
+						heroChars,
+						activeNavPath,
+						currentMeeting,
+						currentMember,
+						currentPolicy,
+						memberStats,
+						policyStats,
+						filteredPolicies,
+						timelineByYear,
+						sortedTimelineYears,
+						selectedCertificateType,
+						currentApplicationType,
+						selectedArchive,
+						canProceedApplicationStep1,
+						getAnnouncementCategoryStyle,
+						getAnnouncementCategoryLabel,
+						getMeetingStatus,
+						getMemberStatus,
+						getPolicyCategory,
+						getPolicyStatus,
+						getPolicyStatusDetail,
+						getTimelineIcon,
+						getTimelineBadge,
+						getServiceTag,
+						isServiceAvailable,
+						navigatePath,
+						handleServiceNavigate,
+						openMeeting,
+						openMember,
+						openPolicy,
+						openArchive,
+						closeArchive,
+						generateCertificate,
+						downloadCertificate,
+						resetCertificate,
+						resetApplication,
+						goToApplicationStep,
+						submitApplication,
+						handleQuery,
+						printPolicy
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
