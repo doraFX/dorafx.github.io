@@ -1,0 +1,2580 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>企鹅联盟官网</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						fontFamily: {
+							sans: ['Noto Sans SC', 'ui-sans-serif', 'system-ui'],
+							serif: ['Noto Serif SC', 'ui-serif', 'serif']
+						}
+					}
+				}
+			};
+		</script>
+		<style>
+			body {
+				font-family: 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+					'Segoe UI', sans-serif;
+				background-color: #f6f9fc;
+				color: #0a2540;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				font-family: 'Noto Serif SC', ui-serif, serif;
+				font-weight: 600;
+			}
+
+			.gradient-hero {
+				background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 50%, #0d3b52 100%);
+			}
+
+			.card-hover {
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+
+			.card-hover:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 16px rgba(10, 37, 64, 0.1);
+			}
+
+			.announcement-card {
+				border-left: 4px solid #00d4ff;
+				background: #f6f9fc;
+			}
+
+			.shadow-card {
+				box-shadow: 0 2px 8px rgba(10, 37, 64, 0.06);
+			}
+
+			.certificate-border {
+				background: linear-gradient(to right, #d4af37 0%, #f4e5c2 50%, #d4af37 100%);
+				padding: 3px;
+				border-radius: 8px;
+			}
+
+			.certificate-inner {
+				background-color: #ffffff;
+				padding: 32px;
+				border-radius: 6px;
+				position: relative;
+				background-image: radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+					radial-gradient(circle at 80% 70%, rgba(10, 37, 64, 0.03) 0%, transparent 50%);
+			}
+
+			.status-open {
+				animation: pulse-green 2s infinite;
+			}
+
+			.status-emergency {
+				animation: pulse-orange 1s infinite;
+			}
+
+			@keyframes pulse-green {
+
+				0%,
+				100% {
+					box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.7);
+				}
+
+				50% {
+					box-shadow: 0 0 0 10px rgba(0, 200, 83, 0);
+				}
+			}
+
+			@keyframes pulse-orange {
+
+				0%,
+				100% {
+					box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+				}
+
+				50% {
+					box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+				}
+			}
+
+			.line-clamp-2 {
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+			}
+
+			.modal-backdrop {
+				background: rgba(15, 23, 42, 0.55);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				* {
+					transition: none !important;
+					animation-duration: 0.01ms !important;
+					animation-iteration-count: 1 !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" class="min-h-screen flex flex-col bg-[#f6f9fc]">
+			<header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#e8eef3]">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="flex items-center justify-between h-16">
+						<button @click="setRoute('/')" class="flex items-center gap-3">
+							<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-10 h-10 object-contain" />
+							<div class="hidden sm:block text-left">
+								<h1 class="text-lg font-bold text-[#0a2540] leading-tight">企鹅联盟</h1>
+								<p class="text-xs text-[#425466]">Penguin Alliance</p>
+							</div>
+						</button>
+
+						<nav class="hidden lg:flex items-center gap-1">
+							<button v-for="item in navItems" :key="item.path" @click="setRoute(item.path)"
+								class="px-4 py-2 text-sm font-medium rounded-md transition-colors" :class="isActive(item.path)
+                        ? 'text-[#0a2540] bg-[#f6f9fc]'
+                        : 'text-[#425466] hover:text-[#0a2540] hover:bg-[#f6f9fc]'">
+								{{ item.label }}
+							</button>
+						</nav>
+
+						<button class="lg:hidden w-10 h-10 flex items-center justify-center" @click="isMobileMenuOpen = true">
+							<i data-lucide="menu" class="w-5 h-5"></i>
+						</button>
+					</div>
+				</div>
+
+				<div v-if="isMobileMenuOpen" class="fixed inset-0 z-50">
+					<div class="absolute inset-0 bg-black/40" @click="isMobileMenuOpen = false"></div>
+					<div class="absolute right-0 top-0 h-full w-[280px] sm:w-[350px] bg-white shadow-xl p-6">
+						<div class="flex items-center gap-3 mb-8">
+							<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-12 h-12 object-contain" />
+							<div>
+								<h2 class="text-lg font-bold text-[#0a2540]">企鹅联盟</h2>
+								<p class="text-xs text-[#425466]">Penguin Alliance</p>
+							</div>
+						</div>
+						<nav class="flex flex-col gap-1">
+							<button v-for="item in navItems" :key="item.path" @click="setRoute(item.path)"
+								class="px-4 py-3 text-base font-medium rounded-md transition-colors text-left" :class="isActive(item.path)
+                        ? 'text-[#0a2540] bg-[#f6f9fc]'
+                        : 'text-[#425466] hover:text-[#0a2540] hover:bg-[#f6f9fc]'">
+								{{ item.label }}
+							</button>
+						</nav>
+					</div>
+				</div>
+			</header>
+
+			<main class="flex-1">
+				<div v-if="currentpage === '/'">
+					<section class="gradient-hero text-white py-16 md:py-24">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center">
+								<div class="flex items-center justify-center gap-4 mb-6">
+									<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-24 h-24 md:w-32 md:h-32 object-contain" />
+								</div>
+								<div class="flex items-center justify-center gap-3 mb-4">
+									<div class="relative inline-flex items-center gap-2" @mouseenter="tooltipVisible = true"
+										@mouseleave="tooltipVisible = false">
+										<span class="relative inline-flex w-3 h-3 rounded-full"
+											:class="[statusConfig[statusIndicator].color, statusConfig[statusIndicator].animation]"></span>
+										<span class="text-sm font-medium" :class="statusConfig[statusIndicator].textColor">
+											{{ statusConfig[statusIndicator].label }}
+										</span>
+										<div v-if="tooltipVisible"
+											class="absolute left-0 top-full mt-2 px-3 py-2 bg-[#0a2540] text-white text-xs rounded-md whitespace-nowrap z-50">
+											{{ statusConfig[statusIndicator].tooltip }}
+											<div class="absolute -top-1 left-4 w-2 h-2 bg-[#0a2540] rotate-45"></div>
+										</div>
+									</div>
+								</div>
+								<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-2">企鹅联盟</h1>
+								<p class="text-lg md:text-xl text-[#a3b1c0] mb-4">Penguin Alliance</p>
+								<p class="text-base md:text-lg text-white/80 max-w-2xl mx-auto mb-8">
+									成年企鹅的共同体中枢，维护冰原秩序，守护企鹅族群
+								</p>
+								<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+									<div v-for="item in stats" :key="item.label" class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+										<i :data-lucide="item.icon" class="w-5 h-5 text-[#00d4ff] mx-auto mb-2"></i>
+										<p class="text-2xl font-bold">{{ item.value }}</p>
+										<p class="text-xs text-white/60">{{ item.label }}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex items-center justify-between mb-8">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540]">快捷办事入口</h2>
+									<p class="text-sm text-[#425466] mt-1">政务服务区</p>
+								</div>
+								<button @click="setRoute('/services')"
+									class="text-sm text-[#00d4ff] hover:underline flex items-center gap-1">
+									查看更多
+									<i data-lucide="chevron-right" class="w-4 h-4"></i>
+								</button>
+							</div>
+
+							<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+								<button v-for="service in quickServices" :key="service.title" @click="setRoute(service.path)"
+									class="bg-white rounded-lg p-6 border border-[#e8eef3] card-hover group h-full text-left">
+									<div class="flex items-start justify-between">
+										<div
+											class="w-12 h-12 rounded-lg bg-[#f6f9fc] flex items-center justify-center mb-4 group-hover:bg-[#e0f4ff] transition-colors">
+											<i :data-lucide="service.icon" class="w-6 h-6 text-[#00d4ff]"></i>
+										</div>
+										<i data-lucide="arrow-right"
+											class="w-5 h-5 text-[#a3b1c0] group-hover:text-[#00d4ff] group-hover:translate-x-1 transition-all"></i>
+									</div>
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-2 group-hover:text-[#00d4ff] transition-colors">
+										{{ service.title }}
+									</h3>
+									<p class="text-sm text-[#425466] leading-relaxed">
+										{{ service.description }}
+									</p>
+								</button>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-[#f6f9fc]">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex items-center justify-between mb-8">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540]">最新公告</h2>
+									<p class="text-sm text-[#425466] mt-1">Announcement</p>
+								</div>
+								<button @click="setRoute('/policies')"
+									class="text-sm text-[#00d4ff] hover:underline flex items-center gap-1">
+									查看全部
+									<i data-lucide="chevron-right" class="w-4 h-4"></i>
+								</button>
+							</div>
+
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+								<button v-for="(announcement, index) in activeAnnouncements" :key="announcement.id"
+									@click="openAnnouncement(announcement)"
+									class="announcement-card p-4 rounded-r-lg cursor-pointer card-hover group text-left">
+									<div class="flex items-start justify-between gap-4">
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2 mb-2">
+												<span class="text-xs px-2 py-1 rounded-full"
+													:class="announcementCategoryColors[announcement.category]">
+													{{ announcementCategoryLabels[announcement.category] }}
+												</span>
+												<span class="text-xs text-[#a3b1c0] flex items-center gap-1">
+													<i data-lucide="calendar" class="w-3 h-3"></i>
+													{{ announcement.date }}
+												</span>
+											</div>
+											<h4
+												class="text-base font-medium text-[#0a2540] mb-1 group-hover:text-[#00d4ff] transition-colors">
+												{{ announcement.title }}
+											</h4>
+											<p class="text-sm text-[#425466] line-clamp-2">
+												{{ announcement.summary }}
+											</p>
+										</div>
+										<i data-lucide="arrow-right"
+											class="w-5 h-5 text-[#a3b1c0] group-hover:text-[#00d4ff] group-hover:translate-x-1 transition-all mt-1"></i>
+									</div>
+								</button>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+								<div>
+									<span
+										class="inline-flex items-center px-3 py-1 bg-[#e0f4ff] text-[#00d4ff] rounded-full text-sm font-medium mb-4">
+										关于企鹅联盟
+									</span>
+									<h2 class="text-2xl md:text-3xl font-bold text-[#0a2540] mb-4">成年企鹅的共同体中枢</h2>
+									<p class="text-[#425466] leading-relaxed mb-4">
+										企鹅联盟与兔子委员会在形态上相似，却在气质与运行逻辑上呈现出明显差异，
+										它更像是一套延迟生效的成年制度，而非即时反应的危机组织。
+									</p>
+									<p class="text-[#425466] leading-relaxed mb-6">
+										联盟成员资格被严格限定为成年企鹅，原因是：企鹅族群认为，真正参与规则制定与公共事务的前提，
+										是经历过完整的生存周期，理解寒冷、饥饿、迁徙与失去的重量。
+									</p>
+									<button @click="setRoute('/about')"
+										class="bg-[#0a2540] hover:bg-[#1a3a5c] text-white px-5 py-2.5 rounded-md">
+										了解更多
+									</button>
+								</div>
+
+								<div class="bg-[#f6f9fc] rounded-xl p-8">
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-6">核心职能</h3>
+									<ul class="space-y-4">
+										<li v-for="(item, index) in [
+                            { title: '最棒认证', desc: '对企鹅个体的优秀品质进行官方认可' },
+                            { title: '会议组织', desc: '定期召开联盟大会，讨论重要事务' },
+                            { title: '政策制定', desc: '制定并维护联盟各项规章制度' },
+                            { title: '对外联络', desc: '与兔子委员会等外部组织保持沟通' }
+                          ]" :key="item.title" class="flex items-start gap-3">
+											<div
+												class="w-6 h-6 rounded-full bg-[#00d4ff]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+												<span class="text-[#00d4ff] text-xs font-bold">{{ index + 1 }}</span>
+											</div>
+											<div>
+												<span class="font-medium text-[#0a2540]">{{ item.title }}</span>
+												<p class="text-sm text-[#425466]">{{ item.desc }}</p>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 gradient-hero text-white">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+							<h2 class="text-2xl md:text-3xl font-bold mb-4">需要办理认证或咨询事务？</h2>
+							<p class="text-white/80 mb-8">前往办事大厅，企鹅联盟服务中心随时为您服务</p>
+							<div class="flex flex-col sm:flex-row gap-4 justify-center">
+								<button @click="setRoute('/services')"
+									class="bg-white text-[#0a2540] hover:bg-white/90 px-6 py-3 rounded-md font-medium">
+									前往办事大厅
+								</button>
+								<button @click="setRoute('/members')"
+									class="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-md font-medium">
+									查看成员名录
+								</button>
+							</div>
+						</div>
+					</section>
+				</div>
+
+				<div v-else-if="currentpage === '/about'">
+					<section class="gradient-hero text-white py-12 md:py-16">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<span
+								class="inline-flex items-center px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4">关于我们</span>
+							<h1 class="text-3xl md:text-4xl font-bold mb-4">企鹅联盟</h1>
+							<p class="text-lg text-white/80 max-w-2xl">成年企鹅的共同体中枢，维护冰原秩序，守护企鹅族群</p>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540] mb-6">联盟简介</h2>
+									<div class="space-y-4 text-[#425466] leading-relaxed">
+										<p>
+											企鹅联盟与兔子委员会在形态上相似，却在气质与运行逻辑上呈现出明显差异，
+											它更像是一套<strong>延迟生效的成年制度</strong>，而非即时反应的危机组织。
+										</p>
+										<p>
+											企鹅联盟的成员资格被严格限定为<strong>成年企鹅</strong>，原因并不复杂：
+											企鹅族群认为，真正参与规则制定与公共事务的前提，是经历过完整的生存周期，
+											理解寒冷、饥饿、迁徙与失去的重量。
+										</p>
+										<p>
+											因此，像企鹅企企这样的帝企鹅宝宝，并不直接受联盟约束，也不具备投票权，
+											这种"暂时的无约束状态"并非放任，而是一种<strong>保护性的空白期</strong>。
+										</p>
+									</div>
+								</div>
+
+								<div class="bg-[#f6f9fc] rounded-xl p-8">
+									<div class="flex items-center gap-4 mb-6">
+										<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-20 h-20 object-contain" />
+										<div>
+											<h3 class="text-xl font-bold text-[#0a2540]">企鹅联盟</h3>
+											<p class="text-sm text-[#425466]">Penguin Alliance</p>
+										</div>
+									</div>
+									<div class="grid grid-cols-2 gap-4">
+										<div class="bg-white rounded-lg p-4">
+											<span class="text-xs text-[#a3b1c0] block mb-1">成立时间</span>
+											<span class="text-lg font-semibold text-[#0a2540]">冰纪元年</span>
+										</div>
+										<div class="bg-white rounded-lg p-4">
+											<span class="text-xs text-[#a3b1c0] block mb-1">性质</span>
+											<span class="text-lg font-semibold text-[#0a2540]">共同体中枢</span>
+										</div>
+										<div class="bg-white rounded-lg p-4">
+											<span class="text-xs text-[#a3b1c0] block mb-1">管辖范围</span>
+											<span class="text-lg font-semibold text-[#0a2540]">南极冰原</span>
+										</div>
+										<div class="bg-white rounded-lg p-4">
+											<span class="text-xs text-[#a3b1c0] block mb-1">成员资格</span>
+											<span class="text-lg font-semibold text-[#0a2540]">成年企鹅</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-[#f6f9fc]">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-4">核心使命</h2>
+								<p class="text-[#425466] max-w-2xl mx-auto">企鹅联盟存在的意义，是维护冰原秩序，守护企鹅族群</p>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+								<div v-for="(item, index) in [
+                          { title: '维护冰原秩序', desc: '确保南极冰原的和谐稳定' },
+                          { title: '协调族群事务', desc: '平衡各族群的利益与需求' },
+                          { title: '认证优秀个体', desc: '对企鹅的优秀品质给予认可' },
+                          { title: '传承南极文化', desc: '保护并传承企鹅族群的文化传统' }
+                        ]" :key="item.title" class="bg-white rounded-lg p-6 text-center card-hover">
+									<div class="w-12 h-12 rounded-full bg-[#e0f4ff] flex items-center justify-center mx-auto mb-4">
+										<span class="text-[#00d4ff] text-xl font-bold">{{ index + 1 }}</span>
+									</div>
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-2">{{ item.title }}</h3>
+									<p class="text-sm text-[#425466]">{{ item.desc }}</p>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-4">组织架构</h2>
+								<p class="text-[#425466] max-w-2xl mx-auto">企鹅联盟采用分层治理结构，确保高效运转</p>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div v-for="item in organization" :key="item.title"
+									class="bg-[#f6f9fc] rounded-lg p-6 flex items-start gap-4">
+									<div class="w-12 h-12 rounded-lg bg-[#e0f4ff] flex items-center justify-center flex-shrink-0">
+										<i :data-lucide="item.icon" class="w-6 h-6 text-[#00d4ff]"></i>
+									</div>
+									<div>
+										<h3 class="text-lg font-semibold text-[#0a2540] mb-2">{{ item.title }}</h3>
+										<p class="text-sm text-[#425466] leading-relaxed">{{ item.description }}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-[#f6f9fc]">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-4">历史沿革</h2>
+								<p class="text-[#425466]">企鹅联盟的发展历程</p>
+							</div>
+
+							<div class="relative">
+								<div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-[#e8eef3] md:-translate-x-1/2"></div>
+								<div v-for="(item, index) in timeline" :key="item.title" class="relative flex items-start gap-8 mb-8"
+									:class="index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'">
+									<div
+										class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-[#00d4ff] border-4 border-white md:-translate-x-1/2 z-10">
+									</div>
+									<div class="ml-12 md:ml-0 md:w-[calc(50%-2rem)]"
+										:class="index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'">
+										<span
+											class="inline-block px-3 py-1 bg-[#e0f4ff] text-[#00d4ff] text-sm font-medium rounded-full mb-2">
+											{{ item.year }}
+										</span>
+										<h3 class="text-lg font-semibold text-[#0a2540] mb-2">{{ item.title }}</h3>
+										<p class="text-sm text-[#425466] leading-relaxed">{{ item.description }}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="text-center mb-12">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-4">联盟价值观</h2>
+								<p class="text-[#425466]">企鹅联盟坚守的核心价值</p>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+								<div v-for="item in values" :key="item.title" class="text-center">
+									<div
+										class="w-16 h-16 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center mx-auto mb-4">
+										<i :data-lucide="item.icon" class="w-8 h-8 text-[#00d4ff]"></i>
+									</div>
+									<h3 class="text-xl font-semibold text-[#0a2540] mb-2">{{ item.title }}</h3>
+									<p class="text-[#425466]">{{ item.description }}</p>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 md:py-16 gradient-hero text-white">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+							<i data-lucide="clock" class="w-12 h-12 text-[#00d4ff] mx-auto mb-4"></i>
+							<h2 class="text-2xl font-bold mb-4">工作时间</h2>
+							<p class="text-lg text-white/80 mb-2">冰面稳定后至日落前</p>
+							<p class="text-sm text-white/60">极端天气下可随时调整，以自然条件为准</p>
+						</div>
+					</section>
+				</div>
+
+				<div v-else-if="currentpage === '/meetings'">
+					<section class="gradient-hero text-white py-12 md:py-16">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<span
+								class="inline-flex items-center px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4">会议系统</span>
+							<h1 class="text-3xl md:text-4xl font-bold mb-4">联盟大会</h1>
+							<p class="text-lg text-white/80 max-w-2xl">企鹅联盟的最高决策机构，讨论并决定联盟重大事项</p>
+						</div>
+					</section>
+
+					<section class="py-8 -mt-8">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">已公开会议</p>
+											<p class="text-3xl font-bold text-[#00c853]">{{ meetingStats.completed }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#e3f7ef] flex items-center justify-center">
+											<i data-lucide="file-text" class="w-6 h-6 text-[#00c853]"></i>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">整理中</p>
+											<p class="text-3xl font-bold text-[#ffc107]">{{ meetingStats.processing }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#fff3cd] flex items-center justify-center">
+											<i data-lucide="calendar" class="w-6 h-6 text-[#ffc107]"></i>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">计划中</p>
+											<p class="text-3xl font-bold text-[#00d4ff]">{{ meetingStats.planned }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#e0f4ff] flex items-center justify-center">
+											<i data-lucide="users" class="w-6 h-6 text-[#00d4ff]"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540]">会议列表</h2>
+									<p class="text-sm text-[#425466] mt-1">共 {{ filteredMeetings.length }} 场会议</p>
+								</div>
+								<div class="flex items-center gap-2">
+									<i data-lucide="filter" class="w-4 h-4 text-[#a3b1c0]"></i>
+									<div class="flex gap-2 flex-wrap">
+										<button v-for="filter in meetingFilters" :key="filter.value" @click="meetingFilter = filter.value"
+											class="px-3 py-1.5 rounded-md text-sm border"
+											:class="meetingFilter === filter.value ? 'bg-[#0a2540] text-white border-[#0a2540]' : 'text-[#425466] border-[#e8eef3] hover:border-[#00d4ff]'">
+											{{ filter.label }}
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<button v-for="meeting in filteredMeetings" :key="meeting.id" @click="openMeeting(meeting)"
+									class="bg-white rounded-lg p-5 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="flex items-start justify-between mb-3">
+										<div>
+											<span class="text-xs text-[#a3b1c0] mb-1 block">第{{ meeting.session }}次联盟大会</span>
+											<h4 class="text-base font-semibold text-[#0a2540] group-hover:text-[#00d4ff] transition-colors">
+												{{ meeting.title }}
+											</h4>
+										</div>
+										<span class="text-xs px-2 py-1 rounded-full" :class="meetingStatusConfig[meeting.status].color">
+											{{ meetingStatusConfig[meeting.status].label }}
+										</span>
+									</div>
+
+									<div class="flex items-center gap-4 text-sm text-[#425466] mb-3">
+										<span class="flex items-center gap-1">
+											<i data-lucide="calendar" class="w-4 h-4 text-[#00d4ff]"></i>
+											{{ meeting.date }}
+										</span>
+										<span class="flex items-center gap-1">
+											<i data-lucide="users" class="w-4 h-4 text-[#00d4ff]"></i>
+											{{ meeting.attendees.length }}位出席
+										</span>
+									</div>
+
+									<div>
+										<span class="text-xs text-[#a3b1c0]">核心议题</span>
+										<p class="text-sm text-[#425466] line-clamp-2">{{ meeting.topics.join('、') }}</p>
+									</div>
+								</button>
+							</div>
+
+							<div v-if="filteredMeetings.length === 0" class="text-center py-16">
+								<div class="w-16 h-16 rounded-full bg-[#f6f9fc] flex items-center justify-center mx-auto mb-4">
+									<i data-lucide="calendar" class="w-8 h-8 text-[#a3b1c0]"></i>
+								</div>
+								<p class="text-[#425466]">暂无符合条件的会议</p>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540] mb-6">会议说明</h2>
+									<div class="space-y-4 text-[#425466] leading-relaxed">
+										<p>
+											联盟大会是企鹅联盟的最高决策机构，由各成员单位的代表组成。
+											大会定期召开，讨论并决定联盟的重大事项。
+										</p>
+										<p>
+											会议时间通常在冰面稳定后，以确保各位代表能够安全到达会场。
+											如遇极端天气，会议将顺延至天气好转。
+										</p>
+										<p>
+											会议记录由值班企鹅负责整理，经审核后公开。部分敏感内容可能
+											需要更长时间的审核，状态会显示为"整理中"。
+										</p>
+									</div>
+								</div>
+								<div class="bg-[#f6f9fc] rounded-xl p-6">
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-4">会议状态说明</h3>
+									<div class="space-y-3">
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#e3f7ef] text-[#00c853] text-sm rounded-full">已公开</span>
+											<span class="text-sm text-[#425466]">会议记录已审核并公开</span>
+										</div>
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#fff3cd] text-[#856404] text-sm rounded-full">整理中</span>
+											<span class="text-sm text-[#425466]">会议记录正在整理审核</span>
+										</div>
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#e0f4ff] text-[#00d4ff] text-sm rounded-full">计划中</span>
+											<span class="text-sm text-[#425466]">会议尚未召开，时间待定</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+
+				<div v-else-if="currentpage === '/services'">
+					<section class="gradient-hero text-white py-12 md:py-16">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<span
+								class="inline-flex items-center px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4">办事大厅</span>
+							<h1 class="text-3xl md:text-4xl font-bold mb-4">企鹅联盟服务中心</h1>
+							<p class="text-lg text-white/80 max-w-2xl">统一受理、审核与公示事务，为各位企鹅提供便捷服务</p>
+						</div>
+					</section>
+
+					<section class="py-12">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="mb-8">
+								<h2 class="text-2xl font-bold text-[#0a2540]">服务项目</h2>
+								<p class="text-sm text-[#425466] mt-1">选择您需要办理的业务</p>
+							</div>
+							<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+								<button v-for="service in services" :key="service.id" @click="handleServiceClick(service.id)"
+									class="bg-white rounded-lg p-6 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="w-14 h-14 rounded-lg flex items-center justify-center mb-4 transition-colors"
+										:style="{ backgroundColor: service.color + '15' }">
+										<i :data-lucide="service.icon" class="w-7 h-7" :style="{ color: service.color }"></i>
+									</div>
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-2 group-hover:text-[#00d4ff] transition-colors">
+										{{ service.title }}
+									</h3>
+									<p class="text-sm text-[#425466]">{{ service.description }}</p>
+									<div
+										class="flex items-center gap-1 mt-4 text-[#00d4ff] opacity-0 group-hover:opacity-100 transition-opacity">
+										<span class="text-sm">立即办理</span>
+										<i data-lucide="chevron-right" class="w-4 h-4"></i>
+									</div>
+								</button>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540] mb-6">办事指南</h2>
+									<div class="space-y-6">
+										<div v-for="(item, index) in [
+                            { title: '选择事项', desc: '根据您的需求选择相应的服务项目' },
+                            { title: '填写信息', desc: '按要求填写相关信息，确保准确无误' },
+                            { title: '等待审核', desc: '企鹅正在观察中，请耐心等待' },
+                            { title: '获取结果', desc: '审核通过后，即可下载相关证明' }
+                          ]" :key="item.title" class="flex items-start gap-4">
+											<div class="w-8 h-8 rounded-full bg-[#e0f4ff] flex items-center justify-center flex-shrink-0">
+												<span class="text-[#00d4ff] text-sm font-bold">{{ index + 1 }}</span>
+											</div>
+											<div>
+												<h4 class="font-medium text-[#0a2540] mb-1">{{ item.title }}</h4>
+												<p class="text-sm text-[#425466]">{{ item.desc }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-[#f6f9fc] rounded-xl p-6">
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-4">工作时间</h3>
+									<div class="space-y-3">
+										<div class="flex items-center justify-between py-2 border-b border-[#e8eef3]">
+											<span class="text-[#425466]">正常工作日</span>
+											<span class="text-[#0a2540] font-medium">冰面稳定后至日落前</span>
+										</div>
+										<div class="flex items-center justify-between py-2 border-b border-[#e8eef3]">
+											<span class="text-[#425466]">紧急事务</span>
+											<span class="text-[#0a2540] font-medium">24小时应急通道</span>
+										</div>
+										<div class="flex items-center justify-between py-2">
+											<span class="text-[#425466]">极端天气</span>
+											<span class="text-[#ff6b35] font-medium">视情况调整</span>
+										</div>
+									</div>
+									<div class="mt-6 p-4 bg-[#fff3cd] rounded-lg">
+										<p class="text-sm text-[#856404]">
+											<strong>提示：</strong>所有时间均以自然条件为准，极端天气期间可能随时调整。
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<div v-if="servicesDialogOpen" class="fixed inset-0 z-50 flex items-center justify-center">
+						<div class="absolute inset-0 modal-backdrop" @click="closeServiceDialog"></div>
+						<div class="relative bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6">
+							<div class="flex items-center justify-between mb-6">
+								<h2 class="text-xl font-bold text-[#0a2540]">认证申请</h2>
+								<button @click="closeServiceDialog" class="text-[#a3b1c0] hover:text-[#0a2540]">✕</button>
+							</div>
+
+							<div class="mb-8">
+								<div class="flex items-center justify-between">
+									<div v-for="(step, index) in steps" :key="step.label" class="flex items-center flex-1">
+										<div class="flex flex-col items-center">
+											<div
+												class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-sm"
+												:class="index < currentStep ? 'bg-[#00c853]' : index === currentStep ? 'bg-[#00d4ff]' : 'bg-gray-200 text-gray-400'">
+												<span v-if="index < currentStep">✓</span>
+												<span v-else>{{ index + 1 }}</span>
+											</div>
+											<span class="mt-2 text-xs font-medium"
+												:class="index === currentStep ? 'text-[#00d4ff]' : index < currentStep ? 'text-[#00c853]' : 'text-gray-400'">
+												{{ step.label }}
+											</span>
+											<span v-if="step.description" class="mt-1 text-[10px] text-gray-400 text-center max-w-[80px]">
+												{{ step.description }}
+											</span>
+										</div>
+										<div v-if="index < steps.length - 1" class="flex-1 mx-2">
+											<div class="h-1 bg-gray-200 rounded-full overflow-hidden">
+												<div class="h-full bg-[#00c853]" :style="{ width: index < currentStep ? '100%' : '0%' }"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="currentStep === 0" class="space-y-4">
+								<h3 class="text-lg font-medium text-[#0a2540]">选择认证类型</h3>
+								<div class="grid grid-cols-1 gap-3">
+									<button v-for="type in certificateTypes" :key="type.value" @click="certificateType = type.value"
+										class="p-4 rounded-lg border text-left transition-all"
+										:class="certificateType === type.value ? 'border-[#00d4ff] bg-[#e0f4ff]' : 'border-[#e8eef3] hover:border-[#00d4ff]'">
+										<div class="flex items-center justify-between">
+											<div>
+												<span class="font-medium text-[#0a2540]">{{ type.label }}</span>
+												<p class="text-sm text-[#425466] mt-1">{{ type.description }}</p>
+											</div>
+											<span v-if="certificateType === type.value" class="text-[#00d4ff]">✓</span>
+										</div>
+									</button>
+								</div>
+							</div>
+
+							<div v-if="currentStep === 1" class="space-y-4">
+								<h3 class="text-lg font-medium text-[#0a2540]">填写申请信息</h3>
+								<div class="space-y-4">
+									<div>
+										<label class="block text-sm font-medium text-[#0a2540] mb-2">申请人姓名</label>
+										<input v-model="applicantName" type="text" placeholder="请输入您的名字"
+											class="w-full border border-[#e8eef3] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#00d4ff]/40" />
+									</div>
+									<div>
+										<label class="block text-sm font-medium text-[#0a2540] mb-2">申请理由（选填）</label>
+										<textarea v-model="applicationReason" rows="4" placeholder="请简要说明申请理由..."
+											class="w-full border border-[#e8eef3] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#00d4ff]/40"></textarea>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="currentStep === 2" class="text-center py-8">
+								<div class="w-16 h-16 rounded-full bg-[#e0f4ff] flex items-center justify-center mx-auto mb-4">
+									<i data-lucide="loader-2" class="w-8 h-8 text-[#00d4ff] animate-spin"></i>
+								</div>
+								<h3 class="text-lg font-medium text-[#0a2540] mb-2">正在审核</h3>
+								<p class="text-[#425466]">{{ waitingMessage }}</p>
+							</div>
+
+							<div v-if="currentStep === 3 && showCertificate" class="space-y-4">
+								<div class="text-center mb-4">
+									<div class="w-12 h-12 rounded-full bg-[#e3f7ef] flex items-center justify-center mx-auto mb-2">
+										<i data-lucide="sparkles" class="w-6 h-6 text-[#00c853]"></i>
+									</div>
+									<h3 class="text-lg font-medium text-[#0a2540]">审核通过！</h3>
+									<p class="text-sm text-[#425466]">您的证书已生成</p>
+								</div>
+								<div ref="certificateRef" class="certificate-border">
+									<div class="certificate-inner">
+										<div class="text-center mb-6">
+											<div class="flex items-center justify-center gap-3 mb-2">
+												<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-16 h-16 object-contain opacity-80" />
+											</div>
+											<h2 class="text-2xl font-bold text-[#0a2540] mb-1">企鹅联盟</h2>
+											<p class="text-xs text-[#a3b1c0] tracking-wider">PENGUIN ALLIANCE</p>
+										</div>
+										<div class="text-center mb-6">
+											<h3 class="text-3xl font-bold mb-1" :style="{ color: certificateConfig[certificateType].color }">
+												{{ certificateConfig[certificateType].title }}
+											</h3>
+											<p class="text-xs text-[#a3b1c0] tracking-wider">{{ certificateConfig[certificateType].subtitle }}
+											</p>
+										</div>
+										<div class="space-y-4 mb-8">
+											<p class="text-sm text-[#425466] text-center leading-relaxed">
+												{{ certificateConfig[certificateType].description }}
+											</p>
+											<div class="text-center py-4 border-y border-dashed border-[#e8eef3]">
+												<span class="text-sm text-[#a3b1c0] block mb-1">持证人</span>
+												<span class="text-2xl font-bold text-[#0a2540]">{{ applicantName }}</span>
+											</div>
+											<div v-if="applicationReason" class="text-center">
+												<span class="text-sm text-[#a3b1c0] block mb-1">认证理由</span>
+												<p class="text-base text-[#425466]">{{ applicationReason }}</p>
+											</div>
+										</div>
+										<div class="flex items-center justify-between text-sm">
+											<div>
+												<span class="text-[#a3b1c0] block text-xs">证书编号</span>
+												<span class="text-[#425466] font-mono">{{ certificateNumber }}</span>
+											</div>
+											<div class="text-center">
+												<span class="text-[#a3b1c0] block text-xs">签发日期</span>
+												<span class="text-[#425466]">{{ certificateDate }}</span>
+											</div>
+											<div class="text-right">
+												<span class="text-[#a3b1c0] block text-xs">签发企鹅</span>
+												<span class="text-[#425466]">{{ certificateIssuer }}</span>
+											</div>
+										</div>
+										<div
+											class="absolute bottom-8 right-8 w-20 h-20 rounded-full border-4 border-red-600/30 flex items-center justify-center transform rotate-12">
+											<div class="text-center">
+												<span class="text-red-600/50 text-xs font-bold block">企鹅联盟</span>
+												<span class="text-red-600/50 text-[10px]">服务中心</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="currentStep < 2" class="flex justify-end gap-4 mt-6">
+								<button v-if="currentStep > 0" @click="currentStep -= 1"
+									class="px-4 py-2 rounded-md border border-[#e8eef3] text-[#425466]">
+									上一步
+								</button>
+								<button @click="handleNextStep" class="px-4 py-2 rounded-md bg-[#0a2540] text-white hover:bg-[#1a3a5c]"
+									:disabled="(currentStep === 0 && !certificateType) || (currentStep === 1 && !applicantName)">
+									{{ currentStep === 1 ? '提交申请' : '下一步' }}
+								</button>
+							</div>
+
+							<div v-if="currentStep === 3" class="flex justify-center gap-4 mt-6">
+								<button @click="resetServiceForm" class="px-4 py-2 rounded-md border border-[#e8eef3] text-[#425466]">
+									再申请一个
+								</button>
+								<button @click="closeServiceDialog"
+									class="px-4 py-2 rounded-md bg-[#0a2540] text-white hover:bg-[#1a3a5c]">
+									完成
+								</button>
+							</div>
+
+							<div v-if="currentStep === 3" class="flex justify-center gap-4 mt-6">
+								<button @click="downloadCertificate"
+									class="px-4 py-2 rounded-md bg-[#0a2540] text-white hover:bg-[#1a3a5c]"
+									:disabled="isGenerating || isDownloaded">
+									<span v-if="isGenerating">生成中...</span>
+									<span v-else-if="isDownloaded">已下载</span>
+									<span v-else>下载证书</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-else-if="currentpage === '/members'">
+					<section class="gradient-hero text-white py-12 md:py-16">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<span
+								class="inline-flex items-center px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4">成员名录</span>
+							<h1 class="text-3xl md:text-4xl font-bold mb-4">联盟成员</h1>
+							<p class="text-lg text-white/80 max-w-2xl">企鹅联盟由各成员单位的代表组成，共同为联盟的发展贡献力量</p>
+						</div>
+					</section>
+
+					<section v-if="chairman" class="py-12 -mt-8">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="bg-white rounded-xl p-8 shadow-card border border-[#e8eef3]">
+								<div class="flex flex-col md:flex-row items-center gap-8">
+									<div
+										class="w-24 h-24 rounded-full bg-gradient-to-br from-[#ffd700] to-[#ffed4a] flex items-center justify-center flex-shrink-0">
+										<i data-lucide="crown" class="w-12 h-12 text-[#b8860b]"></i>
+									</div>
+									<div class="text-center md:text-left flex-1">
+										<div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+											<h2 class="text-2xl font-bold text-[#0a2540]">{{ chairman.name }}</h2>
+											<span class="bg-[#ffd700] text-[#8b6914] px-2 py-1 rounded-full text-xs">联盟主席</span>
+										</div>
+										<p class="text-[#00d4ff] font-medium mb-2">{{ chairman.species }}</p>
+										<p class="text-[#425466] italic mb-4">"{{ chairman.personality }}"</p>
+										<p class="text-sm text-[#425466] leading-relaxed">{{ chairman.description }}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="mb-8">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-2">服务中心值班企鹅</h2>
+								<p class="text-sm text-[#425466]">为您办理各项事务的值班企鹅</p>
+							</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<button v-for="member in dutyPenguins" :key="member.id" @click="openMember(member)"
+									class="bg-white rounded-lg p-5 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="flex items-start gap-4">
+										<div
+											class="w-16 h-16 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center flex-shrink-0">
+											<span class="text-2xl font-bold text-[#0a2540]">{{ member.name.charAt(0) }}</span>
+										</div>
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2 mb-1">
+												<h4 class="text-base font-semibold text-[#0a2540] group-hover:text-[#00d4ff] transition-colors">
+													{{ member.name }}
+												</h4>
+												<span class="text-xs px-2 py-1 rounded-full" :class="memberStatusConfig[member.status].color">
+													{{ memberStatusConfig[member.status].label }}
+												</span>
+											</div>
+											<p class="text-sm text-[#00d4ff] font-medium mb-1">{{ member.species }}</p>
+											<p class="text-sm text-[#425466] mb-2">{{ member.role }}</p>
+											<p class="text-xs text-[#a3b1c0] italic line-clamp-2">"{{ member.personality }}"</p>
+										</div>
+									</div>
+								</button>
+							</div>
+							<div class="mt-6 bg-[#e0f4ff] rounded-lg p-4 flex items-center gap-3">
+								<i data-lucide="clock" class="w-5 h-5 text-[#00d4ff]"></i>
+								<p class="text-sm text-[#0a2540]">工作时间：冰面稳定后至日落前 | 极端天气期间可能调整</p>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="mb-8">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-2">各族群代表</h2>
+								<p class="text-sm text-[#425466]">代表各自族群参与联盟事务</p>
+							</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<button v-for="member in representatives" :key="member.id" @click="openMember(member)"
+									class="bg-white rounded-lg p-5 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="flex items-start gap-4">
+										<div
+											class="w-16 h-16 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center flex-shrink-0">
+											<span class="text-2xl font-bold text-[#0a2540]">{{ member.name.charAt(0) }}</span>
+										</div>
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2 mb-1">
+												<h4 class="text-base font-semibold text-[#0a2540] group-hover:text-[#00d4ff] transition-colors">
+													{{ member.name }}
+												</h4>
+												<span class="text-xs px-2 py-1 rounded-full" :class="memberStatusConfig[member.status].color">
+													{{ memberStatusConfig[member.status].label }}
+												</span>
+											</div>
+											<p class="text-sm text-[#00d4ff] font-medium mb-1">{{ member.species }}</p>
+											<p class="text-sm text-[#425466] mb-2">{{ member.role }}</p>
+											<p class="text-xs text-[#a3b1c0] italic line-clamp-2">"{{ member.personality }}"</p>
+										</div>
+									</div>
+								</button>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="mb-8">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-2">观察员</h2>
+								<p class="text-sm text-[#425466]">未成年企鹅，享有旁听权</p>
+							</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<button v-for="member in observers" :key="member.id" @click="openMember(member)"
+									class="bg-white rounded-lg p-5 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="flex items-start gap-4">
+										<div
+											class="w-16 h-16 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center flex-shrink-0">
+											<span class="text-2xl font-bold text-[#0a2540]">{{ member.name.charAt(0) }}</span>
+										</div>
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2 mb-1">
+												<h4 class="text-base font-semibold text-[#0a2540] group-hover:text-[#00d4ff] transition-colors">
+													{{ member.name }}
+												</h4>
+												<span class="text-xs px-2 py-1 rounded-full" :class="memberStatusConfig[member.status].color">
+													{{ memberStatusConfig[member.status].label }}
+												</span>
+											</div>
+											<p class="text-sm text-[#00d4ff] font-medium mb-1">{{ member.species }}</p>
+											<p class="text-sm text-[#425466] mb-2">{{ member.role }}</p>
+											<p class="text-xs text-[#a3b1c0] italic line-clamp-2">"{{ member.personality }}"</p>
+										</div>
+									</div>
+								</button>
+							</div>
+							<div class="mt-6 bg-[#fff3cd] rounded-lg p-4">
+								<p class="text-sm text-[#856404]">
+									<strong>说明：</strong>观察员为未成年企鹅，不受联盟正式约束，
+									成年后自动获得正式成员资格。
+								</p>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="mb-8">
+								<h2 class="text-2xl font-bold text-[#0a2540] mb-2">全部成员</h2>
+								<p class="text-sm text-[#425466]">查询所有联盟成员信息</p>
+							</div>
+							<div class="flex flex-col lg:flex-row gap-4 mb-8">
+								<div class="relative flex-1">
+									<i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a3b1c0]"></i>
+									<input v-model="memberSearch" type="text" placeholder="搜索成员姓名或职务..."
+										class="w-full border border-[#e8eef3] rounded-md px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-[#00d4ff]/40" />
+								</div>
+								<div class="flex gap-2 flex-wrap">
+									<button v-for="filter in speciesFilters" :key="filter.value" @click="memberFilter = filter.value"
+										class="px-3 py-1.5 rounded-md text-sm border"
+										:class="memberFilter === filter.value ? 'bg-[#0a2540] text-white border-[#0a2540]' : 'text-[#425466] border-[#e8eef3] hover:border-[#00d4ff]'">
+										{{ filter.label }}
+									</button>
+								</div>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<button v-for="member in filteredMembers" :key="member.id" @click="openMember(member)"
+									class="bg-white rounded-lg p-5 border border-[#e8eef3] card-hover cursor-pointer group text-left">
+									<div class="flex items-start gap-4">
+										<div
+											class="w-16 h-16 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center flex-shrink-0">
+											<span class="text-2xl font-bold text-[#0a2540]">{{ member.name.charAt(0) }}</span>
+										</div>
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2 mb-1">
+												<h4 class="text-base font-semibold text-[#0a2540] group-hover:text-[#00d4ff] transition-colors">
+													{{ member.name }}
+												</h4>
+												<span class="text-xs px-2 py-1 rounded-full" :class="memberStatusConfig[member.status].color">
+													{{ memberStatusConfig[member.status].label }}
+												</span>
+											</div>
+											<p class="text-sm text-[#00d4ff] font-medium mb-1">{{ member.species }}</p>
+											<p class="text-sm text-[#425466] mb-2">{{ member.role }}</p>
+											<p class="text-xs text-[#a3b1c0] italic line-clamp-2">"{{ member.personality }}"</p>
+										</div>
+									</div>
+								</button>
+							</div>
+
+							<div v-if="filteredMembers.length === 0" class="text-center py-16">
+								<div class="w-16 h-16 rounded-full bg-[#f6f9fc] flex items-center justify-center mx-auto mb-4">
+									<i data-lucide="users" class="w-8 h-8 text-[#a3b1c0]"></i>
+								</div>
+								<p class="text-[#425466]">未找到符合条件的成员</p>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 gradient-hero text-white">
+						<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+							<i data-lucide="users" class="w-12 h-12 text-[#00d4ff] mx-auto mb-4"></i>
+							<h2 class="text-2xl font-bold mb-4">成员资格说明</h2>
+							<p class="text-white/80 leading-relaxed max-w-2xl mx-auto">
+								企鹅联盟的成员资格被严格限定为成年企鹅。未成年企鹅为观察期成员，
+								享有旁听权，不享有表决权。这种"暂时的无约束状态"并非放任，
+								而是一种保护性的空白期。
+							</p>
+						</div>
+					</section>
+				</div>
+
+				<div v-else-if="currentpage === '/policies'">
+					<section class="gradient-hero text-white py-12 md:py-16">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<span
+								class="inline-flex items-center px-3 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4">政策文件</span>
+							<h1 class="text-3xl md:text-4xl font-bold mb-4">政策与文件</h1>
+							<p class="text-lg text-white/80 max-w-2xl">企鹅联盟的各项规章制度、政策文件及公告</p>
+						</div>
+					</section>
+
+					<section class="py-8 -mt-8">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">现行有效</p>
+											<p class="text-3xl font-bold text-[#00c853]">{{ policyStats.active }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#e3f7ef] flex items-center justify-center">
+											<i data-lucide="file-text" class="w-6 h-6 text-[#00c853]"></i>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">已修订</p>
+											<p class="text-3xl font-bold text-[#ffc107]">{{ policyStats.revised }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#fff3cd] flex items-center justify-center">
+											<i data-lucide="file-text" class="w-6 h-6 text-[#ffc107]"></i>
+										</div>
+									</div>
+								</div>
+
+								<div class="bg-white rounded-lg p-6 shadow-card">
+									<div class="flex items-center justify-between">
+										<div>
+											<p class="text-sm text-[#a3b1c0] mb-1">已废止</p>
+											<p class="text-3xl font-bold text-[#a3b1c0]">{{ policyStats.revoked }}</p>
+										</div>
+										<div class="w-12 h-12 rounded-full bg-[#f0f0f0] flex items-center justify-center">
+											<i data-lucide="file-text" class="w-6 h-6 text-[#a3b1c0]"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="flex flex-col lg:flex-row gap-4 mb-8">
+								<div class="relative flex-1">
+									<i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a3b1c0]"></i>
+									<input v-model="policySearch" type="text" placeholder="搜索文件标题..."
+										class="w-full border border-[#e8eef3] rounded-md px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-[#00d4ff]/40" />
+								</div>
+								<div class="flex gap-2 flex-wrap">
+									<button v-for="filter in categoryFilters" :key="filter.value" @click="policyFilter = filter.value"
+										class="px-3 py-1.5 rounded-md text-sm border"
+										:class="policyFilter === filter.value ? 'bg-[#0a2540] text-white border-[#0a2540]' : 'text-[#425466] border-[#e8eef3] hover:border-[#00d4ff]'">
+										{{ filter.label }}
+									</button>
+								</div>
+							</div>
+
+							<div class="space-y-4">
+								<button v-for="policy in filteredPolicies" :key="policy.id" @click="openPolicy(policy)"
+									class="bg-white rounded-lg p-6 border border-[#e8eef3] card-hover cursor-pointer group text-left w-full">
+									<div class="flex items-start justify-between gap-4">
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-3 mb-2 flex-wrap">
+												<span class="text-xs px-2 py-1 rounded-full" :class="policyStatusConfig[policy.status].color">
+													{{ policyStatusConfig[policy.status].label }}
+												</span>
+												<span
+													class="text-xs text-[#a3b1c0] px-2 py-1 bg-[#f6f9fc] rounded-full">{{ policy.category }}</span>
+												<span class="text-xs text-[#a3b1c0] flex items-center gap-1">
+													<i data-lucide="calendar" class="w-3 h-3"></i>
+													{{ policy.date }}
+												</span>
+											</div>
+											<h3
+												class="text-lg font-semibold text-[#0a2540] mb-2 group-hover:text-[#00d4ff] transition-colors">
+												{{ policy.title }}
+											</h3>
+											<p v-if="policy.summary" class="text-sm text-[#425466] line-clamp-2">{{ policy.summary }}</p>
+										</div>
+										<i data-lucide="chevron-right"
+											class="w-5 h-5 text-[#a3b1c0] group-hover:text-[#00d4ff] group-hover:translate-x-1 transition-all mt-1"></i>
+									</div>
+								</button>
+							</div>
+
+							<div v-if="filteredPolicies.length === 0" class="text-center py-16">
+								<div class="w-16 h-16 rounded-full bg-[#f6f9fc] flex items-center justify-center mx-auto mb-4">
+									<i data-lucide="file-text" class="w-8 h-8 text-[#a3b1c0]"></i>
+								</div>
+								<p class="text-[#425466]">未找到符合条件的文件</p>
+							</div>
+						</div>
+					</section>
+
+					<section class="py-12 bg-white">
+						<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+								<div>
+									<h2 class="text-2xl font-bold text-[#0a2540] mb-6">文件分类说明</h2>
+									<div class="space-y-4">
+										<div class="flex items-start gap-4">
+											<div class="w-8 h-8 rounded-full bg-[#e3f7ef] flex items-center justify-center flex-shrink-0">
+												<i data-lucide="file-text" class="w-4 h-4 text-[#00c853]"></i>
+											</div>
+											<div>
+												<h4 class="font-medium text-[#0a2540] mb-1">基础行为规范</h4>
+												<p class="text-sm text-[#425466]">联盟的根本性规章制度，所有成员必须遵守</p>
+											</div>
+										</div>
+										<div class="flex items-start gap-4">
+											<div class="w-8 h-8 rounded-full bg-[#fff3cd] flex items-center justify-center flex-shrink-0">
+												<i data-lucide="file-text" class="w-4 h-4 text-[#ffc107]"></i>
+											</div>
+											<div>
+												<h4 class="font-medium text-[#0a2540] mb-1">紧急修订</h4>
+												<p class="text-sm text-[#425466]">针对突发情况的紧急预案和临时调整</p>
+											</div>
+										</div>
+										<div class="flex items-start gap-4">
+											<div class="w-8 h-8 rounded-full bg-[#e0f4ff] flex items-center justify-center flex-shrink-0">
+												<i data-lucide="file-text" class="w-4 h-4 text-[#00d4ff]"></i>
+											</div>
+											<div>
+												<h4 class="font-medium text-[#0a2540] mb-1">临时公告</h4>
+												<p class="text-sm text-[#425466]">临时性通知和公告，时效性较强</p>
+											</div>
+										</div>
+										<div class="flex items-start gap-4">
+											<div class="w-8 h-8 rounded-full bg-[#f0f0f0] flex items-center justify-center flex-shrink-0">
+												<i data-lucide="file-text" class="w-4 h-4 text-[#a3b1c0]"></i>
+											</div>
+											<div>
+												<h4 class="font-medium text-[#0a2540] mb-1">历史废止文件</h4>
+												<p class="text-sm text-[#425466]">已被新文件取代或不再适用的历史文件</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="bg-[#f6f9fc] rounded-xl p-6">
+									<h3 class="text-lg font-semibold text-[#0a2540] mb-4">文件效力说明</h3>
+									<div class="space-y-3">
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#e3f7ef] text-[#00c853] text-sm rounded-full">现行有效</span>
+											<span class="text-sm text-[#425466]">当前正在执行的文件</span>
+										</div>
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#fff3cd] text-[#856404] text-sm rounded-full">已修订</span>
+											<span class="text-sm text-[#425466]">已被新版本取代的文件</span>
+										</div>
+										<div class="flex items-center gap-3">
+											<span class="px-3 py-1 bg-[#f0f0f0] text-[#666] text-sm rounded-full">已废止</span>
+											<span class="text-sm text-[#425466]">不再适用的历史文件</span>
+										</div>
+									</div>
+									<div class="mt-6 p-4 bg-[#e0f4ff] rounded-lg">
+										<p class="text-sm text-[#0a2540]"><strong>提示：</strong>所有文件以最新版本为准，如有疑问请咨询值班企鹅。</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</main>
+
+			<footer class="bg-[#0a2540] text-white">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+						<div class="lg:col-span-2">
+							<div class="flex items-center gap-3 mb-4">
+								<img src="images/emblem.png" alt="企鹅联盟徽章" class="w-12 h-12 object-contain" />
+								<div>
+									<h3 class="text-lg font-bold">企鹅联盟</h3>
+									<p class="text-sm text-[#a3b1c0]">Penguin Alliance</p>
+								</div>
+							</div>
+							<p class="text-[#a3b1c0] text-sm leading-relaxed mb-4 max-w-md">
+								成年企鹅的共同体中枢，维护冰原秩序，守护企鹅族群。
+								成立于冰纪元年，是南极地区最具影响力的企鹅组织。
+							</p>
+							<div class="flex items-center gap-2 text-sm text-[#a3b1c0]">
+								<i data-lucide="map-pin" class="w-4 h-4 text-[#00d4ff]"></i>
+								<span>南极冰原·联盟主厅</span>
+							</div>
+						</div>
+
+						<div>
+							<h4 class="text-base font-semibold mb-4">快速链接</h4>
+							<ul class="space-y-2">
+								<li><button @click="setRoute('/about')"
+										class="text-sm text-[#a3b1c0] hover:text-[#00d4ff]">关于我们</button></li>
+								<li><button @click="setRoute('/meetings')"
+										class="text-sm text-[#a3b1c0] hover:text-[#00d4ff]">会议系统</button></li>
+								<li><button @click="setRoute('/services')"
+										class="text-sm text-[#a3b1c0] hover:text-[#00d4ff]">办事大厅</button></li>
+								<li><button @click="setRoute('/members')"
+										class="text-sm text-[#a3b1c0] hover:text-[#00d4ff]">成员名录</button></li>
+								<li><button @click="setRoute('/policies')"
+										class="text-sm text-[#a3b1c0] hover:text-[#00d4ff]">政策文件</button></li>
+							</ul>
+						</div>
+
+						<div>
+							<h4 class="text-base font-semibold mb-4">联系方式</h4>
+							<ul class="space-y-3">
+								<li class="flex items-start gap-2 text-sm text-[#a3b1c0]">
+									<i data-lucide="clock" class="w-4 h-4 text-[#00d4ff] mt-0.5"></i>
+									<span>工作时间<br />冰面稳定后至日落前</span>
+								</li>
+								<li class="flex items-center gap-2 text-sm text-[#a3b1c0]">
+									<i data-lucide="mail" class="w-4 h-4 text-[#00d4ff]"></i>
+									<span>contact@penguinalliance.ice</span>
+								</li>
+								<li class="flex items-center gap-2 text-sm text-[#a3b1c0]">
+									<i data-lucide="phone" class="w-4 h-4 text-[#00d4ff]"></i>
+									<span>+86 ICE-PENGUIN</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="mt-12 pt-8 border-t border-white/10">
+						<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+							<p class="text-sm text-[#a3b1c0]">© 冰纪十年 企鹅联盟 版权所有</p>
+							<p class="text-xs text-[#6b7a8a]">冰面稳定时办公 · 极端天气自动调整</p>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+			<div v-if="activeAnnouncement" class="fixed inset-0 z-50 flex items-center justify-center">
+				<div class="absolute inset-0 modal-backdrop" @click="closeModals"></div>
+				<div class="relative bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h3 class="text-xl font-bold text-[#0a2540]">{{ activeAnnouncement.title }}</h3>
+						<button @click="closeModals" class="text-[#a3b1c0] hover:text-[#0a2540]">✕</button>
+					</div>
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs px-2 py-1 rounded-full"
+							:class="announcementCategoryColors[activeAnnouncement.category]">
+							{{ announcementCategoryLabels[activeAnnouncement.category] }}
+						</span>
+						<span class="text-sm text-[#a3b1c0] flex items-center gap-1">
+							<i data-lucide="calendar" class="w-4 h-4"></i>
+							{{ activeAnnouncement.date }}
+						</span>
+					</div>
+					<p class="text-[#425466] leading-relaxed whitespace-pre-line">
+						{{ activeAnnouncement.content || activeAnnouncement.summary }}
+					</p>
+				</div>
+			</div>
+
+			<div v-if="activeMeeting" class="fixed inset-0 z-50 flex items-center justify-center">
+				<div class="absolute inset-0 modal-backdrop" @click="closeModals"></div>
+				<div class="relative bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h3 class="text-xl font-bold text-[#0a2540]">{{ activeMeeting.title }}</h3>
+						<button @click="closeModals" class="text-[#a3b1c0] hover:text-[#0a2540]">✕</button>
+					</div>
+					<div class="flex items-center gap-3 mb-4">
+						<span class="text-xs px-2 py-1 rounded-full" :class="meetingStatusConfig[activeMeeting.status].color">
+							{{ meetingStatusConfig[activeMeeting.status].label }}
+						</span>
+						<span class="text-sm text-[#a3b1c0] flex items-center gap-1">
+							<i data-lucide="calendar" class="w-4 h-4"></i>
+							{{ activeMeeting.date }}
+						</span>
+					</div>
+					<div class="space-y-4">
+						<div>
+							<h5 class="text-sm font-medium text-[#0a2540] mb-2 flex items-center gap-2">
+								<i data-lucide="users" class="w-4 h-4 text-[#00d4ff]"></i>
+								出席成员
+							</h5>
+							<div class="flex flex-wrap gap-2">
+								<span v-for="attendee in activeMeeting.attendees" :key="attendee"
+									class="px-3 py-1 bg-[#f6f9fc] rounded-full text-sm text-[#425466]">
+									{{ attendee }}
+								</span>
+							</div>
+						</div>
+						<div>
+							<h5 class="text-sm font-medium text-[#0a2540] mb-2 flex items-center gap-2">
+								<i data-lucide="file-text" class="w-4 h-4 text-[#00d4ff]"></i>
+								核心议题
+							</h5>
+							<ul class="space-y-1">
+								<li v-for="topic in activeMeeting.topics" :key="topic"
+									class="text-sm text-[#425466] flex items-start gap-2">
+									<span class="text-[#00d4ff] mt-1">•</span>
+									{{ topic }}
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h5 class="text-sm font-medium text-[#0a2540] mb-2 flex items-center gap-2">
+								<i data-lucide="badge" class="w-4 h-4 text-[#00d4ff]"></i>
+								决议结果
+							</h5>
+							<p class="text-sm text-[#425466] leading-relaxed bg-[#f6f9fc] p-3 rounded-lg">
+								{{ activeMeeting.resolution }}
+							</p>
+						</div>
+						<div>
+							<h5 class="text-sm font-medium text-[#0a2540] mb-2">备注</h5>
+							<p class="text-sm text-[#a3b1c0] leading-relaxed italic">{{ activeMeeting.notes }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="activeMember" class="fixed inset-0 z-50 flex items-center justify-center">
+				<div class="absolute inset-0 modal-backdrop" @click="closeModals"></div>
+				<div class="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h3 class="text-xl font-bold text-[#0a2540]">{{ activeMember.name }}</h3>
+						<button @click="closeModals" class="text-[#a3b1c0] hover:text-[#0a2540]">✕</button>
+					</div>
+					<div class="flex items-center gap-4 mb-4">
+						<div
+							class="w-20 h-20 rounded-full bg-gradient-to-br from-[#e0f4ff] to-[#f6f9fc] flex items-center justify-center">
+							<span class="text-3xl font-bold text-[#0a2540]">{{ activeMember.name.charAt(0) }}</span>
+						</div>
+						<div>
+							<span class="text-xs px-2 py-1 rounded-full" :class="memberStatusConfig[activeMember.status].color">
+								{{ memberStatusConfig[activeMember.status].label }}
+							</span>
+							<p class="text-sm text-[#425466] mt-2">{{ activeMember.speciesEn }}</p>
+						</div>
+					</div>
+					<div class="space-y-3">
+						<div>
+							<span class="text-sm text-[#a3b1c0]">职务</span>
+							<p class="text-base text-[#0a2540] font-medium">{{ activeMember.role }}</p>
+						</div>
+						<div>
+							<span class="text-sm text-[#a3b1c0]">性格特点</span>
+							<p class="text-base text-[#425466] italic">"{{ activeMember.personality }}"</p>
+						</div>
+						<div>
+							<span class="text-sm text-[#a3b1c0]">详细介绍</span>
+							<p class="text-sm text-[#425466] leading-relaxed mt-1">{{ activeMember.description }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="activePolicy" class="fixed inset-0 z-50 flex items-center justify-center">
+				<div class="absolute inset-0 modal-backdrop" @click="closeModals"></div>
+				<div class="relative bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] overflow-y-auto p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h3 class="text-xl font-bold text-[#0a2540]">{{ activePolicy.title }}</h3>
+						<button @click="closeModals" class="text-[#a3b1c0] hover:text-[#0a2540]">✕</button>
+					</div>
+					<div class="flex items-center gap-3 mb-6 flex-wrap">
+						<span class="text-xs px-2 py-1 rounded-full" :class="policyStatusConfig[activePolicy.status].color">
+							{{ policyStatusConfig[activePolicy.status].label }}
+						</span>
+						<span class="text-sm text-[#a3b1c0] px-3 py-1 bg-[#f6f9fc] rounded-full">{{ activePolicy.category }}</span>
+						<span class="text-sm text-[#a3b1c0] flex items-center gap-1">
+							<i data-lucide="calendar" class="w-4 h-4"></i>
+							{{ activePolicy.date }}
+						</span>
+					</div>
+					<div>
+						<div v-if="activePolicy.summary" class="bg-[#f6f9fc] p-4 rounded-lg mb-6">
+							<p class="text-[#425466]">{{ activePolicy.summary }}</p>
+						</div>
+						<div v-if="activePolicy.content" class="text-[#425466] leading-relaxed whitespace-pre-line">
+							{{ activePolicy.content }}
+						</div>
+						<div v-else class="text-center py-8 text-[#a3b1c0]">
+							<i data-lucide="file-text" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+							<p>文件内容正在整理中...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+		<script src="https://unpkg.com/lucide@0.451.0/dist/umd/lucide.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+		<script>
+			const vue = Vue;
+			const {
+				createApp,
+				ref,
+				computed,
+				onMounted,
+				watch,
+				nextTick
+			} = vue;
+
+			createApp({
+				setup() {
+					const navItems = [{
+							path: '/',
+							label: '首页'
+						},
+						{
+							path: '/about',
+							label: '关于我们'
+						},
+						{
+							path: '/meetings',
+							label: '会议系统'
+						},
+						{
+							path: '/services',
+							label: '办事大厅'
+						},
+						{
+							path: '/members',
+							label: '成员名录'
+						},
+						{
+							path: '/policies',
+							label: '政策文件'
+						}
+					];
+
+					const currentpage = ref('/');
+					const isMobileMenuOpen = ref(false);
+
+					const announcements = [{
+							id: '1',
+							title: '关于第五次联盟大会的召开通知',
+							date: '冰纪十年·霜月',
+							category: 'meeting',
+							summary: '第五次联盟大会将于冰面稳定后召开，届时将讨论最棒认证制度的优化方案。',
+							content: '各成员单位：第五次联盟大会拟定于冰纪十年霜月召开，具体日期将根据冰面稳定情况确定。主要议题：1. 最棒认证制度的优化与完善2. 极端天气应对预案的修订3. 与兔子委员会的合作事项4. 新成员观察期管理规定的审议请各位代表提前准备，准时出席。',
+							status: 'active'
+						},
+						{
+							id: '2',
+							title: '最棒认证申请流程简化说明',
+							date: '冰纪十年·雪月',
+							category: 'policy',
+							summary: '为提升服务效率，企鹅联盟服务中心对最棒认证申请流程进行了简化。',
+							content: '各位企鹅：自即日起， 最棒认证申请流程将进行以下调整：1. 取消纸质申请表， 全面采用电子申请2. 审核时间由原来的7个工作日缩短至3个工作日3. 新增 "快速通道"服务， 紧急申请可当日办理4. 证书发放改为电子版与纸质版并行	请各位知悉。 ',
+							status: 'active'
+						},
+						{
+							id: '3',
+							title: '极端天气期间服务中心时间调整',
+							date: '冰纪十年·寒月',
+							category: 'emergency',
+							summary: '受暴风雪影响，企鹅联盟服务中心工作时间将临时调整。',
+							content: '紧急通知：	由于南极地区遭遇罕见暴风雪， 冰面状况不稳定， 为确保各位企鹅的安全， 企鹅联盟服务中心工作时间临时调整如下：	调整期间： 冰纪十年寒月十五日至寒月二十日	工作时间： 冰面稳定后至日落前（ 视天气情况而定）	建议各位企鹅非必要不出门， 如需办理紧急事务， 请提前联系值班企鹅。 ',
+							status: 'active'
+						},
+						{
+							id: '4',
+							title: '新成员观察期管理规定',
+							date: '冰纪九年·冰月',
+							category: 'policy',
+							summary: '规范未成年企鹅的观察期管理，明确观察员的权利与义务。',
+							content: '各成员单位：为进一步规范新成员管理， 现发布《 新成员观察期管理规定 第一章 总则第一条 未满成年标准的企鹅为观察期成员。 第二条 观察期成员享有旁听权， 不享有表决权第二章 权利与义务第三条 观察期成员可自由参与联盟活动。 第四条 观察期成员应遵守联盟基本行为规范本规定自发布之日起施行。 ',
+							status: 'active'
+						},
+						{
+							id: '5',
+							title: '第四次联盟大会会议纪要',
+							date: '冰纪九年·霜月',
+							category: 'meeting',
+							summary: '第四次联盟大会顺利召开，审议通过了多项重要决议。',
+							content: '第四次联盟大会会议纪要时间： 冰纪九年霜月地点： 联盟主厅出席： 联盟主席、 各族群代表主要决议：1. 通过与兔子委员会的合作框架协议2. 修订《 极端天气应对预案》3. 增设 "特殊许可"业务类型4. 会议在友好的氛围中结束。 ',
+							status: 'archived'
+						}
+					];
+
+					const meetings = [{
+							id: '1',
+							title: '第一次联盟大会',
+							session: 1,
+							date: '冰纪元年·冰月',
+							status: 'completed',
+							attendees: ['联盟主席', '帝企鹅代表', '阿德利企鹅代表', '王企鹅代表'],
+							topics: ['企鹅联盟章程审议', '联盟组织架构确立', '服务中心职能定位'],
+							resolution: '一致通过《企鹅联盟章程》，正式确立联盟组织架构，企鹅联盟服务中心开始运作。',
+							notes: '这是企鹅联盟历史上的第一次大会，所有代表都表现得非常庄重。会议期间，一只小企鹅误入会场，被温柔地送了出去。'
+						},
+						{
+							id: '2',
+							title: '第二次联盟大会',
+							session: 2,
+							date: '冰纪三年·雪月',
+							status: 'completed',
+							attendees: ['联盟主席', '帝企鹅代表', '阿德利企鹅代表', '王企鹅代表', '小蓝企鹅代表'],
+							topics: ['最棒认证制度提案', '新成员加入程序', '与外部势力接触原则'],
+							resolution: '通过最棒认证制度试点方案，确立观察期成员管理制度，原则上同意与兔子委员会建立联系。',
+							notes: '小蓝企鹅代表首次出席大会，带来了南部的最新消息。关于最棒认证的讨论异常热烈，有代表提出"最棒"的标准应该包括"最会捕鱼"。'
+						},
+						{
+							id: '3',
+							title: '第三次联盟大会',
+							session: 3,
+							date: '冰纪五年·霜月',
+							status: 'completed',
+							attendees: ['联盟主席', '各族群代表', '兔子委员会观察员'],
+							topics: ['兔子委员会合作事宜', '跨物种交往准则', '资源共享协议'],
+							resolution: '正式与兔子委员会建立合作关系，通过《跨物种交往准则》，同意在极端情况下共享资源。',
+							notes: '兔子委员会派出了观察员出席，这是历史性的一刻。观察员是一只看起来很谨慎的兔子，全程都在记录。会议茶歇时，企鹅们好奇地围观了兔子的耳朵。'
+						},
+						{
+							id: '4',
+							title: '第四次联盟大会',
+							session: 4,
+							date: '冰纪九年·霜月',
+							status: 'completed',
+							attendees: ['联盟主席', '各族群代表', '巴布亚企鹅代表'],
+							topics: ['最棒认证制度优化', '极端天气应对预案修订', '特殊许可业务增设'],
+							resolution: '简化最棒认证申请流程，修订极端天气应对预案，增设"特殊许可"业务。',
+							notes: '巴布亚企鹅代表首次出席，带来了北部海域的渔业报告。关于"特殊许可"的讨论中，有代表提议增设"允许哔啵一次"许可，引发全场哄笑。'
+						},
+						{
+							id: '5',
+							title: '第五次联盟大会',
+							session: 5,
+							date: '冰纪十年·霜月（拟定）',
+							status: 'processing',
+							attendees: ['联盟主席', '各族群代表（待定）'],
+							topics: ['最棒认证制度全面推广', '联盟成立十周年纪念', '未来五年发展规划'],
+							resolution: '会议记录整理中...',
+							notes: '值班企鹅正在整理会议记录，预计将在冰面稳定后公布完整内容。据参会企鹅透露，本次会议气氛热烈，有多项重要决议待公布。'
+						},
+						{
+							id: '6',
+							title: '特别会议：关于极端天气应对',
+							session: 0,
+							date: '待定',
+							status: 'planned',
+							attendees: ['联盟主席', '气象专家企鹅', '各族群应急代表'],
+							topics: ['极端天气预警机制', '应急物资储备', '疏散预案'],
+							resolution: '会议尚未召开',
+							notes: '本次特别会议将在下一次极端天气来临前召开，具体时间视气象情况而定。'
+						}
+					];
+
+					const members = [{
+							id: '1',
+							name: '霜冠',
+							species: '帝企鹅',
+							speciesEn: 'Emperor Penguin',
+							role: '联盟主席',
+							personality: '稳重如山，经验丰富，说话慢但每句都有分量',
+							status: 'active',
+							description: '企鹅联盟的创始成员之一，见证了联盟从构想到实现的全过程。在冰原上站立的时间比任何企鹅都长。'
+						},
+						{
+							id: '2',
+							name: '雪球',
+							species: '阿德利企鹅',
+							speciesEn: 'Adélie Penguin',
+							role: '服务中心主任',
+							personality: '行动迅速，办事利落，偶尔有点急躁',
+							status: 'active',
+							description: '负责企鹅联盟服务中心的日常运营，是各位企鹅办事时最常遇到的值班企鹅。'
+						},
+						{
+							id: '3',
+							name: '冰川',
+							species: '王企鹅',
+							speciesEn: 'King Penguin',
+							role: '政策审议委员',
+							personality: '深思熟虑，喜欢反复比较，做决定很慢但很少出错',
+							status: 'active',
+							description: '负责审议联盟各项政策文件，据说他曾经为了一条政策的措辞思考了整整三天。'
+						},
+						{
+							id: '4',
+							name: '蓝点',
+							species: '小蓝企鹅',
+							speciesEn: 'Little Blue Penguin',
+							role: '南方区域代表',
+							personality: '机灵聪慧，消息灵通，总是知道最新鲜的事',
+							status: 'active',
+							description: '来自南极南部的小蓝企鹅，虽然体型最小，但信息量最大。'
+						},
+						{
+							id: '5',
+							name: '赤眉',
+							species: '巴布亚企鹅',
+							speciesEn: 'Gentoo Penguin',
+							role: '北方区域代表',
+							personality: '热情开朗，游泳速度全联盟第一',
+							status: 'active',
+							description: '巴布亚企鹅的代表，头顶的白色条纹非常醒目，是联盟里的游泳冠军。'
+						},
+						{
+							id: '6',
+							name: '企企',
+							species: '帝企鹅',
+							speciesEn: 'Emperor Penguin',
+							role: '观察员（未成年）',
+							personality: '安静迟钝，情绪外露，喜欢吃、怕冷、爱困',
+							status: 'observer',
+							description: '一只灰色的帝企鹅宝宝，尚未成年，不受联盟正式约束。与兔子宇宙的顽劣大黄兔是好朋友。'
+						},
+						{
+							id: '7',
+							name: '冰晶',
+							species: '帝企鹅',
+							speciesEn: 'Emperor Penguin',
+							role: '值班企鹅（周一/三/五）',
+							personality: '耐心细致，从不厌烦重复的问题',
+							status: 'active',
+							description: '服务中心的值班企鹅之一，负责接待前来办事的各位企鹅。'
+						},
+						{
+							id: '8',
+							name: '寒风',
+							species: '阿德利企鹅',
+							speciesEn: 'Adélie Penguin',
+							role: '值班企鹅（周二/四/六）',
+							personality: '直来直去，办事高效，偶尔有点严肃',
+							status: 'active',
+							description: '服务中心的值班企鹅之一，以办事效率高著称，但据说笑容比较少见。'
+						},
+						{
+							id: '9',
+							name: '极光',
+							species: '王企鹅',
+							speciesEn: 'King Penguin',
+							role: '荣誉会员',
+							personality: '温和友善，喜欢帮助新成员',
+							status: 'honorary',
+							description: '联盟的早期成员之一，现已退休，但仍以荣誉会员身份参与联盟活动。'
+						},
+						{
+							id: '10',
+							name: '待定',
+							species: '小蓝企鹅',
+							speciesEn: 'Little Blue Penguin',
+							role: '暂缓履职',
+							personality: '——',
+							status: 'suspended',
+							description: '该席位暂时空缺，等待合适的小蓝企鹅继任。'
+						}
+					];
+
+					const policies = [{
+							id: '1',
+							title: '企鹅联盟章程',
+							category: '基础行为规范',
+							date: '冰纪元年·冰月',
+							status: 'active',
+							summary: '企鹅联盟的根本大法，规定联盟的宗旨、组织架构和基本运作原则。',
+							content: '《企鹅联盟章程》第一章 总则第一条 企鹅联盟（ 以下简称 "联盟"）是由成年企鹅自愿组成的共同体中枢。第二条 联盟的宗旨是： 维护冰原秩序， 协调族群事务， 认证优秀个体， 传承南极文化。第三条 联盟的工作时间以自然条件为准： 冰面稳定后至日落前。第二章 成员第四条 联盟成员资格限定为成年企鹅。第五条 未成年企鹅为观察期成员， 享有旁听权， 不享有表决权。第六条 联盟设主席一人， 由资历最深的帝企鹅担任。第三章 组织机构第七条 联盟下设企鹅联盟服务中心， 负责统一受理、 审核与公示事务第八条 联盟设各族群代表， 代表本族群参与联盟事务。第四章 附则第九条 本章程自通过之日起施行。 '
+						},
+						{
+							id: '2',
+							title: '最棒认证管理办法',
+							category: '基础行为规范',
+							date: '冰纪三年·雪月',
+							status: 'active',
+							summary: '规范最棒认证的申请、审核、发放流程，明确认证标准和效力。',
+							content: '《最棒认证管理办法第一章 第一条 为规范最棒认证管理， 特制定本办法第二条 最棒认证是联盟对企鹅个体优秀品质的官方认可第二章 第三条 任何成年企鹅均可申请最棒认证第四条 申请者需提交申请理由， 接受值班企鹅的现场观察与简要讨论第三章 第五条 审核遵循多数通过原则， 不追求一致意见第六条 审核结果应在三个工作日内公布第四章 第七条 通过审核的申请者获得《 最棒证第八条 证书有效期为一年， 到期可申请续期。 '
+						},
+						{
+							id: '3',
+							title: '极端天气应对预案',
+							category: '紧急修订',
+							date: '冰纪九年·霜月',
+							status: 'active',
+							summary: '规范暴风雪、冰裂等极端天气情况下的应对措施和工作调整。',
+							content: '《极端天气应对预案第一章 第一条 联盟建立极端天气预警机制， 分为蓝色、 黄色、 橙色、 红色四级第二条 预警信息由气象专家企鹅发布第二章 第三条 蓝色预警： 正常办公， 提醒注意安全第四条 黄色预警： 缩短办公时间， 非必要不出门第五条 橙色预警： 暂停对外服务， 仅保留应急通道第六条 红色预警： 全面停业， 所有企鹅就近避险第三章 第七条 极端天气结束后， 由联盟主席宣布恢复正常办公。 '
+						},
+						{
+							id: '4',
+							title: '未成年企鹅保护条例',
+							category: '基础行为规范',
+							date: '冰纪五年·霜月',
+							status: 'active',
+							summary: '保护未成年企鹅的权益，规范其参与联盟活动的方式。',
+							content: '《未成年企鹅保护条例第一条 未成年企鹅（ 以下简称 "幼鹅"）指尚未达到成年标准的企鹅第二条 幼鹅享有以下权利：（ 一） 旁听联盟大会；（ 二） 接受联盟提供的基础教育；（ 三） 在紧急情况下获得联盟保护第三条 幼鹅应遵守以下义务：（ 一） 遵守联盟基本行为规范；（ 二） 尊重成年企鹅；（ 三） 不干预联盟正式决策第四条 幼鹅的成年标准由各族群自行确定， 报联盟备案第五条 联盟设立观察员制度， 允许幼鹅以观察员身份参与联盟活动。 '
+						},
+						{
+							id: '5',
+							title: '与兔子委员会交往准则',
+							category: '基础行为规范',
+							date: '冰纪五年·霜月',
+							status: 'active',
+							summary: '规范企鹅联盟与兔子委员会的交往原则和行为准则。',
+							content: '《与兔子委员会交往准则》	第一条 兔子委员会是企鹅联盟的友好合作伙伴。	第二条 双方交往遵循以下原则：（ 一） 互相尊重；（ 二） 平等互利；（ 三） 不干涉内政。	第三条 双方可互派观察员出席对方重要会议。	第四条 双方在极端情况下可共享资源。	第五条 双方争议通过友好协商解决。		第六条 本准则所称 "兔子"	包括兔子委员会管辖范围内的所有兔种。 '
+						},
+						{
+							id: '6',
+							title: '关于禁止非法捕猎的紧急通告',
+							category: '临时公告',
+							date: '冰纪元年·寒月',
+							status: 'active',
+							summary: '严厉谴责非法捕猎行为，呼吁全体企鹅提高警惕。',
+							content: '《关于禁止非法捕猎的紧急通告近期， 联盟收到多起飞禽走兽被捕猎的报告， 其中包括兔子委员会的鸡贼黄袋鼠兔联盟严厉谴责这种非法捕猎行为， 并呼吁全体企鹅一、 提高警惕， 注意自身安全二、 发现可疑情况立即报告三、 与兔子委员会保持密切沟通， 共同应对威胁联盟将与兔子委员会合作， 采取一切必要措施保护成员安全。 '
+						},
+						{
+							id: '7',
+							title: '旧版认证管理办法（已废止）',
+							category: '历史废止文件',
+							date: '冰纪元年·雪月',
+							status: 'revoked',
+							summary: '该文件已被新版《最棒认证管理办法》取代。',
+							content: '《旧版认证管理办法》（已废止）废止原因： 流程过于复杂， 不符合联盟 "拖延比分歧更危险"的原则。 '
+						}
+					];
+
+					const services = [{
+							id: 'certification',
+							title: '认证申请',
+							description: '最棒认证、最好认证在线申请',
+							icon: 'file-check',
+							color: '#00d4ff'
+						},
+						{
+							id: 'declaration',
+							title: '行为申报',
+							description: '日常行为记录与申报',
+							icon: 'clipboard-list',
+							color: '#00c853'
+						},
+						{
+							id: 'objection',
+							title: '异议申请',
+							description: '投诉与申诉通道',
+							icon: 'message-square',
+							color: '#ffc107'
+						},
+						{
+							id: 'registration',
+							title: '成员登记',
+							description: '新成员注册与信息更新',
+							icon: 'user-plus',
+							color: '#5ae7c7'
+						}
+					];
+
+					const quickServices = [{
+							title: '申请认证',
+							description: '最棒认证、最好认证在线申请',
+							icon: 'file-check',
+							path: '/services'
+						},
+						{
+							title: '查询进度',
+							description: '查看您的申请处理状态',
+							icon: 'search',
+							path: '/services'
+						},
+						{
+							title: '成员名录',
+							description: '查询联盟成员信息',
+							icon: 'users',
+							path: '/members'
+						},
+						{
+							title: '会议纪要',
+							description: '查阅历次大会记录',
+							icon: 'file-text',
+							path: '/meetings'
+						}
+					];
+
+					const stats = [{
+							label: '成立时间',
+							value: '冰纪元年',
+							icon: 'snowflake'
+						},
+						{
+							label: '成员数量',
+							value: '10+',
+							icon: 'users'
+						},
+						{
+							label: '已召开会议',
+							value: '4次',
+							icon: 'file-text'
+						},
+						{
+							label: '当前状态',
+							value: '冰面稳定',
+							icon: 'wind'
+						}
+					];
+
+					const timeline = [{
+							year: '冰纪元年',
+							title: '企鹅联盟成立',
+							description: '在冰原深处，成年企鹅们聚集在一起，正式成立了企鹅联盟。'
+						},
+						{
+							year: '冰纪三年',
+							title: '第一次联盟大会',
+							description: '通过《企鹅联盟章程》，确立联盟组织架构，企鹅联盟服务中心开始运作。'
+						},
+						{
+							year: '冰纪五年',
+							title: '与兔子委员会建立联系',
+							description: '正式与兔子委员会建立合作关系，通过《跨物种交往准则》。'
+						},
+						{
+							year: '冰纪九年',
+							title: '最棒认证制度优化',
+							description: '简化申请流程，增设"特殊许可"业务类型。'
+						},
+						{
+							year: '冰纪十年',
+							title: '联盟成立十周年',
+							description: '第五次联盟大会召开，规划未来五年发展方向。'
+						}
+					];
+
+					const organization = [{
+							title: '联盟主席',
+							description: '由资历最深的帝企鹅担任，象征稳定、耐力与长期视野',
+							icon: 'shield'
+						},
+						{
+							title: '企鹅联盟服务中心',
+							description: '统一受理、审核与公示事务，是各位企鹅办事的主要接口',
+							icon: 'users'
+						},
+						{
+							title: '各族群代表',
+							description: '帝企鹅、阿德利企鹅、王企鹅、小蓝企鹅、巴布亚企鹅等各族群代表',
+							icon: 'map-pin'
+						},
+						{
+							title: '观察员',
+							description: '未成年企鹅以观察员身份参与，享有旁听权',
+							icon: 'clock'
+						}
+					];
+
+					const values = [{
+							title: '稳定',
+							description: '像冰原一样稳固，不轻易动摇',
+							icon: 'snowflake'
+						},
+						{
+							title: '包容',
+							description: '接纳不同族群的差异，求同存异',
+							icon: 'users'
+						},
+						{
+							title: '远见',
+							description: '为下一代企鹅考虑，着眼长远',
+							icon: 'target'
+						}
+					];
+
+					const steps = [{
+							label: '选择类型',
+							description: '选择认证类型'
+						},
+						{
+							label: '填写信息',
+							description: '填写申请信息'
+						},
+						{
+							label: '等待审核',
+							description: '企鹅观察中'
+						},
+						{
+							label: '生成证书',
+							description: '获取证书'
+						}
+					];
+
+					const certificateTypes = [{
+							value: 'best',
+							label: '最棒证',
+							description: '对各方面表现优异的企鹅给予认可'
+						},
+						{
+							value: 'good',
+							label: '最好证',
+							description: '对表现良好的企鹅给予鼓励'
+						},
+						{
+							value: 'observer',
+							label: '联盟旁听证',
+							description: '授权旁听联盟大会'
+						},
+						{
+							value: 'temporary',
+							label: '临时会员证',
+							description: '临时会员资格证明'
+						},
+						{
+							value: 'special',
+							label: '特殊许可',
+							description: '如：允许哔啵一次'
+						}
+					];
+
+					const waitingMessages = [
+						'企鹅正在观察中...',
+						'冰面需要再稳定一下...',
+						'等这只企鹅吃完鱼...',
+						'值班企鹅正在换班...',
+						'正在汇总各方意见...',
+						'需要再讨论一会儿...'
+					];
+
+					const statusConfig = {
+						open: {
+							label: '正在办公中',
+							color: 'bg-[#00c853]',
+							textColor: 'text-[#00c853]',
+							bgColor: 'bg-[#e3f7ef]',
+							animation: 'status-open',
+							tooltip: '冰面很稳定，企鹅们心情不错'
+						},
+						processing: {
+							label: '整理中',
+							color: 'bg-[#ffc107]',
+							textColor: 'text-[#856404]',
+							bgColor: 'bg-[#fff3cd]',
+							animation: '',
+							tooltip: '值班企鹅正在换班，请稍等'
+						},
+						closed: {
+							label: '今日已闭厅',
+							color: 'bg-[#6c757d]',
+							textColor: 'text-[#6c757d]',
+							bgColor: 'bg-[#f8f9fa]',
+							animation: '',
+							tooltip: '日落了，企鹅们去休息了'
+						},
+						emergency: {
+							label: '紧急状态',
+							color: 'bg-[#ff6b35]',
+							textColor: 'text-[#ff6b35]',
+							bgColor: 'bg-[#ffe5e0]',
+							animation: 'status-emergency',
+							tooltip: '极端天气，请注意安全'
+						}
+					};
+
+					const announcementCategoryLabels = {
+						meeting: '会议',
+						policy: '政策',
+						emergency: '紧急',
+						general: '公告'
+					};
+
+					const announcementCategoryColors = {
+						meeting: 'bg-[#e3f7ef] text-[#00c853]',
+						policy: 'bg-[#e0f4ff] text-[#00d4ff]',
+						emergency: 'bg-[#ffe5e0] text-[#ff6b35]',
+						general: 'bg-[#f0f0f0] text-[#666]'
+					};
+
+					const meetingStatusConfig = {
+						completed: {
+							label: '已公开',
+							color: 'bg-[#e3f7ef] text-[#00c853]'
+						},
+						processing: {
+							label: '整理中',
+							color: 'bg-[#fff3cd] text-[#856404]'
+						},
+						planned: {
+							label: '计划中',
+							color: 'bg-[#e0f4ff] text-[#00d4ff]'
+						}
+					};
+
+					const memberStatusConfig = {
+						active: {
+							label: '在职',
+							color: 'bg-[#e3f7ef] text-[#00c853]'
+						},
+						observer: {
+							label: '观察员',
+							color: 'bg-[#e0f4ff] text-[#00d4ff]'
+						},
+						suspended: {
+							label: '暂缓',
+							color: 'bg-[#f0f0f0] text-[#666]'
+						},
+						honorary: {
+							label: '荣誉',
+							color: 'bg-[#fff3cd] text-[#856404]'
+						}
+					};
+
+					const policyStatusConfig = {
+						active: {
+							label: '现行有效',
+							color: 'bg-[#e3f7ef] text-[#00c853]'
+						},
+						revised: {
+							label: '已修订',
+							color: 'bg-[#fff3cd] text-[#856404]'
+						},
+						revoked: {
+							label: '已废止',
+							color: 'bg-[#f0f0f0] text-[#666]'
+						}
+					};
+
+					const categoryFilters = [{
+							value: 'all',
+							label: '全部'
+						},
+						{
+							value: '基础行为规范',
+							label: '基础行为规范'
+						},
+						{
+							value: '紧急修订',
+							label: '紧急修订'
+						},
+						{
+							value: '临时公告',
+							label: '临时公告'
+						},
+						{
+							value: '历史废止文件',
+							label: '历史废止文件'
+						}
+					];
+
+					const meetingFilters = [{
+							value: 'all',
+							label: '全部'
+						},
+						{
+							value: 'completed',
+							label: '已公开'
+						},
+						{
+							value: 'processing',
+							label: '整理中'
+						},
+						{
+							value: 'planned',
+							label: '计划中'
+						}
+					];
+
+					const speciesFilters = [{
+							value: 'all',
+							label: '全部'
+						},
+						{
+							value: '帝企鹅',
+							label: '帝企鹅'
+						},
+						{
+							value: '阿德利企鹅',
+							label: '阿德利企鹅'
+						},
+						{
+							value: '王企鹅',
+							label: '王企鹅'
+						},
+						{
+							value: '小蓝企鹅',
+							label: '小蓝企鹅'
+						},
+						{
+							value: '巴布亚企鹅',
+							label: '巴布亚企鹅'
+						}
+					];
+
+					const servicesDialogOpen = ref(false);
+					const currentStep = ref(0);
+					const certificateType = ref('');
+					const applicantName = ref('');
+					const applicationReason = ref('');
+					const waitingMessage = ref('');
+					const showCertificate = ref(false);
+					const certificateNumber = ref('');
+					const certificateDate = ref('');
+					const certificateIssuer = ref('');
+					const isGenerating = ref(false);
+					const isDownloaded = ref(false);
+					const certificateRef = ref(null);
+
+					const meetingFilter = ref('all');
+					const policyFilter = ref('all');
+					const policySearch = ref('');
+					const memberFilter = ref('all');
+					const memberSearch = ref('');
+
+					const activeAnnouncement = ref(null);
+					const activeMeeting = ref(null);
+					const activeMember = ref(null);
+					const activePolicy = ref(null);
+
+					const activeAnnouncements = computed(() =>
+						announcements.filter((item) => item.status === 'active').slice(0, 4)
+					);
+
+					const filteredMeetings = computed(() => {
+						if (meetingFilter.value === 'all') {
+							return meetings;
+						}
+						return meetings.filter((meeting) => meeting.status === meetingFilter.value);
+					});
+
+					const meetingStats = computed(() => ({
+						completed: meetings.filter((meeting) => meeting.status === 'completed').length,
+						processing: meetings.filter((meeting) => meeting.status === 'processing').length,
+						planned: meetings.filter((meeting) => meeting.status === 'planned').length
+					}));
+
+					const filteredPolicies = computed(() => {
+						return policies.filter((policy) => {
+							const matchesCategory =
+								policyFilter.value === 'all' || policy.category === policyFilter.value;
+							const search = policySearch.value.trim().toLowerCase();
+							const matchesSearch =
+								search === '' ||
+								policy.title.toLowerCase().includes(search) ||
+								(policy.summary && policy.summary.toLowerCase().includes(search));
+							return matchesCategory && matchesSearch;
+						});
+					});
+
+					const policyStats = computed(() => ({
+						active: policies.filter((policy) => policy.status === 'active').length,
+						revised: policies.filter((policy) => policy.status === 'revised').length,
+						revoked: policies.filter((policy) => policy.status === 'revoked').length
+					}));
+
+					const filteredMembers = computed(() => {
+						return members.filter((member) => {
+							const matchesSpecies =
+								memberFilter.value === 'all' || member.species === memberFilter.value;
+							const search = memberSearch.value.trim().toLowerCase();
+							const matchesSearch =
+								search === '' ||
+								member.name.toLowerCase().includes(search) ||
+								member.role.toLowerCase().includes(search);
+							return matchesSpecies && matchesSearch;
+						});
+					});
+
+					const chairman = computed(() => members.find((member) => member.role === '联盟主席'));
+					const dutyPenguins = computed(() => members.filter((member) => member.role.includes('值班')));
+					const representatives = computed(() => members.filter((member) => member.role.includes('代表')));
+					const observers = computed(() => members.filter((member) => member.status === 'observer'));
+
+					const certificateConfig = {
+						best: {
+							title: '最棒证',
+							subtitle: 'PENGUIN ALLIANCE BEST CERTIFICATE',
+							description: '兹证明以下企鹅在各方面表现优异，被授予"最棒"称号。',
+							color: '#00d4ff'
+						},
+						good: {
+							title: '最好证',
+							subtitle: 'PENGUIN ALLIANCE GOOD CERTIFICATE',
+							description: '兹证明以下企鹅表现良好，被授予"最好"称号。',
+							color: '#00c853'
+						},
+						observer: {
+							title: '联盟旁听证',
+							subtitle: 'PENGUIN ALLIANCE OBSERVER PASS',
+							description: '兹授权以下企鹅旁听联盟大会及相关会议。',
+							color: '#5ae7c7'
+						},
+						temporary: {
+							title: '临时会员证',
+							subtitle: 'PENGUIN ALLIANCE TEMPORARY MEMBERSHIP',
+							description: '兹授予以下企鹅临时会员资格，有效期至指定日期。',
+							color: '#ffc107'
+						},
+						special: {
+							title: '特殊许可',
+							subtitle: 'PENGUIN ALLIANCE SPECIAL PERMIT',
+							description: '兹特别许可以下企鹅在指定范围内行使特殊权利。',
+							color: '#ff6b35'
+						}
+					};
+
+					const statusIndicator = ref('open');
+					const tooltipVisible = ref(false);
+
+					const isActive = (path) => {
+						if (path === '/') {
+							return currentpage.value === '/';
+						}
+						return currentpage.value.startsWith(path);
+					};
+
+					const setRoute = (path) => {
+						currentpage.value = path;
+						window.location.hash = path;
+						isMobileMenuOpen.value = false;
+					};
+
+					const syncRouteFromHash = () => {
+						const hash = window.location.hash.replace('#', '') || '/';
+						currentpage.value = hash;
+					};
+
+					const openAnnouncement = (announcement) => {
+						activeAnnouncement.value = announcement;
+					};
+
+					const openMeeting = (meeting) => {
+						activeMeeting.value = meeting;
+					};
+
+					const openMember = (member) => {
+						activeMember.value = member;
+					};
+
+					const openPolicy = (policy) => {
+						activePolicy.value = policy;
+					};
+
+					const closeModals = () => {
+						activeAnnouncement.value = null;
+						activeMeeting.value = null;
+						activeMember.value = null;
+						activePolicy.value = null;
+					};
+
+					const handleServiceClick = (serviceId) => {
+						if (serviceId === 'certification') {
+							servicesDialogOpen.value = true;
+							resetServiceForm();
+						}
+					};
+
+					const resetServiceForm = () => {
+						currentStep.value = 0;
+						certificateType.value = '';
+						applicantName.value = '';
+						applicationReason.value = '';
+						waitingMessage.value = '';
+						showCertificate.value = false;
+						isGenerating.value = false;
+						isDownloaded.value = false;
+					};
+
+					const handleNextStep = () => {
+						if (currentStep.value === 0 && !certificateType.value) return;
+						if (currentStep.value === 1 && !applicantName.value) return;
+
+						if (currentStep.value === 1) {
+							waitingMessage.value = waitingMessages[0];
+							let messageIndex = 0;
+							const interval = setInterval(() => {
+								messageIndex = (messageIndex + 1) % waitingMessages.length;
+								waitingMessage.value = waitingMessages[messageIndex];
+							}, 2000);
+
+							setTimeout(() => {
+								clearInterval(interval);
+								currentStep.value = 3;
+								showCertificate.value = true;
+								prepareCertificateMeta();
+							}, 6000);
+						}
+
+						currentStep.value += 1;
+					};
+
+					const prepareCertificateMeta = () => {
+						certificateNumber.value = `PA-${Date.now().toString(36).toUpperCase()}`;
+						certificateDate.value = new Date().toLocaleDateString('zh-CN', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						});
+						const issuers = ['雪球', '冰晶', '寒风'];
+						certificateIssuer.value = issuers[Math.floor(Math.random() * issuers.length)];
+					};
+
+					const downloadCertificate = async () => {
+						if (!certificateRef.value || !window.html2canvas) return;
+						isGenerating.value = true;
+						try {
+							const canvas = await window.html2canvas(certificateRef.value, {
+								scale: 2,
+								backgroundColor: '#ffffff'
+							});
+							const link = document.createElement('a');
+							const config = certificateConfig[certificateType.value];
+							link.download = `企鹅联盟-${config.title}-${applicantName.value}.png`;
+							link.href = canvas.toDataURL('image/png');
+							link.click();
+							isDownloaded.value = true;
+						} catch (error) {
+							console.error('生成证书失败:', error);
+						} finally {
+							isGenerating.value = false;
+						}
+					};
+
+					const closeServiceDialog = () => {
+						servicesDialogOpen.value = false;
+						resetServiceForm();
+					};
+
+					const refreshIcons = () => {
+						if (window.lucide) {
+							window.lucide.createIcons();
+						}
+					};
+
+					onMounted(() => {
+						syncRouteFromHash();
+						window.addEventListener('hashchange', syncRouteFromHash);
+						nextTick(refreshIcons);
+					});
+
+					watch(
+						[
+							currentpage,
+							servicesDialogOpen,
+							meetingFilter,
+							policyFilter,
+							policySearch,
+							memberFilter,
+							memberSearch,
+							showCertificate,
+							activeAnnouncement,
+							activeMeeting,
+							activeMember,
+							activePolicy
+						],
+						() => {
+							nextTick(refreshIcons);
+						}
+					);
+
+					return {
+						navItems,
+						currentpage,
+						isActive,
+						setRoute,
+						isMobileMenuOpen,
+						announcements,
+						meetings,
+						members,
+						policies,
+						services,
+						quickServices,
+						stats,
+						timeline,
+						organization,
+						values,
+						steps,
+						certificateTypes,
+						statusConfig,
+						announcementCategoryLabels,
+						announcementCategoryColors,
+						meetingStatusConfig,
+						memberStatusConfig,
+						policyStatusConfig,
+						categoryFilters,
+						meetingFilters,
+						speciesFilters,
+						activeAnnouncements,
+						filteredMeetings,
+						filteredPolicies,
+						filteredMembers,
+						meetingStats,
+						policyStats,
+						chairman,
+						dutyPenguins,
+						representatives,
+						observers,
+						statusIndicator,
+						tooltipVisible,
+						servicesDialogOpen,
+						currentStep,
+						certificateType,
+						applicantName,
+						applicationReason,
+						waitingMessage,
+						showCertificate,
+						certificateNumber,
+						certificateDate,
+						certificateIssuer,
+						certificateConfig,
+						certificateRef,
+						isGenerating,
+						isDownloaded,
+						openAnnouncement,
+						openMeeting,
+						openMember,
+						openPolicy,
+						closeModals,
+						handleServiceClick,
+						handleNextStep,
+						downloadCertificate,
+						closeServiceDialog,
+						resetServiceForm,
+						meetingFilter,
+						policyFilter,
+						policySearch,
+						memberFilter,
+						memberSearch,
+						activeAnnouncement,
+						activeMeeting,
+						activeMember,
+						activePolicy
+					};
+				}
+			}).mount('#app');
+		</script>
+	</body>
+</html>
