@@ -542,16 +542,18 @@
 						</div>
 
 						<div class="relative">
-							<div class="absolute left-10 top-0 bottom-0 w-0.5 bg-[#D8F0F0]"></div>
+							<div class="absolute left-[2.95rem] top-0 bottom-0 w-0.5 bg-[#D8F0F0]"></div>
 
 							<div class="space-y-10">
 								<div v-for="(meeting, index) in meetings" :key="meeting.id"
-									class="animate-on-scroll relative flex items-start gap-8"
+									class="animate-on-scroll relative flex items-start gap-2 sm:gap-4 md:gap-8"
 									:style="{ animationDelay: `${index * 0.1}s` }">
-									<div class="flex flex-col items-center w-20 flex-shrink-0">
+									<div class="flex flex-col items-center w-24 flex-shrink-0">
 										<div class="w-4 h-4 bg-white border-4 border-[#2A6F6A] rounded-full mt-2"></div>
-										<div class="mt-3 text-xs text-gray-500">{{ meeting.date }}</div>
-										<div class="text-xs text-gray-400">第{{ meeting.sessionNumber }}次</div>
+										<div class="mt-3 p-2 bg-white rounded-xl flex flex-col justify-center items-center gap-1">
+											<div class="text-xs text-gray-500">{{ meeting.date }}</div>
+											<div class="text-xs text-gray-400">第{{ meeting.sessionNumber }}次</div>
+										</div>
 									</div>
 
 									<div class="flex-1">
