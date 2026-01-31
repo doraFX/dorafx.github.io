@@ -2,32 +2,6 @@
 	{
 		"index": 1,
 		"name": {
-			"zh": "兔子委员会",
-			"en": "Rabbit Committee",
-			"ja": "ウサギ委員会",
-			"ko": "토끼 위원회"
-		},
-		"image": "IP/RabbitCommittee/icon.webp",
-		"link": "IP/RabbitCommittee/index.html",
-		"desc": {
-			"zh": "致力于所有兔子相关事务的和谐、秩序与顽皮治理。",
-			"en": "Dedicated to the harmonious, orderly, and playfully governed management of all rabbit-related affairs.",
-			"ja": "すべてのウサギに関する事務を、調和・秩序・そして少し顽皮な統治のもとで管理することを目的としています。",
-			"ko": "모든 토끼 관련 사안을 조화와 질서, 그리고 장난기 있는 통치 아래에서 관리하는 것을 목표로 합니다."
-		},
-		"platforms": {
-			"xiaohongshu": false,
-			"weibo": false,
-			"ins": false,
-			"x": false
-		},
-		"visible": true,
-		"accent": "linear-gradient(90deg, #f1c856, #053e24)",
-		"_uid": "2df7fdae-75ae-40ad-aa21-7d717f91547b"
-	},
-	{
-		"index": 2,
-		"name": {
 			"zh": "企鹅企企与顽劣大黄兔",
 			"en": "Penguin QiQi & Yellow Bunny",
 			"ja": "ペンギン・チチ ＆ イエローバニー",
@@ -50,6 +24,32 @@
 		"visible": true,
 		"accent": "linear-gradient(90deg, #bfbfbf, #ffbe4d)",
 		"_uid": "b3494a25-678a-4580-9abc-3c7d15708ed9"
+	},
+	{
+		"index": 2,
+		"name": {
+			"zh": "兔子委员会",
+			"en": "Rabbit Committee",
+			"ja": "ウサギ委員会",
+			"ko": "토끼 위원회"
+		},
+		"image": "IP/RabbitCommittee/icon.webp",
+		"link": "IP/RabbitCommittee/index.html",
+		"desc": {
+			"zh": "致力于所有兔子相关事务的和谐、秩序与顽皮治理。",
+			"en": "Dedicated to the harmonious, orderly, and playfully governed management of all rabbit-related affairs.",
+			"ja": "すべてのウサギに関する事務を、調和・秩序・そして少し顽皮な統治のもとで管理することを目的としています。",
+			"ko": "모든 토끼 관련 사안을 조화와 질서, 그리고 장난기 있는 통치 아래에서 관리하는 것을 목표로 합니다."
+		},
+		"platforms": {
+			"xiaohongshu": false,
+			"weibo": false,
+			"ins": false,
+			"x": false
+		},
+		"visible": true,
+		"accent": "linear-gradient(90deg, #f1c856, #053e24)",
+		"_uid": "2df7fdae-75ae-40ad-aa21-7d717f91547b"
 	},
 	{
 		"index": 3,
@@ -102,5 +102,31 @@
 		"visible": true,
 		"accent": "linear-gradient(135deg, #6b7280, #71717a)",
 		"_uid": "b6e7b6d9-6749-43e6-903f-f4880d3c97db"
+	},
+	{
+		"index": 5,
+		"name": {
+			"zh": "企鹅联盟",
+			"en": "Penguin Alliance",
+			"ja": "ペンギン連盟",
+			"ko": "펭귄 연맹"
+		},
+		"image": "IP/PenguinAlliance/icon.webp",
+		"link": "IP/PenguinAlliance/index.html",
+		"desc": {
+			"zh": "成年企鹅的共同体中枢，维护冰原秩序，守护企鹅族群。",
+			"en": "The central governing body of adult penguins, maintaining order across the ice fields and safeguarding the penguin community.",
+			"ja": "成体ペンギンによる共同体の中枢機関として、氷原の秩序を維持し、ペンギン族群を守る。",
+			"ko": "성체 펭귄 공동체의 중심 기구로서, 빙원의 질서를 유지하고 펭귄 종족을 보호한다."
+		},
+		"platforms": {
+			"xiaohongshu": false,
+			"weibo": false,
+			"ins": false,
+			"x": false
+		},
+		"visible": true,
+		"accent": "linear-gradient(45deg, #01b2f4, #011940)",
+		"_uid": "e7665045-d9ad-4648-8a31-94610773750a"
 	}
 ]

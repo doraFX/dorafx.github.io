@@ -577,7 +577,7 @@
         color:#B45309;
         border-color:#FDE68A;
       }
-      .qr-row-app{ margin-top:150px; }
+      .qr-row-app{ margin-top:200px; }
 			.up25{transform:translateY(-25%);}
 			
 			/* ====== shareposter.js: buildPosterCSS 末尾追加/替换 IP 这段 ====== */
